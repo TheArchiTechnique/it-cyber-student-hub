@@ -51,6 +51,14 @@ Lessons and a guided study sequence have not been published yet. Browse the topi
 
     Understand how devices connect and communicate.
 
+## Published PBQ Practice
+
+- [SOHO Router Configuration](../../../practice/pbqs/a-plus-core-1/soho-router-configuration/README.md)
+- [RAID Drive Replacement](../../../practice/pbqs/a-plus-core-1/raid-drive-replacement/README.md)
+- [Network Setup & Cabling](../../../practice/pbqs/a-plus-core-1/network-setup-and-cabling/README.md)
+- [Printer Troubleshooting](../../../practice/pbqs/a-plus-core-1/printer-troubleshooting/README.md)
+- [TCP/IP Packet Walk](../../../practice/pbqs/a-plus-core-1/tcp-ip-packet-walk/README.md)
+
 ## Lab Areas
 
 - [IT Support](../../../labs/it-support/README.md)
