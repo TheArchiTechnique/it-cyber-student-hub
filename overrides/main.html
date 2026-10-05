@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="hub-page{% if page.file.src_uri.endswith('README.md') %} hub-landing{% endif %}{% if page.is_homepage %} hub-home{% endif %}">
+{{ super() }}
+</div>
+{% endblock %}

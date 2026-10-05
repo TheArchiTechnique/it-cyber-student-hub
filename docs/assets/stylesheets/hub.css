@@ -1,0 +1,55 @@
+/* Calm, readable surfaces. Content stays ordinary Markdown on GitHub/GitBook. */
+:root {
+  --md-primary-fg-color: #173c57;
+  --md-primary-fg-color--light: #245573;
+  --md-primary-fg-color--dark: #112d42;
+  --md-accent-fg-color: #176e68;
+  --md-default-bg-color: #fbfcfd;
+  --md-default-fg-color: #223446;
+  --md-default-fg-color--light: #506175;
+  --md-typeset-a-color: #165974;
+  --md-text-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --md-code-font: ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+.md-header { box-shadow: none; }
+.md-tabs { border-bottom: 1px solid #33536a; }
+.md-tabs__link { opacity: .85; }
+.md-tabs__link--active, .md-tabs__link:hover { opacity: 1; }
+.md-grid { max-width: 76rem; }
+.md-typeset { font-size: .83rem; line-height: 1.65; }
+.md-typeset h1 { color: #15354c; font-weight: 750; letter-spacing: -.035em; line-height: 1.16; margin-bottom: 1rem; }
+.md-typeset h2 { color: #15354c; font-weight: 700; letter-spacing: -.015em; margin-top: 2rem; }
+.hub-home h1 { font-size: clamp(1.8rem, 3.7vw, 2.75rem); max-width: 19ch; }
+.hub-landing > p { max-width: 72ch; }
+.hub-landing pre { margin: 0 0 1.1rem; }
+.hub-landing pre code { display: inline-block; color: #32616d; background: #eaf2f4; border-left: 3px solid #357b83; border-radius: 0 6px 6px 0; padding: .55rem .85rem; font-size: .69rem; line-height: 1.45; }
+/* One ordinary Markdown list item = one fully clickable navigation card. */
+.hub-landing ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; padding: 0; margin: 1rem 0 1.6rem; list-style: none; }
+.hub-landing ul > li { position: relative; margin: 0; padding: 1rem 1.1rem; border: 1px solid #d3dfe6; border-radius: 10px; background: white; box-shadow: 0 2px 5px #173c5705; color: #506175; font-size: .76rem; }
+.hub-landing li > p { margin: .25rem 0 0; }
+.hub-landing li > p:first-child { margin-top: 0; }
+.hub-landing li a { color: #153e59; font-size: .88rem; font-weight: 700; text-decoration: none; }
+.hub-landing li a::after { position: absolute; inset: 0; content: ""; border-radius: 10px; }
+.hub-landing li:hover { border-color: #56808f; background: #f4f9fb; }
+.hub-landing li:focus-within { outline: 3px solid #176e68; outline-offset: 3px; }
+.hub-home h2:first-of-type + p + ul > li { border-top: 3px solid #367a85; }
+.md-typeset a:focus-visible, .md-header a:focus-visible, .md-nav a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid #23857c; outline-offset: 3px; }
+.md-nav__link { font-size: .7rem; }
+.md-nav__link--active { font-weight: 700; }
+.md-typeset p > a { text-underline-offset: .18em; }
+.hub-landing > p:last-child { border-top: 1px solid #dce5eb; margin-top: 2rem; padding-top: 1rem; font-size: .73rem; }
+.hub-home > p:last-child { border: 0; }
+@media (max-width: 600px) {
+  .hub-landing ul { grid-template-columns: 1fr; gap: .65rem; }
+  .hub-landing ul > li { padding: .9rem 1rem; }
+  .md-typeset h1 { font-size: 1.65rem; }
+  .hub-home h1 { font-size: 1.9rem; }
+  .md-typeset h2 { font-size: 1.15rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+}
+@media print {
+  .hub-landing ul { display: block; }
+  .hub-landing ul > li { break-inside: avoid; margin-bottom: .5rem; box-shadow: none; }
+}
