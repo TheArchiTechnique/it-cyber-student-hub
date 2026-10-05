@@ -17,6 +17,10 @@ Operating systems, software, and support.
 
     Find your starting point.
 
+- [Official Exam Objectives](https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf)
+
+    Open CompTIA's official A+ Core 2 (220-1202) exam objectives.
+
 - [Course Topics](#course-topics)
 
     Browse shared topic hubs.
