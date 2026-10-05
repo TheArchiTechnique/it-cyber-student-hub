@@ -74,6 +74,10 @@ for p in pages:
     rel = p.relative_to(SITE).as_posix()
     if rel == '404.html':
         continue
+    # Interactive PBQ runtimes are copied static HTML, not MkDocs content pages.
+    # Their Markdown landing pages are indexed; the app HTML itself is not.
+    if '/app/' in rel:
+        continue
     location = rel[:-10] if rel.endswith('index.html') else rel
     if location not in indexed:
         errors.append(f'{rel}: absent from search index')
