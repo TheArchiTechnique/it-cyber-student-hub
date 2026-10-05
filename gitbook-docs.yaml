@@ -1,0 +1,12 @@
+$schema: https://api.gitbook.com/gitbook-docs.yaml
+
+site:
+  title: IT & Cybersecurity Student Hub
+  structure:
+    - type: space
+      key: student-hub
+      title: IT & Cybersecurity Student Hub
+      path: student-hub
+      default: true
+      content:
+        directory: ./
