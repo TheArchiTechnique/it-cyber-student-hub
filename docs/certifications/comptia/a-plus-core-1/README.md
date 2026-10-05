@@ -21,6 +21,10 @@ Hardware, devices, and connectivity.
 
     Open CompTIA's official A+ Core 1 (220-1201) exam objectives.
 
+- [Student Objective Breakdown](objective-breakdown.md)
+
+    Review the Core 1 objectives as a practical study checklist with related PBQs and references.
+
 - [Course Topics](#course-topics)
 
     Browse shared topic hubs.
