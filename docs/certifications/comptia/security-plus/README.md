@@ -1,7 +1,15 @@
 # Security+
 
 ```text
-[ # ] SECURITY+
+           .--------.
+          /  .----.  \
+         /   |    |   \        SECURITY+
+        |   .------.   |       DEFENSE
+        |   |  ()  |   |
+         \  '------'  /
+          \          /
+           '.      .'
+             '----'
 ```
 
 Build your security foundation.

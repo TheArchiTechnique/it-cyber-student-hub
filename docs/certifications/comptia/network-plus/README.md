@@ -1,7 +1,17 @@
 # Network+
 
 ```text
-[ = ] NETWORK+
+             .-----.
+             | WAN |
+             '--+--'
+                |              NETWORK+
+          .-----+-----.        NETWORKING
+          |  ROUTER   |
+          '--+-----+--'
+             |     |
+         .---+-. .-+---.
+         | PC  | | AP  ))
+         '-----' '-----'
 ```
 
 Build your networking knowledge.
