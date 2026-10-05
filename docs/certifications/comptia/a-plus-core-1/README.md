@@ -17,6 +17,10 @@ Hardware, devices, and connectivity.
 
     Find your starting point.
 
+- [Official Exam Objectives](https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1201-exam-objectives.pdf)
+
+    Open CompTIA's official A+ Core 1 (220-1201) exam objectives.
+
 - [Course Topics](#course-topics)
 
     Browse shared topic hubs.
