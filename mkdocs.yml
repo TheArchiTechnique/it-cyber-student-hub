@@ -1,0 +1,105 @@
+site_name: IT & Cybersecurity Student Hub
+site_description: Certification study, shared IT knowledge, labs, practice, tools,
+  and quick reference.
+site_url: https://thearchitechnique.github.io/it-cyber-student-hub/
+docs_dir: docs
+site_dir: site
+use_directory_urls: true
+theme:
+  name: material
+  custom_dir: overrides
+  language: en
+  font: false
+  favicon: assets/images/favicon.svg
+  icon:
+    logo: material/book-open-page-variant-outline
+  palette:
+    scheme: default
+    primary: custom
+    accent: custom
+  features:
+  - navigation.tabs
+  - navigation.sections
+  - navigation.indexes
+  - navigation.top
+  - search.suggest
+  - search.highlight
+plugins:
+- search
+markdown_extensions:
+- tables
+- fenced_code
+- toc
+hooks:
+- scripts/site_hooks.py
+extra_css:
+- assets/stylesheets/hub.css
+exclude_docs: assets/**/README.md
+validation:
+  nav:
+    omitted_files: warn
+  links:
+    anchors: warn
+    unrecognized_links: warn
+extra:
+  generator: false
+nav:
+- Home: README.md
+- Certifications:
+  - Overview: certifications/README.md
+  - CompTIA:
+    - Overview: certifications/comptia/README.md
+    - A+ Core 1: certifications/comptia/a-plus-core-1/README.md
+    - A+ Core 2: certifications/comptia/a-plus-core-2/README.md
+    - Network+: certifications/comptia/network-plus/README.md
+    - Security+: certifications/comptia/security-plus/README.md
+    - CySA+: certifications/comptia/cysa-plus/README.md
+- Learn:
+  - Overview: learn/README.md
+  - PC Basics: learn/pc-basics/README.md
+  - Hardware: learn/hardware/README.md
+  - Operating Systems: learn/operating-systems/README.md
+  - Software: learn/software/README.md
+  - Basic Scripting & Coding: learn/scripting-and-coding/README.md
+  - Networking: learn/networking/README.md
+  - Cybersecurity: learn/cybersecurity/README.md
+- Practice:
+  - Overview: practice/README.md
+  - PBQs:
+    - Overview: practice/pbqs/README.md
+    - A+ Core 1: practice/pbqs/a-plus-core-1/README.md
+    - A+ Core 2: practice/pbqs/a-plus-core-2/README.md
+    - Network+: practice/pbqs/network-plus/README.md
+    - Security+: practice/pbqs/security-plus/README.md
+    - CySA+: practice/pbqs/cysa-plus/README.md
+  - Scenarios:
+    - Overview: practice/scenarios/README.md
+    - Troubleshooting: practice/scenarios/troubleshooting/README.md
+    - Log Analysis: practice/scenarios/log-analysis/README.md
+    - Investigations: practice/scenarios/investigations/README.md
+- Labs:
+  - Overview: labs/README.md
+  - IT Support: labs/it-support/README.md
+  - Networking: labs/networking/README.md
+  - Cybersecurity: labs/cybersecurity/README.md
+  - Log Analysis: labs/log-analysis/README.md
+  - Incident Response: labs/incident-response/README.md
+- Tools:
+  - Overview: tools/README.md
+  - Nmap: tools/nmap/README.md
+  - Wireshark: tools/wireshark/README.md
+  - PowerShell: tools/powershell/README.md
+  - Linux CLI: tools/linux/README.md
+  - Wazuh: tools/wazuh/README.md
+  - Burp Suite: tools/burp-suite/README.md
+  - Greenbone: tools/greenbone/README.md
+  - Git / GitHub: tools/git-github/README.md
+- Reference:
+  - Overview: reference/README.md
+  - Ports & Protocols: reference/ports-and-protocols.md
+  - Windows Event IDs: reference/windows-event-ids.md
+  - Linux Commands: reference/linux-commands.md
+  - PowerShell Commands: reference/powershell-commands.md
+  - Wi-Fi Standards: reference/wifi-standards.md
+  - Cabling: reference/cabling.md
+  - RAID: reference/raid.md
