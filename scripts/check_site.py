@@ -43,7 +43,7 @@ for source, page in pages.items():
         source_path = ROOT / 'README.md' if relative == 'index.html' else ROOT / 'docs' / (relative[:-10] + 'README.md' if relative.endswith('index.html') else relative)
         if not source_path.exists() and relative.endswith('/index.html'):
             source_path = ROOT / 'docs' / (relative[:-11] + '.md')
-        if source_path.exists():
+        if source_path.exists() and source_path.name == 'README.md':
             expected_cards = len(re.findall(r'^- \[', source_path.read_text(), re.M))
             content = source.read_text().split('<div class="hub-page', 1)[1].split('</div>', 1)[0]
             if content.count('<li>') != expected_cards:
