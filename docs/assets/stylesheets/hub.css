@@ -40,6 +40,7 @@
 .hub-landing > p:last-child { border-top: 1px solid #dce5eb; margin-top: 2rem; padding-top: 1rem; font-size: .73rem; }
 .hub-home > p:last-child { border: 0; }
 @media (max-width: 600px) {
+  .hub-landing pre code { font-size: .55rem; }
   .hub-landing ul { grid-template-columns: 1fr; gap: .65rem; }
   .hub-landing ul > li { padding: .9rem 1rem; }
   .md-typeset h1 { font-size: 1.65rem; }

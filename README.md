@@ -1,8 +1,14 @@
 # IT & Cybersecurity Student Hub
 
 ```text
-[ + ] IT / CYBER
-      STUDENT HUB
+       .-------------------.
+       |   .---.   .---.   |
+       |   |   |---|   |   |   IT & CYBER
+       |   '---'   '---'   |   STUDENT HUB
+       |       |           |
+       '-------|-----------'
+             __|__
+            /_____\
 ```
 
 Build your IT knowledge. Study for a certification, explore a topic, or find hands-on practice.
