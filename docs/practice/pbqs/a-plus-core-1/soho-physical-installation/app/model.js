@@ -10,6 +10,18 @@ const cables={
  lc:{code:'E',name:'LC fiber cable',type:'lc',description:'Small optical connector with a finger latch and a narrow ceramic ferrule.'},
  st:{code:'F',name:'ST fiber cable',type:'st',description:'Round metal optical connector with a bayonet locking collar and a ceramic ferrule.'}
 };
+const tools={
+ crimper:{name:'Modular plug crimper',description:'Crimps modular plugs onto prepared copper cable. Use the correct die for RJ45 or RJ11 plugs.'},
+ punchdown:{name:'Punchdown tool',description:'Seats and trims twisted-pair conductors into insulation-displacement terminals on keystone jacks and patch panels.'},
+ coax:{name:'Coax compression tool',description:'Compresses an F-type connector onto properly prepared coaxial cable.'},
+ stripper:{name:'Cable stripper',description:'Removes the outer jacket before termination. It prepares cable but does not complete the connector termination by itself.'}
+};
+const toolTasks=[
+ {id:'rj45',cable:'rj45',prompt:'Terminate an RJ45 modular plug on twisted-pair Ethernet cable.',correct:'crimper',why:'A modular plug crimper seats the contacts and secures the RJ45 plug to the cable.'},
+ {id:'rj11',cable:'rj11',prompt:'Terminate an RJ11 modular plug on telephone/DSL cable.',correct:'crimper',why:'The modular crimper uses the appropriate RJ11 die to terminate the smaller modular plug.'},
+ {id:'idc',cable:'rj45',prompt:'Terminate twisted-pair conductors onto a 110-style IDC keystone jack or patch panel.',correct:'punchdown',why:'A punchdown tool seats each conductor into the IDC terminal and trims the excess wire.'},
+ {id:'coax',cable:'f',prompt:'Install an F-type connector on prepared coaxial cable.',correct:'coax',why:'A coax compression tool secures the F-type connector onto the prepared coaxial cable.'}
+];
 const port=(id,type,role,mark='',group=null)=>({id,type,role,mark,equivalentGroup:group});
 const devices={
  cable:{code:'A',name:'Cable modem',shape:'modem',description:'Upright enclosure with status lamps, one threaded round socket, and one eight-contact modular socket.',ports:[port('service','f','service'),port('ethernet','rj45','uplink','ETH')]},
@@ -39,11 +51,11 @@ const scenarios={
  requirement('printer','switch','lan','printer','endpoint','ethernet','Another switch port serves the printer, allowing both endpoints to share the single uplink.') ]}
 };
 function device(sid,id){return id==='wall'?{code:'S',name:'Service outlet',shape:'wall',description:'Service wall plate with one '+({f:'threaded round',rj11:'narrow modular',sc:'square optical'}[scenarios[sid].service])+' socket.',ports:[port('service',scenarios[sid].service,'service')]}:devices[id]}
-function fresh(){return {version:1,active:'cable',progress:Object.fromEntries(Object.keys(scenarios).map(id=>[id,{placed:{},connections:[],submitted:false}]))}}
+function fresh(){return {version:1,active:'cable',progress:Object.fromEntries(Object.keys(scenarios).map(id=>[id,{placed:{},connections:[],submitted:false}])),tools:{answers:{},submitted:false}}}
 function placements(sid,state){return {...scenarios[sid].fixed,...state.placed}}
 function ports(sid,state){const occupied=new Set(state.connections.flatMap(c=>[c.a,c.b]));return Object.fromEntries(Object.keys(placements(sid,state)).flatMap(owner=>device(sid,owner).ports.map(p=>[owner+':'+p.id,{...p,owner,key:owner+':'+p.id,occupied:occupied.has(owner+':'+p.id)}])))}
 function cleanScenario(sid,raw){const out={placed:{},connections:[],submitted:false},s=scenarios[sid];if(!raw||typeof raw!=='object')return out;const slots=new Set(Object.values(s.fixed));for(const [id,slot] of Object.entries(raw.placed||{})){if(s.pool.includes(id)&&Number.isInteger(slot)&&slot>=0&&slot<6&&!slots.has(slot)){out.placed[id]=slot;slots.add(slot)}}const available=ports(sid,out),used=new Set(),ids=new Set();for(const c of (Array.isArray(raw.connections)?raw.connections:[]).slice(0,20)){if(!c||typeof c.cable!=='string'||typeof c.a!=='string'||typeof c.b!=='string'||!Object.hasOwn(cables,c.cable)||!Object.hasOwn(available,c.a)||!Object.hasOwn(available,c.b)||c.a===c.b||used.has(c.a)||used.has(c.b))continue;let id=typeof c.id==='string'&&/^[a-z0-9-]{1,50}$/.test(c.id)&&!ids.has(c.id)?c.id:'restored-'+out.connections.length;while(ids.has(id))id+='-x';ids.add(id);used.add(c.a);used.add(c.b);out.connections.push({id,cable:c.cable,a:c.a,b:c.b})}out.submitted=raw.submitted===true;return out}
-function restore(raw){const out=fresh();if(!raw||raw.version!==1)return out;if(typeof raw.active==='string'&&Object.hasOwn(scenarios,raw.active))out.active=raw.active;for(const sid of Object.keys(scenarios))out.progress[sid]=cleanScenario(sid,raw.progress?.[sid]);return out}
+function restore(raw){const out=fresh();if(!raw||raw.version!==1)return out;if(typeof raw.active==='string'&&Object.hasOwn(scenarios,raw.active))out.active=raw.active;for(const sid of Object.keys(scenarios))out.progress[sid]=cleanScenario(sid,raw.progress?.[sid]);if(raw.tools&&typeof raw.tools==='object'){for(const task of toolTasks){const answer=raw.tools.answers?.[task.id];if(typeof answer==='string'&&Object.hasOwn(tools,answer))out.tools.answers[task.id]=answer}out.tools.submitted=raw.tools.submitted===true}return out}
 function matches(c,r,ps,includeCable=true){const a=ps[c.a],b=ps[c.b];return !!a&&!!b&&(!includeCable||c.cable===r.cable)&&((a.owner===r.a&&a.role===r.ar&&b.owner===r.b&&b.role===r.br)||(b.owner===r.a&&b.role===r.ar&&a.owner===r.b&&a.role===r.br))}
 function grade(sid,state){
  const s=scenarios[sid],ps=ports(sid,state),used=new Set(),upstream=s.requirements.slice(0,2);
@@ -71,5 +83,6 @@ function grade(sid,state){
  return {score:rows.filter(r=>r.correct).length,total:rows.length,rows,invalid,reachable,validConnections,complete:rows.every(r=>r.correct)&&!invalid.length};
 }
 function connect(sid,state,cable,a,b,id){const ps=ports(sid,state);if(!Object.hasOwn(cables,cable)||!Object.hasOwn(ps,a)||!Object.hasOwn(ps,b))return 'Choose a cable and two available ports.';if(a===b)return 'Choose two different ports.';if(ps[a].occupied||ps[b].occupied)return 'That port is occupied. Remove its connection first.';state.connections.push({id,cable,a,b});state.submitted=false;return null}
-const api={KEY,cables,devices,scenarios,device,fresh,placements,ports,restore,cleanScenario,grade,connect};if(typeof module!=='undefined')module.exports=api;else root.SOHO=api;
+function gradeTools(state){const answers=state?.tools?.answers||{};const rows=toolTasks.map(task=>({...task,answer:answers[task.id]||'',correct:answers[task.id]===task.correct}));return {score:rows.filter(r=>r.correct).length,total:rows.length,rows,complete:rows.every(r=>r.correct)}}
+const api={KEY,cables,tools,toolTasks,devices,scenarios,device,fresh,placements,ports,restore,cleanScenario,grade,gradeTools,connect};if(typeof module!=='undefined')module.exports=api;else root.SOHO=api;
 })(globalThis);
