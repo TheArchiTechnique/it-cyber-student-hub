@@ -50,6 +50,15 @@ ascii_pages = {str(p.relative_to(ROOT)) for p in sources if '```text' in p.read_
 allowed = {'README.md'} | {str(p.relative_to(ROOT)) for p in ROOT.glob('docs/certifications/comptia/*/README.md')}
 if ascii_pages != allowed:
     errors.append('ASCII headers must occur only on Home and the five certification pages.')
+# Standalone PBQ apps must provide explicit navigation out of the activity.
+pbq_apps = sorted(ROOT.glob('docs/practice/pbqs/*/*/app/index.html'))
+for app in pbq_apps:
+    html = app.read_text()
+    for marker in ('certification', 'overview', 'home'):
+        matches = re.findall(rf'data-pbq-nav=["\\']{marker}["\\']', html)
+        if len(matches) != 1:
+            errors.append(f'{app.relative_to(ROOT)}: expected one data-pbq-nav="{marker}" link, found {len(matches)}')
+
 if errors:
     raise SystemExit('\n'.join(errors))
-print(f'Passed: {count} local Markdown links; {len(expected)} student pages covered once in GitBook; Phase 1 scope and headers.')
+print(f'Passed: {count} local Markdown links; {len(expected)} student pages covered once in GitBook; {len(pbq_apps)} PBQ apps include exit navigation; Phase 1 scope and headers.')
