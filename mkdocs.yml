@@ -63,7 +63,9 @@ nav:
   - Operating Systems: learn/operating-systems/README.md
   - Software: learn/software/README.md
   - Basic Scripting & Coding: learn/scripting-and-coding/README.md
-  - Networking: learn/networking/README.md
+  - Networking:
+    - Overview: learn/networking/README.md
+    - Ports & Protocols: learn/networking/ports-and-protocols.md
   - Cybersecurity: learn/cybersecurity/README.md
 - Practice:
   - Overview: practice/README.md
@@ -75,6 +77,7 @@ nav:
       - RAID Drive Replacement: practice/pbqs/a-plus-core-1/raid-drive-replacement/README.md
       - Network Setup & Cabling: practice/pbqs/a-plus-core-1/network-setup-and-cabling/README.md
       - Printer Troubleshooting: practice/pbqs/a-plus-core-1/printer-troubleshooting/README.md
+      - Ports & Protocols: practice/pbqs/a-plus-core-1/ports-and-protocols/README.md
       - TCP/IP Packet Walk: practice/pbqs/a-plus-core-1/tcp-ip-packet-walk/README.md
     - A+ Core 2: practice/pbqs/a-plus-core-2/README.md
     - Network+: practice/pbqs/network-plus/README.md

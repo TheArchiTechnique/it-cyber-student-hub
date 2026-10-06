@@ -2,7 +2,9 @@
 
 Understand how devices connect and communicate.
 
-No lessons published yet.
+- [Ports & Protocols](ports-and-protocols.md)
+
+    Learn service purposes, TCP and UDP behavior, and the Core 1 port set.
 
 - [Browse Cybersecurity](../cybersecurity/README.md)
 

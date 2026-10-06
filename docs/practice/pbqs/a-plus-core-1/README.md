@@ -22,6 +22,10 @@ Performance-based practice for CompTIA A+ Core 1.
 
     Follow traffic through common network devices and the TCP/IP stack.
 
+- [Ports & Protocols](ports-and-protocols/README.md)
+
+    Select services and ports, match functions, and troubleshoot network support scenarios.
+
 - [Return to A+ Core 1](../../../certifications/comptia/a-plus-core-1/README.md)
 
     Browse course topics and related resources.
