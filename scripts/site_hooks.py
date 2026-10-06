@@ -38,13 +38,17 @@ def on_page_markdown(markdown, page, config, files):
 
 
 PBQ_NAV_STYLE = """<style>
-.hub-pbq-nav{position:fixed;right:14px;bottom:14px;z-index:2147483000;display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px;background:#132f3bf2;border:1px solid #597581;border-radius:12px;box-shadow:0 8px 28px #071a2440;font:600 13px/1.2 system-ui,-apple-system,Segoe UI,sans-serif}
-.hub-pbq-nav a{display:inline-flex;align-items:center;min-height:38px;padding:9px 12px;border:1px solid #6f8b96;border-radius:8px;color:#fff!important;background:#1d4352;text-decoration:none!important;white-space:nowrap}
+.hub-pbq-nav{background:#132f3b;border-bottom:1px solid #365767;color:#fff;font:600 13px/1.2 system-ui,-apple-system,Segoe UI,sans-serif}
+.hub-pbq-nav-inner{max-width:1440px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.hub-pbq-brand{font-weight:750;letter-spacing:.01em;color:#dce9ee;white-space:nowrap}
+.hub-pbq-links{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.hub-pbq-nav a{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:7px 11px;border:1px solid #5d7b88;border-radius:7px;color:#fff!important;background:#1b4050;text-decoration:none!important;white-space:nowrap}
 .hub-pbq-nav a:hover{background:#28576a}
 .hub-pbq-nav a:focus-visible{outline:3px solid #f0b84b;outline-offset:2px}
 .hub-pbq-nav a[data-pbq-nav="certification"]{background:#087568;border-color:#249b8c}
 .hub-pbq-nav a[data-pbq-nav="certification"]:hover{background:#075f55}
-@media(max-width:560px){.hub-pbq-nav{left:10px;right:10px;bottom:10px;justify-content:center}.hub-pbq-nav a{flex:1 1 auto;justify-content:center;padding:8px 9px;font-size:12px}}
+@media(max-width:700px){.hub-pbq-nav-inner{align-items:flex-start;flex-direction:column;padding:8px 14px}.hub-pbq-links{width:100%;justify-content:flex-start}.hub-pbq-nav a{flex:1 1 auto;min-width:130px}}
+@media(max-width:460px){.hub-pbq-brand{font-size:12px}.hub-pbq-links{display:grid;grid-template-columns:1fr}.hub-pbq-nav a{width:100%;min-width:0}}
 </style>"""
 
 CERTIFICATION_LABELS = {
@@ -65,10 +69,13 @@ def _pbq_nav(certification):
     return (
         PBQ_NAV_STYLE
         + '<nav class="hub-pbq-nav" aria-label="Student Hub navigation" data-pbq-nav-container>'
+        + '<div class="hub-pbq-nav-inner">'
+        + '<span class="hub-pbq-brand">IT &amp; Cybersecurity Student Hub</span>'
+        + '<div class="hub-pbq-links">'
         + f'<a data-pbq-nav="certification" href="../../">← {label} PBQs</a>'
         + '<a data-pbq-nav="overview" href="../">Activity overview</a>'
         + '<a data-pbq-nav="home" href="../../../../../">Student Hub</a>'
-        + '</nav>'
+        + '</div></div></nav>'
     )
 
 
@@ -86,8 +93,9 @@ def on_post_build(config):
         relative = app.relative_to(pbq_root)
         certification = relative.parts[0]
         nav = _pbq_nav(certification)
-        if '</body>' in html:
-            html = html.replace('</body>', nav + '</body>', 1)
+        body_match = re.search(r'<body\\b[^>]*>', html, re.I)
+        if body_match:
+            html = html[:body_match.end()] + nav + html[body_match.end():]
         else:
-            html += nav
+            html = nav + html
         app.write_text(html)
