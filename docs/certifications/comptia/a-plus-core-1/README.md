@@ -64,6 +64,10 @@ Start with the [Ports & Protocols lesson](../../../learn/networking/ports-and-pr
 - [Ports & Protocols](../../../practice/pbqs/a-plus-core-1/ports-and-protocols/README.md)
 
 - [SOHO Router Configuration](../../../practice/pbqs/a-plus-core-1/soho-router-configuration/README.md)
+- [Motherboard Assembly](../../../practice/pbqs/a-plus-core-1/motherboard-assembly/README.md)
+
+    Install desktop components and connect motherboard, graphics, and SATA drive power and data.
+
 - [RAID Drive Replacement](../../../practice/pbqs/a-plus-core-1/raid-drive-replacement/README.md)
 - [Network Setup & Cabling](../../../practice/pbqs/a-plus-core-1/network-setup-and-cabling/README.md)
 - [Printer Troubleshooting](../../../practice/pbqs/a-plus-core-1/printer-troubleshooting/README.md)

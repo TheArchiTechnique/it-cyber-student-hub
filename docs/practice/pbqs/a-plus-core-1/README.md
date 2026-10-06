@@ -6,6 +6,10 @@ Performance-based practice for CompTIA A+ Core 1.
 
     Configure LAN, DHCP, employee Wi-Fi, guest Wi-Fi, channels, and security settings.
 
+- [Motherboard Assembly](motherboard-assembly/README.md)
+
+    Install desktop components and connect motherboard, graphics, and SATA drive power and data.
+
 - [RAID Drive Replacement](raid-drive-replacement/README.md)
 
     Inspect a RAID array and choose an appropriate replacement drive.

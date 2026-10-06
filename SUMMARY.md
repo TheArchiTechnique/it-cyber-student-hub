@@ -22,6 +22,7 @@
   - [PBQs](docs/practice/pbqs/README.md)
     - [A+ Core 1](docs/practice/pbqs/a-plus-core-1/README.md)
       - [SOHO Router Configuration](docs/practice/pbqs/a-plus-core-1/soho-router-configuration/README.md)
+      - [Motherboard Assembly](docs/practice/pbqs/a-plus-core-1/motherboard-assembly/README.md)
       - [RAID Drive Replacement](docs/practice/pbqs/a-plus-core-1/raid-drive-replacement/README.md)
       - [Network Setup & Cabling](docs/practice/pbqs/a-plus-core-1/network-setup-and-cabling/README.md)
       - [Printer Troubleshooting](docs/practice/pbqs/a-plus-core-1/printer-troubleshooting/README.md)
