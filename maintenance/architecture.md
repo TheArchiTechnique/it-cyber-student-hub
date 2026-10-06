@@ -35,7 +35,19 @@ Contributor and publishing documentation stays outside `docs/`. Asset READMEs ex
 
 Pull requests build and validate only. The Pages workflow publishes from `main` after review and merge, or a manual dispatch on `main`. The build branch cannot deploy through that workflow. No `gh-pages` content branch or copied Markdown tree is needed.
 
-Future HTML/JavaScript exercises live beside their canonical practice documentation and are copied to the site as static assets. Their runtime stays in GitHub Pages; GitBook can link to the deployed exercise. Phase 1 includes no exercises or course migration.
+Future HTML/JavaScript exercises live beside their canonical practice documentation and are copied to the site as static assets. Their runtime stays in GitHub Pages; GitBook can link to the deployed exercise.
+
+### Standalone PBQ navigation standard
+
+Each standalone PBQ runtime at `docs/practice/pbqs/<certification>/<activity>/app/index.html` must provide explicit navigation out of the activity. Do not rely on browser history because students may open an activity in a new tab or visit a direct link.
+
+Every PBQ app must include exactly one link with each stable marker:
+
+- `data-pbq-nav="certification"` — returns to that certification's PBQ index.
+- `data-pbq-nav="overview"` — returns to the activity's Markdown landing page.
+- `data-pbq-nav="home"` — returns to the Student Hub homepage.
+
+Links must remain valid under the GitHub Pages project subpath, remain usable on narrow/touch layouts, and stay available after the learner reaches results or scoring states. The source validator enforces these markers for all certification directories, not only A+ Core 1.
 
 ## Documentation consulted
 
