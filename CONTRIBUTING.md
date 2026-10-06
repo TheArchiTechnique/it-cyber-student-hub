@@ -48,6 +48,8 @@ Use `docs/practice/pbqs/<certification>/<exercise-slug>/` with a `README.md` des
 
 Add a relative `Launch <exercise> PBQ` link to `app/index.html` only when it exists. This works at the project's GitHub Pages subpath without hardcoded root URLs. In GitBook, use an explicit link to the deployed Pages exercise because GitBook does not host the HTML app as a runnable Pages site. Test that launch URL after deployment. Do not publish instructor-only answers or secrets in client-side files.
 
+Every standalone PBQ must provide a reliable exit path that does not depend on browser history. The Pages build automatically injects a compact navigation control into `docs/practice/pbqs/<certification>/<exercise-slug>/app/index.html` with links back to the certification PBQ index, the activity overview, and the Student Hub. The generated links use project-safe relative paths and remain available throughout the activity. If an app supplies its own custom navigation instead, preserve the markers `data-pbq-nav="certification"`, `data-pbq-nav="overview"`, and `data-pbq-nav="home"`; site validation requires all three.
+
 ## Local development
 
 Requires Python 3.12. Run from the repository root:
