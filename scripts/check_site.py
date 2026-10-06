@@ -48,6 +48,11 @@ for source, page in pages.items():
             content = source.read_text().split('<div class="hub-page', 1)[1].split('</div>', 1)[0]
             if content.count('<li>') != expected_cards:
                 errors.append(f'{relative}: Markdown list/card structure changed')
+    if re.fullmatch(r'practice/pbqs/[^/]+/[^/]+/app/index\\.html', relative):
+        runtime = source.read_text()
+        for marker in ('certification', 'overview', 'home'):
+            if f'data-pbq-nav="{marker}"' not in runtime:
+                errors.append(f'{relative}: missing PBQ navigation target {marker}')
     if page.h1 != 1:
         errors.append(f'{relative}: expected one page heading, found {page.h1}')
     for link in page.links:
