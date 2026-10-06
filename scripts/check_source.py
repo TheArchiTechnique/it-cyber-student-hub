@@ -55,7 +55,7 @@ pbq_apps = sorted(ROOT.glob('docs/practice/pbqs/*/*/app/index.html'))
 for app in pbq_apps:
     html = app.read_text()
     for marker in ('certification', 'overview', 'home'):
-        matches = re.findall(rf'data-pbq-nav=["\\']{marker}["\\']', html)
+        matches = re.findall(rf"data-pbq-nav=['\\\"]{marker}['\\\"]", html)
         if len(matches) != 1:
             errors.append(f'{app.relative_to(ROOT)}: expected one data-pbq-nav="{marker}" link, found {len(matches)}')
 
