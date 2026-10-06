@@ -2,6 +2,10 @@
 
 Performance-based practice for CompTIA A+ Core 1.
 
+- [SOHO Physical Installation](soho-physical-installation/README.md)
+
+    Recognize equipment and connectors, then cable an Internet service to wired endpoints.
+
 - [SOHO Router Configuration](soho-router-configuration/README.md)
 
     Configure LAN, DHCP, employee Wi-Fi, guest Wi-Fi, channels, and security settings.

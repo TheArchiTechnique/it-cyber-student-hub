@@ -63,6 +63,10 @@ Start with the [Ports & Protocols lesson](../../../learn/networking/ports-and-pr
 
 - [Ports & Protocols](../../../practice/pbqs/a-plus-core-1/ports-and-protocols/README.md)
 
+- [SOHO Physical Installation](../../../practice/pbqs/a-plus-core-1/soho-physical-installation/README.md)
+
+    Build cable, DSL, and fiber installations by connecting equipment ports.
+
 - [SOHO Router Configuration](../../../practice/pbqs/a-plus-core-1/soho-router-configuration/README.md)
 - [Motherboard Assembly](../../../practice/pbqs/a-plus-core-1/motherboard-assembly/README.md)
 
