@@ -12,15 +12,93 @@ else if(d.shape==='switch')body='<path d="M20 89 43 54h216l21 35v57H20Z" fill="#
 else if(d.shape==='ont')body='<rect x="65" y="20" width="170" height="126" rx="12" fill="#e3e9e6" stroke="#859fa9" stroke-width="2"/><path d="M78 37h145m-145 7h145m-145 7h145" stroke="#b0c4c8" stroke-width="3"/><circle cx="88" cy="71" r="3" fill="#507a74"/><text x="99" y="75" font-size="9" fill="#4c6372">PWR · PON · LOS</text>';
 else body=`<rect x="${id==='cable'?92:46}" y="${id==='cable'?15:58}" width="${id==='cable'?116:208}" height="${id==='cable'?131:88}" rx="10" fill="#496572" stroke="#274553" stroke-width="2"/><path d="M109 ${id==='cable'?32:64}h82m-82 8h82m-82 8h82" stroke="#294755" stroke-width="3"/><circle cx="116" cy="74" r="3" fill="#91b7aa"/><text x="129" y="78" font-size="8" fill="#d0dedf">POWER</text>`;
 const ps=d.ports;const portArt=ps.map((p,i)=>{const x=portX(i,ps.length);return socket(p.type,x,163)+`<text x="${x}" y="136" text-anchor="middle" font-size="9" font-weight="700" fill="#f0f4f5">${p.mark}</text>`}).join('');return `<svg viewBox="0 0 300 190" aria-hidden="true">${body}<rect x="15" y="124" width="270" height="62" rx="6" fill="#274655" stroke="#7d98a5"/>${portArt}</svg>`}
-function tool(id){let body='';
-if(id==='crimper')body='<path d="M42 27 74 61l-9 9-34-31Zm76 0L86 61l9 9 34-31Z" fill="#687f8c" stroke="#365565" stroke-width="3"/><path d="M69 59 40 104m48-45 30 45" stroke="#294a5c" stroke-width="12" stroke-linecap="round"/><rect x="68" y="22" width="24" height="24" rx="4" fill="#a8bbc3" stroke="#365565" stroke-width="3"/>';
-else if(id==='punchdown')body='<path d="M72 18h16v55H72Z" fill="#aebfc7" stroke="#456575" stroke-width="3"/><path d="M67 73h26v15H67Z" fill="#324f5f"/><path d="M60 88h40v18H60Z" fill="#477080"/><path d="M76 18v-10m8 10v-10" stroke="#344d5c" stroke-width="4"/>';
-else if(id==='stripper')body='<path d="M51 34 75 58m34-24L85 58" stroke="#456575" stroke-width="8" stroke-linecap="round"/><path d="M69 60 46 104m45-44 23 44" stroke="#2f5968" stroke-width="11" stroke-linecap="round"/><circle cx="80" cy="58" r="13" fill="none" stroke="#a9bdc5" stroke-width="5"/>';
-else if(id==='toner')body='<rect x="24" y="45" width="62" height="58" rx="7" fill="#5c7a89" stroke="#365565" stroke-width="3"/><circle cx="40" cy="62" r="5" fill="#b7d6c8"/><path d="M45 87h22M115 24l-17 72m17-72 12 7-17 70" fill="none" stroke="#355667" stroke-width="7" stroke-linecap="round"/><path d="M86 72c15-12 27-12 39-2" fill="none" stroke="#8ca8b4" stroke-width="3"/>';
-else if(id==='tester')body='<rect x="25" y="25" width="48" height="78" rx="7" fill="#526f7d" stroke="#365565" stroke-width="3"/><rect x="87" y="36" width="48" height="67" rx="7" fill="#718996" stroke="#365565" stroke-width="3"/><path d="M73 73c14-8 19-8 28 0" fill="none" stroke="#344f5d" stroke-width="4"/><circle cx="38" cy="46" r="4" fill="#b8d5a5"/><circle cx="51" cy="46" r="4" fill="#d4c37d"/><circle cx="100" cy="55" r="4" fill="#b8d5a5"/>';
-else if(id==='loopback')body='<path d="M53 31h54v45H53Z" fill="#d5e3e7" stroke="#527180" stroke-width="3"/><path d="M61 38h38v22H61Z" fill="#35515f"/><path d="M57 82c14 24 51 24 46-8" fill="none" stroke="#617f8f" stroke-width="8"/><path d="m97 72 8 3-2 8" fill="none" stroke="#617f8f" stroke-width="5"/>';
-else if(id==='wifi')body='<rect x="36" y="21" width="88" height="86" rx="10" fill="#456777" stroke="#294b5b" stroke-width="3"/><rect x="45" y="31" width="70" height="54" rx="4" fill="#d6e7e6"/><path d="M57 69c14-16 32-16 46 0M65 75c9-9 21-9 30 0M76 81c3-3 5-3 8 0" fill="none" stroke="#3b7080" stroke-width="4"/><circle cx="80" cy="96" r="5" fill="#b6c9ce"/>';
-else body='<rect x="27" y="33" width="106" height="67" rx="8" fill="#5b7784" stroke="#355565" stroke-width="3"/><rect x="38" y="52" width="24" height="18" fill="#2b4654"/><rect x="98" y="52" width="24" height="18" fill="#2b4654"/><rect x="68" y="76" width="24" height="15" fill="#d0dbe0"/><text x="80" y="87" text-anchor="middle" font-size="8" fill="#405a68">MON</text><path d="M63 61h34" stroke="#9ab2bd" stroke-width="4"/>';
+function tool(id){
+// Tool silhouettes and hardware details stay legible in the activity's 110px thumbnails.
+// Keep all geometry local; these SVGs are also reused by the lesson cards.
+let body='';
+if(id==='crimper')body=`
+ <path d="M66 58 45 105q-3 7 6 8l7-2 24-45 23 44q3 5 10 1l4-4-23-50" fill="#326e86" stroke="#294858" stroke-width="3"/>
+ <path d="m62 76-12 28m49-27 14 26" stroke="#91b5c3" stroke-width="3" stroke-linecap="round"/>
+ <path d="M53 13h53l9 12-9 29-15 16H70L53 53l-9-27Z" fill="#aebfc8" stroke="#344e5c" stroke-width="3"/>
+ <path d="M52 28h27v23H56Zm33 0h19l-4 23H85Z" fill="#203b4a" stroke="#e4ecee" stroke-width="1.5"/>
+ <path d="M57 31v7m4-7v7m4-7v7m4-7v7m4-7v7m16-7v7m4-7v7m4-7v7" stroke="#c0d0d7" stroke-width="2"/>
+ <path d="M56 46h21m9 0h14M65 18h31" stroke="#657f8c" stroke-width="3"/>
+ <circle cx="81" cy="59" r="7" fill="#dae4e8" stroke="#344e5c" stroke-width="2"/><path d="m78 59h6" stroke="#587481" stroke-width="2"/>
+ <path d="m75 77 14 5-12 6 16 4" fill="none" stroke="#526977" stroke-width="2"/>`;
+else if(id==='stripper')body=`
+ <g transform="rotate(-22 80 60)">
+ <path d="M43 42h59q16 0 17 17v12H49q-17 0-17-14 0-9 11-15Z" fill="#e4b644" stroke="#785d2c" stroke-width="2.5"/>
+ <circle cx="119" cy="59" r="23" fill="#e4b644" stroke="#785d2c" stroke-width="2.5"/>
+ <circle cx="119" cy="59" r="13" fill="#edf3f5" stroke="#a17a2c" stroke-width="2"/>
+ <path d="M34 42h54v12H32Z" fill="#354f5e" stroke="#263e4c" stroke-width="2"/>
+ <path d="M46 42v12m14-12v12m14-12v12" stroke="#c5d2d8" stroke-width="3"/>
+ <path d="M51 61h30m-27 5h25" stroke="#b28a32" stroke-width="2"/>
+ <circle cx="91" cy="59" r="4" fill="#d6dfe1" stroke="#6a777b"/>
+ </g>`;
+else if(id==='punchdown')body=`
+ <g transform="rotate(34 80 61)">
+ <path d="M76 9h8v29h-8Z" fill="#c4d1d7" stroke="#4d6572" stroke-width="2"/>
+ <path d="M75 10V5h3v5h4V5h3v9H75Z" fill="#617986" stroke="#354f5d" stroke-width="1.5"/>
+ <rect x="71" y="32" width="18" height="12" rx="3" fill="#304c5e"/>
+ <path d="M69 42q11-4 22 0l4 17-3 40q-12 10-24 0l-3-40Z" fill="#da9440" stroke="#7c562e" stroke-width="2.5"/>
+ <path d="M68 63h24l-2 28q-10 6-20 0Z" fill="#304c5e"/>
+ <path d="M72 70h16m-16 7h16m-16 7h16" stroke="#7793a0" stroke-width="2"/>
+ <rect x="73" y="47" width="14" height="9" rx="3" fill="#405e6d"/><path d="M80 49v5" stroke="#dfe7e9" stroke-width="2"/>
+ <path d="M71 103h18" stroke="#304c5e" stroke-width="5" stroke-linecap="round"/>
+ </g>`;
+else if(id==='toner')body=`
+ <path d="M42 48V30q0-18-17-15M55 48V29q0-11 13-13" fill="none" stroke="#405968" stroke-width="2.5"/>
+ <path d="m18 12 12 4-4 10-12-4Z" fill="#c76650" stroke="#783f36" stroke-width="1.5"/><path d="m14 22-3 5 9 2 6-3" fill="#b6c6ce" stroke="#526b79"/>
+ <path d="m68 11 10 5-6 11-10-5Z" fill="#304c5e" stroke="#253e4b" stroke-width="1.5"/><path d="m62 22-3 5 8 4 5-4" fill="#b6c6ce" stroke="#526b79"/>
+ <rect x="22" y="44" width="57" height="65" rx="9" fill="#477990" stroke="#294b5c" stroke-width="2.5"/>
+ <rect x="29" y="53" width="43" height="45" rx="4" fill="#d3e0e5"/>
+ <circle cx="38" cy="63" r="3" fill="#398866"/><rect x="49" y="59" width="16" height="7" rx="2" fill="#304c5e"/>
+ <path d="M37 77h25m-25 5h25m-25 5h25" stroke="#5d7885" stroke-width="2"/>
+ <g transform="rotate(18 116 66)">
+ <path d="m113 36 3-26 4 26" fill="#bdcbd3" stroke="#4a6674" stroke-width="2"/>
+ <path d="M110 36h13l4 56q-10 16-20 0Z" fill="#e5b65d" stroke="#695739" stroke-width="2.5"/>
+ <path d="M112 44h9m-9 4h9m-9 4h9m-9 4h9" stroke="#625d4e" stroke-width="2"/>
+ <rect x="112" y="64" width="9" height="15" rx="4" fill="#355567"/>
+ <path d="M110 87h14" stroke="#ac803c" stroke-width="2"/>
+ </g>`;
+else if(id==='tester')body=`
+ <rect x="22" y="20" width="66" height="91" rx="9" fill="#477990" stroke="#294b5c" stroke-width="2.5"/>
+ <rect x="97" y="33" width="40" height="78" rx="7" fill="#708d9c" stroke="#294b5c" stroke-width="2.5"/>
+ <g transform="translate(55 29) scale(.7)">${socket('rj45')}</g>
+ <g transform="translate(117 42) scale(.7)">${socket('rj45')}</g>
+ <rect x="31" y="42" width="48" height="61" rx="4" fill="#e0e9eb"/><rect x="104" y="55" width="26" height="48" rx="3" fill="#e0e9eb"/>
+ ${Array.from({length:8},(_,i)=>`<text x="40" y="${50+i*6.6}" font-size="5.5" font-family="sans-serif" fill="#304d5d">${i+1}</text><circle cx="51" cy="${48+i*6.6}" r="2" fill="#3d8a64"/><text x="109" y="${61+i*5.4}" font-size="5" font-family="sans-serif" fill="#304d5d">${i+1}</text><circle cx="121" cy="${59+i*5.4}" r="1.8" fill="#3d8a64"/>`).join('')}
+ <rect x="63" y="53" width="8" height="17" rx="3" fill="#304d5d"/><path d="M64 57h6" stroke="#8ea8b3" stroke-width="2"/>
+ <circle cx="67" cy="84" r="4" fill="#dba747"/>`;
+else if(id==='loopback')body=`
+ <path d="M65 66v22c0 25 49 25 49 0V53c0-21-29-21-29 0v13" fill="none" stroke="#ad6932" stroke-width="6"/>
+ <path d="M65 66v22c0 25 49 25 49 0V53c0-21-29-21-29 0v13" fill="none" stroke="#edbb76" stroke-width="2"/>
+ <path d="M73 66v17c0 15 30 15 30 0V57c0-13-22-13-22 0v9" fill="none" stroke="#447d95" stroke-width="5"/>
+ <path d="M52 18h39l8 9v43H52Z" fill="#d3e3e9" fill-opacity=".92" stroke="#4e7082" stroke-width="2.5"/>
+ <path d="M91 18v43l8 9M53 61h38" fill="none" stroke="#92adb9" stroke-width="1.5"/>
+ ${Array.from({length:8},(_,i)=>`<path d="M${57+i*4.5} 22v16" stroke="#b78331" stroke-width="2.7"/>`).join('')}
+ <path d="M64 62V43h16v19l-3 12H67Z" fill="#eef5f6" fill-opacity=".7" stroke="#688b9d" stroke-width="1.5"/>
+ <path d="M68 46h8" stroke="#688b9d" stroke-width="2"/>`;
+else if(id==='wifi')body=`
+ <rect x="47" y="9" width="66" height="104" rx="10" fill="#304f62" stroke="#233e4e" stroke-width="2.5"/>
+ <rect x="53" y="22" width="54" height="77" rx="3" fill="#e0edef"/>
+ <path d="M73 16h14" stroke="#8ea8b4" stroke-width="2" stroke-linecap="round"/>
+ <path d="M70 35q10-9 20 0m-16 4q6-5 12 0" fill="none" stroke="#37778a" stroke-width="2.5" stroke-linecap="round"/><circle cx="80" cy="43" r="2" fill="#37778a"/>
+ <path d="M58 51v29h44M58 60h44m-44 10h44" fill="none" stroke="#a7c0c8" stroke-width="1"/>
+ <path d="M59 79q12-47 24 0" fill="#599caf" fill-opacity=".2" stroke="#37778a" stroke-width="2"/>
+ <path d="M76 79q12-36 25 0" fill="#d59b4c" fill-opacity=".25" stroke="#b37d33" stroke-width="2"/>
+ <path d="M59 88h22m-22 5h15" stroke="#708e9a" stroke-width="2"/><path d="M89 92v-4m5 4v-7m5 7v-10" stroke="#39866e" stroke-width="3"/>
+ <path d="M74 106h12" stroke="#91aab6" stroke-width="3" stroke-linecap="round"/>`;
+else body=`
+ <path d="m17 50 18-22h92l16 22v48H17Z" fill="#708b9a" stroke="#304f62" stroke-width="2.5"/>
+ <path d="M17 50h126v48H17Z" fill="#36596c" stroke="#304f62" stroke-width="2"/>
+ <path d="M42 36h30m16 0h30" stroke="#c0d0d7" stroke-width="2"/>
+ <path d="m69 33 4 3-4 3m22-6-4 3 4 3" fill="none" stroke="#c0d0d7" stroke-width="1.5"/>
+ <text x="50" y="62" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#e7f0f2">NETWORK</text>
+ <text x="110" y="62" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#e7f0f2">MONITOR</text>
+ ${[35,65,95,125].map(x=>`<g transform="translate(${x} 78) scale(.75)">${socket('rj45')}</g>`).join('')}
+ <path d="M80 65v23" stroke="#8faab9"/><circle cx="28" cy="92" r="1.8" fill="#92c590"/><circle cx="58" cy="92" r="1.8" fill="#92c590"/>
+ <path d="M28 100v4h13v-4m78 0v4h13v-4" fill="#304f62"/>`;
 return `<svg viewBox="0 0 160 120" aria-hidden="true"><rect x="3" y="3" width="154" height="114" rx="10" fill="#edf3f5"/>${body}</svg>`;}
 function job(id){if(id==='rj45'||id==='rj11')return cable(id);let body='';if(id==='punch')body='<rect x="22" y="34" width="116" height="54" rx="5" fill="#657f8c"/><path d="M32 50h96M32 61h96M32 72h96" stroke="#dbe5e7" stroke-width="3"/><path d="M46 24v21m20-21v21m20-21v21m20-21v21" stroke="#d29b5c" stroke-width="4"/>';else body='<path d="M22 65h42" stroke="#506f7f" stroke-width="16" stroke-linecap="round"/><path d="M64 65h28" stroke="#d7e0c8" stroke-width="10"/><path d="M92 65h42" stroke="#d29b5c" stroke-width="3"/><path d="M92 58h42m-42 14h42" stroke="#85a8bb" stroke-width="3"/>';return `<svg viewBox="0 0 160 110" aria-hidden="true"><rect x="3" y="3" width="154" height="104" rx="10" fill="#edf3f5"/>${body}</svg>`;}
 function portX(i,n){return n===1?150:40+i*220/(n-1)}
