@@ -16,11 +16,34 @@ function complete(id,reverse=false){const s={placed:copy(install[id]),connection
 assert.deepEqual(Object.keys(M.scenarios),['cable','dsl','fiber']);
 for(const sid of Object.keys(M.scenarios)){
  for(const reverse of [false,true]){const s=complete(sid,reverse),g=M.grade(sid,s);assert.equal(g.score,g.total);assert.equal(g.complete,true);assert.deepEqual(g.reachable.sort(),M.scenarios[sid].endpoints.slice().sort());assert.equal(s.submitted,false)}
- const s=complete(sid);s.connections[0].cable='ethernet';let g=M.grade(sid,s);assert.equal(g.score,g.total-1);assert.equal(g.complete,false);assert.equal(g.invalid[0].kind,'incorrect');assert.equal(g.reachable.length,0); // Downstream links retain points without a provider path.
+ const s=complete(sid);s.connections[0].cable='ethernet';let g=M.grade(sid,s);assert.equal(g.score,g.total-1);assert.equal(g.complete,false);assert.equal(g.invalid[0].kind,'incorrect');assert.deepEqual(g.reachable.slice().sort(),M.scenarios[sid].endpoints.slice().sort()); // LAN reachability and downstream credit remain valid even when the provider-side link is wrong.
  s.connections.shift();g=M.grade(sid,s);assert.equal(g.score,g.total-1);assert.equal(g.invalid.length,0);
 }
-for(const fiberCable of ['lc','st']){const s=complete('fiber');s.connections[0].cable=fiberCable;assert.equal(M.grade('fiber',s).score,4)}
+for(const fiberCable of ['lc','st']){const s=complete('fiber');s.connections[0].cable=fiberCable;const g=M.grade('fiber',s);assert.equal(g.score,g.total-1)}
 for(let n=1;n<=4;n++){const s=complete('cable');s.connections[2].a='router:lan'+n;assert.equal(M.grade('cable',s).complete,true)}
+// Equivalent functional LAN topologies must be accepted, not only the authored shortest path.
+function buildState(placed,connections){return {placed:copy(placed),connections:connections.map(([c,a,b],i)=>({id:'alt-'+i,cable:c,a,b})),submitted:false}}
+const cableViaSwitch=buildState({cable:1,router:2,switch:3},[
+ ['coax','wall:service','cable:service'],['ethernet','cable:ethernet','router:wan'],['ethernet','router:lan1','switch:p1'],['ethernet','switch:p2','pc:net']
+]);
+assert.equal(M.grade('cable',cableViaSwitch).complete,true);
+const dslViaSwitch=buildState({dsl:1,router:2,switch:3},[
+ ['phone','wall:service','dsl:service'],['ethernet','dsl:ethernet','router:wan'],['ethernet','router:lan1','switch:p1'],['ethernet','switch:p2','pc:net'],['ethernet','switch:p3','printer:net']
+]);
+assert.equal(M.grade('dsl',dslViaSwitch).complete,true);
+const fiberDirect=buildState({ont:1,router:2},[
+ ['sc','wall:service','ont:service'],['ethernet','ont:ethernet','router:wan'],['ethernet','router:lan1','pc:net'],['ethernet','router:lan2','printer:net']
+]);
+assert.equal(M.grade('fiber',fiberDirect).complete,true);
+const fiberMixed=buildState({ont:1,router:2,switch:3},[
+ ['sc','wall:service','ont:service'],['ethernet','ont:ethernet','router:wan'],['ethernet','router:lan1','pc:net'],['ethernet','router:lan2','switch:p1'],['ethernet','switch:p2','printer:net']
+]);
+assert.equal(M.grade('fiber',fiberMixed).complete,true);
+const looped=buildState({cable:1,router:2,switch:3},[
+ ['coax','wall:service','cable:service'],['ethernet','cable:ethernet','router:wan'],['ethernet','router:lan1','switch:p1'],['ethernet','router:lan2','switch:p2'],['ethernet','switch:p3','pc:net']
+]);
+assert.equal(M.grade('cable',looped).complete,false);
+assert.match(M.grade('cable',looped).invalid[0].why,/loop/i);
 // All switch ports may serve the uplink; endpoint assignments may be permuted.
 for(let n=1;n<=5;n++){const s=complete('fiber'),rest=[1,2,3,4,5].filter(p=>p!==n);s.connections[2].b='switch:p'+n;s.connections[3].a='switch:p'+rest[0];s.connections[4].a='switch:p'+rest[1];assert.equal(M.grade('fiber',s).complete,true)}
 const extra=complete('cable');assert.equal(M.connect('cable',extra,'ethernet','router:lan1','router:lan2','extra'),null);let g=M.grade('cable',extra);assert.equal(g.score,3);assert.equal(g.complete,false);assert.equal(g.invalid[0].kind,'extra');
@@ -40,8 +63,8 @@ async function browser(url){const {chromium}=require(process.env.PBQ_PLAYWRIGHT|
  async function choose(sid){await page.selectOption('#scenario',sid)}
  async function place(id,slot){await page.locator(`[data-device="${id}"]`).click();await page.locator(`[data-slot="${slot}"]`).click()}
  async function link(c,a,b){await page.locator(`[data-cable="${c}"]`).click();await page.locator(`[data-port="${a}"]`).click();await page.locator(`[data-port="${b}"]`).click()}
- for(const sid of Object.keys(links)){await choose(sid);for(const [id,slot] of Object.entries(install[sid]))await place(id,slot);for(const [c,a,b] of links[sid])await link(c,b,a);assert.equal(await page.locator('#results').isVisible(),false);assert.equal(await page.locator('.connection-row.good,.connection-row.bad').count(),0);await page.locator('#submit').click();assert.equal(await page.locator('.score').innerText(),`${links[sid].length} / ${links[sid].length}`);assert.match(await page.locator('#results').innerText(),/Installation complete/)}
- await page.reload();assert.equal(await page.locator('#scenario').inputValue(),'fiber');assert.equal(await page.locator('.score').innerText(),'5 / 5');await choose('cable');assert.equal(await page.locator('.score').innerText(),'3 / 3');await page.locator('#retry').click();
+ for(const sid of Object.keys(links)){await choose(sid);for(const [id,slot] of Object.entries(install[sid]))await place(id,slot);for(const [c,a,b] of links[sid])await link(c,b,a);assert.equal(await page.locator('#results').isVisible(),false);assert.equal(await page.locator('.connection-row.good,.connection-row.bad').count(),0);await page.locator('#submit').click();assert.equal(await page.locator('.score').innerText(),`${M.grade(sid,complete(sid)).total} / ${M.grade(sid,complete(sid)).total}`);assert.match(await page.locator('#results').innerText(),/Installation complete/)}
+ await page.reload();assert.equal(await page.locator('#scenario').inputValue(),'fiber');assert.equal(await page.locator('.score').innerText(),'4 / 4');await choose('cable');assert.equal(await page.locator('.score').innerText(),'3 / 3');await page.locator('#retry').click();
  await page.locator('[data-cable="ethernet"]').focus();await page.keyboard.press('Enter');await page.locator('[data-port="router:lan1"]').focus();await page.keyboard.press('Space');await page.keyboard.press('Escape');assert.equal(await page.locator('[data-port="router:lan1"]').getAttribute('aria-pressed'),'false');
  await link('ethernet','router:lan1','router:lan2');await page.locator('#submit').click();assert.match(await page.locator('#results').innerText(),/Extra \/ invalid/);await page.locator('#undo').click();assert.equal(await page.locator('#results').isVisible(),false);assert.equal(await page.locator('.connection-row').count(),3);
  await page.locator('[data-remove]').first().click();await link('ethernet','wall:service','cable:service');await page.locator('#submit').click();assert.equal(await page.locator('.score').innerText(),'2 / 3');assert.match(await page.locator('#results').innerText(),/Incorrect cable/);
@@ -62,8 +85,8 @@ if(process.env.PBQ_JSDOM){
  const join=(c,a,b)=>{click(`[data-cable="${c}"]`);click(`[data-port="${a}"]`);click(`[data-port="${b}"]`)};
  assert.equal(doc.querySelectorAll('#scenario option').length,3);assert.equal(doc.querySelectorAll('#cable-tray [data-cable]').length,6);
  assert.equal(q('.actions').parentElement.className,'panel');
- for(const sid of Object.keys(links)){select(sid);for(const [id,slot] of Object.entries(install[sid]))put(id,slot);for(const [c,a,b] of links[sid])join(c,b,a);assert.equal(q('#results').hidden,true);assert.equal(doc.querySelectorAll('.connection-row.good,.connection-row.bad').length,0);assert.equal(q('#connection-list').textContent.includes('Correct'),false);click('#submit');assert.equal(q('.score').textContent,`${links[sid].length} / ${links[sid].length}`);assert.match(q('#results').textContent,/Installation complete/)}
- const reloaded=dom(w.localStorage.getItem(M.KEY));assert.equal(reloaded.window.document.querySelector('#scenario').value,'fiber');assert.equal(reloaded.window.document.querySelector('.score').textContent,'5 / 5');reloaded.window.close();
+ for(const sid of Object.keys(links)){select(sid);for(const [id,slot] of Object.entries(install[sid]))put(id,slot);for(const [c,a,b] of links[sid])join(c,b,a);assert.equal(q('#results').hidden,true);assert.equal(doc.querySelectorAll('.connection-row.good,.connection-row.bad').length,0);assert.equal(q('#connection-list').textContent.includes('Correct'),false);click('#submit');assert.equal(q('.score').textContent,`${M.grade(sid,complete(sid)).total} / ${M.grade(sid,complete(sid)).total}`);assert.match(q('#results').textContent,/Installation complete/)}
+ const reloaded=dom(w.localStorage.getItem(M.KEY));assert.equal(reloaded.window.document.querySelector('#scenario').value,'fiber');assert.equal(reloaded.window.document.querySelector('.score').textContent,'4 / 4');reloaded.window.close();
  select('cable');click('#retry');join('ethernet','router:lan1','router:lan2');click('#submit');assert.match(q('#results').textContent,/Extra \/ invalid/);click('#undo');assert.equal(q('#results').hidden,true);assert.equal(stored().progress.cable.connections.length,3);
  click('[data-remove]');assert.equal(stored().progress.cable.connections.length,2);join('ethernet','wall:service','cable:service');click('#submit');assert.equal(q('.score').textContent,'2 / 3');assert.match(q('#results').textContent,/Incorrect cable/);
  click('[data-cable="phone"]');click('[data-port="router:lan1"]');doc.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));assert.equal(q('[data-port="router:lan1"]').getAttribute('aria-pressed'),'false');

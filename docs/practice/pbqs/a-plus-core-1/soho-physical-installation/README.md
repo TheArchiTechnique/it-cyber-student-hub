@@ -8,7 +8,7 @@ Build a physical Internet connection from the service outlet to the local networ
 
 ## What you will practice
 
-Identify provider equipment, distinguish WAN and LAN connections, match cable ends to sockets, and connect wired workstations and a network printer. The fiber work order includes a remote desk served by one Ethernet run.
+Identify provider equipment, distinguish WAN and LAN connections, match cable ends to sockets, and connect wired workstations and a network printer. LAN endpoints may connect directly to available router LAN ports or through the switch when that topology is appropriate.
 
 Select equipment and an empty position, then select a cable and its two ports. Submit the installation for partial credit and explanations. Correct your connections and try again, or use the Lesson tab to compare equipment and connectors.
 
