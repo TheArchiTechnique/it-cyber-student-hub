@@ -14,10 +14,13 @@ const links={
 const copy=o=>JSON.parse(JSON.stringify(o));
 function complete(id,reverse=false){const s={placed:copy(install[id]),connections:[],submitted:false};links[id].forEach(([c,a,b],i)=>assert.equal(M.connect(id,s,c,reverse?b:a,reverse?a:b,'test-'+i),null));return s}
 assert.deepEqual(Object.keys(M.scenarios),['cable','dsl','fiber']);
-assert.deepEqual(Object.keys(M.tools),['crimper','punchdown','coax','stripper']);
+assert.deepEqual(Object.keys(M.tools),['crimper','stripper','punchdown','toner','tester','loopback','wifi','tap']);
 assert.equal(M.toolTasks.length,4);
-const toolState=M.fresh();toolState.tools.answers={rj45:'crimper',rj11:'crimper',idc:'punchdown',coax:'coax'};let toolGrade=M.gradeTools(toolState);assert.equal(toolGrade.score,4);assert.equal(toolGrade.complete,true);
+assert.equal(Object.keys(M.toolFunctions).length,8);
+const toolState=M.fresh();toolState.tools.answers={rj45:'crimper',rj11:'crimper',idc:'punchdown',strip:'stripper'};let toolGrade=M.gradeTools(toolState);assert.equal(toolGrade.score,4);assert.equal(toolGrade.complete,true);
 toolState.tools.answers.rj11='stripper';toolGrade=M.gradeTools(toolState);assert.equal(toolGrade.score,3);assert.equal(toolGrade.complete,false);
+toolState.tools.functions=Object.fromEntries(Object.keys(M.tools).map(id=>[id,id]));let functionGrade=M.gradeToolFunctions(toolState);assert.equal(functionGrade.score,8);assert.equal(functionGrade.complete,true);
+toolState.tools.functions.toner='tester';functionGrade=M.gradeToolFunctions(toolState);assert.equal(functionGrade.score,7);assert.equal(functionGrade.complete,false);
 
 for(const sid of Object.keys(M.scenarios)){
  for(const reverse of [false,true]){const s=complete(sid,reverse),g=M.grade(sid,s);assert.equal(g.score,g.total);assert.equal(g.complete,true);assert.deepEqual(g.reachable.sort(),M.scenarios[sid].endpoints.slice().sort());assert.equal(s.submitted,false)}
@@ -58,7 +61,7 @@ const wrong={placed:{dsl:1,router:2},connections:[],submitted:false};assert.equa
 const wrongPort=complete('cable');wrongPort.connections[1].b='router:lan1';assert.equal(M.grade('cable',wrongPort).score,2);
 // All-or-nothing scoring and position-dependent scoring are forbidden.
 const moved=complete('fiber');moved.placed={ont:3,router:1,switch:2};assert.equal(M.grade('fiber',moved).complete,true);
-const save=M.fresh();save.active='dsl';save.tools.answers={rj45:'crimper',rj11:'crimper',idc:'punchdown',coax:'coax'};save.tools.submitted=true;save.progress.cable=complete('cable');save.progress.cable.submitted=true;save.progress.dsl=complete('dsl');save.progress.fiber=complete('fiber');assert.deepEqual(M.restore(copy(save)),save);
+const save=M.fresh();save.active='dsl';save.tools.answers={rj45:'crimper',rj11:'crimper',idc:'punchdown',strip:'stripper'};save.tools.functions=Object.fromEntries(Object.keys(M.tools).map(id=>[id,id]));save.tools.submitted=true;save.tools.functionsSubmitted=true;save.progress.cable=complete('cable');save.progress.cable.submitted=true;save.progress.dsl=complete('dsl');save.progress.fiber=complete('fiber');assert.deepEqual(M.restore(copy(save)),save);
 const reset=copy(save);reset.progress.dsl=M.fresh().progress.dsl;assert.deepEqual(M.restore(reset).progress.cable,save.progress.cable);assert.equal(M.restore(reset).progress.dsl.connections.length,0);
 for(const bad of [null,{},[],{version:2}, {version:1,active:'__proto__',progress:{cable:{placed:{router:0,cable:99,dsl:1,ont:2},connections:[null,{cable:'__proto__',a:'__proto__',b:'constructor'}]}}}])assert.doesNotThrow(()=>M.restore(bad));
 const dirty=copy(save);dirty.progress.cable.connections.push({...dirty.progress.cable.connections[0],id:'duplicate'}, {id:'alien',cable:'ethernet',a:'alien:p',b:'router:lan2'});dirty.progress.cable.placed.switch=2;assert.deepEqual(M.restore(dirty).progress.cable,save.progress.cable);
@@ -90,9 +93,10 @@ if(process.env.PBQ_JSDOM){
  const join=(c,a,b)=>{click(`[data-cable="${c}"]`);click(`[data-port="${a}"]`);click(`[data-port="${b}"]`)};
  assert.equal(doc.querySelectorAll('#scenario option').length,3);assert.equal(doc.querySelectorAll('#cable-tray [data-cable]').length,6);
  assert.equal(q('.actions').parentElement.className,'panel');
- assert.equal(doc.querySelectorAll('[data-tool-task]').length,4);
- for(const [taskId,toolId] of Object.entries({rj45:'crimper',rj11:'crimper',idc:'punchdown',coax:'coax'})){const sel=q(`[data-tool-task="${taskId}"]`);sel.value=toolId;sel.dispatchEvent(new w.Event('change',{bubbles:true}))}
- click('#submit-tools');assert.equal(q('#tool-score').textContent,'4 / 4 correct');assert.match(q('#tool-results').textContent,/All cable-tool matches are correct/);
+ assert.equal(doc.querySelectorAll('[data-tool-task]').length,4);assert.equal(doc.querySelectorAll('[data-tool-function]').length,8);
+ for(const [taskId,toolId] of Object.entries({rj45:'crimper',rj11:'crimper',idc:'punchdown',strip:'stripper'})){const sel=q(`[data-tool-task="${taskId}"]`);sel.value=toolId;sel.dispatchEvent(new w.Event('change',{bubbles:true}))}
+ for(const id of Object.keys(M.tools)){const sel=q(`[data-tool-function="${id}"]`);sel.value=id;sel.dispatchEvent(new w.Event('change',{bubbles:true}))}
+ click('#submit-tools');assert.equal(q('#tool-score').textContent,'12 / 12 correct');assert.match(q('#tool-results').textContent,/All network-tool answers are correct/);
 
  for(const sid of Object.keys(links)){select(sid);for(const [id,slot] of Object.entries(install[sid]))put(id,slot);for(const [c,a,b] of links[sid])join(c,b,a);assert.equal(q('#results').hidden,true);assert.equal(doc.querySelectorAll('.connection-row.good,.connection-row.bad').length,0);assert.equal(q('#connection-list').textContent.includes('Correct'),false);click('#submit');assert.equal(q('.score').textContent,`${M.grade(sid,complete(sid)).total} / ${M.grade(sid,complete(sid)).total}`);assert.match(q('#results').textContent,/Installation complete/)}
  const reloaded=dom(w.localStorage.getItem(M.KEY));assert.equal(reloaded.window.document.querySelector('#scenario').value,'fiber');assert.equal(reloaded.window.document.querySelector('.score').textContent,'4 / 4');reloaded.window.close();
