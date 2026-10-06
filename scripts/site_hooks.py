@@ -93,7 +93,7 @@ def on_post_build(config):
         relative = app.relative_to(pbq_root)
         certification = relative.parts[0]
         nav = _pbq_nav(certification)
-        body_match = re.search(r'<body\\b[^>]*>', html, re.I)
+        body_match = re.search(r'<body\b[^>]*>', html, re.I)
         if body_match:
             html = html[:body_match.end()] + nav + html[body_match.end():]
         else:
