@@ -43,7 +43,7 @@ Hardware, devices, and connectivity.
 
 ## Start Studying
 
-Lessons and a guided study sequence have not been published yet. Browse the topic hubs below to see where material will appear.
+Start with the [Ports & Protocols lesson](../../../learn/networking/ports-and-protocols.md), then apply it in the [interactive activity](../../../practice/pbqs/a-plus-core-1/ports-and-protocols/README.md). Browse the topic hubs below for more material.
 
 ## Course Topics
 
@@ -60,6 +60,8 @@ Lessons and a guided study sequence have not been published yet. Browse the topi
     Understand how devices connect and communicate.
 
 ## Published PBQ Practice
+
+- [Ports & Protocols](../../../practice/pbqs/a-plus-core-1/ports-and-protocols/README.md)
 
 - [SOHO Router Configuration](../../../practice/pbqs/a-plus-core-1/soho-router-configuration/README.md)
 - [RAID Drive Replacement](../../../practice/pbqs/a-plus-core-1/raid-drive-replacement/README.md)
@@ -78,6 +80,10 @@ Lessons and a guided study sequence have not been published yet. Browse the topi
     Configure and inspect network communication.
 
 ## Reference Topics
+
+- [Ports & Protocols](../../../reference/ports-and-protocols.md)
+
+    Core 1 service ports, transports, and common comparisons.
 
 - [Wi-Fi Standards](../../../reference/wifi-standards.md)
 

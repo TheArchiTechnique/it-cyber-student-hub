@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ports &amp; Protocols | A+ Core 1</title>
+<link rel="stylesheet" href="styles.css">
+<script src="questions.js" defer></script><script src="app.js" defer></script>
+</head>
+<body>
+<header><div class="header-inner"><div><p class="eyebrow">A+ CORE 1 · NETWORKING</p><h1>Ports &amp; Protocols</h1><p class="subtitle">Read the symptoms. Choose the service. Check the connection.</p></div><a class="back" href="../">Back to activity overview</a></div></header>
+<main>
+<div class="toolbar"><div class="tabs" role="tablist" aria-label="Activity views"><button id="tab-practice" role="tab" aria-selected="true" aria-controls="practice" tabindex="0">Practice</button><button id="tab-review" role="tab" aria-selected="false" aria-controls="review" tabindex="-1">Review</button><button id="tab-results" role="tab" aria-selected="false" aria-controls="results" tabindex="-1">Results</button></div><button id="restart" class="quiet">Restart</button></div>
+<div class="status"><span id="progress-text"></span><span id="score-text"></span></div><progress id="progress" value="0" max="26" aria-label="Tasks checked"></progress>
+<section id="practice" role="tabpanel" aria-labelledby="tab-practice">
+<div class="workspace"><aside class="panel guide"><p class="eyebrow dark">SUPPORT DESK</p><h2>Make the call</h2><p>Use the task’s clues to choose a service, transport, or port.</p><p>Each answer field earns one point. Check all parts together to see the explanation. Submitted answers stay locked for this run.</p><label for="jump">Task navigator</label><select id="jump"></select><p class="small">Answers stay here until you restart or reload the page.</p></aside>
+<article class="panel task"><div class="task-heading"><span id="task-type" class="badge"></span><span id="task-number" class="small"></span></div><h2 id="prompt" tabindex="-1"></h2><form id="answer-form"><div id="fields"></div><p id="form-error" role="alert"></p><button type="submit" id="check" class="primary">Check answers</button></form><div id="feedback" aria-live="polite"></div><div class="task-nav"><button id="previous">Previous</button><button id="next">Next task</button></div></article></div>
+</section>
+<section id="review" role="tabpanel" aria-labelledby="tab-review" hidden><div class="panel intro"><h2>Review the concepts</h2><p id="review-note"></p></div><div id="review-cards" class="review-grid"></div></section>
+<section id="results" role="tabpanel" aria-labelledby="tab-results" hidden><div class="panel"><h2>Practice results</h2><div id="results-body"></div></div></section>
+<footer>Core 1 practice · One point per answer field · No timer</footer>
+</main>
+<dialog id="reset-dialog" aria-labelledby="reset-title"><h2 id="reset-title">Start a new run?</h2><p>This clears every answer and score, then shuffles tasks and choices.</p><div class="dialog-actions"><button id="cancel-reset">Keep practicing</button><button id="confirm-reset" class="primary">Restart activity</button></div></dialog>
+</body></html>

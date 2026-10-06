@@ -96,6 +96,8 @@ A typical Bluetooth setup is: enable Bluetooth, place the accessory in pairing m
 
 ### 2.1 TCP, UDP, ports, and protocols
 
+[Study the lesson](../../../learn/networking/ports-and-protocols.md) · [Practice ports and protocols](../../../practice/pbqs/a-plus-core-1/ports-and-protocols/README.md) · [Quick reference](../../../reference/ports-and-protocols.md)
+
 #### TCP vs. UDP
 
 - **TCP:** Connection-oriented transport. It establishes a session, tracks sequence and acknowledgments, retransmits missing data, and prioritizes reliable ordered delivery.
