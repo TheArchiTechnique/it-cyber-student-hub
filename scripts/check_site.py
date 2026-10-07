@@ -19,6 +19,7 @@ class Page(HTMLParser):
         self.ids = set()
         self.links = []
         self.umami_scripts = []
+        self.hub_analytics_scripts = []
         self.h1 = 0
         self.feed(path.read_text())
 
@@ -30,6 +31,8 @@ class Page(HTMLParser):
             self.h1 += 1
         if tag == 'script' and attrs.get('src') == 'https://cloud.umami.is/script.js':
             self.umami_scripts.append(attrs)
+        if tag == 'script' and attrs.get('src', '').endswith('assets/javascripts/hub-analytics.js'):
+            self.hub_analytics_scripts.append(attrs)
         for key in ('href', 'src'):
             if key in attrs:
                 self.links.append(attrs[key])
@@ -42,6 +45,8 @@ for source, page in pages.items():
     relative = source.relative_to(SITE).as_posix()
     source_url = BASE + (relative[:-10] if relative.endswith('index.html') else relative)
     if relative != '404.html':
+        if len(page.hub_analytics_scripts) != 1:
+            errors.append(f'{relative}: expected one Hub analytics helper, found {len(page.hub_analytics_scripts)}')
         if len(page.umami_scripts) != 1:
             errors.append(f'{relative}: expected one Umami tracking script, found {len(page.umami_scripts)}')
         else:

@@ -101,9 +101,16 @@ def on_post_build(config):
     # MkDocs renders content pages through the theme, but copies standalone HTML
     # apps unchanged. Insert the same tracking partial at build time.
     tracker = (ROOT / 'overrides' / 'partials' / 'umami-analytics.html').read_text().strip()
+    analytics = site / 'assets' / 'javascripts' / 'hub-analytics.js'
     for app in site.rglob('app/index.html'):
         html = app.read_text()
-        if 'data-website-id=' in html:
+        scripts = []
+        if 'data-website-id=' not in html:
+            scripts.append(tracker)
+        if 'hub-analytics.js' not in html:
+            source = os.path.relpath(analytics, app.parent).replace(os.sep, '/')
+            scripts.append(f'<script defer src="{source}"></script>')
+        if not scripts:
             continue
         head_close = re.search(r'</head\s*>', html, re.I)
         if head_close:
@@ -114,5 +121,5 @@ def on_post_build(config):
             if not title_close:
                 raise ValueError(f'Standalone activity has no head/title insertion point: {app}')
             insert_at = title_close.end()
-        html = html[:insert_at] + '\n' + tracker + '\n' + html[insert_at:]
+        html = html[:insert_at] + '\n' + '\n'.join(scripts) + '\n' + html[insert_at:]
         app.write_text(html)

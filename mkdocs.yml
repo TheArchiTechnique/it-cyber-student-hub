@@ -34,6 +34,8 @@ hooks:
 - scripts/site_hooks.py
 extra_css:
 - assets/stylesheets/hub.css
+extra_javascript:
+- assets/javascripts/hub-analytics.js
 exclude_docs: assets/**/README.md
 validation:
   nav:
