@@ -53,6 +53,13 @@ Lessons and a guided study sequence have not been published yet. Browse the topi
 
     Understand threats, safeguards, and security operations.
 
+<!-- BEGIN GENERATED PBQ LISTINGS -->
+
+## Published PBQ Practice
+
+No PBQs published yet.
+<!-- END GENERATED PBQ LISTINGS -->
+
 ## Lab Areas
 
 - [Log Analysis](../../../labs/log-analysis/README.md)

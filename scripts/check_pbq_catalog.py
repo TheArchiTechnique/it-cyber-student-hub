@@ -1,4 +1,4 @@
-"""Validate the authoritative PBQ catalog and temporary hand-maintained listings."""
+"""Validate the authoritative PBQ catalog and generated certification listings."""
 import argparse
 from collections import Counter
 from html.parser import HTMLParser
@@ -13,12 +13,10 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG = Path('docs/assets/data/pbqs.json')
 SLUG = re.compile(r'[a-z0-9]+(?:-[a-z0-9]+)*\Z')
-# Existing main omission, explicitly tracked until certification-page integration.
-# A new omission fails; repairing this one also requires removing its exemption.
-KNOWN_OMISSIONS = {
-    ('certifications/comptia/a-plus-core-1/README.md', 'power-protection'):
-        'Power Protection is absent from the existing Published PBQ Practice section; repair in Phase 2.'
-}
+if __package__:
+    from .sync_pbq_listings import listing_errors
+else:
+    from sync_pbq_listings import listing_errors
 
 
 class Links(HTMLParser):
@@ -144,7 +142,7 @@ def metadata_errors(data):
 
 
 def repository_errors(data, root=ROOT, site=None):
-    errors = []
+    errors = listing_errors(data, root)
     docs = root / 'docs'
     config = yaml.safe_load((root / 'mkdocs.yml').read_text())
     base = config['site_url']
@@ -170,20 +168,13 @@ def repository_errors(data, root=ROOT, site=None):
         return results
 
     activity_readme = re.compile(r'practice/pbqs/[^/]+/[^/]+/README\.md\Z')
-    used_omissions = set()
 
-    def check_list(source, actual, expected, allow_omissions=False):
+    def check_list(source, actual, expected):
         actual = [target for target in actual if activity_readme.fullmatch(target)]
         counts = Counter(actual)
         if any(count != 1 for count in counts.values()):
             errors.append(f'{source}: duplicate PBQ listings')
         missing = set(expected) - set(actual)
-        if allow_omissions:
-            for target in list(missing):
-                key = (source, expected[target])
-                if key in KNOWN_OMISSIONS:
-                    used_omissions.add(key)
-                    missing.remove(target)
         if missing or set(actual) - set(expected):
             errors.append(f'{source}: catalog/list drift: missing={sorted(missing)}; unexpected={sorted(set(actual) - set(expected))}')
 
@@ -211,6 +202,9 @@ def repository_errors(data, root=ROOT, site=None):
     for cert, metadata in data['certifications'].items():
         expected = {a['activityPath'] + 'README.md': a['id'] for a in records
                     if a['status'] == 'published' and a['primaryCertification'] == cert}
+        associated = {a['activityPath'] + 'README.md': a['id'] for a in records
+                      if a['status'] == 'published' and any(s['certification'] == cert
+                          for s in a['certificationAssociations'])}
         for field in ('overviewPath', 'pbqIndexPath'):
             source = metadata[field]
             file = docs / source
@@ -221,12 +215,9 @@ def repository_errors(data, root=ROOT, site=None):
             if field == 'overviewPath':
                 section = re.search(r'^## Published PBQ Practice\s*\n(.*?)(?=^## |\Z)', content, re.M | re.S)
                 content = section[1] if section else ''
-            check_list(source, targets(file, content), expected, field == 'overviewPath')
+            check_list(source, targets(file, content), associated)
         group = named_nav(pbq_nav, metadata['title'])
         check_list(f'mkdocs.yml PBQs/{metadata["title"]}', nav_paths(group) if isinstance(group, list) else [], expected)
-    for key in KNOWN_OMISSIONS.keys() - used_omissions:
-        errors.append(f'obsolete known omission, remove its exemption: {key}')
-
     for activity in records:
         overview = docs / activity['activityPath'] / 'README.md'
         if not overview.is_file():
@@ -273,8 +264,6 @@ def main():
         errors = repository_errors(data, site=args.site_dir)
     if errors:
         raise SystemExit('\n'.join(errors))
-    for (source, activity), reason in KNOWN_OMISSIONS.items():
-        print(f'KNOWN LIST OMISSION: {source}: {activity}. {reason}')
     print(f'Passed: {len(data["activities"])} canonical PBQs; schema, references, inventory, launch paths, and listing consistency.')
 
 
