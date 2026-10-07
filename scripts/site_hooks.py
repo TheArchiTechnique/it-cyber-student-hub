@@ -80,22 +80,39 @@ def _pbq_nav(certification):
 
 
 def on_post_build(config):
-    """Give every standalone PBQ a reliable way back into the Student Hub."""
+    """Keep standalone PBQ navigation and analytics consistent with the Hub."""
     site = Path(config['site_dir'])
     pbq_root = site / 'practice' / 'pbqs'
-    if not pbq_root.exists():
-        return
+    if pbq_root.exists():
+        for app in pbq_root.glob('*/*/app/index.html'):
+            html = app.read_text()
+            if 'data-pbq-nav-container' in html:
+                continue
+            relative = app.relative_to(pbq_root)
+            certification = relative.parts[0]
+            nav = _pbq_nav(certification)
+            body_match = re.search(r'<body\b[^>]*>', html, re.I)
+            if body_match:
+                html = html[:body_match.end()] + nav + html[body_match.end():]
+            else:
+                html = nav + html
+            app.write_text(html)
 
-    for app in pbq_root.glob('*/*/app/index.html'):
+    # MkDocs renders content pages through the theme, but copies standalone HTML
+    # apps unchanged. Insert the same tracking partial at build time.
+    tracker = (ROOT / 'overrides' / 'partials' / 'umami-analytics.html').read_text().strip()
+    for app in site.rglob('app/index.html'):
         html = app.read_text()
-        if 'data-pbq-nav-container' in html:
+        if 'data-website-id=' in html:
             continue
-        relative = app.relative_to(pbq_root)
-        certification = relative.parts[0]
-        nav = _pbq_nav(certification)
-        body_match = re.search(r'<body\b[^>]*>', html, re.I)
-        if body_match:
-            html = html[:body_match.end()] + nav + html[body_match.end():]
+        head_close = re.search(r'</head\s*>', html, re.I)
+        if head_close:
+            insert_at = head_close.start()
         else:
-            html = nav + html
+            # Some legacy PBQs rely on an implicit HTML head without </head>.
+            title_close = re.search(r'</title\s*>', html, re.I)
+            if not title_close:
+                raise ValueError(f'Standalone activity has no head/title insertion point: {app}')
+            insert_at = title_close.end()
+        html = html[:insert_at] + '\n' + tracker + '\n' + html[insert_at:]
         app.write_text(html)
