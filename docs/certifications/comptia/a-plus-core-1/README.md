@@ -61,6 +61,10 @@ Start with the [Ports & Protocols lesson](../../../learn/networking/ports-and-pr
 
 ## Published PBQ Practice
 
+- [Two-Site VoIP Troubleshooting](../../../practice/pbqs/a-plus-core-1/two-site-voip-cli/README.md)
+
+    Compare two offices using simulated terminals, diagnose call-quality symptoms, and retest a repair.
+
 - [Wireless Coverage](../../../practice/pbqs/a-plus-core-1/wireless-coverage/README.md)
 
     Improve wireless coverage and resolve a weak connection using an office floor plan.
