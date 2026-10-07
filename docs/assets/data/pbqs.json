@@ -1,0 +1,381 @@
+{
+  "schemaVersion": 1,
+  "certifications": {
+    "a-plus-core-1": {
+      "title": "A+ Core 1",
+      "overviewPath": "certifications/comptia/a-plus-core-1/README.md",
+      "pbqIndexPath": "practice/pbqs/a-plus-core-1/README.md"
+    },
+    "a-plus-core-2": {
+      "title": "A+ Core 2",
+      "overviewPath": "certifications/comptia/a-plus-core-2/README.md",
+      "pbqIndexPath": "practice/pbqs/a-plus-core-2/README.md"
+    },
+    "cysa-plus": {
+      "title": "CySA+",
+      "overviewPath": "certifications/comptia/cysa-plus/README.md",
+      "pbqIndexPath": "practice/pbqs/cysa-plus/README.md"
+    },
+    "network-plus": {
+      "title": "Network+",
+      "overviewPath": "certifications/comptia/network-plus/README.md",
+      "pbqIndexPath": "practice/pbqs/network-plus/README.md"
+    },
+    "security-plus": {
+      "title": "Security+",
+      "overviewPath": "certifications/comptia/security-plus/README.md",
+      "pbqIndexPath": "practice/pbqs/security-plus/README.md"
+    }
+  },
+  "subjects": {
+    "hardware": {
+      "title": "Hardware"
+    },
+    "networking": {
+      "title": "Networking"
+    }
+  },
+  "topics": {
+    "computer-components": {
+      "title": "Computer components",
+      "subject": "hardware"
+    },
+    "storage-and-raid": {
+      "title": "Storage and RAID",
+      "subject": "hardware"
+    },
+    "printers": {
+      "title": "Printers",
+      "subject": "hardware"
+    },
+    "power-protection": {
+      "title": "Power protection",
+      "subject": "hardware"
+    },
+    "hardware-troubleshooting": {
+      "title": "Hardware troubleshooting",
+      "subject": "hardware"
+    },
+    "network-devices": {
+      "title": "Network devices",
+      "subject": "networking"
+    },
+    "cabling-and-connectors": {
+      "title": "Cabling and connectors",
+      "subject": "networking"
+    },
+    "network-tools": {
+      "title": "Network tools",
+      "subject": "networking"
+    },
+    "ip-addressing": {
+      "title": "IP addressing",
+      "subject": "networking"
+    },
+    "ports-and-protocols": {
+      "title": "Ports and protocols",
+      "subject": "networking"
+    },
+    "wireless-networking": {
+      "title": "Wireless networking",
+      "subject": "networking"
+    },
+    "network-troubleshooting": {
+      "title": "Network troubleshooting",
+      "subject": "networking"
+    },
+    "traffic-flow": {
+      "title": "Traffic flow and encapsulation",
+      "subject": "networking"
+    },
+    "voip-and-qos": {
+      "title": "VoIP and quality of service",
+      "subject": "networking"
+    }
+  },
+  "activities": [
+    {
+      "id": "ip-configuration-troubleshooting",
+      "title": "IP Configuration Troubleshooting",
+      "description": "Compare two PCs, investigate IPv4 configuration with simulated command prompts, and apply a fix supported by your evidence.",
+      "activityPath": "practice/pbqs/a-plus-core-1/ip-configuration-troubleshooting/",
+      "launchPath": "practice/pbqs/a-plus-core-1/ip-configuration-troubleshooting/app/",
+      "primaryCertification": "a-plus-core-1",
+      "certificationAssociations": [
+        {
+          "certification": "a-plus-core-1",
+          "relevance": "direct",
+          "reason": "Retains the existing A+ Core 1 certification assignment."
+        },
+        {
+          "certification": "network-plus",
+          "relevance": "foundational",
+          "reason": "Practices IPv4 addressing, DHCP, DNS, and connectivity diagnosis in a two-PC network."
+        }
+      ],
+      "topics": [
+        "ip-addressing",
+        "network-troubleshooting"
+      ],
+      "status": "published"
+    },
+    {
+      "id": "motherboard-assembly",
+      "title": "Motherboard Assembly",
+      "description": "Install desktop components, configure a matched memory pair, and connect the motherboard, graphics card, and SATA drive.",
+      "activityPath": "practice/pbqs/a-plus-core-1/motherboard-assembly/",
+      "launchPath": "practice/pbqs/a-plus-core-1/motherboard-assembly/app/",
+      "primaryCertification": "a-plus-core-1",
+      "certificationAssociations": [
+        {
+          "certification": "a-plus-core-1",
+          "relevance": "direct",
+          "reason": "Retains the existing A+ Core 1 certification assignment."
+        }
+      ],
+      "topics": [
+        "computer-components"
+      ],
+      "status": "published"
+    },
+    {
+      "id": "network-setup-and-cabling",
+      "title": "Network Setup & Cabling",
+      "description": "Build a small network by selecting appropriate devices, media, connectors, and cabling choices for the scenario.",
+      "activityPath": "practice/pbqs/a-plus-core-1/network-setup-and-cabling/",
+      "launchPath": "practice/pbqs/a-plus-core-1/network-setup-and-cabling/app/",
+      "primaryCertification": "a-plus-core-1",
+      "certificationAssociations": [
+        {
+          "certification": "a-plus-core-1",
+          "relevance": "direct",
+          "reason": "Retains the existing A+ Core 1 certification assignment."
+        },
+        {
+          "certification": "network-plus",
+          "relevance": "foundational",
+          "reason": "Practices network-device roles, media selection, connectors, and Ethernet termination."
+        }
+      ],
+      "topics": [
+        "network-devices",
+        "cabling-and-connectors",
+        "wireless-networking"
+      ],
+      "status": "published"
+    },
+    {
+      "id": "ports-and-protocols",
+      "title": "Ports & Protocols",
+      "description": "Choose services and ports for support tickets, classify transport behavior, match protocols to their purpose, and diagnose multi-part networking problems. Practice covers the A+ Core 1 220-1201 port set.",
+      "activityPath": "practice/pbqs/a-plus-core-1/ports-and-protocols/",
+      "launchPath": "practice/pbqs/a-plus-core-1/ports-and-protocols/app/",
+      "primaryCertification": "a-plus-core-1",
+      "certificationAssociations": [
+        {
+          "certification": "a-plus-core-1",
+          "relevance": "direct",
+          "reason": "Retains the existing A+ Core 1 certification assignment."
+        },
+        {
+          "certification": "network-plus",
+          "relevance": "foundational",
+          "reason": "Practices common service ports and transport behavior using the existing Core 1 activity scope."
+        }
+      ],
+      "topics": [
+        "ports-and-protocols",
+        "network-troubleshooting"
+      ],
+      "status": "published"
+    },
+    {
+      "id": "power-protection",
+      "title": "Power Protection & UPS",
+      "description": "Inspect a small-office work order, connect power-protection equipment, and test what happens when utility power fails.",
+      "activityPath": "practice/pbqs/a-plus-core-1/power-protection/",
+      "launchPath": "practice/pbqs/a-plus-core-1/power-protection/app/",
+      "primaryCertification": "a-plus-core-1",
+      "certificationAssociations": [
+        {
+          "certification": "a-plus-core-1",
+          "relevance": "direct",
+          "reason": "Retains the existing A+ Core 1 certification assignment."
+        }
+      ],
+      "topics": [
+        "power-protection",
+        "hardware-troubleshooting"
+      ],
+      "status": "published"
+    },
+    {
+      "id": "printer-troubleshooting",
+      "title": "Printer Troubleshooting",
+      "description": "Inspect printer components and symptoms, then diagnose common laser and inkjet printer problems.",
+      "activityPath": "practice/pbqs/a-plus-core-1/printer-troubleshooting/",
+      "launchPath": "practice/pbqs/a-plus-core-1/printer-troubleshooting/app/",
+      "primaryCertification": "a-plus-core-1",
+      "certificationAssociations": [
+        {
+          "certification": "a-plus-core-1",
+          "relevance": "direct",
+          "reason": "Retains the existing A+ Core 1 certification assignment."
+        }
+      ],
+      "topics": [
+        "printers",
+        "hardware-troubleshooting"
+      ],
+      "status": "published"
+    },
+    {
+      "id": "raid-drive-replacement",
+      "title": "RAID Drive Replacement",
+      "description": "Inspect a RAID storage system, identify the affected drive, and choose an appropriate replacement based on the array and drive details.",
+      "activityPath": "practice/pbqs/a-plus-core-1/raid-drive-replacement/",
+      "launchPath": "practice/pbqs/a-plus-core-1/raid-drive-replacement/app/",
+      "primaryCertification": "a-plus-core-1",
+      "certificationAssociations": [
+        {
+          "certification": "a-plus-core-1",
+          "relevance": "direct",
+          "reason": "Retains the existing A+ Core 1 certification assignment."
+        }
+      ],
+      "topics": [
+        "storage-and-raid",
+        "hardware-troubleshooting"
+      ],
+      "status": "published"
+    },
+    {
+      "id": "soho-physical-installation",
+      "title": "SOHO Physical Installation",
+      "description": "Build a physical Internet connection from the service outlet to the local network. Recognize equipment and connector shapes, place the equipment, connect each cable to two ports, and practice current Core 1 network tools through job matching and tool-function questions.",
+      "activityPath": "practice/pbqs/a-plus-core-1/soho-physical-installation/",
+      "launchPath": "practice/pbqs/a-plus-core-1/soho-physical-installation/app/",
+      "primaryCertification": "a-plus-core-1",
+      "certificationAssociations": [
+        {
+          "certification": "a-plus-core-1",
+          "relevance": "direct",
+          "reason": "Retains the existing A+ Core 1 certification assignment."
+        },
+        {
+          "certification": "network-plus",
+          "relevance": "foundational",
+          "reason": "Practices Internet handoffs, WAN/LAN connections, physical media, and network-tool selection."
+        }
+      ],
+      "topics": [
+        "network-devices",
+        "cabling-and-connectors",
+        "network-tools"
+      ],
+      "status": "published"
+    },
+    {
+      "id": "soho-router-configuration",
+      "title": "SOHO Router Configuration",
+      "description": "Configure a small office/home office router from a work order. Practice LAN addressing, DHCP, employee Wi-Fi, guest Wi-Fi, wireless bands, channels, and security settings.",
+      "activityPath": "practice/pbqs/a-plus-core-1/soho-router-configuration/",
+      "launchPath": "practice/pbqs/a-plus-core-1/soho-router-configuration/app/",
+      "primaryCertification": "a-plus-core-1",
+      "certificationAssociations": [
+        {
+          "certification": "a-plus-core-1",
+          "relevance": "direct",
+          "reason": "Retains the existing A+ Core 1 certification assignment."
+        },
+        {
+          "certification": "network-plus",
+          "relevance": "foundational",
+          "reason": "Practices LAN addressing, DHCP, wireless channels, and small-office wireless configuration."
+        }
+      ],
+      "topics": [
+        "network-devices",
+        "ip-addressing",
+        "wireless-networking"
+      ],
+      "status": "published"
+    },
+    {
+      "id": "tcp-ip-packet-walk",
+      "title": "TCP/IP Packet Walk",
+      "description": "Follow data from a client to a network service and identify what happens as the traffic moves through the network.",
+      "activityPath": "practice/pbqs/a-plus-core-1/tcp-ip-packet-walk/",
+      "launchPath": "practice/pbqs/a-plus-core-1/tcp-ip-packet-walk/app/",
+      "primaryCertification": "a-plus-core-1",
+      "certificationAssociations": [
+        {
+          "certification": "a-plus-core-1",
+          "relevance": "direct",
+          "reason": "Retains the existing A+ Core 1 certification assignment."
+        },
+        {
+          "certification": "network-plus",
+          "relevance": "foundational",
+          "reason": "Practices traffic flow, network-device roles, encapsulation, and decapsulation."
+        }
+      ],
+      "topics": [
+        "traffic-flow",
+        "network-devices",
+        "ports-and-protocols"
+      ],
+      "status": "published"
+    },
+    {
+      "id": "two-site-voip-cli",
+      "title": "Two-Site VoIP Troubleshooting",
+      "description": "Compare two office networks, investigate call-quality symptoms with simulated terminals, and apply a repair supported by your evidence.",
+      "activityPath": "practice/pbqs/a-plus-core-1/two-site-voip-cli/",
+      "launchPath": "practice/pbqs/a-plus-core-1/two-site-voip-cli/app/",
+      "primaryCertification": "a-plus-core-1",
+      "certificationAssociations": [
+        {
+          "certification": "a-plus-core-1",
+          "relevance": "direct",
+          "reason": "Retains the existing A+ Core 1 certification assignment."
+        },
+        {
+          "certification": "network-plus",
+          "relevance": "foundational",
+          "reason": "Practices interpreting latency, jitter, loss, bandwidth, and QoS in simulated network diagnostics."
+        }
+      ],
+      "topics": [
+        "voip-and-qos",
+        "network-troubleshooting"
+      ],
+      "status": "published"
+    },
+    {
+      "id": "wireless-coverage",
+      "title": "Wireless Coverage",
+      "description": "Troubleshoot a weak, intermittent Wi-Fi connection in a 3,000-square-foot office. Inspect the floor plan and reposition available equipment to improve service across the workspace.",
+      "activityPath": "practice/pbqs/a-plus-core-1/wireless-coverage/",
+      "launchPath": "practice/pbqs/a-plus-core-1/wireless-coverage/app/",
+      "primaryCertification": "a-plus-core-1",
+      "certificationAssociations": [
+        {
+          "certification": "a-plus-core-1",
+          "relevance": "direct",
+          "reason": "Retains the existing A+ Core 1 certification assignment."
+        },
+        {
+          "certification": "network-plus",
+          "relevance": "foundational",
+          "reason": "Practices access point placement, interference, and wireless connectivity troubleshooting."
+        }
+      ],
+      "topics": [
+        "wireless-networking",
+        "network-troubleshooting"
+      ],
+      "status": "published"
+    }
+  ]
+}

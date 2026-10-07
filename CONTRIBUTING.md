@@ -46,13 +46,15 @@ Keep ASCII identity headers only on the root homepage and the five current certi
 
 Use `docs/practice/pbqs/<certification>/<exercise-slug>/` with a `README.md` describing the exercise and an `app/index.html` entry point. Keep its JS, CSS, and local images beside that HTML. MkDocs copies these static files without a frontend build.
 
+Register each PBQ once in `docs/assets/data/pbqs.json`, the authoritative activity catalog. Associate additional certifications with that record instead of copying the app. During the transition, update the primary certification's PBQ index, Published PBQ Practice section, and MkDocs navigation in the same commit; catalog validation detects drift. See the [PBQ catalog contract and transition](maintenance/pbq-catalog.md) for metadata, access helpers, relevance labels, and the existing tracked listing omission. Catalog IDs do not replace activity persistence keys.
+
 Add a relative `Launch <exercise> PBQ` link to `app/index.html` only when it exists. This works at the project's GitHub Pages subpath without hardcoded root URLs. In GitBook, use an explicit link to the deployed Pages exercise because GitBook does not host the HTML app as a runnable Pages site. Test that launch URL after deployment. Do not publish instructor-only answers or secrets in client-side files.
 
 Every standalone PBQ must provide a reliable exit path that does not depend on browser history. The Pages build automatically injects a compact, in-flow top navigation bar into `docs/practice/pbqs/<certification>/<exercise-slug>/app/index.html` with links back to the certification PBQ index, the activity overview, and the Student Hub. It is part of the app chrome rather than a floating overlay, so it must never cover activity controls or content. The generated links use project-safe relative paths and remain available throughout the activity. If an app supplies its own custom navigation instead, preserve the markers `data-pbq-nav="certification"`, `data-pbq-nav="overview"`, and `data-pbq-nav="home"`; site validation requires all three.
 
 ## Local development
 
-Requires Python 3.12. Run from the repository root:
+Requires Python 3.12 and Node.js 22 or newer for the catalog tests. Run from the repository root:
 
 ```sh
 python -m venv .venv
@@ -63,7 +65,10 @@ python -m venv .venv
 pip install -r requirements.txt
 python scripts/sync_navigation.py --check
 python scripts/check_source.py
+python -m unittest discover -s tests -p 'test_pbq_catalog.py'
+node tests/pbq-catalog.mjs
 mkdocs build --strict
+python scripts/check_pbq_catalog.py --site-dir site
 python scripts/check_site.py
 mkdocs serve
 ```
