@@ -2,6 +2,10 @@
 
 Performance-based practice for CompTIA A+ Core 1.
 
+- [IP Configuration Troubleshooting](ip-configuration-troubleshooting/README.md)
+
+    Compare two PCs, diagnose an IPv4 configuration fault, and apply the correct settings.
+
 - [Two-Site VoIP Troubleshooting](two-site-voip-cli/README.md)
 
     Compare office diagnostics, identify a call-quality fault, and apply a repair.

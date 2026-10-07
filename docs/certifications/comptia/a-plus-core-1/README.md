@@ -61,6 +61,10 @@ Start with the [Ports & Protocols lesson](../../../learn/networking/ports-and-pr
 
 ## Published PBQ Practice
 
+- [IP Configuration Troubleshooting](../../../practice/pbqs/a-plus-core-1/ip-configuration-troubleshooting/README.md)
+
+    Compare PC addressing, test connectivity, and correct IPv4 settings.
+
 - [Two-Site VoIP Troubleshooting](../../../practice/pbqs/a-plus-core-1/two-site-voip-cli/README.md)
 
     Compare two offices using simulated terminals, diagnose call-quality symptoms, and retest a repair.
