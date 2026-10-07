@@ -73,6 +73,7 @@ nav:
     - Overview: practice/pbqs/README.md
     - A+ Core 1:
       - Overview: practice/pbqs/a-plus-core-1/README.md
+      - Power Protection & UPS: practice/pbqs/a-plus-core-1/power-protection/README.md
       - IP Configuration Troubleshooting: practice/pbqs/a-plus-core-1/ip-configuration-troubleshooting/README.md
       - Two-Site VoIP Troubleshooting: practice/pbqs/a-plus-core-1/two-site-voip-cli/README.md
       - Wireless Coverage: practice/pbqs/a-plus-core-1/wireless-coverage/README.md

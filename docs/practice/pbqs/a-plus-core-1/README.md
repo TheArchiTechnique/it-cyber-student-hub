@@ -2,6 +2,10 @@
 
 Performance-based practice for CompTIA A+ Core 1.
 
+- [Power Protection & UPS](power-protection/README.md)
+
+    Connect equipment, test a power failure, and troubleshoot UPS load, runtime, and battery faults.
+
 - [IP Configuration Troubleshooting](ip-configuration-troubleshooting/README.md)
 
     Compare two PCs, diagnose an IPv4 configuration fault, and apply the correct settings.

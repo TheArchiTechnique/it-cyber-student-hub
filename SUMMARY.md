@@ -21,6 +21,7 @@
 - [Practice](docs/practice/README.md)
   - [PBQs](docs/practice/pbqs/README.md)
     - [A+ Core 1](docs/practice/pbqs/a-plus-core-1/README.md)
+      - [Power Protection & UPS](docs/practice/pbqs/a-plus-core-1/power-protection/README.md)
       - [IP Configuration Troubleshooting](docs/practice/pbqs/a-plus-core-1/ip-configuration-troubleshooting/README.md)
       - [Two-Site VoIP Troubleshooting](docs/practice/pbqs/a-plus-core-1/two-site-voip-cli/README.md)
       - [Wireless Coverage](docs/practice/pbqs/a-plus-core-1/wireless-coverage/README.md)
