@@ -2,6 +2,10 @@
 
 Performance-based practice for CompTIA A+ Core 1.
 
+- [Two-Site VoIP Troubleshooting](two-site-voip-cli/README.md)
+
+    Compare office diagnostics, identify a call-quality fault, and apply a repair.
+
 - [Wireless Coverage](wireless-coverage/README.md)
 
     Troubleshoot weak Wi-Fi by repositioning equipment on an office floor plan.
