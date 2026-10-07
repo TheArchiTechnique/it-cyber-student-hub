@@ -11,11 +11,6 @@
       "overviewPath": "certifications/comptia/a-plus-core-2/README.md",
       "pbqIndexPath": "practice/pbqs/a-plus-core-2/README.md"
     },
-    "cysa-plus": {
-      "title": "CySA+",
-      "overviewPath": "certifications/comptia/cysa-plus/README.md",
-      "pbqIndexPath": "practice/pbqs/cysa-plus/README.md"
-    },
     "network-plus": {
       "title": "Network+",
       "overviewPath": "certifications/comptia/network-plus/README.md",
@@ -25,6 +20,11 @@
       "title": "Security+",
       "overviewPath": "certifications/comptia/security-plus/README.md",
       "pbqIndexPath": "practice/pbqs/security-plus/README.md"
+    },
+    "cysa-plus": {
+      "title": "CySA+",
+      "overviewPath": "certifications/comptia/cysa-plus/README.md",
+      "pbqIndexPath": "practice/pbqs/cysa-plus/README.md"
     }
   },
   "subjects": {

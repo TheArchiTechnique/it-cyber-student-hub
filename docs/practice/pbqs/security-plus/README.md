@@ -2,7 +2,10 @@
 
 Performance-based practice for this certification.
 
+<!-- BEGIN GENERATED PBQ LISTINGS -->
+
 No PBQs published yet.
+<!-- END GENERATED PBQ LISTINGS -->
 
 - [Return to Security+](../../../certifications/comptia/security-plus/README.md)
 

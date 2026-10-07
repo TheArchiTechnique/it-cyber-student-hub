@@ -59,35 +59,60 @@ Start with the [Ports & Protocols lesson](../../../learn/networking/ports-and-pr
 
     Understand how devices connect and communicate.
 
+<!-- BEGIN GENERATED PBQ LISTINGS -->
+
 ## Published PBQ Practice
+
+### Direct Certification Practice
 
 - [IP Configuration Troubleshooting](../../../practice/pbqs/a-plus-core-1/ip-configuration-troubleshooting/README.md)
 
-    Compare PC addressing, test connectivity, and correct IPv4 settings.
+    Compare two PCs, investigate IPv4 configuration with simulated command prompts, and apply a fix supported by your evidence.
 
-- [Two-Site VoIP Troubleshooting](../../../practice/pbqs/a-plus-core-1/two-site-voip-cli/README.md)
+- [Motherboard Assembly](../../../practice/pbqs/a-plus-core-1/motherboard-assembly/README.md)
 
-    Compare two offices using simulated terminals, diagnose call-quality symptoms, and retest a repair.
+    Install desktop components, configure a matched memory pair, and connect the motherboard, graphics card, and SATA drive.
 
-- [Wireless Coverage](../../../practice/pbqs/a-plus-core-1/wireless-coverage/README.md)
+- [Network Setup & Cabling](../../../practice/pbqs/a-plus-core-1/network-setup-and-cabling/README.md)
 
-    Improve wireless coverage and resolve a weak connection using an office floor plan.
+    Build a small network by selecting appropriate devices, media, connectors, and cabling choices for the scenario.
 
 - [Ports & Protocols](../../../practice/pbqs/a-plus-core-1/ports-and-protocols/README.md)
 
-- [SOHO Physical Installation](../../../practice/pbqs/a-plus-core-1/soho-physical-installation/README.md)
+    Choose services and ports for support tickets, classify transport behavior, match protocols to their purpose, and diagnose multi-part networking problems. Practice covers the A+ Core 1 220-1201 port set.
 
-    Build cable, DSL, and fiber installations by connecting equipment ports.
+- [Power Protection & UPS](../../../practice/pbqs/a-plus-core-1/power-protection/README.md)
 
-- [SOHO Router Configuration](../../../practice/pbqs/a-plus-core-1/soho-router-configuration/README.md)
-- [Motherboard Assembly](../../../practice/pbqs/a-plus-core-1/motherboard-assembly/README.md)
+    Inspect a small-office work order, connect power-protection equipment, and test what happens when utility power fails.
 
-    Install desktop components and connect motherboard, graphics, and SATA drive power and data.
+- [Printer Troubleshooting](../../../practice/pbqs/a-plus-core-1/printer-troubleshooting/README.md)
+
+    Inspect printer components and symptoms, then diagnose common laser and inkjet printer problems.
 
 - [RAID Drive Replacement](../../../practice/pbqs/a-plus-core-1/raid-drive-replacement/README.md)
-- [Network Setup & Cabling](../../../practice/pbqs/a-plus-core-1/network-setup-and-cabling/README.md)
-- [Printer Troubleshooting](../../../practice/pbqs/a-plus-core-1/printer-troubleshooting/README.md)
+
+    Inspect a RAID storage system, identify the affected drive, and choose an appropriate replacement based on the array and drive details.
+
+- [SOHO Physical Installation](../../../practice/pbqs/a-plus-core-1/soho-physical-installation/README.md)
+
+    Build a physical Internet connection from the service outlet to the local network. Recognize equipment and connector shapes, place the equipment, connect each cable to two ports, and practice current Core 1 network tools through job matching and tool-function questions.
+
+- [SOHO Router Configuration](../../../practice/pbqs/a-plus-core-1/soho-router-configuration/README.md)
+
+    Configure a small office/home office router from a work order. Practice LAN addressing, DHCP, employee Wi-Fi, guest Wi-Fi, wireless bands, channels, and security settings.
+
 - [TCP/IP Packet Walk](../../../practice/pbqs/a-plus-core-1/tcp-ip-packet-walk/README.md)
+
+    Follow data from a client to a network service and identify what happens as the traffic moves through the network.
+
+- [Two-Site VoIP Troubleshooting](../../../practice/pbqs/a-plus-core-1/two-site-voip-cli/README.md)
+
+    Compare two office networks, investigate call-quality symptoms with simulated terminals, and apply a repair supported by your evidence.
+
+- [Wireless Coverage](../../../practice/pbqs/a-plus-core-1/wireless-coverage/README.md)
+
+    Troubleshoot a weak, intermittent Wi-Fi connection in a 3,000-square-foot office. Inspect the floor plan and reposition available equipment to improve service across the workspace.
+<!-- END GENERATED PBQ LISTINGS -->
 
 ## Lab Areas
 

@@ -6,6 +6,8 @@ import shutil
 import tempfile
 import unittest
 
+from scripts.sync_pbq_listings import generated_files, render_listings, replace_block, START, END
+
 from scripts.check_pbq_catalog import CATALOG, ROOT, metadata_errors, repository_errors
 
 
@@ -100,18 +102,69 @@ class CatalogTests(unittest.TestCase):
         self.assertIn('duplicate PBQ listings', '\n'.join(repository_errors(self.catalog, root)))
         index.write_text(original)
         wrong = root / 'docs/practice/pbqs/network-plus/README.md'
-        wrong.write_text(wrong.read_text() + '\n- [Wireless](../a-plus-core-1/wireless-coverage/README.md)\n')
+        wrong.write_text(wrong.read_text() + '\n- [Motherboard](../a-plus-core-1/motherboard-assembly/README.md)\n')
         self.assertIn('unexpected=', '\n'.join(repository_errors(self.catalog, root)))
 
-    def test_certification_omission_exemption_is_narrow_and_expires(self):
+    def test_power_protection_has_no_omission_exemption(self):
         root = self.fixture()
         page = root / 'docs/certifications/comptia/a-plus-core-1/README.md'
+        page.write_text(page.read_text().replace('- [Power Protection & UPS](../../../practice/pbqs/a-plus-core-1/power-protection/README.md)', ''))
+        self.assertIn('power-protection/README.md', '\n'.join(repository_errors(self.catalog, root)))
+
+    def test_all_certification_memberships_and_relevance(self):
+        for cert, metadata in self.catalog['certifications'].items():
+            for field in ('overviewPath', 'pbqIndexPath'):
+                content = render_listings(self.catalog, cert, metadata[field], field == 'overviewPath')
+                with self.subTest(cert=cert, field=field):
+                    self.assertEqual(content.count('- ['), 12 if cert == 'a-plus-core-1' else 8 if cert == 'network-plus' else 0)
+                    if cert == 'network-plus':
+                        self.assertIn('No direct certification PBQs published yet.', content)
+                        self.assertIn('Foundational Practice', content)
+                        self.assertNotIn('- [', content.split('Foundational Practice')[0])
+                    elif cert != 'a-plus-core-1':
+                        self.assertIn('No PBQs published yet.', content)
+
+    def test_status_and_association_changes_propagate_to_both_views(self):
+        data = deepcopy(self.catalog)
+        # A published activity can be direct for one certification and foundational for another.
+        activity = data['activities'][0]
+        activity['certificationAssociations'].append({'certification': 'security-plus', 'relevance': 'direct', 'reason': 'Test'})
+        for field in ('overviewPath', 'pbqIndexPath'):
+            source = data['certifications']['security-plus'][field]
+            content = render_listings(data, 'security-plus', source)
+            self.assertIn(activity['title'], content)
+            self.assertNotIn('Foundational Practice', content)
+            source = data['certifications']['network-plus'][field]
+            content = render_listings(data, 'network-plus', source)
+            self.assertIn(activity['title'], content.split('Foundational Practice')[1])
+        for status in ('draft', 'archived'):
+            activity['status'] = status
+            for cert in ('a-plus-core-1', 'network-plus', 'security-plus'):
+                for field in ('overviewPath', 'pbqIndexPath'):
+                    content = render_listings(data, cert, data['certifications'][cert][field])
+                    self.assertNotIn(activity['title'], content)
+
+    def test_generation_is_idempotent_and_preserves_surrounding_content(self):
+        root = self.fixture()
+        for path, expected in generated_files(self.catalog, root).items():
+            self.assertEqual(path.read_text(), expected)
+        page = root / 'docs/practice/pbqs/network-plus/README.md'
+        page.write_text(page.read_text() + '\nUnrelated footer.\n')
+        expected = generated_files(self.catalog, root)[page]
+        self.assertTrue(expected.endswith('\nUnrelated footer.\n'))
+        for malformed in ('', START + END + END, END + START):
+            with self.assertRaises(ValueError):
+                replace_block(malformed, START, END, 'body')
+
+    def test_generated_classification_and_metadata_drift_fail(self):
+        root = self.fixture()
+        page = root / 'docs/practice/pbqs/network-plus/README.md'
         original = page.read_text()
-        page.write_text(original.replace('- [Wireless Coverage](../../../practice/pbqs/a-plus-core-1/wireless-coverage/README.md)', ''))
-        self.assertIn('wireless-coverage/README.md', '\n'.join(repository_errors(self.catalog, root)))
-        page.write_text(original.replace('## Published PBQ Practice',
-            '## Published PBQ Practice\n\n- [Power](../../../practice/pbqs/a-plus-core-1/power-protection/README.md)'))
-        self.assertIn('obsolete known omission', '\n'.join(repository_errors(self.catalog, root)))
+        for before, after in [('Foundational Practice', 'Direct Practice'),
+                              ('IP Configuration Troubleshooting', 'Incorrect title'),
+                              ('Compare two PCs', 'Stale description')]:
+            page.write_text(original.replace(before, after))
+            self.assertIn('generated PBQ listings are stale', '\n'.join(repository_errors(self.catalog, root)))
 
     def test_launch_drift_and_missing_overview(self):
         root = self.fixture()

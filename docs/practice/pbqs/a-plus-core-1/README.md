@@ -2,53 +2,58 @@
 
 Performance-based practice for CompTIA A+ Core 1.
 
-- [Power Protection & UPS](power-protection/README.md)
+<!-- BEGIN GENERATED PBQ LISTINGS -->
 
-    Connect equipment, test a power failure, and troubleshoot UPS load, runtime, and battery faults.
+## Direct Certification Practice
 
 - [IP Configuration Troubleshooting](ip-configuration-troubleshooting/README.md)
 
-    Compare two PCs, diagnose an IPv4 configuration fault, and apply the correct settings.
-
-- [Two-Site VoIP Troubleshooting](two-site-voip-cli/README.md)
-
-    Compare office diagnostics, identify a call-quality fault, and apply a repair.
-
-- [Wireless Coverage](wireless-coverage/README.md)
-
-    Troubleshoot weak Wi-Fi by repositioning equipment on an office floor plan.
-
-- [SOHO Physical Installation](soho-physical-installation/README.md)
-
-    Recognize equipment and connectors, then cable an Internet service to wired endpoints.
-
-- [SOHO Router Configuration](soho-router-configuration/README.md)
-
-    Configure LAN, DHCP, employee Wi-Fi, guest Wi-Fi, channels, and security settings.
+    Compare two PCs, investigate IPv4 configuration with simulated command prompts, and apply a fix supported by your evidence.
 
 - [Motherboard Assembly](motherboard-assembly/README.md)
 
-    Install desktop components and connect motherboard, graphics, and SATA drive power and data.
-
-- [RAID Drive Replacement](raid-drive-replacement/README.md)
-
-    Inspect a RAID array and choose an appropriate replacement drive.
+    Install desktop components, configure a matched memory pair, and connect the motherboard, graphics card, and SATA drive.
 
 - [Network Setup & Cabling](network-setup-and-cabling/README.md)
 
-    Choose network devices, media, connectors, and cabling for a scenario.
-
-- [Printer Troubleshooting](printer-troubleshooting/README.md)
-
-    Diagnose common laser and inkjet printer issues from symptoms and component details.
-
-- [TCP/IP Packet Walk](tcp-ip-packet-walk/README.md)
-
-    Follow traffic through common network devices and the TCP/IP stack.
+    Build a small network by selecting appropriate devices, media, connectors, and cabling choices for the scenario.
 
 - [Ports & Protocols](ports-and-protocols/README.md)
 
-    Select services and ports, match functions, and troubleshoot network support scenarios.
+    Choose services and ports for support tickets, classify transport behavior, match protocols to their purpose, and diagnose multi-part networking problems. Practice covers the A+ Core 1 220-1201 port set.
+
+- [Power Protection & UPS](power-protection/README.md)
+
+    Inspect a small-office work order, connect power-protection equipment, and test what happens when utility power fails.
+
+- [Printer Troubleshooting](printer-troubleshooting/README.md)
+
+    Inspect printer components and symptoms, then diagnose common laser and inkjet printer problems.
+
+- [RAID Drive Replacement](raid-drive-replacement/README.md)
+
+    Inspect a RAID storage system, identify the affected drive, and choose an appropriate replacement based on the array and drive details.
+
+- [SOHO Physical Installation](soho-physical-installation/README.md)
+
+    Build a physical Internet connection from the service outlet to the local network. Recognize equipment and connector shapes, place the equipment, connect each cable to two ports, and practice current Core 1 network tools through job matching and tool-function questions.
+
+- [SOHO Router Configuration](soho-router-configuration/README.md)
+
+    Configure a small office/home office router from a work order. Practice LAN addressing, DHCP, employee Wi-Fi, guest Wi-Fi, wireless bands, channels, and security settings.
+
+- [TCP/IP Packet Walk](tcp-ip-packet-walk/README.md)
+
+    Follow data from a client to a network service and identify what happens as the traffic moves through the network.
+
+- [Two-Site VoIP Troubleshooting](two-site-voip-cli/README.md)
+
+    Compare two office networks, investigate call-quality symptoms with simulated terminals, and apply a repair supported by your evidence.
+
+- [Wireless Coverage](wireless-coverage/README.md)
+
+    Troubleshoot a weak, intermittent Wi-Fi connection in a 3,000-square-foot office. Inspect the floor plan and reposition available equipment to improve service across the workspace.
+<!-- END GENERATED PBQ LISTINGS -->
 
 - [Return to A+ Core 1](../../../certifications/comptia/a-plus-core-1/README.md)
 
