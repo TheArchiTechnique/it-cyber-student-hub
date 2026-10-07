@@ -9,10 +9,10 @@ const slots={
  A:{x:6,y:5,room:'Northwest Office'},B:{x:16,y:25,room:'Hallway'},
  C:{x:37,y:19,room:'North/Central Office'},D:{x:54,y:5,room:'Northeast Office'},
  E:{x:14,y:31,room:'Lobby / Breakroom'},F:{x:28,y:25,room:'Hallway'},
- G:{x:44,y:25,room:'Hallway'},H:{x:48,y:25,room:'Hallway'}
+ G:{x:44,y:25,room:'Hallway'},H:{x:56,y:38,room:'Conference Room'}
 };
 const kitchen={shelf:{x:14,y:35,label:'Breakroom shelf'},counterWest:{x:4,y:46,label:'West counter'},counterEast:{x:16,y:46,label:'East counter'}};
-const radioSlots={nwDesk:{x:9,y:10,label:'Northwest desk'},northDesk:{x:30,y:10,label:'North desk'},neDesk:{x:50,y:10,label:'Northeast desk'},breakCounter:{x:9,y:46,label:'Breakroom counter'},securityWest:{x:28,y:37,label:'Security charger 1'},securityEast:{x:32,y:37,label:'Security charger 2'},conferenceShelf:{x:55,y:33,label:'Conference sideboard'}};
+const radioSlots={storage:{x:30,y:37,label:'Security Office storage'}};
 const rooms=[
  {id:'nw',name:'Northwest Office',x:0,y:0,w:20,h:22},
  {id:'north',name:'North/Central Office',x:20,y:0,w:20,h:22},
@@ -31,14 +31,14 @@ const walls=[
 ];
 const employee={x:6,y:10};
 const THRESHOLD=42;
-function fresh(random=Math.random){const choices=Object.keys(radioSlots),one=choices.splice(Math.floor(random()*choices.length),1)[0],two=choices[Math.floor(random()*choices.length)];return {version:1,positions:{wap1:'E',wap2:'H',microwave:'shelf',radio1:one,radio2:two},submitted:false}}
+function fresh(){return {version:1,positions:{wap1:'E',wap2:'H',microwave:'shelf',radio1:'storage',radio2:'storage'},submitted:false}}
 function restore(raw){const s=fresh();if(!raw||raw.version!==1||!raw.positions||typeof raw.positions!=='object')return s;
  for(const id of ['wap1','wap2']){const slot=raw.positions[id];if(typeof slot!=='string'||!Object.hasOwn(slots,slot))return s}
  if(raw.positions.wap1===raw.positions.wap2)return s;
  s.positions.wap1=raw.positions.wap1;s.positions.wap2=raw.positions.wap2;
  if(typeof raw.positions.microwave==='string'&&Object.hasOwn(kitchen,raw.positions.microwave))s.positions.microwave=raw.positions.microwave;
- for(const id of ['radio1','radio2']){const value=raw.positions[id];if(typeof value==='string'&&Object.hasOwn(radioSlots,value))s.positions[id]=value}
- if(s.positions.radio1===s.positions.radio2)s.positions.radio2=Object.keys(radioSlots).find(id=>id!==s.positions.radio1);
+ // Earlier saved radio placements return to the shared storage point.
+ // Preserve the student's access point, microwave, and submission state.
  s.submitted=raw.submitted===true;return s}
 const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
 function crosses(a,b,w){const [x1,y1,x2,y2]=w,rx=b.x-a.x,ry=b.y-a.y,sx=x2-x1,sy=y2-y1,den=rx*sy-ry*sx;if(Math.abs(den)<1e-9)return false;
@@ -66,9 +66,8 @@ function grade(input){const state=restore(input),cells=samples(state),aps=['wap1
  return {score,total:100,complete,rows,cells,perRoom,totalCoverage,desk,nw,spread,unique,penalties,minSeparation}
 }
 function move(state,id,target){if(!['wap1','wap2','microwave','radio1','radio2'].includes(id))return 'Select movable equipment first.';
- const radio=id.startsWith('radio'),choices=radio?radioSlots:id==='microwave'?kitchen:slots;if(!Object.hasOwn(choices,target))return radio?'Choose a desk, counter, charging station, or sideboard for the radio.':id==='microwave'?'Choose a breakroom surface for the microwave.':'Choose an access point position A–H.';
+ const radio=id.startsWith('radio'),choices=radio?radioSlots:id==='microwave'?kitchen:slots;if(!Object.hasOwn(choices,target))return radio?'Choose the shared equipment storage point in the Security Office.':id==='microwave'?'Choose a breakroom surface for the microwave.':'Choose an access point position A–H.';
  if(state.positions[id]===target)return null;
- if(radio&&['radio1','radio2'].some(other=>other!==id&&state.positions[other]===target))return 'That surface is occupied by the other radio. Choose another surface.';
  if(!radio&&id!=='microwave'&&['wap1','wap2'].some(other=>other!==id&&state.positions[other]===target))return 'That position is occupied by the other access point. Move it to an empty position first.';
  state.positions[id]=target;if(!radio)state.submitted=false;return null}
 const api={KEY,slots,kitchen,radioSlots,rooms,walls,employee,THRESHOLD,fresh,restore,distance,crosses,wallCount,microwavePenalty,quality,signal,samples,grade,move};

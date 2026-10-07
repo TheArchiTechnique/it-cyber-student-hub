@@ -10,6 +10,6 @@ Troubleshoot a weak, intermittent Wi-Fi connection in a 3,000-square-foot office
 
 Apply access point placement and wireless troubleshooting concepts to an office with interior walls, work areas, and breakroom equipment. Drag equipment between positions or select equipment and a destination using a mouse, touch, or keyboard. A position list provides another way to place equipment.
 
-Submit to see coverage estimates and targeted feedback, then continue editing. Undo reverses a move. Reset restores the access points and microwave while assigning new radio starting locations. Progress is saved in your browser.
+Submit to see coverage estimates and targeted feedback, then continue editing. Undo reverses a move. Reset restores the original equipment positions. Progress is saved in your browser.
 
 [Back to A+ Core 1 PBQ Practice](../README.md) · [A+ Core 1](../../../../certifications/comptia/a-plus-core-1/README.md) · [Student Hub](../../../../../README.md)
