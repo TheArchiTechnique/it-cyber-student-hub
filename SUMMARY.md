@@ -21,6 +21,7 @@
 - [Practice](docs/practice/README.md)
   - [PBQs](docs/practice/pbqs/README.md)
     - [A+ Core 1](docs/practice/pbqs/a-plus-core-1/README.md)
+      - [Wireless Coverage](docs/practice/pbqs/a-plus-core-1/wireless-coverage/README.md)
       - [SOHO Physical Installation](docs/practice/pbqs/a-plus-core-1/soho-physical-installation/README.md)
       - [SOHO Router Configuration](docs/practice/pbqs/a-plus-core-1/soho-router-configuration/README.md)
       - [Motherboard Assembly](docs/practice/pbqs/a-plus-core-1/motherboard-assembly/README.md)

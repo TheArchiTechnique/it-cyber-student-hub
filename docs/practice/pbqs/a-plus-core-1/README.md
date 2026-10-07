@@ -2,6 +2,10 @@
 
 Performance-based practice for CompTIA A+ Core 1.
 
+- [Wireless Coverage](wireless-coverage/README.md)
+
+    Troubleshoot weak Wi-Fi by repositioning equipment on an office floor plan.
+
 - [SOHO Physical Installation](soho-physical-installation/README.md)
 
     Recognize equipment and connectors, then cable an Internet service to wired endpoints.

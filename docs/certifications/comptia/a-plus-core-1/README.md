@@ -61,6 +61,10 @@ Start with the [Ports & Protocols lesson](../../../learn/networking/ports-and-pr
 
 ## Published PBQ Practice
 
+- [Wireless Coverage](../../../practice/pbqs/a-plus-core-1/wireless-coverage/README.md)
+
+    Improve wireless coverage and resolve a weak connection using an office floor plan.
+
 - [Ports & Protocols](../../../practice/pbqs/a-plus-core-1/ports-and-protocols/README.md)
 
 - [SOHO Physical Installation](../../../practice/pbqs/a-plus-core-1/soho-physical-installation/README.md)
