@@ -1,6 +1,6 @@
-/* Catalog access for future views. Importing this module has no side effects. */
-export async function loadCatalog(url = new URL('../data/pbqs.json', import.meta.url)) {
-  const response = await fetch(url);
+/* Shared catalog access. Importing this module has no side effects. */
+export async function loadCatalog(url = new URL('../data/pbqs.json', import.meta.url), { signal } = {}) {
+  const response = await fetch(url, { signal });
   if (!response.ok) throw new Error(`PBQ catalog could not be loaded (${response.status}).`);
   const catalog = await response.json();
   if (catalog.schemaVersion !== 1 || !Array.isArray(catalog.activities)) {
@@ -13,10 +13,12 @@ export async function loadCatalog(url = new URL('../data/pbqs.json', import.meta
  *  Relevance always applies to that same association. null status includes all records.
  */
 export function selectPBQs(catalog, {
-  certification, relevance, subject, topic, status = 'published'
+  certification, relevance, subject, topic, keyword = '', status = 'published'
 } = {}) {
+  const query = keyword.trim().toLowerCase();
   return catalog.activities.filter(activity =>
     (status === null || activity.status === status) &&
+    (!query || activity.title.toLowerCase().includes(query) || activity.description.toLowerCase().includes(query)) &&
     ((!certification && !relevance) || activity.certificationAssociations.some(association =>
       (!certification || association.certification === certification) &&
       (!relevance || association.relevance === relevance))) &&

@@ -4,7 +4,7 @@ Use short exercises to check your decisions and problem-solving skills.
 
 - [PBQ Practice](pbqs/README.md)
 
-    Choose a certification for performance-based practice.
+    Search performance-based activities and filter by certification, subject, or topic.
 
 - [Troubleshooting](scenarios/troubleshooting/README.md)
 

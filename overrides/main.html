@@ -2,6 +2,9 @@
 {% block extrahead %}
 {{ super() }}
 {% include "partials/umami-analytics.html" %}
+{% if page and page.file.src_uri == 'practice/pbqs/README.md' %}
+<script type="module" src="{{ 'assets/javascripts/pbq-library.mjs' | url }}"></script>
+{% endif %}
 {% endblock %}
 {% block content %}
 <div class="hub-page{% if page.file.src_uri.endswith('README.md') %} hub-landing{% endif %}{% if page.is_homepage %} hub-home{% endif %}">

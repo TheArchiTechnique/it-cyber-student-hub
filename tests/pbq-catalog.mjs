@@ -28,6 +28,18 @@ assert.equal(selectPBQs(fixture, { status: 'draft' }).length, 1);
 assert.equal(selectPBQs(fixture, { status: null }).length, all.length);
 // Relevance must match the requested certification, not a different association.
 assert.equal(selectPBQs(catalog, { certification: 'network-plus', relevance: 'direct' }).length, 0);
+// Search uses titles/descriptions, trims edges, and intersects every other filter.
+assert.deepEqual(selectPBQs(catalog, { keyword: '   ' }), all);
+assert.deepEqual(selectPBQs(catalog, { keyword: '  mOtHeRbOaRd AsSeMbLy  ' }).map(a => a.id), ['motherboard-assembly']);
+assert.deepEqual(selectPBQs(catalog, { keyword: 'simulated command prompts' }).map(a => a.id), ['ip-configuration-troubleshooting']);
+assert.deepEqual(selectPBQs(catalog, {
+  keyword: ' SIMULATED COMMAND PROMPTS ', certification: 'network-plus',
+  subject: 'networking', topic: 'ip-addressing', relevance: 'foundational'
+}).map(a => a.id), ['ip-configuration-troubleshooting']);
+assert.deepEqual(selectPBQs(catalog, { keyword: 'motherboard', certification: 'network-plus' }), []);
+assert.deepEqual(selectPBQs(fixture, { keyword: fixture.activities[0].title }), []);
+assert.deepEqual(selectPBQs(fixture, { keyword: fixture.activities[1].title }), []);
+assert.deepEqual(selectPBQs(catalog, { keyword: '<img src=x onerror=alert(1)>' }), []);
 for (const base of ['https://example.test/', 'https://example.test/it-cyber-student-hub/']) {
   assert.equal(launchURL(network[0], base), base + network[0].launchPath);
 }
@@ -47,6 +59,12 @@ try {
   await assert.rejects(loadCatalog(), /Unsupported/);
   globalThis.fetch = async () => { throw new Error('Offline'); };
   await assert.rejects(loadCatalog(), /Offline/);
+  const controller = new AbortController();
+  globalThis.fetch = async (url, options) => {
+    assert.strictEqual(options.signal, controller.signal);
+    return { ok: true, json: async () => catalog };
+  };
+  assert.strictEqual(await loadCatalog(undefined, { signal: controller.signal }), catalog);
 } finally {
   globalThis.fetch = fetchOriginal;
 }

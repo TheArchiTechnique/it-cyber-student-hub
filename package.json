@@ -1,0 +1,10 @@
+{
+  "name": "it-cyber-student-hub-validation",
+  "private": true,
+  "scripts": {
+    "test:pbq-library": "node tests/pbq-library.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

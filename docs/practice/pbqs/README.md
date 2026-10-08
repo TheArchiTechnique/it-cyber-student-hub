@@ -1,6 +1,10 @@
 # PBQ Practice
 
-Choose your certification. Published interactive exercises will launch in your browser.
+Find performance-based practice by keyword, certification, subject, or topic. Launch an activity from the library, or browse the certification sections below.
+
+<section class="pbq-library" data-pbq-library aria-label="PBQ library" hidden></section>
+
+## Browse by certification
 
 - [A+ Core 1](a-plus-core-1/README.md)
 
