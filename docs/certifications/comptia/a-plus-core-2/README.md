@@ -25,6 +25,10 @@ Operating systems, software, and support.
 
     Browse shared topic hubs.
 
+- [Practice Quizzes](#practice-quizzes)
+
+    Launch self-paced knowledge reviews.
+
 - [PBQ Practice](../../../practice/pbqs/a-plus-core-2/README.md)
 
     Find A+ Core 2 performance-based practice.
@@ -58,6 +62,12 @@ Lessons and a guided study sequence have not been published yet. Browse the topi
 - [Cybersecurity](../../../learn/cybersecurity/README.md)
 
     Understand threats, safeguards, and security operations.
+
+## Practice Quizzes
+
+- [Operating Systems and File Systems Essentials — Kahoot! (39 questions)](https://create.kahoot.it/share/operating-systems-and-file-systems-essentials/3fd97dce-08bb-475e-a0d3-a743d981b5f8)
+
+    Review operating systems and file systems independently. On Kahoot!, select **Play solo** to begin. No instructor session or game PIN is required.
 
 <!-- BEGIN GENERATED PBQ LISTINGS -->
 
