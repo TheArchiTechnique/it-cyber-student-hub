@@ -11,13 +11,10 @@ Diagnose a fault and choose a next step.
 No scenarios published yet.
 hub:placeholder -->
 
-<!-- hub:hidden
 - [Related Labs](../../../labs/it-support/README.md)
 
     Browse complete hands-on activities.
 
-
-hub:hidden -->
 - [Learn by Topic](../../../learn/README.md)
 
     Browse the shared learning areas.

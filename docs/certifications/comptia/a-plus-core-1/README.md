@@ -37,14 +37,11 @@ Hardware, devices, and connectivity.
 
     Find A+ Core 1 performance-based practice.
 
-<!-- hub:hidden
 - [Labs](../../../labs/README.md)
 
     Browse hands-on activities.
 
 
-
-hub:hidden -->
 - [Quick Reference](../../../reference/README.md)
 
     Find concise lookup resources.
@@ -130,7 +127,6 @@ hub:hidden -->
     Troubleshoot a weak, intermittent Wi-Fi connection in a 3,000-square-foot office. Inspect the floor plan and reposition available equipment to improve service across the workspace.
 <!-- END GENERATED PBQ LISTINGS -->
 
-<!-- hub:hidden
 ## Lab Areas
 
 - [IT Support](../../../labs/it-support/README.md)
@@ -138,6 +134,7 @@ hub:hidden -->
     Work with systems and support tasks.
 
 
+<!-- hub:hidden
 - [Networking](../../../labs/networking/README.md)
 
     Configure and inspect network communication.
@@ -146,6 +143,12 @@ hub:hidden -->
 
 
 hub:hidden -->
+## Published Labs
+
+- [VirtualBox: Installing Linux Mint](../../../labs/it-support/virtualbox-linux-mint/README.md)
+
+    Create a virtual machine, allocate hardware and storage, and install Linux Mint for terminal practice.
+
 ## Reference Topics
 
 - [Ports & Protocols](../../../reference/ports-and-protocols.md)

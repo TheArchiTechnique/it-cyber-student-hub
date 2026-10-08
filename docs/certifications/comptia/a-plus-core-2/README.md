@@ -53,14 +53,11 @@ hub:hidden -->
 
 
 hub:hidden -->
-<!-- hub:hidden
 - [Labs](../../../labs/README.md)
 
     Browse hands-on activities.
 
 
-
-hub:hidden -->
 - [Quick Reference](../../../reference/README.md)
 
     Find concise lookup resources.
@@ -114,7 +111,6 @@ No PBQs published yet.
 hub:placeholder -->
 <!-- END GENERATED PBQ LISTINGS -->
 
-<!-- hub:hidden
 ## Lab Areas
 
 - [IT Support](../../../labs/it-support/README.md)
@@ -122,6 +118,7 @@ hub:placeholder -->
     Work with systems and support tasks.
 
 
+<!-- hub:hidden
 - [Cybersecurity](../../../labs/cybersecurity/README.md)
 
     Apply security tools and techniques.
@@ -130,6 +127,12 @@ hub:placeholder -->
 
 
 hub:hidden -->
+## Published Labs
+
+- [VirtualBox: Installing Linux Mint](../../../labs/it-support/virtualbox-linux-mint/README.md)
+
+    Complete a standard Linux Mint installation, configure a user account, and verify the installed system in the terminal.
+
 <!-- hub:hidden
 ## Reference Topics
 

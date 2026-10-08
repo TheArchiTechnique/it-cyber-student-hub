@@ -35,11 +35,8 @@ hub:hidden -->
 
 
 hub:hidden -->
-<!-- hub:hidden
 - [View Labs](../labs/README.md)
 
     Looking for a complete hands-on activity? Start here.
 
-
-hub:hidden -->
 [Back to Student Hub](../../README.md)
