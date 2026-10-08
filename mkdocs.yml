@@ -82,6 +82,7 @@ nav:
   - Cybersecurity: learn/cybersecurity/README.md
 - Practice:
   - Overview: practice/README.md
+  - Practice Questions: practice/questions/README.md
   # BEGIN GENERATED PBQ NAVIGATION
   - PBQs:
     - Overview: practice/pbqs/README.md
