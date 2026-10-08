@@ -6,6 +6,7 @@
     - [A+ Core 1](docs/certifications/comptia/a-plus-core-1/README.md)
       - [Objective Breakdown](docs/certifications/comptia/a-plus-core-1/objective-breakdown.md)
     - [A+ Core 2](docs/certifications/comptia/a-plus-core-2/README.md)
+      - [Objective Breakdown](docs/certifications/comptia/a-plus-core-2/objective-breakdown.md)
     - [Network+](docs/certifications/comptia/network-plus/README.md)
     - [Security+](docs/certifications/comptia/security-plus/README.md)
     - [CySA+](docs/certifications/comptia/cysa-plus/README.md)
