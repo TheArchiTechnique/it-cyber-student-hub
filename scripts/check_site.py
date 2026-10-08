@@ -5,12 +5,14 @@ from urllib.parse import urlsplit, unquote, urljoin
 import json
 import re
 import yaml
+from content_visibility import Availability, published_markdown
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / 'site'
 CONFIG = yaml.safe_load((ROOT / 'mkdocs.yml').read_text())
 BASE = CONFIG['site_url']
 BASE_URL = urlsplit(BASE)
+availability = Availability(ROOT)
 
 
 class Page(HTMLParser):
@@ -66,7 +68,8 @@ for source, page in pages.items():
         if not source_path.exists() and relative.endswith('/index.html'):
             source_path = ROOT / 'docs' / (relative[:-11] + '.md')
         if source_path.exists() and source_path.name == 'README.md':
-            expected_cards = len(re.findall(r'^- \[', source_path.read_text(), re.M))
+            key = 'README.md' if relative == 'index.html' else source_path.relative_to(ROOT / 'docs').as_posix()
+            expected_cards = len(re.findall(r'^- \[', published_markdown(availability.render(key)), re.M))
             content = source.read_text().split('<div class="hub-page', 1)[1].split('</div>', 1)[0]
             if content.count('<li>') != expected_cards:
                 errors.append(f'{relative}: Markdown list/card structure changed')
@@ -97,6 +100,10 @@ for source, page in pages.items():
         count += 1
 search = json.loads((SITE / 'search/search_index.json').read_text())
 indexed = {d['location'].split('#')[0] for d in search['docs']}
+for key in availability.pages.keys() - availability.visible:
+    location = key.removesuffix('README.md') if key.endswith('README.md') else key.removesuffix('.md') + '/'
+    if (SITE / location / 'index.html').exists() or location in indexed:
+        errors.append(f'{key}: unpublished page was built or indexed')
 for p in pages:
     rel = p.relative_to(SITE).as_posix()
     if rel == '404.html':

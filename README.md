@@ -1,3 +1,7 @@
+---
+hub:
+  kind: category
+---
 # IT & Cybersecurity Student Hub
 
 ```text
@@ -53,14 +57,20 @@ Choose your CompTIA path.
 
     Take self-paced quizzes and quick knowledge reviews.
 
+<!-- hub:hidden
 - [Labs](docs/labs/README.md)
 
     Complete hands-on activities.
 
+
+hub:hidden -->
+<!-- hub:hidden
 - [Tools](docs/tools/README.md)
 
     Find practical tool guides.
 
+
+hub:hidden -->
 - [Reference](docs/reference/README.md)
 
     Look up facts and commands quickly.

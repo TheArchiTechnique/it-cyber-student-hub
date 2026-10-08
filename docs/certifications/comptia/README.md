@@ -1,3 +1,7 @@
+---
+hub:
+  kind: category
+---
 # CompTIA
 
 Choose the certification you are studying.

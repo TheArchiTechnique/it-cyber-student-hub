@@ -7,6 +7,7 @@ import tempfile
 import unittest
 
 from scripts.sync_pbq_listings import generated_files, render_listings, replace_block, START, END
+from scripts.content_visibility import published_markdown
 
 from scripts.check_pbq_catalog import CATALOG, ROOT, metadata_errors, repository_errors
 
@@ -87,8 +88,9 @@ class CatalogTests(unittest.TestCase):
         temp = tempfile.TemporaryDirectory()
         self.addCleanup(temp.cleanup)
         root = Path(temp.name)
-        for source in ('docs/practice/pbqs', 'docs/certifications/comptia'):
+        for source in ('docs',):
             shutil.copytree(ROOT / source, root / source)
+        shutil.copyfile(ROOT / 'README.md', root / 'README.md')
         shutil.copyfile(ROOT / 'mkdocs.yml', root / 'mkdocs.yml')
         return root
 
@@ -115,14 +117,15 @@ class CatalogTests(unittest.TestCase):
         for cert, metadata in self.catalog['certifications'].items():
             for field in ('overviewPath', 'pbqIndexPath'):
                 content = render_listings(self.catalog, cert, metadata[field], field == 'overviewPath')
+                content = published_markdown(content)
                 with self.subTest(cert=cert, field=field):
                     self.assertEqual(content.count('- ['), 12 if cert == 'a-plus-core-1' else 8 if cert == 'network-plus' else 0)
                     if cert == 'network-plus':
-                        self.assertIn('No direct certification PBQs published yet.', content)
+                        self.assertNotIn('Direct Certification Practice', content)
                         self.assertIn('Foundational Practice', content)
                         self.assertNotIn('- [', content.split('Foundational Practice')[0])
                     elif cert != 'a-plus-core-1':
-                        self.assertIn('No PBQs published yet.', content)
+                        self.assertEqual(content.strip(), '')
 
     def test_status_and_association_changes_propagate_to_both_views(self):
         data = deepcopy(self.catalog)

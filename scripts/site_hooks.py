@@ -4,17 +4,36 @@ import os
 import re
 from urllib.parse import unquote
 from mkdocs.structure.files import File
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from content_visibility import Availability, published_markdown
 
 ROOT = Path(__file__).resolve().parents[1]
 LINK = re.compile(r'(!?\[[^\]]*\]\()([^\s)]+)(\))')
 
 
+def on_config(config):
+    global availability
+    availability = Availability(ROOT)
+    config['nav'] = availability.navigation(config['nav'])
+    return config
+
+
 def on_files(files, config):
+    # Unpublished sources remain in GitHub but are neither built nor searchable.
+    for file in list(files):
+        if file.src_uri in availability.pages and file.src_uri not in availability.visible:
+            files.remove(file)
+        elif any(file.src_uri.startswith(prefix) and not published
+                 for prefix, published in availability.app_status.items()):
+            files.remove(file)
     files.append(File.generated(config, 'README.md', content=(ROOT / 'README.md').read_text()))
     return files
 
 
 def on_page_markdown(markdown, page, config, files):
+    markdown = published_markdown(availability.render(page.file.src_uri))
     # Only the homepage lives outside docs/. No second maintained homepage exists.
     source = ROOT / 'README.md' if page.file.src_uri == 'README.md' else ROOT / 'docs' / page.file.src_uri
     destination_dir = (ROOT / 'docs' / page.file.src_uri).parent

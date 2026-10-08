@@ -1,3 +1,7 @@
+---
+hub:
+  kind: category
+---
 # Networking
 
 Understand how devices connect and communicate.
@@ -6,14 +10,20 @@ Understand how devices connect and communicate.
 
     Learn service purposes, TCP and UDP behavior, and the Core 1 port set.
 
+<!-- hub:hidden
 - [Browse Cybersecurity](../cybersecurity/README.md)
 
     Explore a related topic.
 
+
+hub:hidden -->
+<!-- hub:hidden
 - [View Labs](../../labs/README.md)
 
     Browse hands-on activity areas.
 
+
+hub:hidden -->
 - [Quick Reference](../../reference/README.md)
 
     Find lookup topics.
