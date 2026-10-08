@@ -10,4 +10,6 @@ Inspect a RAID storage system, identify the affected drive, and choose an approp
 
 Interpret RAID drive and bay information, distinguish failed and predicted-failure conditions, compare replacement-drive characteristics such as interface, capacity, and speed, and make storage troubleshooting decisions without changing healthy drives.
 
-[RAID Quick Reference](../../../../reference/raid.md) · [Back to A+ Core 1 PBQ Practice](../README.md) · [A+ Core 1](../../../../certifications/comptia/a-plus-core-1/README.md)
+<!-- hub:hidden
+[RAID Quick Reference](../../../../reference/raid.md) ·&#32;
+hub:hidden -->[Back to A+ Core 1 PBQ Practice](../README.md) · [A+ Core 1](../../../../certifications/comptia/a-plus-core-1/README.md)

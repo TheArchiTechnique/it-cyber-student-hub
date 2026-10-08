@@ -1,3 +1,7 @@
+---
+hub:
+  kind: category
+---
 # PBQ Practice
 
 Find performance-based practice by keyword, certification, subject, or topic. Launch an activity from the library, or browse the certification sections below.
@@ -10,20 +14,29 @@ Find performance-based practice by keyword, certification, subject, or topic. La
 
     Hardware, devices, and connectivity.
 
+<!-- hub:hidden
 - [A+ Core 2](a-plus-core-2/README.md)
 
     Operating systems, software, and support.
 
+
+hub:hidden -->
 - [Network+](network-plus/README.md)
 
     Build your networking knowledge.
 
+<!-- hub:hidden
 - [Security+](security-plus/README.md)
 
     Build your security foundation.
 
+
+hub:hidden -->
+<!-- hub:hidden
 - [CySA+](cysa-plus/README.md)
 
     Develop your security analysis skills.
 
+
+hub:hidden -->
 [Back to Practice](../README.md) · [Student Hub](../../../README.md)

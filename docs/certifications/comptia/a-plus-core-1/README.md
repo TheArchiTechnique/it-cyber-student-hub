@@ -1,3 +1,7 @@
+---
+hub:
+  kind: resource
+---
 # A+ Core 1
 
 ```text
@@ -33,10 +37,14 @@ Hardware, devices, and connectivity.
 
     Find A+ Core 1 performance-based practice.
 
+<!-- hub:hidden
 - [Labs](../../../labs/README.md)
 
     Browse hands-on activities.
 
+
+
+hub:hidden -->
 - [Quick Reference](../../../reference/README.md)
 
     Find concise lookup resources.
@@ -47,14 +55,22 @@ Start with the [Ports & Protocols lesson](../../../learn/networking/ports-and-pr
 
 ## Course Topics
 
+<!-- hub:hidden
 - [PC Basics](../../../learn/pc-basics/README.md)
 
     Understand computers and everyday IT.
 
+
+
+hub:hidden -->
+<!-- hub:hidden
 - [Hardware](../../../learn/hardware/README.md)
 
     Explore components, storage, and peripherals.
 
+
+
+hub:hidden -->
 - [Networking](../../../learn/networking/README.md)
 
     Understand how devices connect and communicate.
@@ -114,32 +130,50 @@ Start with the [Ports & Protocols lesson](../../../learn/networking/ports-and-pr
     Troubleshoot a weak, intermittent Wi-Fi connection in a 3,000-square-foot office. Inspect the floor plan and reposition available equipment to improve service across the workspace.
 <!-- END GENERATED PBQ LISTINGS -->
 
+<!-- hub:hidden
 ## Lab Areas
 
 - [IT Support](../../../labs/it-support/README.md)
 
     Work with systems and support tasks.
 
+
 - [Networking](../../../labs/networking/README.md)
 
     Configure and inspect network communication.
 
+
+
+
+hub:hidden -->
 ## Reference Topics
 
 - [Ports & Protocols](../../../reference/ports-and-protocols.md)
 
     Core 1 service ports, transports, and common comparisons.
 
+<!-- hub:hidden
 - [Wi-Fi Standards](../../../reference/wifi-standards.md)
 
     Wireless standard comparisons.
 
+
+
+hub:hidden -->
+<!-- hub:hidden
 - [Cabling](../../../reference/cabling.md)
 
     Cable and connector comparisons.
 
+
+
+hub:hidden -->
+<!-- hub:hidden
 - [RAID](../../../reference/raid.md)
 
     RAID level comparisons.
 
+
+
+hub:hidden -->
 [Back to CompTIA](../README.md) · [Student Hub](../../../../README.md)

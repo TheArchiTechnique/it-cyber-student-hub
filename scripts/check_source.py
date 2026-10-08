@@ -4,6 +4,7 @@ import re
 from urllib.parse import unquote, urlsplit
 import markdown
 from html.parser import HTMLParser
+from content_visibility import Availability, canonical, published_markdown
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -25,7 +26,10 @@ class Links(HTMLParser):
 
 
 sources = sorted([*ROOT.glob('*.md'), *ROOT.glob('maintenance/*.md'), *ROOT.glob('docs/**/*.md')])
-parsed = {p.resolve(): Links(p.read_text()) for p in sources}
+availability = Availability(ROOT)
+# Validate dormant source paths as well as published links. Unpublished source
+# may link to other unpublished source, but visible pages must not do so.
+parsed = {p.resolve(): Links(canonical(p.read_text())) for p in sources}
 errors = []
 count = 0
 for source, document in parsed.items():
@@ -40,9 +44,14 @@ for source, document in parsed.items():
             errors.append(f'{source.relative_to(ROOT)}: missing anchor {href}')
         count += 1
 summary_paths = re.findall(r'\]\(([^)]+)\)', (ROOT / 'SUMMARY.md').read_text())
-expected = {str(p.relative_to(ROOT)) for p in sources if p == ROOT / 'README.md' or (p.is_relative_to(ROOT / 'docs') and not p.is_relative_to(ROOT / 'docs/assets'))}
+expected = {str(availability.pages[key].relative_to(ROOT)) for key in availability.visible}
 if set(summary_paths) != expected or len(summary_paths) != len(set(summary_paths)):
-    errors.append('SUMMARY.md must include every student page exactly once.')
+    errors.append('SUMMARY.md must include every published student page exactly once.')
+for key in availability.visible:
+    document = Links(published_markdown(availability.render(key)))
+    for href in document.targets:
+        if not availability.available_target(key, href):
+            errors.append(f'{key}: published link targets unpublished content: {href}')
 vendors = {p.name for p in (ROOT / 'docs/certifications').iterdir() if p.is_dir()}
 if vendors != {'comptia'}:
     errors.append('Phase 1 must contain only the CompTIA vendor.')

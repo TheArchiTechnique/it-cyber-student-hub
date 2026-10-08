@@ -24,6 +24,9 @@ const server = http.createServer(async (request, response) => {
 
 (async () => {
   const catalog = JSON.parse(await fs.readFile(path.join(site, 'assets/data/pbqs.json')));
+  const publishedCertifications = Object.keys(catalog.certifications).filter(certification =>
+    catalog.activities.some(activity => activity.status === 'published' &&
+      activity.certificationAssociations.some(association => association.certification === certification)));
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   const origin = `http://127.0.0.1:${server.address().port}`;
   const browser = await chromium.launch({
@@ -43,6 +46,14 @@ const server = http.createServer(async (request, response) => {
     assert.equal(await page.locator('[data-pbq-library] [role="status"]').textContent(), `${expected} ${expected === 1 ? 'activity' : 'activities'} found`);
   }
   async function reset() { await page.getByRole('button', { name: 'Clear Filters', exact: true }).click(); }
+  async function certificationNavigation(target = page) {
+    const links = target.locator('.hub-page > ul a');
+    assert.deepEqual(await links.allTextContents(), publishedCertifications.map(id => catalog.certifications[id].title),
+      'Fallback navigation contains only certifications with published PBQs');
+    for (const href of await links.evaluateAll(nodes => nodes.map(node => node.href))) {
+      assert.equal((await target.request.get(href)).status(), 200);
+    }
+  }
   async function ready(base = `${origin}${prefix}/`) {
     await page.goto(`${base}practice/pbqs/`);
     await count(catalog.activities.filter(a => a.status === 'published').length);
@@ -62,6 +73,7 @@ const server = http.createServer(async (request, response) => {
   try {
     for (const base of [`${origin}/`, `${origin}${prefix}/`]) {
       await ready(base);
+      await certificationNavigation();
       const ids = await cards.evaluateAll(nodes => nodes.map(node => node.dataset.pbqId));
       assert.equal(ids.length, 12, 'Current published inventory');
       assert.equal(new Set(ids).size, ids.length);
@@ -135,15 +147,74 @@ const server = http.createServer(async (request, response) => {
     // Real navigation through representative standalone PBQs and certification routes.
     for (const id of ['motherboard-assembly', 'ip-configuration-troubleshooting']) {
       await page.locator(`[data-pbq-id="${id}"] .pbq-library-launch`).click();
+      const key = id === 'motherboard-assembly' ? 'core1-motherboard-assembly-v7' : 'core1-ip-configuration-v1';
+      if (id === 'motherboard-assembly') {
+        await page.locator('#buildTab').click();
+        await page.locator('[data-part="cpu"]').click();
+        await page.locator('[data-zone="B"]').click();
+        assert.equal(await page.locator('#progressText').innerText(), '1 of 16 placements');
+      } else {
+        await page.locator('#command-1').fill('ipconfig /all');
+        await page.locator('#command-1').press('Enter');
+      }
+      const saved = await page.evaluate(key => localStorage.getItem(key), key);
+      assert.ok(saved, 'Representative PBQ has saved progress');
       await page.locator('[data-pbq-nav="certification"]').click();
       assert.ok(page.url().endsWith('/practice/pbqs/a-plus-core-1/'));
       assert.equal(await page.locator('.hub-page a').filter({ hasText: 'Motherboard Assembly' }).count(), 1);
+      await page.getByRole('link', { name: 'Return to A+ Core 1', exact: true }).click();
+      await page.waitForURL(`${origin}${prefix}/certifications/comptia/a-plus-core-1/`);
+      const certificationActivity = page.locator('.hub-page a').filter({ hasText: catalog.activities.find(activity => activity.id === id).title });
+      await certificationActivity.waitFor();
+      assert.equal(await certificationActivity.count(), 1);
+      await ready();
+      await page.locator(`[data-pbq-id="${id}"] .pbq-library-launch`).click();
+      assert.equal(await page.evaluate(key => localStorage.getItem(key), key), saved,
+        'Library and certification navigation preserve existing PBQ progress');
+      if (id === 'motherboard-assembly') {
+        await page.locator('#buildTab').click();
+        assert.equal(await page.locator('#progressText').innerText(), '1 of 16 placements');
+      } else {
+        assert.match(await page.locator('#output-1').innerText(), /IPv4 Address/);
+      }
+      await page.locator('[data-pbq-nav="overview"]').click();
+      assert.equal(page.url(), `${origin}${prefix}/${catalog.activities.find(activity => activity.id === id).activityPath}`);
+      await page.getByRole('link', { name: 'Student Hub', exact: true }).last().click();
+      assert.equal(page.url(), `${origin}${prefix}/`);
+      await page.locator('.hub-page a').filter({ hasText: /^Practice$/ }).click();
+      await page.locator('.hub-page a').filter({ hasText: /^Practice Questions$/ }).click();
+      assert.ok(page.url().endsWith('/practice/questions/'));
+      assert.equal(await page.locator('.hub-page a[href*="create.kahoot.it/share/"]').count(), 1);
       await ready();
     }
     await page.goto(`${origin}${prefix}/practice/pbqs/network-plus/`);
     assert.equal(await page.locator('.hub-page li a[href^="../a-plus-core-1/"]').count(), 8);
     assert.equal(await page.locator('script[src$="pbq-library.mjs"]').count(), 0);
+    await page.getByRole('link', { name: 'Return to Network+', exact: true }).click();
+    await page.waitForURL(`${origin}${prefix}/certifications/comptia/network-plus/`);
+    await page.locator('.hub-page li a[href*="practice/pbqs/a-plus-core-1/"]').first().waitFor();
+    assert.equal(await page.locator('.hub-page li a[href*="practice/pbqs/a-plus-core-1/"]').count(), 8);
+    const ipTitle = catalog.activities.find(activity => activity.id === 'ip-configuration-troubleshooting').title;
+    await page.locator('.hub-page a').filter({ hasText: ipTitle }).click();
+    assert.ok(page.url().endsWith('/practice/pbqs/a-plus-core-1/ip-configuration-troubleshooting/'));
     await ready();
+    // Empty categories remain absent from global navigation and the search index.
+    const unavailable = ['labs/', 'tools/', 'practice/scenarios/', 'practice/pbqs/a-plus-core-2/',
+      'practice/pbqs/security-plus/', 'practice/pbqs/cysa-plus/', 'reference/linux-commands/', 'reference/powershell-commands/'];
+    const search = await (await page.request.get(`${origin}${prefix}/search/search_index.json`)).json();
+    for (const route of unavailable) {
+      assert.equal(await page.locator(`a[href="${origin}${prefix}/${route}"]`).count(), 0);
+      assert.ok(search.docs.every(doc => !doc.location.startsWith(route)), `${route} absent from search`);
+      assert.equal((await page.request.get(`${origin}${prefix}/${route}`)).status(), 404);
+    }
+    // Exercise the actual theme switch and saved preference, as well as layout palettes below.
+    await page.locator('label[for="__palette_1"]').click();
+    assert.equal(await page.locator('body').getAttribute('data-md-color-scheme'), 'slate');
+    await page.reload();
+    await count(12);
+    assert.equal(await page.locator('body').getAttribute('data-md-color-scheme'), 'slate');
+    await page.locator('label[for="__palette_0"]').click();
+    assert.equal(await page.locator('body').getAttribute('data-md-color-scheme'), 'default');
     for (const width of [1440, 768, 390, 320]) {
       await page.setViewportSize({ width, height: 1000 });
       for (const scheme of ['default', 'slate']) {
@@ -169,7 +240,7 @@ const server = http.createServer(async (request, response) => {
     await page.route('**/assets/data/pbqs.json', async route => { await gate; await route.continue(); });
     await page.goto(`${origin}${prefix}/practice/pbqs/`);
     assert.equal(await page.getByRole('status').filter({ hasText: 'Loading activities' }).count(), 1);
-    assert.equal(await page.locator('.hub-page > ul a').count(), 5);
+    await certificationNavigation();
     release();
     await count(12);
     await page.unroute('**/assets/data/pbqs.json');
@@ -182,7 +253,7 @@ const server = http.createServer(async (request, response) => {
       await page.reload();
       await page.getByRole('button', { name: 'Try again' }).waitFor();
       assert.equal(await cards.count(), 0);
-      assert.equal(await page.locator('.hub-page > ul a').count(), 5);
+      await certificationNavigation();
       await page.unroute('**/assets/data/pbqs.json');
       await page.getByRole('button', { name: 'Try again' }).click();
       await count(12);
@@ -190,7 +261,7 @@ const server = http.createServer(async (request, response) => {
     await page.route('**/assets/data/pbqs.json', () => {});
     await page.reload();
     await page.getByRole('button', { name: 'Try again' }).waitFor({ timeout: 15000 });
-    assert.equal(await page.locator('.hub-page > ul a').count(), 5, 'Timed-out loads retain navigation');
+    await certificationNavigation();
     await page.unroute('**/assets/data/pbqs.json');
     await page.getByRole('button', { name: 'Try again' }).click();
     await count(12);
@@ -212,7 +283,7 @@ const server = http.createServer(async (request, response) => {
     await page.route('**/assets/javascripts/pbq-library.mjs', route => route.abort());
     await page.reload();
     assert.equal(await page.locator('[data-pbq-library]').isVisible(), false);
-    assert.equal(await page.locator('.hub-page > ul a').count(), 5, 'Blocked scripts retain navigation');
+    await certificationNavigation();
     await page.unroute('**/assets/javascripts/pbq-library.mjs');
     await page.route('**/assets/data/pbqs.json', route => route.fulfill({ json: { ...catalog, activities: [] } }));
     await page.reload();
@@ -224,7 +295,7 @@ const server = http.createServer(async (request, response) => {
     const fallback = await noJS.newPage();
     await fallback.goto(`${origin}${prefix}/practice/pbqs/`);
     assert.equal(await fallback.locator('[data-pbq-library]').isVisible(), false);
-    assert.equal(await fallback.locator('.hub-page > ul a').count(), 5);
+    await certificationNavigation(fallback);
     await fallback.locator('.hub-page > ul a').filter({ hasText: 'Network+' }).click();
     assert.equal(await fallback.locator('.hub-page li a[href^="../a-plus-core-1/"]').count(), 8);
     await noJS.close();

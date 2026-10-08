@@ -1,3 +1,7 @@
+---
+hub:
+  kind: resource
+---
 # Ports & Protocols: How Services Communicate
 
 A technician needs more than a port number: identify the service a user needs, choose its transport, and recognize what a failure would interrupt. This lesson covers the ports and services in A+ Core 1 220-1201 objective 2.1, using original explanations. The [official CompTIA objectives](https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1201-exam-objectives.pdf) define the exam scope.

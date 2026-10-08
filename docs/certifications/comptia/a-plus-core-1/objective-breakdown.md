@@ -1,3 +1,7 @@
+---
+hub:
+  kind: resource
+---
 # A+ Core 1 Objective Breakdown
 
 A student-friendly breakdown of CompTIA A+ Core 1 (220-1201). This page keeps the current objective numbering but adds plain-language definitions, comparisons, and troubleshooting context so the list is useful for studying rather than just repeating the official outline.
@@ -322,7 +326,9 @@ Related practice: [Network Setup & Cabling](../../../practice/pbqs/a-plus-core-1
 - **DB9:** 9-pin D-sub connector commonly used for serial communication.
 - **Adapter:** Converts one connector or interface to another. Some adapters are passive; others contain active signal-conversion electronics.
 
-Related practice: [Network Setup & Cabling](../../../practice/pbqs/a-plus-core-1/network-setup-and-cabling/README.md) and [Cabling Quick Reference](../../../reference/cabling.md).
+Related practice: [Network Setup & Cabling](../../../practice/pbqs/a-plus-core-1/network-setup-and-cabling/README.md)<!-- hub:hidden
+ and [Cabling Quick Reference](../../../reference/cabling.md)
+hub:hidden -->.
 
 ### 3.3 RAM characteristics
 
@@ -370,7 +376,9 @@ RAID combines multiple physical drives into one logical storage arrangement for 
 - **Memory card:** Small removable flash storage such as SD or microSD.
 - **Optical drive:** Reads or writes optical discs such as CDs, DVDs, or Blu-ray media.
 
-Related practice: [RAID Drive Replacement](../../../practice/pbqs/a-plus-core-1/raid-drive-replacement/README.md) and [RAID Quick Reference](../../../reference/raid.md).
+Related practice: [RAID Drive Replacement](../../../practice/pbqs/a-plus-core-1/raid-drive-replacement/README.md)<!-- hub:hidden
+ and [RAID Quick Reference](../../../reference/raid.md)
+hub:hidden -->.
 
 ### 3.5 Motherboards, CPUs, add-on cards, and cooling
 

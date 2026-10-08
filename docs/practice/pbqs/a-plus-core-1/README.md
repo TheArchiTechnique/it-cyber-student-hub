@@ -1,3 +1,7 @@
+---
+hub:
+  kind: category
+---
 # A+ Core 1 PBQ Practice
 
 Performance-based practice for CompTIA A+ Core 1.
@@ -59,8 +63,12 @@ Performance-based practice for CompTIA A+ Core 1.
 
     Browse course topics and related resources.
 
+<!-- hub:hidden
 - [View Labs](../../../labs/README.md)
 
     Browse hands-on activity areas.
 
+
+
+hub:hidden -->
 [Back to PBQ Practice](../README.md) · [Student Hub](../../../../README.md)
