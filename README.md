@@ -49,6 +49,10 @@ Choose your CompTIA path.
 
     Work through short exercises and PBQs.
 
+- [Practice Questions](docs/practice/questions/README.md)
+
+    Take self-paced quizzes and quick knowledge reviews.
+
 - [Labs](docs/labs/README.md)
 
     Complete hands-on activities.
