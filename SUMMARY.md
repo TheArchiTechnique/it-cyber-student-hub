@@ -30,5 +30,8 @@
       - [Two-Site VoIP Troubleshooting](docs/practice/pbqs/a-plus-core-1/two-site-voip-cli/README.md)
       - [Wireless Coverage](docs/practice/pbqs/a-plus-core-1/wireless-coverage/README.md)
     - [Network+](docs/practice/pbqs/network-plus/README.md)
+- [Labs](docs/labs/README.md)
+  - [IT Support](docs/labs/it-support/README.md)
+    - [VirtualBox: Installing Linux Mint](docs/labs/it-support/virtualbox-linux-mint/README.md)
 - [Reference](docs/reference/README.md)
   - [Ports & Protocols](docs/reference/ports-and-protocols.md)

@@ -22,6 +22,12 @@ hub:hidden -->
 
     Browse shorter exercises and PBQs.
 
-<!-- hub:hidden
-[Back to Labs](../README.md) ·&#32;
-hub:hidden -->[Student Hub](../../../README.md)
+<!-- BEGIN AVAILABLE RESOURCES -->
+
+## Available Resources
+
+- [VirtualBox: Installing Linux Mint](virtualbox-linux-mint/README.md)
+
+<!-- END AVAILABLE RESOURCES -->
+
+[Back to Labs](../README.md) · [Student Hub](../../../README.md)

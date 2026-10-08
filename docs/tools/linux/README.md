@@ -18,13 +18,10 @@ hub:placeholder -->
 
 
 hub:hidden -->
-<!-- hub:hidden
 - [View Labs](../../labs/README.md)
 
     Browse hands-on activity areas.
 
-
-hub:hidden -->
 <!-- hub:hidden
 [Back to Tools](../README.md) ·&#32;
 hub:hidden -->[Student Hub](../../../README.md)

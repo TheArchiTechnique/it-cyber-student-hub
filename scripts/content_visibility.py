@@ -91,6 +91,7 @@ class Availability:
         self.visible = {key for key, meta in self.meta.items()
                         if meta == {'kind': 'resource', 'status': 'published'}} | {'README.md'}
         self.dependencies = {}
+        catalog_indexes = {cert['pbqIndexPath'] for cert in self.catalog['certifications'].values()}
         for key, meta in self.meta.items():
             if meta['kind'] != 'category' or meta['status'] not in ('published', 'placeholder'):
                 continue
@@ -98,7 +99,9 @@ class Availability:
             dependencies = {other for other in self.pages if other != key and other.startswith(directory)}
             dependencies.update(self.associations.get(key, ()))
             # Placeholders cannot become available through their return/related links.
-            if meta['status'] == 'published':
+            # PBQ indexes are available through their activities/associations,
+            # never through related Labs or other cross-section navigation.
+            if meta['status'] == 'published' and key not in catalog_indexes:
                 for match in LINK.finditer(self.bodies[key]):
                     if match[1].startswith(('Back to ', 'Return to ')) or match[1] == 'Student Hub':
                         continue

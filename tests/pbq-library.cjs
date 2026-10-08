@@ -161,7 +161,9 @@ const server = http.createServer(async (request, response) => {
       assert.ok(saved, 'Representative PBQ has saved progress');
       await page.locator('[data-pbq-nav="certification"]').click();
       assert.ok(page.url().endsWith('/practice/pbqs/a-plus-core-1/'));
-      assert.equal(await page.locator('.hub-page a').filter({ hasText: 'Motherboard Assembly' }).count(), 1);
+      const motherboardLink = page.locator('.hub-page a').filter({ hasText: 'Motherboard Assembly' });
+      await motherboardLink.waitFor();
+      assert.equal(await motherboardLink.count(), 1);
       await page.getByRole('link', { name: 'Return to A+ Core 1', exact: true }).click();
       await page.waitForURL(`${origin}${prefix}/certifications/comptia/a-plus-core-1/`);
       const certificationActivity = page.locator('.hub-page a').filter({ hasText: catalog.activities.find(activity => activity.id === id).title });
@@ -199,7 +201,8 @@ const server = http.createServer(async (request, response) => {
     assert.ok(page.url().endsWith('/practice/pbqs/a-plus-core-1/ip-configuration-troubleshooting/'));
     await ready();
     // Empty categories remain absent from global navigation and the search index.
-    const unavailable = ['labs/', 'tools/', 'practice/scenarios/', 'practice/pbqs/a-plus-core-2/',
+    const unavailable = ['labs/networking/', 'labs/cybersecurity/', 'labs/log-analysis/', 'labs/incident-response/',
+      'tools/', 'practice/scenarios/', 'practice/pbqs/a-plus-core-2/',
       'practice/pbqs/security-plus/', 'practice/pbqs/cysa-plus/', 'reference/linux-commands/', 'reference/powershell-commands/'];
     const search = await (await page.request.get(`${origin}${prefix}/search/search_index.json`)).json();
     for (const route of unavailable) {

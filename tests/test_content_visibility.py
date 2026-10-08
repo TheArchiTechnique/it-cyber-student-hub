@@ -23,6 +23,13 @@ class VisibilityTests(unittest.TestCase):
             shutil.copytree(ROOT / area, root / area, ignore=shutil.ignore_patterns('__pycache__'))
         for source in ('README.md', 'CONTRIBUTING.md', 'mkdocs.yml', 'SUMMARY.md'):
             shutil.copyfile(ROOT / source, root / source)
+        # Hide/reveal tests start with genuinely empty Labs, independently of
+        # published learning content in the real repository.
+        for key, meta in Availability(root).meta.items():
+            if key.startswith('labs/') and meta['kind'] == 'resource':
+                target = root / 'docs' / key
+                target.write_text(target.read_text().replace('kind: resource',
+                                                           'kind: resource\n  status: unpublished'))
         return root
 
     def write(self, root, path, content):
@@ -37,13 +44,17 @@ class VisibilityTests(unittest.TestCase):
 
     def test_current_publication_and_preserved_resources(self):
         a = Availability()
-        for hidden in ('labs/README.md', 'tools/README.md', 'reference/linux-commands.md',
+        for hidden in ('labs/networking/README.md', 'labs/cybersecurity/README.md',
+                       'labs/log-analysis/README.md', 'labs/incident-response/README.md',
+                       'tools/README.md', 'reference/linux-commands.md',
                        'reference/powershell-commands.md', 'learn/hardware/README.md',
                        'practice/scenarios/README.md', 'practice/pbqs/a-plus-core-2/README.md',
                        'practice/pbqs/security-plus/README.md', 'practice/pbqs/cysa-plus/README.md'):
             self.assertNotIn(hidden, a.visible)
         for visible in ('learn/networking/ports-and-protocols.md', 'reference/ports-and-protocols.md',
-                        'practice/questions/README.md', 'practice/pbqs/network-plus/README.md'):
+                        'practice/questions/README.md', 'practice/pbqs/network-plus/README.md',
+                        'labs/README.md', 'labs/it-support/README.md',
+                        'labs/it-support/virtualbox-linux-mint/README.md'):
             self.assertIn(visible, a.visible)
         published = [item for item in a.catalog['activities'] if item['status'] == 'published']
         self.assertEqual(len(published), 12)

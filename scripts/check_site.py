@@ -5,7 +5,7 @@ from urllib.parse import urlsplit, unquote, urljoin
 import json
 import re
 import yaml
-from content_visibility import Availability, published_markdown
+from content_visibility import Availability, published_markdown, split_page
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / 'site'
@@ -67,7 +67,10 @@ for source, page in pages.items():
         source_path = ROOT / 'README.md' if relative == 'index.html' else ROOT / 'docs' / (relative[:-10] + 'README.md' if relative.endswith('index.html') else relative)
         if not source_path.exists() and relative.endswith('/index.html'):
             source_path = ROOT / 'docs' / (relative[:-11] + '.md')
-        if source_path.exists() and source_path.name == 'README.md':
+        # Instructional README pages opt into ordinary article lists; category
+        # and certification READMEs retain the existing navigation-card check.
+        if (source_path.exists() and source_path.name == 'README.md'
+                and split_page(source_path.read_text())[0].get('template') != 'article.html'):
             key = 'README.md' if relative == 'index.html' else source_path.relative_to(ROOT / 'docs').as_posix()
             expected_cards = len(re.findall(r'^- \[', published_markdown(availability.render(key)), re.M))
             content = source.read_text().split('<div class="hub-page', 1)[1].split('</div>', 1)[0]

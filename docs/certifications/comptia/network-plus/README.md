@@ -36,14 +36,11 @@ hub:hidden -->
 
     Find Network+ performance-based practice.
 
-<!-- hub:hidden
 - [Labs](../../../labs/README.md)
 
     Browse hands-on activities.
 
 
-
-hub:hidden -->
 - [Quick Reference](../../../reference/README.md)
 
     Find concise lookup resources.

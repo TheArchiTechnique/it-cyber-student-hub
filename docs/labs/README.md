@@ -6,13 +6,10 @@ hub:
 
 Choose a hands-on activity area. Labs include setup, practical tasks, and a way to check your work.
 
-<!-- hub:hidden
 - [IT Support](it-support/README.md)
 
     Work with systems and support tasks.
 
-
-hub:hidden -->
 <!-- hub:hidden
 - [Networking](networking/README.md)
 

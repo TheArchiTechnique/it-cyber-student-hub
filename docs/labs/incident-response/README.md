@@ -22,6 +22,4 @@ hub:hidden -->
 
     Browse shorter exercises and PBQs.
 
-<!-- hub:hidden
-[Back to Labs](../README.md) ·&#32;
-hub:hidden -->[Student Hub](../../../README.md)
+[Back to Labs](../README.md) · [Student Hub](../../../README.md)

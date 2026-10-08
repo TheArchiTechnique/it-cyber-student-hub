@@ -89,6 +89,9 @@
 .md-typeset p > a { text-underline-offset: .18em; }
 .hub-landing > p:last-child { border-top: 1px solid var(--hub-footer-border); margin-top: 2rem; padding-top: 1rem; font-size: .73rem; }
 .hub-home > p:last-child { border: 0; }
+/* Instructional articles keep screenshots at their natural size or smaller. */
+.hub-article p > a > img { display: block; box-sizing: content-box; max-width: calc(100% - 2px); height: auto; margin: 1rem 0 .5rem; border: 1px solid var(--hub-card-border); border-radius: 6px; }
+.hub-article > p > em { display: block; font-size: .76rem; color: var(--md-default-fg-color--light); }
 /* Global PBQ library: scoped controls and cards share the Hub palette. */
 .pbq-library-filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: 1.2rem 0; }
 .pbq-library-field { display: flex; flex-direction: column; gap: .25rem; min-width: 0; font-size: .76rem; font-weight: 600; }

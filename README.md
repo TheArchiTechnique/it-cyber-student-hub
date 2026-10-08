@@ -57,13 +57,10 @@ Choose your CompTIA path.
 
     Take self-paced quizzes and quick knowledge reviews.
 
-<!-- hub:hidden
 - [Labs](docs/labs/README.md)
 
     Complete hands-on activities.
 
-
-hub:hidden -->
 <!-- hub:hidden
 - [Tools](docs/tools/README.md)
 
