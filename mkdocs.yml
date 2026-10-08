@@ -65,7 +65,9 @@ nav:
     - A+ Core 1:
       - Overview: certifications/comptia/a-plus-core-1/README.md
       - Objective Breakdown: certifications/comptia/a-plus-core-1/objective-breakdown.md
-    - A+ Core 2: certifications/comptia/a-plus-core-2/README.md
+    - A+ Core 2:
+      - Overview: certifications/comptia/a-plus-core-2/README.md
+      - Objective Breakdown: certifications/comptia/a-plus-core-2/objective-breakdown.md
     - Network+: certifications/comptia/network-plus/README.md
     - Security+: certifications/comptia/security-plus/README.md
     - CySA+: certifications/comptia/cysa-plus/README.md

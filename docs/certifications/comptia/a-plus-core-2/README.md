@@ -29,6 +29,10 @@ hub:hidden -->
 
     Open CompTIA's official A+ Core 2 (220-1202) exam objectives.
 
+- [Student Objective Breakdown](objective-breakdown.md)
+
+    Review the Core 2 objectives with plain-language definitions, comparisons, and troubleshooting context.
+
 <!-- hub:hidden
 - [Course Topics](#course-topics)
 
