@@ -1,3 +1,7 @@
+---
+hub:
+  kind: resource
+---
 # Ports & Protocols
 
 Quick lookup for the A+ Core 1 220-1201 services. Use the [lesson](../learn/networking/ports-and-protocols.md) for explanations and the [interactive activity](../practice/pbqs/a-plus-core-1/ports-and-protocols/README.md) to practice decisions.

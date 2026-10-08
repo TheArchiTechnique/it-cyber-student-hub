@@ -6,6 +6,10 @@ import posixpath
 import re
 
 import yaml
+if __package__:
+    from .content_visibility import Availability, canonical
+else:
+    from content_visibility import Availability, canonical
 
 ROOT = Path(__file__).resolve().parents[1]
 START = '<!-- BEGIN GENERATED PBQ LISTINGS -->'
@@ -41,17 +45,17 @@ def render_listings(data, certification, source, overview=False):
     direct = selected(data, certification, 'direct')
     foundational = selected(data, certification, 'foundational')
     if not direct and not foundational:
-        return '\n'.join(lines + ['No PBQs published yet.', '']) + '\n'
+        return '\n<!-- hub:placeholder\nNo PBQs published yet.\nhub:placeholder -->\n'
     for relevance, title, activities in (
         ('direct', 'Direct Certification Practice', direct),
         ('foundational', 'Foundational Practice', foundational),
     ):
-        if relevance == 'foundational' and not activities:
+        if not activities:
+            if relevance == 'direct':
+                lines.extend(['<!-- hub:placeholder', f'{heading} {title}', '',
+                              'No direct certification PBQs published yet.', 'hub:placeholder -->', ''])
             continue
         lines.extend([f'{heading} {title}', ''])
-        if not activities:
-            lines.extend(['No direct certification PBQs published yet.', ''])
-            continue
         if relevance == 'foundational':
             lines.extend(['Related activities that build supporting skills for this certification.', ''])
         for activity in activities:
@@ -79,12 +83,14 @@ def render_navigation(data):
 
 def generated_files(data, root=ROOT):
     files = {}
+    availability = Availability(root, catalog=data)
     for cert, metadata in data['certifications'].items():
         for field in ('overviewPath', 'pbqIndexPath'):
             source = metadata[field]
             path = root / 'docs' / source
-            files[path] = replace_block(path.read_text(), START, END,
-                                        render_listings(data, cert, source, field == 'overviewPath'))
+            content = replace_block(canonical(path.read_text()), START, END,
+                                    render_listings(data, cert, source, field == 'overviewPath'))
+            files[path] = availability.render(source, content)
     nav = root / 'mkdocs.yml'
     files[nav] = replace_block(nav.read_text(), NAV_START, NAV_END, render_navigation(data))
     return files

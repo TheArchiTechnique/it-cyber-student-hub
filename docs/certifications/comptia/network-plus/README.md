@@ -1,3 +1,7 @@
+---
+hub:
+  kind: category
+---
 # Network+
 
 ```text
@@ -16,10 +20,14 @@
 
 Build your networking knowledge.
 
+<!-- hub:hidden
 - [Start Studying](#start-studying)
 
     Find your starting point.
 
+
+
+hub:hidden -->
 - [Course Topics](#course-topics)
 
     Browse shared topic hubs.
@@ -28,24 +36,38 @@ Build your networking knowledge.
 
     Find Network+ performance-based practice.
 
+<!-- hub:hidden
 - [Labs](../../../labs/README.md)
 
     Browse hands-on activities.
 
+
+
+hub:hidden -->
 - [Quick Reference](../../../reference/README.md)
 
     Find concise lookup resources.
 
+<!-- hub:hidden
 ## Start Studying
 
+&lt;!-- hub:placeholder
 Lessons and a guided study sequence have not been published yet. Browse the topic hubs below to see where material will appear.
+hub:placeholder --&gt;
 
+
+
+hub:hidden -->
 ## Course Topics
 
+<!-- hub:hidden
 - [Hardware](../../../learn/hardware/README.md)
 
     Explore components, storage, and peripherals.
 
+
+
+hub:hidden -->
 - [Networking](../../../learn/networking/README.md)
 
     Understand how devices connect and communicate.
@@ -54,9 +76,11 @@ Lessons and a guided study sequence have not been published yet. Browse the topi
 
 ## Published PBQ Practice
 
+<!-- hub:placeholder
 ### Direct Certification Practice
 
 No direct certification PBQs published yet.
+hub:placeholder -->
 
 ### Foundational Practice
 
@@ -95,24 +119,37 @@ Related activities that build supporting skills for this certification.
     Troubleshoot a weak, intermittent Wi-Fi connection in a 3,000-square-foot office. Inspect the floor plan and reposition available equipment to improve service across the workspace.
 <!-- END GENERATED PBQ LISTINGS -->
 
+<!-- hub:hidden
 ## Lab Areas
 
 - [Networking](../../../labs/networking/README.md)
 
     Configure and inspect network communication.
 
+
+
+
+hub:hidden -->
 ## Reference Topics
 
 - [Ports & Protocols](../../../reference/ports-and-protocols.md)
 
     Service and port lookup.
 
+<!-- hub:hidden
 - [Wi-Fi Standards](../../../reference/wifi-standards.md)
 
     Wireless standard comparisons.
 
+
+
+hub:hidden -->
+<!-- hub:hidden
 - [Cabling](../../../reference/cabling.md)
 
     Cable and connector comparisons.
 
+
+
+hub:hidden -->
 [Back to CompTIA](../README.md) · [Student Hub](../../../../README.md)

@@ -1,12 +1,18 @@
+---
+hub:
+  kind: category
+---
 # Network+ PBQ Practice
 
 Performance-based practice for this certification.
 
 <!-- BEGIN GENERATED PBQ LISTINGS -->
 
+<!-- hub:placeholder
 ## Direct Certification Practice
 
 No direct certification PBQs published yet.
+hub:placeholder -->
 
 ## Foundational Practice
 
@@ -49,8 +55,12 @@ Related activities that build supporting skills for this certification.
 
     Browse course topics and related resources.
 
+<!-- hub:hidden
 - [View Labs](../../../labs/README.md)
 
     Browse hands-on activity areas.
 
+
+
+hub:hidden -->
 [Back to PBQ Practice](../README.md) · [Student Hub](../../../../README.md)

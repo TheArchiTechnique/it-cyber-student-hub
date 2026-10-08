@@ -1,3 +1,7 @@
+---
+hub:
+  kind: resource
+---
 # Practice Questions
 
 Choose a certification review and practice independently. Quick knowledge checks are listed here; for hands-on performance-based tasks, visit [PBQ Practice](../pbqs/README.md).

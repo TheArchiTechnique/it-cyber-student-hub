@@ -1,3 +1,7 @@
+---
+hub:
+  kind: category
+---
 # Certifications
 
 Choose a vendor, then a certification.

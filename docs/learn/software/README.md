@@ -1,17 +1,30 @@
+---
+hub:
+  kind: category
+  status: placeholder
+---
 # Software
 
 Explore applications, installation, and software support.
 
+<!-- hub:placeholder
 No lessons published yet.
+hub:placeholder -->
 
+<!-- hub:hidden
 - [Browse Operating Systems](../operating-systems/README.md)
 
     Explore a related topic.
 
+
+hub:hidden -->
+<!-- hub:hidden
 - [View Labs](../../labs/README.md)
 
     Browse hands-on activity areas.
 
+
+hub:hidden -->
 - [Quick Reference](../../reference/README.md)
 
     Find lookup topics.

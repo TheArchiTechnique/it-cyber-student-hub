@@ -2,12 +2,17 @@
 from pathlib import Path
 import argparse
 import yaml
+if __package__:
+    from .content_visibility import Availability
+else:
+    from content_visibility import Availability
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def summary():
-    nav = yaml.safe_load((ROOT / 'mkdocs.yml').read_text())['nav']
+def summary(availability=None):
+    availability = availability or Availability(ROOT)
+    nav = availability.navigation(yaml.safe_load((availability.root / 'mkdocs.yml').read_text())['nav'])
     lines = ['# Summary', '']
 
     def visit(items, depth=0):
@@ -29,11 +34,19 @@ if __name__ == '__main__':
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args()
     target = ROOT / 'SUMMARY.md'
-    expected = summary()
+    availability = Availability(ROOT)
+    expected = summary(availability)
+    pages = availability.generated_pages()
     if args.check:
         if not target.exists() or target.read_text() != expected:
             raise SystemExit('SUMMARY.md is out of date. Run: python scripts/sync_navigation.py')
-        print('GitBook navigation is current.')
+        stale = [str(path.relative_to(ROOT)) for path, text in pages.items() if path.read_text() != text]
+        if stale:
+            raise SystemExit('Content visibility is out of date: ' + ', '.join(stale) + '. Run: python scripts/sync_navigation.py')
+        print('Content visibility and GitBook navigation are current.')
     else:
         target.write_text(expected)
-        print('Updated SUMMARY.md.')
+        for path, text in pages.items():
+            if path.read_text() != text:
+                path.write_text(text)
+        print(f'Updated content visibility and SUMMARY.md: {len(availability.visible)} published pages.')

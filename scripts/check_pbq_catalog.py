@@ -15,8 +15,10 @@ CATALOG = Path('docs/assets/data/pbqs.json')
 SLUG = re.compile(r'[a-z0-9]+(?:-[a-z0-9]+)*\Z')
 if __package__:
     from .sync_pbq_listings import listing_errors
+    from .content_visibility import Availability, split_page
 else:
     from sync_pbq_listings import listing_errors
+    from content_visibility import Availability, split_page
 
 
 class Links(HTMLParser):
@@ -145,6 +147,7 @@ def repository_errors(data, root=ROOT, site=None):
     errors = listing_errors(data, root)
     docs = root / 'docs'
     config = yaml.safe_load((root / 'mkdocs.yml').read_text())
+    config['nav'] = Availability(root, catalog=data).navigation(config['nav'])
     base = config['site_url']
     records = data['activities']
     discovered = {p.relative_to(docs).as_posix() for p in (docs / 'practice/pbqs').rglob('app/index.html')}
@@ -223,7 +226,7 @@ def repository_errors(data, root=ROOT, site=None):
         if not overview.is_file():
             errors.append(f'{activity["id"]}: missing activity overview')
             continue
-        if overview.read_text().partition('\n')[0] != '# ' + activity['title']:
+        if split_page(overview.read_text())[1].partition('\n')[0] != '# ' + activity['title']:
             errors.append(f'{activity["id"]}: catalog title differs from the activity overview')
         launch = urljoin(base, activity['launchPath'])
         overview_url = urljoin(base, activity['activityPath'])
@@ -232,6 +235,10 @@ def repository_errors(data, root=ROOT, site=None):
             errors.append(f'{activity["id"]}: overview does not link to canonical launch path')
         if site is not None:
             app = site / activity['launchPath'] / 'index.html'
+            if activity['status'] != 'published':
+                if app.exists():
+                    errors.append(f'{activity["id"]}: unpublished launch path was built')
+                continue
             if not app.is_file():
                 errors.append(f'{activity["id"]}: missing built launch path')
                 continue
