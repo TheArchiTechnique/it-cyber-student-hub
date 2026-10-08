@@ -2,6 +2,10 @@
 
 Use short exercises to check your decisions and problem-solving skills.
 
+- [Practice Questions](questions/README.md)
+
+    Find self-paced quizzes and knowledge reviews.
+
 - [PBQ Practice](pbqs/README.md)
 
     Choose a certification for performance-based practice.
