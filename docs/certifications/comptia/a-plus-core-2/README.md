@@ -45,14 +45,11 @@ hub:hidden -->
 
     Launch self-paced knowledge reviews.
 
-<!-- hub:hidden
 - [PBQ Practice](../../../practice/pbqs/a-plus-core-2/README.md)
 
     Find A+ Core 2 performance-based practice.
 
 
-
-hub:hidden -->
 - [Labs](../../../labs/README.md)
 
     Browse hands-on activities.
@@ -114,9 +111,13 @@ hub:hidden -->
 
 <!-- BEGIN GENERATED PBQ LISTINGS -->
 
-<!-- hub:placeholder
-No PBQs published yet.
-hub:placeholder -->
+## Published PBQ Practice
+
+### Direct Certification Practice
+
+- [Home Network Configuration & Troubleshooting](../../../practice/pbqs/a-plus-core-2/home-network-configuration/README.md)
+
+    Investigate DHCP, routing, DNS, wireless, and VPN support tickets. Configure Windows adapters, router services, guest access, and targeted firewall rules, then verify connectivity.
 <!-- END GENERATED PBQ LISTINGS -->
 
 ## Lab Areas
