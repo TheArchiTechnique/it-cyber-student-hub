@@ -29,6 +29,8 @@
       - [TCP/IP Packet Walk](docs/practice/pbqs/a-plus-core-1/tcp-ip-packet-walk/README.md)
       - [Two-Site VoIP Troubleshooting](docs/practice/pbqs/a-plus-core-1/two-site-voip-cli/README.md)
       - [Wireless Coverage](docs/practice/pbqs/a-plus-core-1/wireless-coverage/README.md)
+    - [A+ Core 2](docs/practice/pbqs/a-plus-core-2/README.md)
+      - [Home Network Configuration & Troubleshooting](docs/practice/pbqs/a-plus-core-2/home-network-configuration/README.md)
     - [Network+](docs/practice/pbqs/network-plus/README.md)
 - [Labs](docs/labs/README.md)
   - [IT Support](docs/labs/it-support/README.md)

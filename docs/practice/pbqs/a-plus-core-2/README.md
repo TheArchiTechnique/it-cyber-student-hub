@@ -9,9 +9,11 @@ Performance-based practice for this certification.
 
 <!-- BEGIN GENERATED PBQ LISTINGS -->
 
-<!-- hub:placeholder
-No PBQs published yet.
-hub:placeholder -->
+## Direct Certification Practice
+
+- [Home Network Configuration & Troubleshooting](home-network-configuration/README.md)
+
+    Investigate DHCP, routing, DNS, wireless, and VPN support tickets. Configure Windows adapters, router services, guest access, and targeted firewall rules, then verify connectivity.
 <!-- END GENERATED PBQ LISTINGS -->
 
 - [Return to A+ Core 2](../../../certifications/comptia/a-plus-core-2/README.md)
