@@ -992,4 +992,12 @@ Related practice: [Power Protection & UPS](../../../practice/pbqs/a-plus-core-1/
 
     Review 39 operating-system and file-system questions. Select **Play solo** on Kahoot! for independent practice.
 
+- [Windows Basics: Accounts, Settings & Devices - Kahoot!](https://create.kahoot.it/share/windows-basics-accounts-settings-devices/7e99334d-8907-4c38-9f66-ac01ba962364)
+
+    Review Windows accounts, settings, and devices. Select **Play solo** on Kahoot! for independent practice.
+
+- [Windows Command Line & Admin Tools Quiz - Kahoot!](https://create.kahoot.it/share/windows-command-line-admin-tools-quiz/4291e84a-5286-43c6-836a-3cf760328d29)
+
+    Review Windows command-line and administrative tools. Select **Play solo** on Kahoot! for independent practice.
+
 [Official CompTIA Objectives](https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf) · [Back to A+ Core 2](README.md) · [Student Hub](../../../../README.md)
