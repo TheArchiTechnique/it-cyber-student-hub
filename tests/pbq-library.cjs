@@ -75,7 +75,7 @@ const server = http.createServer(async (request, response) => {
       await ready(base);
       await certificationNavigation();
       const ids = await cards.evaluateAll(nodes => nodes.map(node => node.dataset.pbqId));
-      assert.equal(ids.length, 13, 'Current published inventory');
+      assert.equal(ids.length, 12, 'Current published inventory');
       assert.equal(new Set(ids).size, ids.length);
       const titles = await cards.locator('h3').allTextContents();
       assert.deepEqual(titles, [...titles].sort((a, b) => a.localeCompare(b, 'en')));
@@ -98,16 +98,13 @@ const server = http.createServer(async (request, response) => {
       await control('relevance').selectOption('direct');
       await count(0);
       await control('relevance').selectOption('');
-      await control('certification').selectOption('a-plus-core-2');
-      await count(1);
-      assert.equal(await cards.getAttribute('data-pbq-id'), 'home-network-configuration');
-      for (const cert of ['security-plus', 'cysa-plus']) {
+      for (const cert of ['a-plus-core-2', 'security-plus', 'cysa-plus']) {
         await control('certification').selectOption(cert);
         await count(0);
         assert.match(await page.locator('.pbq-library-empty').textContent(), /No published activities/);
       }
       await reset();
-      await count(13);
+      await count(12);
       await control('keyword').fill('  mOtHeRbOaRd AsSeMbLy  ');
       await count(1);
       await control('keyword').fill('  SIMULATED COMMAND PROMPTS ');
@@ -120,7 +117,7 @@ const server = http.createServer(async (request, response) => {
       await control('subject').selectOption('hardware');
       await count(0);
       await reset();
-      await count(13);
+      await count(12);
       await control('subject').selectOption('hardware');
       await count(4);
       await control('topic').selectOption('storage-and-raid');
@@ -130,7 +127,7 @@ const server = http.createServer(async (request, response) => {
       await count(8);
       await reset();
       await control('keyword').fill('   ');
-      await count(13);
+      await count(12);
       await control('keyword').fill('<img src=x onerror=alert(1)>');
       await count(0);
       await reset();
@@ -142,7 +139,7 @@ const server = http.createServer(async (request, response) => {
       }
       await page.keyboard.press('Tab');
       await page.keyboard.press('Enter');
-      await count(13);
+      await count(12);
       assert.equal(await control('keyword').evaluate(node => node === document.activeElement), true);
       await control('keyword').press('Enter');
       assert.equal(page.url(), `${base}practice/pbqs/`, 'Search never navigates');
@@ -189,7 +186,6 @@ const server = http.createServer(async (request, response) => {
       await page.locator('.hub-page a').filter({ hasText: /^Practice$/ }).click();
       await page.locator('.hub-page a').filter({ hasText: /^Practice Questions$/ }).click();
       assert.ok(page.url().endsWith('/practice/questions/'));
-      await page.locator('.hub-page a[href*="create.kahoot.it/share/"]').first().waitFor();
       assert.deepEqual(await page.locator('.hub-page a[href*="create.kahoot.it/share/"]')
         .evaluateAll(links => links.map(link => link.href)), [
         'https://create.kahoot.it/share/operating-systems-and-file-systems-essentials/3fd97dce-08bb-475e-a0d3-a743d981b5f8',
@@ -211,7 +207,7 @@ const server = http.createServer(async (request, response) => {
     await ready();
     // Empty categories remain absent from global navigation and the search index.
     const unavailable = ['labs/networking/', 'labs/cybersecurity/', 'labs/log-analysis/', 'labs/incident-response/',
-      'tools/', 'practice/scenarios/',
+      'tools/', 'practice/scenarios/', 'practice/pbqs/a-plus-core-2/',
       'practice/pbqs/security-plus/', 'practice/pbqs/cysa-plus/', 'reference/linux-commands/', 'reference/powershell-commands/'];
     const search = await (await page.request.get(`${origin}${prefix}/search/search_index.json`)).json();
     for (const route of unavailable) {
@@ -223,7 +219,7 @@ const server = http.createServer(async (request, response) => {
     await page.locator('label[for="__palette_1"]').click();
     assert.equal(await page.locator('body').getAttribute('data-md-color-scheme'), 'slate');
     await page.reload();
-    await count(13);
+    await count(12);
     assert.equal(await page.locator('body').getAttribute('data-md-color-scheme'), 'slate');
     await page.locator('label[for="__palette_0"]').click();
     assert.equal(await page.locator('body').getAttribute('data-md-color-scheme'), 'default');
@@ -244,7 +240,7 @@ const server = http.createServer(async (request, response) => {
     await touchPage.locator('#pbq-certification').selectOption('network-plus');
     assert.equal(await touchPage.locator('[data-pbq-id]').count(), 8);
     await touchPage.getByRole('button', { name: 'Clear Filters' }).tap();
-    assert.equal(await touchPage.locator('[data-pbq-id]').count(), 13);
+    assert.equal(await touchPage.locator('[data-pbq-id]').count(), 12);
     await mobile.close();
     // Delayed and failed catalog loads preserve static certification navigation.
     let release;
@@ -254,7 +250,7 @@ const server = http.createServer(async (request, response) => {
     assert.equal(await page.getByRole('status').filter({ hasText: 'Loading activities' }).count(), 1);
     await certificationNavigation();
     release();
-    await count(13);
+    await count(12);
     await page.unroute('**/assets/data/pbqs.json');
     for (const response of [
       { status: 503, body: 'Unavailable' },
@@ -268,7 +264,7 @@ const server = http.createServer(async (request, response) => {
       await certificationNavigation();
       await page.unroute('**/assets/data/pbqs.json');
       await page.getByRole('button', { name: 'Try again' }).click();
-      await count(13);
+      await count(12);
     }
     await page.route('**/assets/data/pbqs.json', () => {});
     await page.reload();
@@ -276,7 +272,7 @@ const server = http.createServer(async (request, response) => {
     await certificationNavigation();
     await page.unroute('**/assets/data/pbqs.json');
     await page.getByRole('button', { name: 'Try again' }).click();
-    await count(13);
+    await count(12);
     const future = structuredClone(catalog);
     future.activities[0].status = 'draft';
     future.activities[1].status = 'archived';
@@ -286,7 +282,7 @@ const server = http.createServer(async (request, response) => {
     future.activities.push({ ...future.activities[2], id: 'future-activity', title: 'Future activity', topics: ['future-topic'], certificationAssociations: [{ certification: 'future-cert', relevance: 'direct' }] });
     await page.route('**/assets/data/pbqs.json', route => route.fulfill({ json: future }));
     await page.reload();
-    await count(12);
+    await count(11);
     assert.equal(await page.locator(`[data-pbq-id="${future.activities[0].id}"], [data-pbq-id="${future.activities[1].id}"]`).count(), 0);
     for (const [name, value] of [['subject', 'future-subject'], ['topic', 'future-topic'], ['certification', 'future-cert']]) await control(name).selectOption(value);
     await count(1);

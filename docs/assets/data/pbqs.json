@@ -91,18 +91,6 @@
     "voip-and-qos": {
       "title": "VoIP and quality of service",
       "subject": "networking"
-    },
-    "windows-networking": {
-      "title": "Windows networking",
-      "subject": "networking"
-    },
-    "remote-access": {
-      "title": "Remote access",
-      "subject": "networking"
-    },
-    "windows-firewall": {
-      "title": "Windows firewall",
-      "subject": "networking"
     }
   },
   "activities": [
@@ -386,30 +374,6 @@
       "topics": [
         "wireless-networking",
         "network-troubleshooting"
-      ],
-      "status": "published"
-    },
-    {
-      "id": "home-network-configuration",
-      "title": "Home Network Configuration & Troubleshooting",
-      "description": "Investigate DHCP, routing, DNS, wireless, and VPN support tickets. Configure Windows adapters, router services, guest access, and targeted firewall rules, then verify connectivity.",
-      "activityPath": "practice/pbqs/a-plus-core-2/home-network-configuration/",
-      "launchPath": "practice/pbqs/a-plus-core-2/home-network-configuration/app/",
-      "primaryCertification": "a-plus-core-2",
-      "certificationAssociations": [
-        {
-          "certification": "a-plus-core-2",
-          "relevance": "direct",
-          "reason": "Practices Windows network configuration, diagnostic commands, secure wireless connectivity, and firewall and remote-access troubleshooting."
-        }
-      ],
-      "topics": [
-        "windows-networking",
-        "ip-addressing",
-        "network-troubleshooting",
-        "wireless-networking",
-        "remote-access",
-        "windows-firewall"
       ],
       "status": "published"
     }
