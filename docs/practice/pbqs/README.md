@@ -14,10 +14,13 @@ Find performance-based practice by keyword, certification, subject, or topic. La
 
     Hardware, devices, and connectivity.
 
+<!-- hub:hidden
 - [A+ Core 2](a-plus-core-2/README.md)
 
     Operating systems, software, and support.
 
+
+hub:hidden -->
 - [Network+](network-plus/README.md)
 
     Build your networking knowledge.

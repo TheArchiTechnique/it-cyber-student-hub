@@ -119,14 +119,11 @@ class CatalogTests(unittest.TestCase):
                 content = render_listings(self.catalog, cert, metadata[field], field == 'overviewPath')
                 content = published_markdown(content)
                 with self.subTest(cert=cert, field=field):
-                    self.assertEqual(content.count('- ['), 12 if cert == 'a-plus-core-1' else 8 if cert == 'network-plus' else 1 if cert == 'a-plus-core-2' else 0)
+                    self.assertEqual(content.count('- ['), 12 if cert == 'a-plus-core-1' else 8 if cert == 'network-plus' else 0)
                     if cert == 'network-plus':
                         self.assertNotIn('Direct Certification Practice', content)
                         self.assertIn('Foundational Practice', content)
                         self.assertNotIn('- [', content.split('Foundational Practice')[0])
-                    elif cert == 'a-plus-core-2':
-                        self.assertIn('Home Network Configuration & Troubleshooting', content)
-                        self.assertIn('Direct Certification Practice', content)
                     elif cert != 'a-plus-core-1':
                         self.assertEqual(content.strip(), '')
 

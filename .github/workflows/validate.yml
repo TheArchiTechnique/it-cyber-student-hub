@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [build/initial-student-hub, feature/centralized-pbq-library, feature/pbq-catalog-certification-integration, feature/global-pbq-library, feature/automatic-content-visibility, content/virtualbox-linux-mint-shared-lab, content/a-plus-core2-home-network-configuration-pbq]
+    branches: [build/initial-student-hub, feature/centralized-pbq-library, feature/pbq-catalog-certification-integration, feature/global-pbq-library, feature/automatic-content-visibility, content/virtualbox-linux-mint-shared-lab]
   workflow_dispatch:
 permissions:
   contents: read
@@ -22,7 +22,6 @@ jobs:
       - run: python scripts/check_source.py
       - run: python -m unittest discover -s tests -p 'test_*.py'
       - run: node tests/pbq-catalog.mjs
-      - run: node tests/home-network-model.cjs
       - run: mkdocs build --strict
       - run: python scripts/check_pbq_catalog.py --site-dir site
       - run: python scripts/check_site.py
@@ -34,7 +33,6 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm run test:pbq-library
-      - run: node tests/home-network-browser.cjs
       - run: node tests/shared-linux-lab.cjs
       - uses: actions/upload-artifact@v4
         with:

@@ -48,17 +48,16 @@ class VisibilityTests(unittest.TestCase):
                        'labs/log-analysis/README.md', 'labs/incident-response/README.md',
                        'tools/README.md', 'reference/linux-commands.md',
                        'reference/powershell-commands.md', 'learn/hardware/README.md',
-                       'practice/scenarios/README.md',
+                       'practice/scenarios/README.md', 'practice/pbqs/a-plus-core-2/README.md',
                        'practice/pbqs/security-plus/README.md', 'practice/pbqs/cysa-plus/README.md'):
             self.assertNotIn(hidden, a.visible)
         for visible in ('learn/networking/ports-and-protocols.md', 'reference/ports-and-protocols.md',
                         'practice/questions/README.md', 'practice/pbqs/network-plus/README.md',
-                        'practice/pbqs/a-plus-core-2/README.md',
                         'labs/README.md', 'labs/it-support/README.md',
                         'labs/it-support/virtualbox-linux-mint/README.md'):
             self.assertIn(visible, a.visible)
         published = [item for item in a.catalog['activities'] if item['status'] == 'published']
-        self.assertEqual(len(published), 13)
+        self.assertEqual(len(published), 12)
         self.assertEqual(len(a.associations['practice/pbqs/network-plus/README.md']), 8)
         for item in published:
             self.assertIn(item['activityPath'] + 'README.md', a.visible)
