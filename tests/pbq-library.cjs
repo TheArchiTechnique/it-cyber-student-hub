@@ -186,7 +186,12 @@ const server = http.createServer(async (request, response) => {
       await page.locator('.hub-page a').filter({ hasText: /^Practice$/ }).click();
       await page.locator('.hub-page a').filter({ hasText: /^Practice Questions$/ }).click();
       assert.ok(page.url().endsWith('/practice/questions/'));
-      assert.equal(await page.locator('.hub-page a[href*="create.kahoot.it/share/"]').count(), 1);
+      assert.deepEqual(await page.locator('.hub-page a[href*="create.kahoot.it/share/"]')
+        .evaluateAll(links => links.map(link => link.href)), [
+        'https://create.kahoot.it/share/operating-systems-and-file-systems-essentials/3fd97dce-08bb-475e-a0d3-a743d981b5f8',
+        'https://create.kahoot.it/share/windows-basics-accounts-settings-devices/7e99334d-8907-4c38-9f66-ac01ba962364',
+        'https://create.kahoot.it/share/windows-command-line-admin-tools-quiz/4291e84a-5286-43c6-836a-3cf760328d29'
+      ]);
       await ready();
     }
     await page.goto(`${origin}${prefix}/practice/pbqs/network-plus/`);
