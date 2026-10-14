@@ -134,6 +134,7 @@ nav:
 - Reference:
   - Overview: reference/README.md
   - Ports & Protocols: reference/ports-and-protocols.md
+  - Windows Command-Line Reference: reference/windows-command-line.md
   - Windows Event IDs: reference/windows-event-ids.md
   - Linux Commands: reference/linux-commands.md
   - PowerShell Commands: reference/powershell-commands.md

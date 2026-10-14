@@ -146,14 +146,21 @@ hub:hidden -->
 
     Complete a standard Linux Mint installation, configure a user account, and verify the installed system in the terminal.
 
-<!-- hub:hidden
 ## Reference Topics
 
+- [Windows Command-Line Reference](../../../reference/windows-command-line.md)
+
+    Learn CMD tools with practical examples, result explanations, and safe mini exercises.
+
+<!-- hub:hidden
 - [Linux Commands](../../../reference/linux-commands.md)
 
     Common command lookup.
 
 
+
+hub:hidden -->
+<!-- hub:hidden
 - [PowerShell Commands](../../../reference/powershell-commands.md)
 
     Cmdlet and syntax lookup.

@@ -37,3 +37,4 @@
     - [VirtualBox: Installing Linux Mint](docs/labs/it-support/virtualbox-linux-mint/README.md)
 - [Reference](docs/reference/README.md)
   - [Ports & Protocols](docs/reference/ports-and-protocols.md)
+  - [Windows Command-Line Reference](docs/reference/windows-command-line.md)

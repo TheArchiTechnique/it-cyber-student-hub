@@ -10,6 +10,10 @@ Find a quick lookup topic. For explanations and examples, use [Learn](../learn/R
 
     Service and port lookup.
 
+- [Windows Command-Line Reference](windows-command-line.md)
+
+    Find CMD examples, interpret support results, and practice safely with disposable files.
+
 <!-- hub:hidden
 - [Windows Event IDs](windows-event-ids.md)
 
