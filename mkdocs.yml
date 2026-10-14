@@ -116,7 +116,10 @@ nav:
     - Investigations: practice/scenarios/investigations/README.md
 - Labs:
   - Overview: labs/README.md
-  - IT Support: labs/it-support/README.md
+  - IT Support:
+    - Overview: labs/it-support/README.md
+    - "VirtualBox: Installing Linux Mint": labs/it-support/virtualbox-linux-mint/README.md
+    - Windows Command-Line Lab: labs/it-support/windows-command-line/README.md
   - Networking: labs/networking/README.md
   - Cybersecurity: labs/cybersecurity/README.md
   - Log Analysis: labs/log-analysis/README.md
@@ -134,6 +137,7 @@ nav:
 - Reference:
   - Overview: reference/README.md
   - Ports & Protocols: reference/ports-and-protocols.md
+  - Windows Command-Line Reference: reference/windows-command-line.md
   - Windows Event IDs: reference/windows-event-ids.md
   - Linux Commands: reference/linux-commands.md
   - PowerShell Commands: reference/powershell-commands.md

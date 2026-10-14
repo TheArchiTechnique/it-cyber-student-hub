@@ -1,0 +1,21 @@
+/* Page-scoped additions to the existing article layout and Hub palette. */
+.cmd-lab-progress { padding: 1rem; margin: 1.2rem 0; border: 1px solid var(--hub-card-border); border-radius: 10px; background: var(--hub-card-bg); }
+.cmd-lab-progress p { margin: .4rem 0; }
+.cmd-lab-progress progress { display: block; width: 100%; height: .65rem; margin: .7rem 0; accent-color: var(--hub-card-focus); }
+.cmd-lab-progress code { overflow-wrap: anywhere; }
+.cmd-lab-button { min-height: 44px; padding: .4rem .7rem; border: 1px solid var(--hub-card-hover-border); border-radius: 6px; background: var(--hub-card-bg); color: var(--hub-card-link); font: inherit; font-size: .74rem; cursor: pointer; }
+.cmd-lab-button:hover { background: var(--hub-card-hover-bg); }
+.cmd-lab-button:focus-visible, .cmd-lab-checkpoint input:focus-visible, .cmd-lab-code pre:focus-visible { outline: 3px solid var(--hub-focus-outline); outline-offset: 3px; }
+.cmd-lab-code { margin: 1rem 0; min-width: 0; }
+.cmd-lab-code pre { margin: .25rem 0 0; }
+.cmd-lab-copy-bar { display: flex; align-items: center; flex-wrap: wrap; gap: .6rem; }
+.cmd-lab-copy-bar span { font-size: .72rem; color: var(--md-default-fg-color--light); }
+.cmd-lab-checkpoint { display: flex; align-items: flex-start; gap: .6rem; padding: .8rem; margin: 1.1rem 0 1.5rem; border: 1px solid var(--hub-card-border); border-radius: 6px; background: var(--hub-card-bg); cursor: pointer; font-size: .78rem; }
+.cmd-lab-checkpoint input { flex: 0 0 auto; width: 20px; height: 20px; margin: .15rem 0 0; accent-color: var(--hub-card-focus); }
+.cmd-lab-checkpoint:has(input:checked) { border-color: var(--hub-card-focus); }
+.cmd-lab-actions { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin: 1rem 0; }
+.cmd-lab-actions a { font-size: .76rem; }
+@media print {
+  .cmd-lab-copy-bar, .cmd-lab-actions button { display: none; }
+  .cmd-lab-checkpoint { break-inside: avoid; }
+}

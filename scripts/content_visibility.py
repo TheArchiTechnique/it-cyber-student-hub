@@ -252,11 +252,13 @@ class Availability:
             for item in items:
                 for label, value in list(item.items()):
                     if isinstance(value, list):
-                        if insert(value, key):
-                            return True
                         overview = next((v for entry in value for v in entry.values() if isinstance(v, str) and v.endswith('README.md')), None)
                         if overview and PurePosixPath(overview).parent == directory:
                             value.append({self.title(key): key})
+                            return True
+                        # Append beside an existing Overview before recursing;
+                        # otherwise the Overview itself becomes a nested section.
+                        if insert(value, key):
                             return True
                     elif value.endswith('README.md') and PurePosixPath(value).parent == directory:
                         item[label] = [{'Overview': value}, {self.title(key): key}]

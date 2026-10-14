@@ -153,6 +153,8 @@ A file system organizes files and folders on a storage volume. Its features dete
 
 Commands run in a particular account context. Some repair or configuration operations require an elevated command prompt; help output describes the available options.
 
+Use the [Windows Command-Line Reference](../../../reference/windows-command-line.md) for practical examples, result explanations, and safe practice tasks.
+
 | Command | Definition / primary use |
 | --- | --- |
 | `cd` | Changes the working directory. In Command Prompt, `cd /d` can change both the drive and directory. |
