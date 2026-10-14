@@ -376,6 +376,28 @@
         "network-troubleshooting"
       ],
       "status": "published"
+    },
+    {
+      "id": "network-configuration-concepts",
+      "title": "Network Configuration Concepts",
+      "description": "Configure three network diagrams using IPv4 addresses, LAN and screened-subnet placement, service ports, Wi-Fi security, NAT, and port forwarding.",
+      "activityPath": "practice/pbqs/a-plus-core-2/network-configuration-concepts/",
+      "launchPath": "practice/pbqs/a-plus-core-2/network-configuration-concepts/app/",
+      "primaryCertification": "a-plus-core-2",
+      "certificationAssociations": [
+        {
+          "certification": "a-plus-core-2",
+          "relevance": "direct",
+          "reason": "Practices client network configuration, secure wireless access, and basic network access decisions for A+ Core 2."
+        }
+      ],
+      "topics": [
+        "ip-addressing",
+        "network-devices",
+        "ports-and-protocols",
+        "wireless-networking"
+      ],
+      "status": "published"
     }
   ]
 }

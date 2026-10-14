@@ -9,9 +9,11 @@ Performance-based practice for this certification.
 
 <!-- BEGIN GENERATED PBQ LISTINGS -->
 
-<!-- hub:placeholder
-No PBQs published yet.
-hub:placeholder -->
+## Direct Certification Practice
+
+- [Network Configuration Concepts](network-configuration-concepts/README.md)
+
+    Configure three network diagrams using IPv4 addresses, LAN and screened-subnet placement, service ports, Wi-Fi security, NAT, and port forwarding.
 <!-- END GENERATED PBQ LISTINGS -->
 
 - [Return to A+ Core 2](../../../certifications/comptia/a-plus-core-2/README.md)

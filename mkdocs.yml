@@ -102,7 +102,9 @@ nav:
       - TCP/IP Packet Walk: practice/pbqs/a-plus-core-1/tcp-ip-packet-walk/README.md
       - Two-Site VoIP Troubleshooting: practice/pbqs/a-plus-core-1/two-site-voip-cli/README.md
       - Wireless Coverage: practice/pbqs/a-plus-core-1/wireless-coverage/README.md
-    - A+ Core 2: practice/pbqs/a-plus-core-2/README.md
+    - A+ Core 2:
+      - Overview: practice/pbqs/a-plus-core-2/README.md
+      - Network Configuration Concepts: practice/pbqs/a-plus-core-2/network-configuration-concepts/README.md
     - Network+: practice/pbqs/network-plus/README.md
     - Security+: practice/pbqs/security-plus/README.md
     - CySA+: practice/pbqs/cysa-plus/README.md

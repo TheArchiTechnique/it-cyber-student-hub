@@ -45,14 +45,11 @@ hub:hidden -->
 
     Launch self-paced knowledge reviews.
 
-<!-- hub:hidden
 - [PBQ Practice](../../../practice/pbqs/a-plus-core-2/README.md)
 
     Find A+ Core 2 performance-based practice.
 
 
-
-hub:hidden -->
 - [Labs](../../../labs/README.md)
 
     Browse hands-on activities.
@@ -114,9 +111,13 @@ hub:hidden -->
 
 <!-- BEGIN GENERATED PBQ LISTINGS -->
 
-<!-- hub:placeholder
-No PBQs published yet.
-hub:placeholder -->
+## Published PBQ Practice
+
+### Direct Certification Practice
+
+- [Network Configuration Concepts](../../../practice/pbqs/a-plus-core-2/network-configuration-concepts/README.md)
+
+    Configure three network diagrams using IPv4 addresses, LAN and screened-subnet placement, service ports, Wi-Fi security, NAT, and port forwarding.
 <!-- END GENERATED PBQ LISTINGS -->
 
 ## Lab Areas
