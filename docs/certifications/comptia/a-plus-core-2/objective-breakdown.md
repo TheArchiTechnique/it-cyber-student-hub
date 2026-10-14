@@ -990,7 +990,7 @@ Related practice: [Power Protection & UPS](../../../practice/pbqs/a-plus-core-1/
 
 - [Operating Systems and File Systems Essentials - Kahoot!](https://create.kahoot.it/share/operating-systems-and-file-systems-essentials/3fd97dce-08bb-475e-a0d3-a743d981b5f8)
 
-    Review 39 operating-system and file-system questions. Select **Play solo** on Kahoot! for independent practice.
+    Review operating systems and file systems. Select **Play solo** on Kahoot! for independent practice.
 
 - [Windows Basics: Accounts, Settings & Devices - Kahoot!](https://create.kahoot.it/share/windows-basics-accounts-settings-devices/7e99334d-8907-4c38-9f66-ac01ba962364)
 
@@ -999,5 +999,9 @@ Related practice: [Power Protection & UPS](../../../practice/pbqs/a-plus-core-1/
 - [Windows Command Line & Admin Tools Quiz - Kahoot!](https://create.kahoot.it/share/windows-command-line-admin-tools-quiz/4291e84a-5286-43c6-836a-3cf760328d29)
 
     Review Windows command-line and administrative tools. Select **Play solo** on Kahoot! for independent practice.
+
+- [Windows 10/11: Troubleshooting, Networking and Remote Support - Kahoot!](https://create.kahoot.it/share/windows-10-11-troubleshooting-networking-and-remote-support/6111530d-6484-4fe9-9536-9a1754846fae)
+
+    Review Windows troubleshooting, networking, and remote support. Select **Play solo** on Kahoot! for independent practice.
 
 [Official CompTIA Objectives](https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf) · [Back to A+ Core 2](README.md) · [Student Hub](../../../../README.md)
