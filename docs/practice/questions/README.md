@@ -8,7 +8,7 @@ Choose a certification review and practice independently. Quick knowledge checks
 
 ## A+ Core 2
 
-- [Operating Systems and File Systems Essentials — Kahoot! (39 questions)](https://create.kahoot.it/share/operating-systems-and-file-systems-essentials/3fd97dce-08bb-475e-a0d3-a743d981b5f8)
+- [Operating Systems and File Systems Essentials — Kahoot!](https://create.kahoot.it/share/operating-systems-and-file-systems-essentials/3fd97dce-08bb-475e-a0d3-a743d981b5f8)
 
     Review operating systems and file systems at your own pace. Open Kahoot! and select **Play solo**. No instructor session or game PIN is needed.
 
@@ -19,5 +19,9 @@ Choose a certification review and practice independently. Quick knowledge checks
 - [Windows Command Line & Admin Tools Quiz - Kahoot!](https://create.kahoot.it/share/windows-command-line-admin-tools-quiz/4291e84a-5286-43c6-836a-3cf760328d29)
 
     Review Windows command-line and administrative tools. Select **Play solo** on Kahoot! for independent practice.
+
+- [Windows 10/11: Troubleshooting, Networking and Remote Support - Kahoot!](https://create.kahoot.it/share/windows-10-11-troubleshooting-networking-and-remote-support/6111530d-6484-4fe9-9536-9a1754846fae)
+
+    Review Windows troubleshooting, networking, and remote support. Select **Play solo** on Kahoot! for independent practice.
 
 [Back to Practice](../README.md) · [A+ Core 2](../../certifications/comptia/a-plus-core-2/README.md) · [Student Hub](../../../README.md)
