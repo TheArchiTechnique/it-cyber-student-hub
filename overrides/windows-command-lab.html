@@ -1,0 +1,6 @@
+{% extends "article.html" %}
+{% block extrahead %}
+{{ super() }}
+<link rel="stylesheet" href="{{ 'assets/stylesheets/windows-command-lab.css' | url }}">
+<script type="module" src="{{ 'assets/javascripts/windows-command-lab.mjs' | url }}"></script>
+{% endblock %}

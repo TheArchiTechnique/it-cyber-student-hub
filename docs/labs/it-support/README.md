@@ -28,6 +28,8 @@ hub:hidden -->
 
 - [VirtualBox: Installing Linux Mint](virtualbox-linux-mint/README.md)
 
+- [Windows Command-Line Lab](windows-command-line/README.md)
+
 <!-- END AVAILABLE RESOURCES -->
 
 [Back to Labs](../README.md) · [Student Hub](../../../README.md)

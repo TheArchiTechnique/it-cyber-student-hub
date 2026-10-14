@@ -142,6 +142,10 @@ hub:hidden -->
 hub:hidden -->
 ## Published Labs
 
+- [Windows Command-Line Lab](../../../labs/it-support/windows-command-line/README.md)
+
+    Identify a workstation, organize support files, verify backups, and investigate network information in seven guided CMD stages.
+
 - [VirtualBox: Installing Linux Mint](../../../labs/it-support/virtualbox-linux-mint/README.md)
 
     Complete a standard Linux Mint installation, configure a user account, and verify the installed system in the terminal.

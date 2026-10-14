@@ -136,6 +136,18 @@ class VisibilityTests(unittest.TestCase):
         self.assertIn('labs/new-area/README.md', nav_paths(labs))
         self.assertIn('new-area/README.md', published_markdown(a.render('labs/README.md')))
 
+    def test_new_resource_is_added_beside_configured_overview(self):
+        root = self.fixture()
+        self.write(root, 'reference/new-guide.md',
+                   '---\nhub:\n  kind: resource\n---\n# New Guide\n\nUse a command reference to check syntax.\n')
+        a = Availability(root)
+        nav = a.navigation(yaml.safe_load((root / 'mkdocs.yml').read_text())['nav'])
+        reference = next(item['Reference'] for item in nav if 'Reference' in item)
+        self.assertEqual(reference[0], {'Overview': 'reference/README.md'})
+        self.assertIn({'New Guide': 'reference/new-guide.md'}, reference)
+        self.assertEqual(len(nav_paths(nav)), len(set(nav_paths(nav))))
+        self.assertIn('[New Guide](docs/reference/new-guide.md)', summary(a))
+
     def test_real_build_empty_publish_unpublish_and_remove(self):
         root = self.fixture()
         original_nav = (root / 'mkdocs.yml').read_bytes()
