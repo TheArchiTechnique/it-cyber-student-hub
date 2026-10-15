@@ -105,6 +105,7 @@ nav:
     - A+ Core 2:
       - Overview: practice/pbqs/a-plus-core-2/README.md
       - Network Configuration Concepts: practice/pbqs/a-plus-core-2/network-configuration-concepts/README.md
+      - 'Windows Help Desk: Troubleshooting Multiple PCs': practice/pbqs/a-plus-core-2/windows-troubleshooting/README.md
     - Network+: practice/pbqs/network-plus/README.md
     - Security+: practice/pbqs/security-plus/README.md
     - CySA+: practice/pbqs/cysa-plus/README.md

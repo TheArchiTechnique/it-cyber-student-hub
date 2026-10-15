@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Windows Help Desk: Troubleshooting Multiple PCs | A+ Core 2</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="model.js" defer></script><script src="app.js" defer></script>
+</head>
+<body>
+<header class="topbar"><div class="top-inner"><p class="eyebrow">A+ CORE 2 · WINDOWS COMMAND LINE</p><h1>Windows Help Desk: Troubleshooting Multiple PCs</h1><p>Investigate four workstations. Read the evidence. Submit your findings.</p></div></header>
+<main class="app">
+  <nav class="tabs" role="tablist" aria-label="Activity sections">
+    <button id="activity-tab" role="tab" aria-controls="activity" aria-selected="true">Activity</button>
+    <button id="lesson-tab" role="tab" aria-controls="lesson" aria-selected="false" tabindex="-1">Lesson</button>
+  </nav>
+  <section id="activity" role="tabpanel" aria-labelledby="activity-tab">
+    <p class="instructions">You are supporting a small business with managed Windows 11 PCs. Select a computer, investigate its ticket, and choose a cause and corrective action. Each PC earns one point for diagnostic evidence, one for diagnosis, and one for remediation. Command order does not affect your score.</p>
+    <div class="activity-heading"><h2>Workstations</h2><p id="progress" role="status" aria-live="polite"></p></div>
+    <div id="workstations" class="workstations" role="group" aria-label="Select a workstation"></div>
+    <p class="resource-note">Need syntax? <a href="../../../../../reference/windows-command-line/" target="_blank" rel="noopener">Open the Windows command reference in a new tab</a>.</p>
+    <section id="ticket" class="panel brief" aria-labelledby="ticket-title"><p class="eyebrow" id="ticket-id"></p><h2 id="ticket-title"></h2><p id="symptom"></p><details><summary>Technical details</summary><ul id="facts"></ul></details></section>
+    <div class="investigation">
+      <section class="terminal" aria-labelledby="terminal-title">
+        <div class="terminal-head"><h3 id="terminal-title">Command Prompt</h3><span id="console-context"></span></div>
+        <div id="output" class="terminal-output" role="log" aria-label="Selected workstation command output" aria-live="polite" aria-relevant="additions" tabindex="0"></div>
+        <form id="terminal-form" autocomplete="off"><label for="command">Windows command</label><div class="command-row"><input id="command" name="command" type="text" maxlength="256" spellcheck="false" autocapitalize="off" placeholder="Type help" aria-describedby="terminal-hint"><button id="run" type="submit">Run</button></div></form>
+        <p id="terminal-hint" class="terminal-hint">Type help or command /? for syntax. Up and Down recall this PC's command history. All output is simulated.</p>
+      </section>
+      <section class="panel findings" aria-labelledby="findings-title"><h2 id="findings-title">Your findings</h2><p>Use the command results to support your selections. Choosing an action records your recommendation; it does not execute a repair.</p>
+        <label for="cause">Most likely root cause</label><select id="cause"></select>
+        <label for="action">Most appropriate corrective action</label><select id="action"></select>
+        <div id="system-controls" hidden><button id="elevate" type="button">Run as administrator (simulated)</button><p class="field-note">Use the authorized administrator context for this ticket. This changes only the simulated console.</p></div>
+        <button id="restart" type="button" hidden>Simulate approved restart</button><p id="repair-status" class="field-note" role="status"></p>
+      </section>
+    </div>
+    <div class="actions main-actions"><button id="reset" type="button">Reset attempt</button><button id="new-scenario" type="button">New Scenario</button><button id="submit" class="primary" type="button">Submit all findings</button><button id="retry" class="primary" type="button" hidden>Retry findings</button></div>
+    <p id="save-status" class="save-status" role="status"></p>
+    <section id="results" class="panel results" tabindex="-1" aria-labelledby="score-title" hidden></section>
+  </section>
+  <section id="lesson" role="tabpanel" aria-labelledby="lesson-tab" hidden>
+    <div class="lesson-intro"><h2>Troubleshoot with evidence</h2><p>A command answers a specific question. Read its result, compare it with the expected configuration, and choose the next useful test.</p></div>
+    <div class="lesson-grid">
+      <article class="panel lesson-card"><h3>1 · Commands, switches, and parameters</h3><p>In <code>ping -n 2 192.168.18.1</code>, <code>ping</code> is the command, <code>-n</code> is a switch, <code>2</code> is its value, and the address is the target parameter. Windows commands can use different switch conventions.</p><pre>hostname
+TRAINING-PC07
+
+whoami
+training\llee</pre><p>The computer name identifies the device; the account identifies the security context. These are different facts. <code>help</code> lists this activity's supported commands; <code>ipconfig /?</code> shows syntax. On real Windows, HELP covers CMD commands; many utilities provide their own <code>/?</code>.</p><p>See the reference's <a href="../../../../../reference/windows-command-line/#command-help" target="_blank" rel="noopener">command help examples</a>.</p></article>
+      <article class="panel lesson-card"><h3>2 · DHCP and APIPA</h3><p><code>ipconfig</code> shows adapter addressing. <code>/all</code> adds DHCP status, DNS servers, and other configuration. Read the active adapter.</p><pre>Autoconfiguration IPv4 Address : 169.254.25.64
+Subnet Mask                   : 255.255.0.0
+Default Gateway               :</pre><p>This is link-local addressing. With DHCP enabled, it commonly means no usable lease was obtained. It does not identify whether the DHCP service, relay, VLAN, or path failed. <code>ipconfig /renew</code> requests a lease; it cannot repair an unreachable DHCP service.</p><p>Review <a href="../../../../../reference/windows-command-line/#ipconfig" target="_blank" rel="noopener">IP configuration and renewal</a>.</p></article>
+      <article class="panel lesson-card"><h3>3 · IP reachability and DNS</h3><p>Compare a numeric test with a hostname test, then query DNS directly.</p><pre>ping 192.168.18.30
+Reply from 192.168.18.30: bytes=32 time&lt;1ms TTL=128
+
+nslookup files.training.example
+DNS request timed out.</pre><p>A working numeric ping plus failed name resolution points toward DNS investigation. Check which resolver the client uses. <code>nslookup name resolver-IP</code> can compare resolvers. A ping reply proves ICMP reachability, not SMB or web-service availability; timeouts can reflect filtering.</p><p>Review <a href="../../../../../reference/windows-command-line/#nslookup" target="_blank" rel="noopener">DNS lookup results</a>. Clearing the client cache does not correct a wrong resolver address.</p></article>
+      <article class="panel lesson-card"><h3>4 · Mapped shares and accounts</h3><p><code>net use</code> lists connections visible to the current account. A drive letter points to a UNC path: <code>\\server\share</code>. Compare that path with the approved resource, and use <code>whoami</code> and <code>hostname</code> to confirm context.</p><pre>Status  Local  Remote
+OK      M:     \\training-fs\classwork</pre><p>A reachable file server can still host an unavailable share. A correct mapping can still fail because of permissions or credentials. Match the evidence before changing access. Removing a mapping disconnects that connection; it does not delete the shared files.</p><p>For syntax, read <a href="../../../../../reference/windows-command-line/#net-use" target="_blank" rel="noopener">network-share connections</a>. Use the signed-in user's context for drive mappings; an elevated console can have different mappings.</p></article>
+      <article class="panel lesson-card"><h3>5 · View policy versus refresh policy</h3><p><code>gpresult /r</code> reports resulting policy. <code>gpresult /scope user /r</code> limits the report to the user. Computer-scope reporting can require elevation.</p><pre>USER SETTINGS
+Last time Group Policy was applied: Today at 09:10
+Applied Group Policy Objects
+    Training-Desktop</pre><p>Compare the report's scope, application time, source controller, and GPO list with the approved deployment. <code>gpupdate /force</code> reapplies settings. <code>/target:user</code> or <code>/target:computer</code> limits processing.</p><p>A refresh cannot correct an inapplicable security filter or broken domain connectivity. Some extensions require sign-out or restart. Verify the intended GPO after processing; a success message alone does not prove it applied.</p><p>Review <a href="../../../../../reference/windows-command-line/#gpresult" target="_blank" rel="noopener">policy reporting</a> and <a href="../../../../../reference/windows-command-line/#gpupdate" target="_blank" rel="noopener">policy refresh behavior</a>.</p></article>
+      <article class="panel lesson-card"><h3>6 · Protected system files</h3><p><code>sfc /verifyonly</code> checks protected Windows files without repairs. <code>sfc /scannow</code> checks and attempts repairs. Both require an authorized elevated console.</p><pre>Windows Resource Protection found corrupt files
+and successfully repaired them.</pre><p>Distinguish no violations, successful repair, and corruption that could not be repaired. SFC does not validate every application or personal file. If repair fails, review CBS logs and investigate the repair source; Windows servicing with DISM may be needed. Verify the original symptom after repair.</p><p>Review <a href="../../../../../reference/windows-command-line/#sfc" target="_blank" rel="noopener">System File Checker results</a>.</p></article>
+      <article class="panel lesson-card"><h3>7 · File-system integrity and restart</h3><p><code>chkdsk C:</code> inspects volume structures. It needs elevation here and does not request repair. Checks of an active volume can report transient inconsistencies; protect data and confirm the findings. <code>/f</code> requests logical-error repair.</p><pre>Cannot lock current drive.
+Would you like to schedule this volume to be checked
+the next time the system restarts? (Y/N)</pre><p>Accepting this prompt schedules work. It does not complete the repair. Coordinate the restart, review the boot-time check in the Application log under Wininit, and verify afterward. Logical corruption does not by itself prove hardware failure. CHKDSK does not replace SFC's protected-file checks.</p><p>Read <a href="../../../../../reference/windows-command-line/#chkdsk" target="_blank" rel="noopener">volume checking and repair options</a>.</p></article>
+      <article class="panel lesson-card"><h3>8 · Apply a troubleshooting method</h3><ol><li>Identify the issue and expected behavior.</li><li>Establish possible causes from symptoms and context.</li><li>Test the likely cause with relevant commands.</li><li>Plan the change, including permissions, backup, and downtime.</li><li>Implement the approved solution and verify functionality.</li></ol><p>A valid address does not prove DNS works. A successful policy refresh does not prove a specific setting applied. A scheduled check does not prove repair occurred. Compare the final results with the original problem and document what changed.</p><p>Use the <a href="../../../../../labs/it-support/windows-command-line/" target="_blank" rel="noopener">guided Windows Command-Line Lab</a> to practice device identification, file work, and basic diagnostics on your own Windows computer. Follow that lab's practice boundaries.</p></article>
+    </div>
+    <p class="resource-note">These examples use a separate training network. In the activity, read each ticket's own addresses and resource names. Reference and lab links open in a new tab.</p>
+  </section>
+  <noscript><style>#lesson[hidden]{display:block!important}#activity,.tabs{display:none}</style><p class="panel brief">Enable JavaScript to investigate the simulated workstations and score your findings.</p></noscript>
+</main>
+<dialog id="confirm" aria-labelledby="confirm-title"><h2 id="confirm-title"></h2><p id="confirm-description"></p><div class="dialog-actions"><button id="keep">Keep working</button><button id="confirm-action" class="primary">Reset</button></div></dialog>
+</body>
+</html>
