@@ -100,8 +100,9 @@ const server = http.createServer(async (request, response) => {
       await count(0);
       await control('relevance').selectOption('');
       await control('certification').selectOption('a-plus-core-2');
-      await count(1);
-      assert.equal(await cards.getAttribute('data-pbq-id'), 'network-configuration-concepts');
+      const core2 = catalog.activities.filter(a => a.status === 'published' && a.certificationAssociations.some(c => c.certification === 'a-plus-core-2'));
+      await count(core2.length);
+      assert.deepEqual(new Set(await cards.evaluateAll(nodes => nodes.map(n => n.dataset.pbqId))), new Set(core2.map(a => a.id)));
       for (const cert of ['security-plus', 'cysa-plus']) {
         await control('certification').selectOption(cert);
         await count(0);

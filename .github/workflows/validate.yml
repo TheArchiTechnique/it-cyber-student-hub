@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [build/initial-student-hub, feature/centralized-pbq-library, feature/pbq-catalog-certification-integration, feature/global-pbq-library, feature/automatic-content-visibility, content/virtualbox-linux-mint-shared-lab, content/a-plus-core2-network-configuration-concepts, content/a-plus-core2-windows-command-practice]
+    branches: [build/initial-student-hub, feature/centralized-pbq-library, feature/pbq-catalog-certification-integration, feature/global-pbq-library, feature/automatic-content-visibility, content/virtualbox-linux-mint-shared-lab, content/a-plus-core2-network-configuration-concepts, content/a-plus-core2-windows-command-practice, content/a-plus-core2-windows-troubleshooting-pbq]
   workflow_dispatch:
 permissions:
   contents: read
@@ -36,6 +36,7 @@ jobs:
       - run: node tests/network-configuration-concepts.cjs
       - run: node tests/shared-linux-lab.cjs
       - run: npm run test:windows-command-lab
+      - run: npm run test:windows-troubleshooting
       - uses: actions/upload-artifact@v4
         with:
           name: student-hub-preview

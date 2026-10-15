@@ -33,6 +33,9 @@
     },
     "networking": {
       "title": "Networking"
+    },
+    "software": {
+      "title": "Software"
     }
   },
   "topics": {
@@ -91,6 +94,14 @@
     "voip-and-qos": {
       "title": "VoIP and quality of service",
       "subject": "networking"
+    },
+    "windows-command-line": {
+      "title": "Windows command line",
+      "subject": "software"
+    },
+    "windows-management": {
+      "title": "Windows management and troubleshooting",
+      "subject": "software"
     }
   },
   "activities": [
@@ -396,6 +407,27 @@
         "network-devices",
         "ports-and-protocols",
         "wireless-networking"
+      ],
+      "status": "published"
+    },
+    {
+      "id": "windows-troubleshooting",
+      "title": "Windows Help Desk: Troubleshooting Multiple PCs",
+      "description": "Investigate four Windows workstations with simulated commands, interpret diagnostic evidence, and recommend network, share, policy, and integrity repairs.",
+      "activityPath": "practice/pbqs/a-plus-core-2/windows-troubleshooting/",
+      "launchPath": "practice/pbqs/a-plus-core-2/windows-troubleshooting/app/",
+      "primaryCertification": "a-plus-core-2",
+      "certificationAssociations": [
+        {
+          "certification": "a-plus-core-2",
+          "relevance": "direct",
+          "reason": "Practices Windows command-line diagnostics and troubleshooting of client networking, mapped resources, Group Policy, protected system files, and file-system integrity for A+ Core 2."
+        }
+      ],
+      "topics": [
+        "windows-command-line",
+        "windows-management",
+        "network-troubleshooting"
       ],
       "status": "published"
     }

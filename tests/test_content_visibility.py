@@ -2,6 +2,7 @@
 from copy import deepcopy
 from pathlib import Path
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -30,6 +31,11 @@ class VisibilityTests(unittest.TestCase):
                 target = root / 'docs' / key
                 target.write_text(target.read_text().replace('kind: resource',
                                                            'kind: resource\n  status: unpublished'))
+        # Raw app HTML is copied unchanged. Detach its Lab links only in this
+        # empty-Labs fixture; the real build separately verifies those links.
+        for target in (root / 'docs/practice/pbqs').rglob('*.html'):
+            target.write_text(re.sub(r'<a\b[^>]*href="[^"\n]*/labs/[^"\n]*"[^>]*>(.*?)</a>',
+                                     r'\1', target.read_text(), flags=re.DOTALL))
         return root
 
     def write(self, root, path, content):
@@ -58,8 +64,8 @@ class VisibilityTests(unittest.TestCase):
                         'labs/it-support/virtualbox-linux-mint/README.md'):
             self.assertIn(visible, a.visible)
         published = [item for item in a.catalog['activities'] if item['status'] == 'published']
-        self.assertEqual(len(published), 13)
-        self.assertEqual(len(a.associations['practice/pbqs/a-plus-core-2/README.md']), 1)
+        self.assertEqual(len(published), 14)
+        self.assertEqual(len(a.associations['practice/pbqs/a-plus-core-2/README.md']), 2)
         self.assertEqual(len(a.associations['practice/pbqs/network-plus/README.md']), 8)
         for item in published:
             self.assertIn(item['activityPath'] + 'README.md', a.visible)

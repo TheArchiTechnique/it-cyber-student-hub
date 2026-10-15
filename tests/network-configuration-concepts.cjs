@@ -199,8 +199,7 @@ const server = http.createServer(async (request, response) => {
     await page.goto(origin + prefix + '/practice/pbqs/');
     await page.locator('#pbq-certification').selectOption('a-plus-core-2');
     await page.locator('[data-pbq-id="network-configuration-concepts"]').waitFor();
-    assert.equal(await page.locator('[data-pbq-id]').count(), 1);
-    await page.locator('.pbq-library-launch').click();
+    await page.locator('[data-pbq-id="network-configuration-concepts"] .pbq-library-launch').click();
     assert.ok(page.url().endsWith(route));
     await page.locator('[data-pbq-nav="certification"]').click();
     assert.ok(page.url().endsWith('/practice/pbqs/a-plus-core-2/'));
