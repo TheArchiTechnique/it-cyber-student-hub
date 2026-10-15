@@ -204,8 +204,11 @@ const server = http.createServer(async (request, response) => {
     await page.locator('[data-pbq-nav="certification"]').click();
     assert.ok(page.url().endsWith('/practice/pbqs/a-plus-core-2/'));
     await page.getByRole('link', { name: 'Return to A+ Core 2', exact: true }).click();
-    assert.equal(await page.locator('.hub-page a').filter({ hasText: 'Network Configuration Concepts' }).count(), 1);
-    await page.locator('.hub-page a').filter({ hasText: 'Network Configuration Concepts' }).click();
+    await page.waitForURL(origin + prefix + '/certifications/comptia/a-plus-core-2/');
+    const activityLink = page.locator('.hub-page a').filter({ hasText: 'Network Configuration Concepts' });
+    await activityLink.waitFor({ state: 'visible' });
+    assert.equal(await activityLink.count(), 1);
+    await activityLink.click();
     assert.ok(page.url().endsWith('/network-configuration-concepts/'));
     assert.deepEqual(errors, []);
     console.log('PASS: all three scenarios; independent scoring; feedback; retry/reset; shuffled choices; scenario state; Lesson/Activity; keyboard/touch; responsive diagrams; catalog/Core 2 discovery; root/subpath navigation.');

@@ -119,7 +119,7 @@ class CatalogTests(unittest.TestCase):
                 content = render_listings(self.catalog, cert, metadata[field], field == 'overviewPath')
                 content = published_markdown(content)
                 with self.subTest(cert=cert, field=field):
-                    self.assertEqual(content.count('- ['), {'a-plus-core-1': 12, 'network-plus': 8, 'a-plus-core-2': 2}.get(cert, 0))
+                    self.assertEqual(content.count('- ['), {'a-plus-core-1': 12, 'network-plus': 8, 'a-plus-core-2': 4}.get(cert, 0))
                     if cert == 'network-plus':
                         self.assertNotIn('Direct Certification Practice', content)
                         self.assertIn('Foundational Practice', content)
@@ -128,6 +128,8 @@ class CatalogTests(unittest.TestCase):
                         self.assertIn('Direct Certification Practice', content)
                         self.assertIn('Network Configuration Concepts', content)
                         self.assertIn('Windows Help Desk: Troubleshooting Multiple PCs', content)
+                        self.assertIn('Windows Startup Recovery', content)
+                        self.assertIn('Windows BSOD and Application Troubleshooting', content)
                         self.assertNotIn('Foundational Practice', content)
                     elif cert != 'a-plus-core-1':
                         self.assertEqual(content.strip(), '')

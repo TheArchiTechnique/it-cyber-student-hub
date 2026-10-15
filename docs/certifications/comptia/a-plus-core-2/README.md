@@ -123,9 +123,17 @@ hub:hidden -->
 
     Configure three network diagrams using IPv4 addresses, LAN and screened-subnet placement, service ports, Wi-Fi security, NAT, and port forwarding.
 
+- [Windows BSOD and Application Troubleshooting](../../../practice/pbqs/a-plus-core-2/windows-bsod-application/README.md)
+
+    Investigate driver and memory stop errors and application failures using interactive Windows tools, perform evidence-based repairs, and verify recovery.
+
 - [Windows Help Desk: Troubleshooting Multiple PCs](../../../practice/pbqs/a-plus-core-2/windows-troubleshooting/README.md)
 
     Investigate four Windows workstations with simulated commands, interpret diagnostic evidence, and recommend network, share, policy, and integrity repairs.
+
+- [Windows Startup Recovery](../../../practice/pbqs/a-plus-core-2/windows-startup-recovery/README.md)
+
+    Recover UEFI/GPT and BIOS/MBR startup failures through interactive Windows recovery screens, firmware settings, and simulated boot-repair commands.
 <!-- END GENERATED PBQ LISTINGS -->
 
 ## Lab Areas
