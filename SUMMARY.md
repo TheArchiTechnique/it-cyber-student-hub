@@ -31,6 +31,7 @@
       - [Wireless Coverage](docs/practice/pbqs/a-plus-core-1/wireless-coverage/README.md)
     - [A+ Core 2](docs/practice/pbqs/a-plus-core-2/README.md)
       - [Network Configuration Concepts](docs/practice/pbqs/a-plus-core-2/network-configuration-concepts/README.md)
+      - [Windows BSOD and Application Troubleshooting](docs/practice/pbqs/a-plus-core-2/windows-bsod-application/README.md)
       - [Windows Help Desk: Troubleshooting Multiple PCs](docs/practice/pbqs/a-plus-core-2/windows-troubleshooting/README.md)
       - [Windows Startup Recovery](docs/practice/pbqs/a-plus-core-2/windows-startup-recovery/README.md)
     - [Network+](docs/practice/pbqs/network-plus/README.md)

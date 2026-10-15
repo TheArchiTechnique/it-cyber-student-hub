@@ -64,8 +64,8 @@ class VisibilityTests(unittest.TestCase):
                         'labs/it-support/virtualbox-linux-mint/README.md'):
             self.assertIn(visible, a.visible)
         published = [item for item in a.catalog['activities'] if item['status'] == 'published']
-        self.assertEqual(len(published), 15)
-        self.assertEqual(len(a.associations['practice/pbqs/a-plus-core-2/README.md']), 3)
+        self.assertEqual(len(published), 16)
+        self.assertEqual(len(a.associations['practice/pbqs/a-plus-core-2/README.md']), 4)
         self.assertEqual(len(a.associations['practice/pbqs/network-plus/README.md']), 8)
         for item in published:
             self.assertIn(item['activityPath'] + 'README.md', a.visible)

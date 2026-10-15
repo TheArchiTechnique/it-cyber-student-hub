@@ -38,6 +38,7 @@ jobs:
       - run: npm run test:windows-command-lab
       - run: npm run test:windows-troubleshooting
       - run: npm run test:windows-startup-recovery
+      - run: npm run test:windows-bsod-application
       - uses: actions/upload-artifact@v4
         with:
           name: student-hub-preview

@@ -5,7 +5,8 @@
     "test:pbq-library": "node tests/pbq-library.cjs",
     "test:windows-command-lab": "node tests/windows-command-lab.cjs",
     "test:windows-troubleshooting": "node tests/windows-troubleshooting.cjs --local",
-    "test:windows-startup-recovery": "node tests/windows-startup-recovery.cjs --local"
+    "test:windows-startup-recovery": "node tests/windows-startup-recovery.cjs --local",
+    "test:windows-bsod-application": "node tests/windows-bsod-application.cjs --local"
   },
   "devDependencies": {
     "playwright": "1.62.1"
