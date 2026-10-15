@@ -32,6 +32,7 @@
     - [A+ Core 2](docs/practice/pbqs/a-plus-core-2/README.md)
       - [Network Configuration Concepts](docs/practice/pbqs/a-plus-core-2/network-configuration-concepts/README.md)
       - [Windows Help Desk: Troubleshooting Multiple PCs](docs/practice/pbqs/a-plus-core-2/windows-troubleshooting/README.md)
+      - [Windows Startup Recovery](docs/practice/pbqs/a-plus-core-2/windows-startup-recovery/README.md)
     - [Network+](docs/practice/pbqs/network-plus/README.md)
 - [Labs](docs/labs/README.md)
   - [IT Support](docs/labs/it-support/README.md)

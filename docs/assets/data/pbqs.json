@@ -430,6 +430,26 @@
         "network-troubleshooting"
       ],
       "status": "published"
+    },
+    {
+      "id": "windows-startup-recovery",
+      "title": "Windows Startup Recovery",
+      "description": "Recover UEFI/GPT and BIOS/MBR startup failures through interactive Windows recovery screens, firmware settings, and simulated boot-repair commands.",
+      "activityPath": "practice/pbqs/a-plus-core-2/windows-startup-recovery/",
+      "launchPath": "practice/pbqs/a-plus-core-2/windows-startup-recovery/app/",
+      "primaryCertification": "a-plus-core-2",
+      "certificationAssociations": [
+        {
+          "certification": "a-plus-core-2",
+          "relevance": "direct",
+          "reason": "Practices Windows startup troubleshooting, recovery-tool selection, boot configuration, command-line repair, and verification for A+ Core 2."
+        }
+      ],
+      "topics": [
+        "windows-command-line",
+        "windows-management"
+      ],
+      "status": "published"
     }
   ]
 }

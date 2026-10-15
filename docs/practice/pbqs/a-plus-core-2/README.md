@@ -18,6 +18,10 @@ Performance-based practice for this certification.
 - [Windows Help Desk: Troubleshooting Multiple PCs](windows-troubleshooting/README.md)
 
     Investigate four Windows workstations with simulated commands, interpret diagnostic evidence, and recommend network, share, policy, and integrity repairs.
+
+- [Windows Startup Recovery](windows-startup-recovery/README.md)
+
+    Recover UEFI/GPT and BIOS/MBR startup failures through interactive Windows recovery screens, firmware settings, and simulated boot-repair commands.
 <!-- END GENERATED PBQ LISTINGS -->
 
 - [Return to A+ Core 2](../../../certifications/comptia/a-plus-core-2/README.md)
