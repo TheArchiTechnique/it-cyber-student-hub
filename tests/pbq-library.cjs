@@ -25,6 +25,8 @@ const server = http.createServer(async (request, response) => {
 (async () => {
   const catalog = JSON.parse(await fs.readFile(path.join(site, 'assets/data/pbqs.json')));
   const publishedCount = catalog.activities.filter(activity => activity.status === 'published').length;
+  const hardwareActivities = catalog.activities.filter(activity => activity.status === 'published' &&
+    activity.topics.some(topic => catalog.topics[topic]?.subject === 'hardware'));
   const publishedCertifications = Object.keys(catalog.certifications).filter(certification =>
     catalog.activities.some(activity => activity.status === 'published' &&
       activity.certificationAssociations.some(association => association.certification === certification)));
@@ -124,7 +126,9 @@ const server = http.createServer(async (request, response) => {
       await reset();
       await count(publishedCount);
       await control('subject').selectOption('hardware');
-      await count(4);
+      await count(hardwareActivities.length);
+      assert.deepEqual(new Set(await cards.evaluateAll(nodes => nodes.map(node => node.dataset.pbqId))),
+        new Set(hardwareActivities.map(activity => activity.id)), 'Hardware filter matches published topic-to-subject mappings');
       await control('topic').selectOption('storage-and-raid');
       await count(1);
       await reset();
