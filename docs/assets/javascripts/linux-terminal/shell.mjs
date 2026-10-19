@@ -1,5 +1,7 @@
 import {LinuxError, VirtualFilesystem, baseName, parentPath, modeText} from './filesystem.mjs';
 import {parse} from './parser.mjs';
+import {fileCommands} from './file-commands.mjs';
+import {NanoSession} from './nano.mjs';
 import {commandNames, manual} from './manuals.mjs';
 const fail = text => { throw new LinuxError(text); };
 const displayName = id => id === 0 ? 'root' : id === 1000 ? 'student' : String(id);
@@ -32,7 +34,13 @@ export class Shell {
       ['cat', args => this.cat(args)], ['mkdir', args => this.mkdir(args)],
       ['touch', args => this.touch(args)], ['echo', args => this.echo(args)],
       ['clear', args => { noArguments(args); this.action = 'clear'; return ''; }],
-      ['man', args => this.man(args)], ['help', args => this.help(args)]
+      ['man', args => this.man(args)], ['help', args => this.help(args)],
+      ...fileCommands(this, options),
+      ['nano', args => {
+        const {operands} = options(args, '');
+        if (operands.length > 1) fail('only one editor buffer is supported; usage: nano [FILE]');
+        this.editor = new NanoSession(this.fs, operands[0] ?? ''); this.action = 'nano'; return '';
+      }]
     ]);
   }
   environment() {
@@ -45,15 +53,15 @@ export class Shell {
     return `${user.name}@${hostname}:${path}${user.uid === 0 ? '#' : '$'}`;
   }
   execute(line) {
-    const result = {stdout: '', stderr: '', code: 0, action: null, manual: null};
-    this.action = null; this.manualName = null; this.errors = [];
+    const result = {stdout: '', stderr: '', code: 0, action: null, manual: null, editor: null};
+    this.action = null; this.manualName = null; this.editor = null; this.errors = []; this.commandStatus = 0;
     if (line.trim()) this.state.history = [...this.state.history, line.slice(0, 8192)].slice(-200);
     let command = 'shell';
     try {
       const {argv, redirect} = parse(line, this.environment());
       command = argv[0] || 'shell';
       if (!argv.length && !redirect) return result;
-      if (redirect && command === 'clear') fail('clear: output redirection is not supported in this simulator');
+      if (redirect && ['clear', 'nano'].includes(command)) fail('output redirection is not supported for this interactive command');
       // Shell opens/truncates output before dispatch, even if the command later fails.
       const target = redirect ? this.fs.write(redirect.path, '', {append: redirect.append}) : null;
       this.outputTarget = target;
@@ -62,7 +70,7 @@ export class Shell {
         const handler = this.commands.get(command);
         if (!handler) {
           result.code = 127;
-          const future = ['nano','mv','cp','rm','chmod','chown','grep','find','fsck','mount','su','sudo','apt','dnf','ip','ping','curl','dig','traceroute','top','ps','du','df'];
+          const future = ['fsck','mount','su','sudo','apt','dnf','ip','ping','curl','dig','traceroute','top','ps','du','df'];
           fail(future.includes(command) ? 'not yet supported in this simulator' : 'command not found');
         }
         if (argv[1] === '--help' && argv.length === 2 && command !== 'echo') stdout = manual(command);
@@ -70,11 +78,12 @@ export class Shell {
       }
       if (redirect) this.fs.write(target, stdout, {append: true});
       else result.stdout = stdout;
-      if (!redirect) { result.action = this.action; result.manual = this.manualName; }
-      if (this.errors.length) { result.stderr = this.errors.map(error => `${command}: ${error}`).join('\n') + '\n'; result.code = 1; }
+      result.code = this.commandStatus;
+      if (!redirect) { result.action = this.action; result.manual = this.manualName; result.editor = this.editor; }
+      if (this.errors.length) { result.stderr = this.errors.map(error => `${command}: ${error}`).join('\n') + '\n'; result.code = this.commandStatus || 1; }
     } catch (error) {
       if (!(error instanceof LinuxError)) throw error;
-      result.stderr = `${command}: ${error.message}\n`; result.code ||= 1;
+      result.stderr = `${command}: ${error.message}\n`; result.code ||= command === 'grep' ? 2 : 1;
     }
     this.state.lastStatus = result.code;
     return result;
@@ -109,13 +118,13 @@ export class Shell {
         if (flags.has('a')) entries.unshift({path, label: '.'}, {path: parentPath(path), label: '..'});
       }
       if (operands.length > 1) output.push(`${input}:`);
-      if (flags.has('l')) output.push(...entries.map(entry => this.longListing(entry)));
+      if (flags.has('l')) this.each(entries, entry => output.push(this.longListing(entry)));
       else if (entries.length) output.push(entries.map(entry => entry.label).join(flags.has('1') ? '\n' : '  '));
     });
     return output.length ? output.join('\n') + '\n' : '';
   }
   longListing({path, label}) {
-    const node = this.state.nodes[path];
+    const node = this.state.nodes[this.fs.resolve(path)];
     const links = node.type === 'file' ? 1 : 2 + Object.keys(this.state.nodes).filter(key => key !== path && key !== '/' && parentPath(key) === path && this.state.nodes[key].type === 'directory').length;
     const size = node.type === 'file' ? byteLength(node.content) : 0;
     const stamp = new Date(node.mtime).toISOString().slice(0, 16).replace('T', ' ');

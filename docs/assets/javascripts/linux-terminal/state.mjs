@@ -1,8 +1,8 @@
-import {seedFilesystem, VirtualFilesystem, parentPath} from './filesystem.mjs';
+import {seedFilesystem, parentPath} from './filesystem.mjs';
 export const STORAGE_KEY = 'student-hub:linux-terminal:v1';
 export function freshState() {
   return {
-    version: 1, hostname: 'student-linux', distribution: 'mint',
+    version: 2, hostname: 'student-linux', distribution: 'mint',
     user: {name: 'student', uid: 1000, gid: 1000, groups: [1000], home: '/home/student'},
     cwd: '/home/student', oldpwd: null, umask: 0o022, lastStatus: 0,
     nodes: seedFilesystem(), history: [], progress: {},
@@ -14,8 +14,7 @@ const validPath = path => typeof path === 'string' && path.startsWith('/') && !p
   && path.length < 8192 && (path === '/' || (!path.endsWith('/') && path.split('/').slice(1).every(p => p && p !== '.' && p !== '..' && p.length <= 255)));
 
 export function restoreState(value) {
-  // Schema migrations can be added here; unknown versions never load as current state.
-  if (!value || value.version !== 1 || !value.nodes || typeof value.nodes !== 'object' || Array.isArray(value.nodes)) throw Error('Invalid state version or filesystem');
+  if (!value || ![1, 2].includes(value.version) || !value.nodes || typeof value.nodes !== 'object' || Array.isArray(value.nodes)) throw Error('Invalid state version or filesystem');
   const entries = Object.entries(value.nodes);
   if (!entries.length || entries.length > 5000) throw Error('Invalid filesystem size');
   const nodes = Object.create(null);
@@ -40,8 +39,16 @@ export function restoreState(value) {
     || !Number.isInteger(value.lastStatus) || value.lastStatus < 0 || value.lastStatus > 255) throw Error('Invalid shell session');
   const state = freshState();
   Object.assign(state, {nodes, cwd: value.cwd, oldpwd: value.oldpwd, history: [...value.history], lastStatus: value.lastStatus});
-  new VirtualFilesystem(state).directory(state.cwd);
-  if (state.oldpwd) new VirtualFilesystem(state).directory(state.oldpwd);
+  // A shell may still occupy a directory after chmod removes its search permission.
+  // Restore identity/existence, not access; subsequent operations perform access checks.
+  if (nodes[state.cwd]?.type !== 'directory') throw Error('Invalid working directory');
+  if (state.oldpwd && nodes[state.oldpwd]?.type !== 'directory') throw Error('Invalid previous directory');
+  if (value.version === 1) {
+    const seed = seedFilesystem();
+    for (const path of ['/var/log/application.log', '/var/log/auth.log']) {
+      if (!nodes[path] && nodes[parentPath(path)]?.type === 'directory' && Object.keys(nodes).length < 5000) nodes[path] = seed[path];
+    }
+  }
   return state;
 }
 

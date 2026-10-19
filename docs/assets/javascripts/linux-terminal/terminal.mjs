@@ -1,5 +1,6 @@
 import {Shell, complete} from './shell.mjs';
 import {StateStore} from './state.mjs';
+import {mountNano} from './nano.mjs';
 
 const form = document.getElementById('terminal-form');
 if (form) {
@@ -27,11 +28,19 @@ if (form) {
     while (output.children.length > 120) output.firstElementChild.remove();
     output.scrollTop = output.scrollHeight;
   }
+  const editor = mountNano(document.getElementById('nano-panel'), {
+    onClose: () => { refresh(); focusInput(); }, onSave: () => refresh(),
+    onVisibility: active => {
+      output.hidden = active; form.hidden = active; document.getElementById('terminal-hint').hidden = active;
+      document.getElementById('reset-workstation').disabled = active;
+    }
+  });
   function refresh(save = true) {
     prompt.textContent = shell.prompt();
-    if (save) store.save(shell.state);
+    const saved = save ? store.save(shell.state) : true;
     status.textContent = store.message || 'Files and command history will be saved after each command.';
     historyIndex = shell.state.history.length;
+    return saved;
   }
   function focusInput() { input.focus({preventScroll: true}); }
   function showManual(name, content) {
@@ -50,9 +59,10 @@ if (form) {
     else {
       entry(`${oldPrompt} ${line}`, result.action === 'manual' ? '' : result.stdout + result.stderr);
       if (result.action === 'manual') showManual(result.manual, result.stdout);
+      if (result.action === 'nano') editor.open(result.editor);
     }
     refresh();
-    if (!manualDialog.open) focusInput();
+    if (!manualDialog.open && !editor.active) focusInput();
   });
   input.addEventListener('keydown', event => {
     if (event.isComposing) return;

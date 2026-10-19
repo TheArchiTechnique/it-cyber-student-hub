@@ -45,3 +45,23 @@ dialog h2 { margin: 0; line-height: 1.4; font-size: 20px; }
 .skip-link { position: absolute; left: 16px; top: -100px; z-index: 5; padding: 10px; background: var(--hub-card-bg); }
 .skip-link:focus { top: 10px; }
 @media (max-width: 600px) { main.hub-page { padding: 22px 12px 32px; } .header-inner { padding: 14px 16px; } .header-inner nav { gap: 12px; } #prompt { flex-basis: 100%; } #command { flex-basis: 130px; } #terminal-output { padding: 14px 12px; } #terminal-form { padding: 0 12px; } .terminal-head { padding: 10px 12px; } }
+/* Nano occupies the same terminal surface, not a second application or overlay. */
+.linux-terminal [hidden] { display: none !important; }
+.linux-terminal button:disabled { opacity: .55; cursor: default; }
+#nano-panel { padding: 14px 18px 16px; min-width: 0; font: 14px/1.6 var(--md-code-font); }
+.nano-title { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 8px 12px; margin-bottom: 10px; background: #d6e6eb; color: #102532; }
+#nano-filename { overflow-wrap: anywhere; min-width: 0; }
+#nano-modified { font-weight: 750; }
+.nano-label { font-size: 12px; display: block; margin-bottom: 5px; }
+#nano-buffer { display: block; width: 100%; min-width: 0; height: clamp(260px, 46vh, 500px); padding: 12px; border: 1px solid #658191; border-radius: 5px; resize: vertical; background: #071a25; color: #f1f7fa; font: 16px/1.6 var(--md-code-font); tab-size: 4; overflow: auto; }
+#nano-buffer[readonly] { opacity: .8; }
+.nano-actions, .nano-save-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.nano-actions button { flex: 1 1 120px; }
+#nano-status { margin: 10px 0 2px; color: #d8e9b8; overflow-wrap: anywhere; }
+#nano-position, #nano-key-hint { font-size: 12px; color: #b7d4df; }
+#nano-write-form, #nano-exit-prompt, #nano-help { padding: 12px 0; }
+#nano-write-form label { display: block; margin-bottom: 6px; }
+#nano-write-name { flex: 1 1 240px; width: 100%; min-width: 0; border: 1px solid #658191; background: #071a25; color: #f1f7fa; font: 16px/1.5 var(--md-code-font); padding: 9px; border-radius: 5px; }
+#nano-help h3 { color: #f1f7fa; }
+#nano-help p { max-width: 75ch; }
+@media (max-width: 600px) { #nano-panel { padding: 12px; } .nano-actions button { flex-basis: 100%; } #nano-write-name { flex-basis: 100%; } }
