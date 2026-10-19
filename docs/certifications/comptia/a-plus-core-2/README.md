@@ -113,6 +113,10 @@ hub:hidden -->
 
     Review Windows troubleshooting, networking, and remote support. Select **Play solo** on Kahoot! for independent practice.
 
+- [Linux Basics: Commands and System Tools - Kahoot!](https://create.kahoot.it/share/linux-basics-commands-and-system-tools/0fdab12a-64d9-4f53-9751-7380dea028d5)
+
+    Review Linux commands and system tools. Select **Play solo** on Kahoot! for independent practice.
+
 <!-- BEGIN GENERATED PBQ LISTINGS -->
 
 ## Published PBQ Practice
