@@ -26,6 +26,8 @@ hub:hidden -->
 
 ## Available Resources
 
+- [Linux Mint Workstation Setup and Troubleshooting](linux-mint-command-line/README.md)
+
 - [VirtualBox: Installing Linux Mint](virtualbox-linux-mint/README.md)
 
 - [Windows Command-Line Lab](windows-command-line/README.md)

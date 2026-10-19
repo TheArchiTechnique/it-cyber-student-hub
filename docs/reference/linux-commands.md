@@ -27,6 +27,8 @@ Choose a category, then expand a command. Examples use the Bash shell in Linux M
 
 Use the installed **Minty Fresh** VM from [VirtualBox: Installing Linux Mint](../labs/it-support/virtualbox-linux-mint/README.md). Boot from its virtual disk, sign in, and press **Ctrl+Alt+T** inside Mint. These are Linux commands; enter them in the guest terminal, rather than Windows CMD or PowerShell.
 
+For one continuous support assignment using your installed VM, follow [Linux Mint Workstation Setup and Troubleshooting](../labs/it-support/linux-mint-command-line/README.md). Build a workstation report, use Linux's native help to investigate unfamiliar options, and preserve before/after snapshots while keeping this reference available for lookup.
+
 Type only the command, without a prompt such as `student@minty-fresh:~$`. A prompt ending in `$` commonly indicates a normal account; `#` commonly indicates root, but prompts can be customized. Use `whoami` to check the current account.
 
 In syntax descriptions, `[options]` means optional flags and `FILE` or `USER` means a value you supply. Do not type the brackets or placeholder words. `$HOME` expands to your home directory. Quotation marks protect paths containing spaces. Run each example line separately.
