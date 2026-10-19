@@ -166,6 +166,10 @@ hub:hidden -->
 
     Complete a standard Linux Mint installation, configure a user account, and verify the installed system in the terminal.
 
+- [Linux Mint Workstation Setup and Troubleshooting](../../../labs/it-support/linux-mint-command-line/README.md)
+
+    Use native Linux help to investigate one workstation, build a support report, and preserve before/after VM snapshots.
+
 ## Reference Topics
 
 - [Windows Command-Line Reference](../../../reference/windows-command-line.md)

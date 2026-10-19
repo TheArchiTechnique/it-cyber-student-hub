@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="490" viewBox="0 0 1000 490" role="img" aria-labelledby="title desc">
+  <title id="title">Create a VirtualBox snapshot before the lab</title>
+  <desc id="desc">Instructional diagram, not a screenshot. Select Minty Fresh while Powered Off, open Snapshots, select Current State, and choose Take. Name the snapshot APlus-Core2-Before-Lab. After creation, it appears above Current State in the tree. Keep existing snapshots.</desc>
+  <rect width="1000" height="490" rx="14" fill="#142c38"/>
+  <g font-family="system-ui, sans-serif" fill="#eef7fa">
+    <text x="28" y="38" font-size="23" font-weight="700">VirtualBox snapshots · instructional illustration</text>
+    <text x="28" y="70" font-size="17">1 Select the powered-off VM · 2 Open Snapshots · 3 Select Current State, then Take</text>
+    <rect x="28" y="95" width="944" height="43" rx="4" fill="#d6e7eb"/>
+    <text x="46" y="123" font-size="19" fill="#142c38">Minty Fresh · Powered Off</text>
+    <text x="571" y="123" font-size="19" fill="#142c38">Snapshots</text>
+    <rect x="805" y="101" width="148" height="31" rx="4" fill="#087568"/>
+    <text x="860" y="123" font-size="18" font-weight="700">Take</text>
+    <rect x="28" y="158" width="430" height="231" rx="5" fill="#203f4b"/>
+    <text x="48" y="190" font-size="19" font-weight="700">After creation: snapshot tree</text>
+    <circle cx="58" cy="241" r="7" fill="#91e7cd"/>
+    <text x="77" y="248" font-size="18">APlus-Core2-Before-Lab</text>
+    <path d="M58 253 V293 H91" fill="none" stroke="#91e7cd" stroke-width="3"/>
+    <text x="104" y="300" font-size="18">Current State</text>
+    <text x="48" y="352" font-size="16" fill="#bdd9e2">Keep any older checkpoints in the tree.</text>
+    <rect x="478" y="158" width="494" height="231" rx="5" fill="#203f4b"/>
+    <text x="498" y="190" font-size="19" font-weight="700">4 Enter the snapshot details</text>
+    <text x="498" y="224" font-size="16">Name</text>
+    <rect x="498" y="236" width="454" height="40" rx="3" fill="#d6e7eb"/>
+    <text x="510" y="263" font-family="monospace" font-size="18" fill="#142c38">APlus-Core2-Before-Lab</text>
+    <text x="498" y="304" font-size="16">Description</text>
+    <text x="498" y="331" font-size="17">Installed Mint workstation before</text>
+    <text x="498" y="356" font-size="17">command-line exercises</text>
+    <text x="28" y="425" font-size="18">5 Confirm the snapshot is listed, then start Mint and continue in Terminal.</text>
+    <text x="28" y="456" font-size="16" fill="#bdd9e2">At the end, repeat with APlus-Core2-After-Lab. Snapshots are not independent backups.</text>
+    <text x="28" y="480" font-size="14" fill="#bdd9e2">VirtualBox 7.2 workflow; control placement varies by version and interface mode.</text>
+  </g>
+</svg>

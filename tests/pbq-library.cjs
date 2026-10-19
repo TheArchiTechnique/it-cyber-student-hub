@@ -195,6 +195,8 @@ const server = http.createServer(async (request, response) => {
       await page.locator('.hub-page a').filter({ hasText: /^Practice$/ }).click();
       await page.locator('.hub-page a').filter({ hasText: /^Practice Questions$/ }).click();
       assert.ok(page.url().endsWith('/practice/questions/'));
+      // evaluateAll reads immediately; wait for the destination content after navigation.
+      await page.locator('.hub-page a[href*="create.kahoot.it/share/"]').first().waitFor();
       assert.deepEqual(await page.locator('.hub-page a[href*="create.kahoot.it/share/"]')
         .evaluateAll(links => links.map(link => link.href)), [
         'https://create.kahoot.it/share/operating-systems-and-file-systems-essentials/3fd97dce-08bb-475e-a0d3-a743d981b5f8',

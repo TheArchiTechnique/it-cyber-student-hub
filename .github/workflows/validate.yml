@@ -36,6 +36,7 @@ jobs:
       - run: node tests/network-configuration-concepts.cjs
       - run: node tests/shared-linux-lab.cjs
       - run: npm run test:linux-command-reference
+      - run: npm run test:linux-mint-command-lab
       - run: npm run test:windows-command-lab
       - run: npm run test:windows-troubleshooting
       - run: npm run test:windows-startup-recovery

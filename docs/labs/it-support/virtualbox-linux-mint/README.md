@@ -220,4 +220,6 @@ To release a captured keyboard or mouse back to Windows, press the **Host key** 
 - Mint boots to the installed account and Cinnamon desktop after a shutdown and start.
 - The terminal identifies Linux Mint, your username, and an ext4 root filesystem on the virtual disk.
 
+Continue with [Linux Mint Workstation Setup and Troubleshooting](../linux-mint-command-line/README.md) to create a recovery snapshot, investigate the installed workstation, and build a technical report using native Linux help and commands.
+
 [Back to IT Support Labs](../README.md) · [All Labs](../../README.md) · [A+ Core 1](../../../certifications/comptia/a-plus-core-1/README.md) · [A+ Core 2](../../../certifications/comptia/a-plus-core-2/README.md)

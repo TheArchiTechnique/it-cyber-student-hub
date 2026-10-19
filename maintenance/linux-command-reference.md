@@ -30,4 +30,4 @@ Technical sources checked include the official [CompTIA objectives](https://comp
 
 ## Continuation
 
-The Linux Mint command-line lab and its contextual connections are deferred to Phase 2 on `content/a-plus-core2-linux-mint-command-lab`. No future-lab link, lab implementation, pull request, or merge is part of Phase 1.
+Phase 2 adds the linked workstation lab on the same branch; see [Linux Mint workstation lab](linux-mint-command-lab.md) for implementation and verification details. The original Phase 1 command coverage and canonical reference URL remain intact.

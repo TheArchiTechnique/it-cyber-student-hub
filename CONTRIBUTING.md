@@ -56,6 +56,10 @@ Use concise, practical language. Keep internal architecture notes in `maintenanc
 
 Keep ASCII identity headers only on the root homepage and the five current certification landing pages. Keep the shared certification layout: Start Studying, Course Topics, PBQ Practice, Labs, Quick Reference.
 
+## VM lab snapshots
+
+For VM labs that make meaningful changes, recommend a descriptive snapshot before the work and a final snapshot when the completed environment will be reused. Suggest an intermediate checkpoint before a significant or risky change when useful. Names should identify the lab and state, such as `APlus-Core2-Before-Lab` and `APlus-Core2-After-Lab`. Explain that restoring a snapshot reverts the snapshotted VM state and can discard later work; preserve important files outside the VM first. Snapshots consume host storage and are not independent backups. Keep existing checkpoints unless a reviewed cleanup is part of the assignment.
+
 ## Add an interactive PBQ later
 
 Use `docs/practice/pbqs/<certification>/<exercise-slug>/` with a `README.md` describing the exercise and an `app/index.html` entry point. Keep its JS, CSS, and local images beside that HTML. MkDocs copies these static files without a frontend build.
