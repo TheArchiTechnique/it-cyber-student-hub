@@ -218,7 +218,7 @@ const server = http.createServer(async (request, response) => {
     // Empty categories remain absent from global navigation and the search index.
     const unavailable = ['labs/networking/', 'labs/cybersecurity/', 'labs/log-analysis/', 'labs/incident-response/',
       'tools/', 'practice/scenarios/',
-      'practice/pbqs/security-plus/', 'practice/pbqs/cysa-plus/', 'reference/linux-commands/', 'reference/powershell-commands/'];
+      'practice/pbqs/security-plus/', 'practice/pbqs/cysa-plus/', 'reference/powershell-commands/'];
     const search = await (await page.request.get(`${origin}${prefix}/search/search_index.json`)).json();
     for (const route of unavailable) {
       assert.equal(await page.locator(`a[href="${origin}${prefix}/${route}"]`).count(), 0);
