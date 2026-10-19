@@ -142,7 +142,7 @@ nav:
   - Ports & Protocols: reference/ports-and-protocols.md
   - Windows Command-Line Reference: reference/windows-command-line.md
   - Windows Event IDs: reference/windows-event-ids.md
-  - Linux Commands: reference/linux-commands.md
+  - Linux Command-Line Reference: reference/linux-commands.md
   - PowerShell Commands: reference/powershell-commands.md
   - Wi-Fi Standards: reference/wifi-standards.md
   - Cabling: reference/cabling.md

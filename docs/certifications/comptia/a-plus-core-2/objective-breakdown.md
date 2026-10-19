@@ -308,6 +308,8 @@ Related practice: [IP Configuration Troubleshooting](../../../practice/pbqs/a-pl
 
 ### 1.9 Linux features and tools
 
+Use the [Linux Command-Line Reference](../../../reference/linux-commands.md) for Mint examples, permission tables, Nano guidance, and configuration-file explanations. Practice inside the VM from [VirtualBox: Installing Linux Mint](../../../labs/it-support/virtualbox-linux-mint/README.md).
+
 #### Commands
 
 Linux commands and file names are generally case-sensitive. Permissions determine whether a command can read, change, or remove an item.

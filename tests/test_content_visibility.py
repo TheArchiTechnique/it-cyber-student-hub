@@ -52,7 +52,7 @@ class VisibilityTests(unittest.TestCase):
         a = Availability()
         for hidden in ('labs/networking/README.md', 'labs/cybersecurity/README.md',
                        'labs/log-analysis/README.md', 'labs/incident-response/README.md',
-                       'tools/README.md', 'reference/linux-commands.md',
+                       'tools/README.md',
                        'reference/powershell-commands.md', 'learn/hardware/README.md',
                        'practice/scenarios/README.md',
                        'practice/pbqs/security-plus/README.md', 'practice/pbqs/cysa-plus/README.md'):
@@ -61,7 +61,8 @@ class VisibilityTests(unittest.TestCase):
                         'practice/questions/README.md', 'practice/pbqs/network-plus/README.md',
                         'practice/pbqs/a-plus-core-2/README.md',
                         'labs/README.md', 'labs/it-support/README.md',
-                        'labs/it-support/virtualbox-linux-mint/README.md'):
+                        'labs/it-support/virtualbox-linux-mint/README.md',
+                        'reference/linux-commands.md'):
             self.assertIn(visible, a.visible)
         published = [item for item in a.catalog['activities'] if item['status'] == 'published']
         self.assertEqual(len(published), 16)
@@ -105,11 +106,11 @@ class VisibilityTests(unittest.TestCase):
 
     def test_publication_by_replacing_placeholder_and_invalid_metadata(self):
         root = self.fixture()
-        page = root / 'docs/reference/linux-commands.md'
-        page.write_text('---\nhub:\n  kind: resource\n---\n# Linux Commands\n\n`pwd` prints the working directory.\n')
+        page = root / 'docs/reference/powershell-commands.md'
+        page.write_text('---\nhub:\n  kind: resource\n---\n# PowerShell Commands\n\n`Get-Location` prints the working directory.\n')
         a = Availability(root)
-        self.assertIn('reference/linux-commands.md', a.visible)
-        self.assertIn('[Linux Commands]', published_markdown(a.render('reference/README.md')))
+        self.assertIn('reference/powershell-commands.md', a.visible)
+        self.assertIn('[PowerShell Commands]', published_markdown(a.render('reference/README.md')))
         page.write_text(page.read_text().replace('kind: resource', 'kind: unknown'))
         with self.assertRaisesRegex(ValueError, 'invalid hub'):
             Availability(root)

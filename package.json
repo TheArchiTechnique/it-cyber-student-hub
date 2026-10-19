@@ -2,6 +2,7 @@
   "name": "it-cyber-student-hub-validation",
   "private": true,
   "scripts": {
+    "test:linux-command-reference": "node tests/linux-command-reference.cjs",
     "test:pbq-library": "node tests/pbq-library.cjs",
     "test:windows-command-lab": "node tests/windows-command-lab.cjs",
     "test:windows-troubleshooting": "node tests/windows-troubleshooting.cjs --local",
