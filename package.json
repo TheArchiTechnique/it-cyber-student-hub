@@ -2,6 +2,7 @@
   "name": "it-cyber-student-hub-validation",
   "private": true,
   "scripts": {
+    "test:learning-resource-navigation": "node tests/learning-resource-navigation.cjs",
     "test:linux-mint-command-lab": "node tests/linux-mint-command-lab.cjs",
     "test:linux-command-reference": "node tests/linux-command-reference.cjs",
     "test:pbq-library": "node tests/pbq-library.cjs",

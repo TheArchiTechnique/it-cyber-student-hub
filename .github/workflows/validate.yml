@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [build/initial-student-hub, feature/centralized-pbq-library, feature/pbq-catalog-certification-integration, feature/global-pbq-library, feature/automatic-content-visibility, content/virtualbox-linux-mint-shared-lab, content/a-plus-core2-network-configuration-concepts, content/a-plus-core2-windows-command-practice, content/a-plus-core2-windows-troubleshooting-pbq, content/a-plus-core2-startup-bsod-pbqs, content/a-plus-core2-linux-mint-command-lab]
+    branches: [feature/learning-resource-navigation-ux, build/initial-student-hub, feature/centralized-pbq-library, feature/pbq-catalog-certification-integration, feature/global-pbq-library, feature/automatic-content-visibility, content/virtualbox-linux-mint-shared-lab, content/a-plus-core2-network-configuration-concepts, content/a-plus-core2-windows-command-practice, content/a-plus-core2-windows-troubleshooting-pbq, content/a-plus-core2-startup-bsod-pbqs, content/a-plus-core2-linux-mint-command-lab]
   workflow_dispatch:
 permissions:
   contents: read
@@ -32,6 +32,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
+      - run: npm run test:learning-resource-navigation
       - run: npm run test:pbq-library
       - run: node tests/network-configuration-concepts.cjs
       - run: node tests/shared-linux-lab.cjs

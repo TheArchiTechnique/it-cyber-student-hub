@@ -8,6 +8,8 @@ Use Windows Command Prompt (CMD) to identify a computer, work with practice file
 
 Choose a category below, then expand a command for its example, results, and practice task. All command examples use CMD syntax.
 
+For a guided assignment, open the [Windows Command-Line Lab](../labs/it-support/windows-command-line/README.md). Use CMD to identify a workstation, manage practice files, and investigate network results while keeping this reference available for lookup.
+
 ## Quick lookup
 
 | Task | Commands | Practice boundary |

@@ -152,7 +152,7 @@ A symptom guides your next test; it does not prove the root cause. Check the ser
 
 Practice in groups: web (80/443), remote access (22/23/3389), mail (25/110/143), files (20/21/445), name and address services (53/67/68), then directory and legacy services (389/137–139). For each, say the function, port, and transport together.
 
-[Launch the practice activity](../../practice/pbqs/a-plus-core-1/ports-and-protocols/README.md) · [Quick reference](../../reference/ports-and-protocols.md)
+[Launch the practice activity](../../practice/pbqs/a-plus-core-1/ports-and-protocols/README.md) · [Ports & Protocols Reference](../../reference/ports-and-protocols.md)
 
 ## Technical sources
 
@@ -161,4 +161,4 @@ Practice in groups: web (80/443), remote access (22/23/3389), mail (25/110/143),
 - [FTP control and data connections: RFC 959](https://www.rfc-editor.org/rfc/rfc959.html)
 - [Microsoft service and port requirements](https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/service-overview-and-network-port-requirements)
 
-[Back to Networking](README.md) · [Student Hub](../../../README.md)
+[Back to Networking](README.md) · [Back to Learn](../README.md) · [Student Hub](../../../README.md)
