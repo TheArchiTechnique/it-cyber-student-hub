@@ -4,11 +4,11 @@ hub:
 ---
 # Labs
 
-Choose a hands-on activity area. Labs include setup, practical tasks, and a way to check your work.
+Apply what you know on a real workstation or virtual machine. Choose an activity area for setup instructions, practical tasks, and checks that help you verify your results. Read each lab description for its prerequisites.
 
 - [IT Support](it-support/README.md)
 
-    Work with systems and support tasks.
+    Install Linux Mint in VirtualBox, investigate the Linux workstation, or practice Windows CMD support tasks.
 
 <!-- hub:hidden
 - [Networking](networking/README.md)

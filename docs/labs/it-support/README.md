@@ -5,7 +5,7 @@ hub:
 ---
 # IT Support Labs
 
-Work with systems and support tasks.
+Build a Linux practice workstation or work through Windows CMD support tasks. Follow the two Linux labs in order; the Windows lab is a separate starting point.
 
 <!-- hub:placeholder
 No labs published yet.
@@ -18,20 +18,18 @@ hub:placeholder -->
 
 
 hub:hidden -->
-- [Open Practice](../../practice/README.md)
+- [VirtualBox: Installing Linux Mint](virtualbox-linux-mint/README.md)
 
-    Browse shorter exercises and PBQs.
-
-<!-- BEGIN AVAILABLE RESOURCES -->
-
-## Available Resources
+    Step 1: Create a VirtualBox VM, install Linux Mint, and verify that it boots from its virtual disk. Start here if you do not yet have the installed VM.
 
 - [Linux Mint Workstation Setup and Troubleshooting](linux-mint-command-line/README.md)
 
-- [VirtualBox: Installing Linux Mint](virtualbox-linux-mint/README.md)
+    Step 2: Use the VM from Step 1 to investigate a workstation with Linux commands, built-in help, and Nano. Document findings in one report and preserve before/after snapshots. Prerequisite: complete the Linux Mint installation lab first.
 
 - [Windows Command-Line Lab](windows-command-line/README.md)
 
-<!-- END AVAILABLE RESOURCES -->
+    Practice Windows CMD through workstation identification, file management, and network troubleshooting tasks. Start with a Windows computer and a regular user account; the Linux labs are not required.
+
+For syntax during a lab, keep the [Linux Command-Line Reference](../../reference/linux-commands.md) or [Windows Command-Line Reference](../../reference/windows-command-line.md) available.
 
 [Back to Labs](../README.md) · [Student Hub](../../../README.md)

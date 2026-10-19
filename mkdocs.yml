@@ -122,6 +122,7 @@ nav:
   - IT Support:
     - Overview: labs/it-support/README.md
     - "VirtualBox: Installing Linux Mint": labs/it-support/virtualbox-linux-mint/README.md
+    - Linux Mint Workstation Setup and Troubleshooting: labs/it-support/linux-mint-command-line/README.md
     - Windows Command-Line Lab: labs/it-support/windows-command-line/README.md
   - Networking: labs/networking/README.md
   - Cybersecurity: labs/cybersecurity/README.md

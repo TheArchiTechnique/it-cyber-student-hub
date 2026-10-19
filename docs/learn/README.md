@@ -4,7 +4,9 @@ hub:
 ---
 # Learn
 
-Explore a topic at your own pace. Certification paths link to these shared lessons.
+Understand IT and cybersecurity concepts through topic-based lessons. Start with an explanation, work through examples, and connect what you learn to practical tasks. These shared lessons are useful whether you are following a certification path or studying one topic.
+
+Choose a published topic below. For hands-on assignments, use [Labs](../labs/README.md); for command syntax and technical lookup, use [Reference](../reference/README.md).
 
 <!-- hub:hidden
 - [PC Basics](pc-basics/README.md)
@@ -43,7 +45,7 @@ hub:hidden -->
 hub:hidden -->
 - [Networking](networking/README.md)
 
-    Understand how devices connect and communicate.
+    Understand service ports, TCP and UDP, and how networked applications communicate.
 
 <!-- hub:hidden
 - [Cybersecurity](cybersecurity/README.md)

@@ -4,11 +4,11 @@ hub:
 ---
 # Networking
 
-Understand how devices connect and communicate.
+Understand how devices and applications communicate. Begin with the Ports & Protocols lesson to connect familiar tasks, such as web access and file sharing, to their network services.
 
 - [Ports & Protocols](ports-and-protocols.md)
 
-    Learn service purposes, TCP and UDP behavior, and the Core 1 port set.
+    Explain service purposes, compare TCP and UDP, and use support symptoms to recognize common ports and protocols.
 
 <!-- hub:hidden
 - [Browse Cybersecurity](../cybersecurity/README.md)
@@ -17,12 +17,8 @@ Understand how devices connect and communicate.
 
 
 hub:hidden -->
-- [View Labs](../../labs/README.md)
+- [Ports & Protocols Reference](../../reference/ports-and-protocols.md)
 
-    Browse hands-on activity areas.
-
-- [Quick Reference](../../reference/README.md)
-
-    Find lookup topics.
+    Look up a service, default port, and transport while studying or checking a configuration.
 
 [Back to Learn](../README.md) · [Student Hub](../../../README.md)

@@ -4,11 +4,15 @@ hub:
 ---
 # Reference
 
-Find a quick lookup topic. For explanations and examples, use [Learn](../learn/README.md).
+Look up command syntax and examples, configuration-file information, and service ports and transports. Choose the topic that matches the system or task you are working on.
+
+For a concept explained from the beginning, use [Learn](../learn/README.md). To apply commands in a guided assignment, use [Labs](../labs/README.md).
+
+## Networking & Protocols
 
 - [Ports & Protocols](ports-and-protocols.md)
 
-    Service and port lookup.
+    Find common service ports, TCP/UDP associations, and transport behavior when checking a configuration or interpreting a network problem.
 
 <!-- hub:hidden
 - [Windows Event IDs](windows-event-ids.md)
@@ -42,11 +46,11 @@ hub:hidden -->
 
 - [Windows Command-Line Reference](windows-command-line.md)
 
-    Find CMD examples, interpret support results, and practice safely with disposable files.
+    Look up Windows CMD tools, syntax, administrative tasks, and troubleshooting examples. Interpret results and identify commands suitable for practice.
 
 - [Linux Command-Line Reference](linux-commands.md)
 
-    Find Linux Mint examples, permissions, Nano shortcuts, and configuration-file explanations.
+    Look up Linux commands, permissions, filesystem tools, Nano shortcuts, and configuration files, with Linux Mint examples.
 
 <!-- hub:hidden
 - [PowerShell Commands](powershell-commands.md)
