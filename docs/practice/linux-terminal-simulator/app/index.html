@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Linux Terminal Simulator | IT &amp; Cybersecurity Student Hub</title>
+  <link rel="stylesheet" href="../../../assets/stylesheets/hub.css">
+  <link rel="stylesheet" href="../../../assets/stylesheets/linux-terminal.css">
+  <script type="module" src="../../../assets/javascripts/linux-terminal/terminal.mjs"></script>
+</head>
+<body data-md-color-scheme="default">
+<a class="skip-link" href="#main">Skip to Linux terminal</a>
+<header class="hub-terminal-header">
+  <div class="header-inner">
+    <a class="brand" href="../../../">IT &amp; Cybersecurity Student Hub</a>
+    <nav aria-label="Student Hub navigation">
+      <a href="../../../">Student Hub</a>
+      <a href="../../../certifications/comptia/a-plus-core-2/">A+ Core 2</a>
+      <button type="button" id="theme-toggle" aria-pressed="false">Dark theme</button>
+    </nav>
+  </div>
+</header>
+<main id="main" class="hub-page hub-article md-typeset">
+  <p class="eyebrow">A+ CORE 2 · LINUX COMMAND PRACTICE</p>
+  <h1>Linux Terminal Simulator</h1>
+  <p>Practice on a simulated Linux Mint workstation in your browser. Commands change this workstation’s files, not your computer’s operating system. Your files and command history are saved in this browser when storage is available.</p>
+  <p>Start with <code>help</code>, explore with <code>ls</code>, or open a short manual with <code>man ls</code>. Use the <a href="../../../reference/linux-commands/">Linux Command-Line Reference</a> for broader explanations.</p>
+  <section class="linux-terminal" aria-labelledby="terminal-title">
+    <div class="terminal-head"><h2 id="terminal-title">student-linux</h2><button type="button" id="reset-workstation">Reset workstation</button></div>
+    <div id="terminal-output" role="log" aria-label="Linux terminal output" aria-live="polite" aria-relevant="additions" tabindex="0"></div>
+    <form id="terminal-form" autocomplete="off">
+      <label for="command">Linux command</label>
+      <div class="command-row"><span id="prompt" aria-hidden="true"></span><input id="command" name="command" type="text" maxlength="8192" spellcheck="false" autocapitalize="off" autocorrect="off" enterkeyhint="send" aria-describedby="terminal-hint"><button type="submit">Run</button></div>
+    </form>
+    <p id="terminal-hint">Enter runs a command. Up/Down recalls commands. Tab completes simple command names and paths. Ctrl+C cancels input. The output area can be focused and scrolled to review or copy text.</p>
+  </section>
+  <p id="save-status" role="status" aria-atomic="true"></p>
+  <details class="syntax-help"><summary>Supported practice and shell syntax</summary>
+    <p>Try <code>mkdir -p ~/Practice/Reports</code>, then <code>cd ~/Practice/Reports</code>. Write <code>echo "Linux workstation report" &gt; report.txt</code> and verify it with <code>cat report.txt</code>. Commands act on the same files throughout your session.</p>
+    <p>Use absolute or relative paths, <code>~</code>, <code>$HOME</code>, <code>.</code>, <code>..</code>, and quoted names with spaces. <code>&gt;</code> overwrites and <code>&gt;&gt;</code> appends. Filenames are case-sensitive. <code>touch</code> preserves existing content. Long listings show simulated permissions, ownership, text sizes in bytes, and UTC modification times; directory sizes are modeled as zero.</p>
+    <p>Available commands: <code>pwd</code>, <code>ls</code>, <code>cd</code>, <code>cat</code>, <code>whoami</code>, <code>mkdir</code>, <code>touch</code>, <code>echo</code>, <code>clear</code>, <code>help</code>, <code>man</code>. Each manual lists supported options. Nano and additional commands are not available yet. Guided assignments will be added later.</p>
+    <p>Enter one command at a time. Pipes, wildcards, command chains, substitutions, shell scripts, and interactive standard input are not implemented. No network requests or host commands run from this terminal.</p>
+  </details>
+  <noscript><p>This simulator requires JavaScript. You can still read the Linux Command-Line Reference linked above.</p></noscript>
+</main>
+<dialog id="manual-dialog" aria-labelledby="manual-title">
+  <div class="dialog-head"><h2 id="manual-title">Short simulated manual</h2><button type="button" id="close-manual">Return to terminal</button></div>
+  <p>Scroll to read. Press <kbd>q</kbd> or <kbd>Escape</kbd> to return to the prompt.</p>
+  <pre id="manual-content" tabindex="0"></pre>
+</dialog>
+<dialog id="reset-dialog" aria-labelledby="reset-title" aria-describedby="reset-description">
+  <h2 id="reset-title">Reset this workstation?</h2>
+  <p id="reset-description">This removes your simulated files, changes, and command history and restores the original workstation. Other Student Hub progress stays saved.</p>
+  <div class="dialog-actions"><button type="button" id="cancel-reset" autofocus>Keep my work</button><button type="button" id="confirm-reset">Reset workstation</button></div>
+</dialog>
+</body>
+</html>

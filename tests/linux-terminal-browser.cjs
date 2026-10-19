@@ -1,0 +1,138 @@
+// Run after mkdocs build --strict; tests the shipped simulator at the Pages subpath.
+const assert = require('node:assert/strict');
+const http = require('node:http');
+const fs = require('node:fs/promises');
+const path = require('node:path');
+const {chromium} = require('playwright');
+const site = path.resolve(__dirname, '../site');
+const prefix = '/it-cyber-student-hub/';
+const route = 'practice/linux-terminal-simulator/app/';
+const mime = {'.html':'text/html', '.css':'text/css', '.js':'text/javascript', '.mjs':'text/javascript', '.json':'application/json', '.svg':'image/svg+xml', '.png':'image/png'};
+const server = http.createServer(async (request, response) => {
+  try {
+    const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
+    if (!pathname.startsWith(prefix)) throw Error('Outside project');
+    let target = path.resolve(site, pathname.slice(prefix.length));
+    if (target !== site && !target.startsWith(site + path.sep)) throw Error('Invalid path');
+    if ((await fs.stat(target)).isDirectory()) target = path.join(target, 'index.html');
+    response.setHeader('Content-Type', mime[path.extname(target)] || 'application/octet-stream');
+    response.end(await fs.readFile(target));
+  } catch { response.writeHead(404).end(); }
+});
+(async () => {
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  const origin = `http://127.0.0.1:${server.address().port}`, base = origin + prefix;
+  const browser = await chromium.launch({executablePath: process.env.PBQ_CHROMIUM_PATH || undefined, args: ['--no-sandbox', '--disable-dev-shm-usage']});
+  try {
+    const context = await browser.newContext();
+    const requests = [], errors = [];
+    await context.route('**/*', request => new URL(request.request().url()).origin === origin ? request.continue() : request.abort());
+    const page = await context.newPage();
+    page.on('pageerror', error => errors.push(error.message));
+    page.on('request', request => requests.push(request.url()));
+    const input = page.locator('#command'), output = page.locator('#terminal-output');
+    const run = async command => {
+      await input.fill(command); await input.press('Enter');
+      await page.waitForFunction(() => document.getElementById('command').value === '');
+    };
+    await page.goto(base + route);
+    await input.waitFor(); await page.waitForFunction(() => document.getElementById('prompt').textContent.includes('student@'));
+    assert.equal(await input.evaluate(node => node === document.activeElement), true);
+    await run('mkdir -p ~/Practice/Reports'); await run('cd ~/Practice/Reports');
+    await run('echo "Linux workstation report" > report.txt'); await run('cat report.txt');
+    assert.match(await output.locator('.terminal-entry').last().textContent(), /Linux workstation report/);
+    assert.equal(await page.locator('#prompt').textContent(), 'student@student-linux:~/Practice/Reports$');
+    await input.fill('draft'); await input.press('ArrowUp'); assert.equal(await input.inputValue(), 'cat report.txt');
+    await input.press('ArrowDown'); assert.equal(await input.inputValue(), 'draft');
+    await input.press('Control+c'); assert.equal(await input.inputValue(), '');
+    assert.match(await output.textContent(), /draft\^C/);
+    await input.fill('who'); await input.evaluate(n => n.setSelectionRange(n.value.length, n.value.length));
+    await input.press('Tab'); assert.equal(await input.inputValue(), 'whoami ');
+    await input.press('Enter'); assert.match(await output.locator('.terminal-entry').last().textContent(), /student\n/);
+    await run('cd'); await input.fill('cd Doc'); await input.evaluate(n => n.setSelectionRange(n.value.length, n.value.length)); await input.press('Tab');
+    assert.equal(await input.inputValue(), 'cd Documents/'); await input.press('Enter');
+    assert.equal(await page.locator('#prompt').textContent(), 'student@student-linux:~/Documents$');
+    await run('man ls'); assert.equal(await page.locator('#manual-dialog').evaluate(node => node.open), true);
+    assert.match(await page.locator('#manual-content').textContent(), /SYNTAX/);
+    await page.keyboard.press('q'); assert.equal(await page.locator('#manual-dialog').evaluate(node => node.open), false);
+    assert.equal(await input.evaluate(node => node === document.activeElement), true);
+    await run('man cat'); await page.keyboard.press('Escape');
+    assert.equal(await page.locator('#manual-dialog').evaluate(node => node.open), false);
+    await run('man echo'); await page.getByRole('button', {name: 'Return to terminal'}).click();
+    await run('echo "<img src=x onerror=globalThis.injected=true>" > literal.txt'); await run('cat literal.txt');
+    assert.equal(await output.locator('img').count(), 0); assert.equal(await page.evaluate(() => globalThis.injected), undefined);
+    await run('echo $(fetch)'); assert.match(await output.locator('.terminal-entry').last().textContent(), /not supported/);
+    await run('cat /etc/shadow'); assert.match(await output.locator('.terminal-entry').last().textContent(), /Permission denied/);
+    await run('cd ~/Practice/Reports');
+    await page.reload(); await page.waitForFunction(() => document.getElementById('prompt').textContent.includes('~/Practice/Reports'));
+    await run('cat report.txt'); assert.match(await output.locator('.terminal-entry').last().textContent(), /Linux workstation report/);
+    await input.press('ArrowUp'); assert.equal(await input.inputValue(), 'cat report.txt'); await input.fill('');
+    await page.evaluate(() => localStorage.setItem('student-hub:other-progress', 'keep'));
+    await page.locator('#reset-workstation').click();
+    assert.equal(await page.locator('#reset-dialog').evaluate(node => node.open), true);
+    await page.getByRole('button', {name: 'Keep my work'}).click();
+    await run('cat report.txt'); assert.match(await output.locator('.terminal-entry').last().textContent(), /Linux workstation report/);
+    await page.locator('#reset-workstation').click(); await page.locator('#confirm-reset').click();
+    assert.equal(await page.locator('#prompt').textContent(), 'student@student-linux:~$');
+    assert.equal(await page.evaluate(() => localStorage.getItem('student-hub:other-progress')), 'keep');
+    await run('cat Practice/Reports/report.txt'); assert.match(await output.textContent(), /No such file/);
+    await run('clear'); assert.equal(await output.textContent(), '');
+    await input.press('ArrowUp'); assert.equal(await input.inputValue(), 'clear'); await input.fill('');
+    await page.reload(); await page.waitForFunction(() => document.getElementById('prompt').textContent.includes('student@'));
+    await run('pwd');
+    for (const width of [1440, 390, 320]) {
+      await page.setViewportSize({width, height: 900});
+      for (const scheme of ['default', 'slate']) {
+        await page.locator('body').evaluate((node, value) => node.dataset.mdColorScheme = value, scheme);
+        assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${width} ${scheme} page overflow`);
+        await run('man ls');
+        assert.ok(await page.locator('#manual-content').isVisible());
+        assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+        await page.keyboard.press('q');
+        await page.locator('#reset-workstation').click();
+        assert.ok(await page.locator('#cancel-reset').isVisible()); await page.keyboard.press('Escape');
+      }
+    }
+    await page.setViewportSize({width: 1440, height: 1000});
+    await page.locator('body').evaluate(node => node.dataset.mdColorScheme = 'default');
+    await page.locator('#theme-toggle').click(); assert.equal(await page.locator('body').getAttribute('data-md-color-scheme'), 'slate');
+    await page.reload(); await page.waitForFunction(() => document.body.dataset.mdColorScheme === 'slate');
+    for (const link of await page.locator('a').evaluateAll(nodes => nodes.map(n => n.href).filter(href => !href.includes('#')))) {
+      assert.equal((await page.request.get(link)).status(), 200, link);
+    }
+    if (process.env.LINUX_TERMINAL_QA_DIR) {
+      await fs.mkdir(process.env.LINUX_TERMINAL_QA_DIR, {recursive: true});
+      for (const width of [1440, 390, 320]) for (const scheme of ['default', 'slate']) {
+        await page.setViewportSize({width, height: 1000});
+        await page.locator('body').evaluate((node, value) => node.dataset.mdColorScheme = value, scheme);
+        await page.screenshot({path: path.join(process.env.LINUX_TERMINAL_QA_DIR, `${width}-${scheme}.png`), fullPage: true});
+      }
+    }
+    // Foundation is directly addressable without changing Hub discovery this phase.
+    const search = await (await page.request.get(base + 'search/search_index.json')).json();
+    assert.ok(!search.docs.some(doc => doc.location.startsWith(route)));
+    for (const source of ['labs/it-support/', 'certifications/comptia/a-plus-core-2/']) {
+      await page.goto(base + source); assert.equal(await page.locator(`a[href*="linux-terminal-simulator"]`).count(), 0);
+    }
+    assert.ok(requests.filter(url => new URL(url).origin !== origin).every(url => url === 'https://cloud.umami.is/script.js'), 'Only the existing Hub analytics script may request an external URL');
+    const invalid = await browser.newContext();
+    await invalid.addInitScript(() => localStorage.setItem('student-hub:linux-terminal:v1', '{broken'));
+    const invalidPage = await invalid.newPage(); await invalidPage.goto(base + route);
+    await invalidPage.waitForFunction(() => document.getElementById('prompt').textContent.includes('student@'));
+    assert.match(await invalidPage.locator('#save-status').textContent(), /could not be loaded/);
+    await invalidPage.locator('#command').fill('pwd'); await invalidPage.locator('#command').press('Enter');
+    assert.match(await invalidPage.locator('#save-status').textContent(), /saved in this browser/);
+    await invalid.close();
+    const blocked = await browser.newContext();
+    await blocked.addInitScript(() => { Object.defineProperty(window, 'localStorage', {get() {throw Error('disabled');}}); });
+    const blockedPage = await blocked.newPage(); await blockedPage.goto(base + route);
+    await blockedPage.waitForFunction(() => document.getElementById('prompt').textContent.includes('student@'));
+    await blockedPage.locator('#command').fill('mkdir Offline'); await blockedPage.locator('#command').press('Enter');
+    assert.match(await blockedPage.locator('#save-status').textContent(), /unavailable or full/);
+    await blockedPage.locator('#command').fill('ls'); await blockedPage.locator('#command').press('Enter');
+    assert.match(await blockedPage.locator('#terminal-output').textContent(), /Offline/);
+    await blocked.close();
+    assert.deepEqual(errors, []);
+    console.log('PASS: real Pages route, shared state, keyboard/history/completion, manual pager, safe text rendering, persistence, reset confirmation/isolation, corrupt/unavailable storage, desktop/mobile themes, links, no external execution, and deferred discovery.');
+  } finally { await browser.close(); }
+})().catch(error => {console.error(error); process.exitCode = 1;}).finally(() => server.close());
