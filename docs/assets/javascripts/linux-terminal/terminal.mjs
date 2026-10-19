@@ -43,8 +43,9 @@ if (form) {
     return saved;
   }
   function focusInput() { input.focus({preventScroll: true}); }
-  function showManual(name, content) {
-    document.getElementById('manual-title').textContent = `man ${name}`;
+  function showManual(name, content, monitor = false) {
+    document.getElementById('manual-title').textContent = monitor ? 'top: simulated process monitor' : `man ${name}`;
+    manualDialog.dataset.view = monitor ? 'top' : 'manual';
     manualContent.textContent = content;
     manualDialog.showModal(); manualContent.scrollTop = 0; manualContent.focus();
   }
@@ -57,8 +58,9 @@ if (form) {
     input.value = ''; draft = '';
     if (result.action === 'clear') output.replaceChildren();
     else {
-      entry(`${oldPrompt} ${line}`, result.action === 'manual' ? '' : result.stdout + result.stderr);
+      entry(`${oldPrompt} ${line}`, ['manual', 'top'].includes(result.action) ? '' : result.stdout + result.stderr);
       if (result.action === 'manual') showManual(result.manual, result.stdout);
+      if (result.action === 'top') showManual('top', result.stdout, true);
       if (result.action === 'nano') editor.open(result.editor);
     }
     refresh();

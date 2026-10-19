@@ -65,3 +65,6 @@ dialog h2 { margin: 0; line-height: 1.4; font-size: 20px; }
 #nano-help h3 { color: #f1f7fa; }
 #nano-help p { max-width: 75ch; }
 @media (max-width: 600px) { #nano-panel { padding: 12px; } .nano-actions button { flex-basis: 100%; } #nano-write-name { flex-basis: 100%; } }
+
+/* The existing keyboard-accessible terminal viewer also displays top snapshots. */
+#manual-dialog[data-view=top] #manual-content { white-space: pre; overflow-wrap: normal; }

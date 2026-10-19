@@ -1,3 +1,4 @@
+import {systemCommands} from './system-commands.mjs';
 import {LinuxError, VirtualFilesystem, baseName, parentPath, modeText} from './filesystem.mjs';
 import {parse} from './parser.mjs';
 import {fileCommands} from './file-commands.mjs';
@@ -29,17 +30,18 @@ export class Shell {
     // Add future commands to this registry; all receive the same shell and VFS.
     this.commands = new Map([
       ['pwd', args => { noArguments(args); return this.state.cwd + '\n'; }],
-      ['whoami', args => { noArguments(args); return this.state.user.name + '\n'; }],
+      ['whoami', args => { noArguments(args); return this.fs.user.name + '\n'; }],
       ['cd', args => this.cd(args)], ['ls', args => this.ls(args)],
       ['cat', args => this.cat(args)], ['mkdir', args => this.mkdir(args)],
       ['touch', args => this.touch(args)], ['echo', args => this.echo(args)],
       ['clear', args => { noArguments(args); this.action = 'clear'; return ''; }],
       ['man', args => this.man(args)], ['help', args => this.help(args)],
       ...fileCommands(this, options),
+      ...systemCommands(this, options),
       ['nano', args => {
         const {operands} = options(args, '');
         if (operands.length > 1) fail('only one editor buffer is supported; usage: nano [FILE]');
-        this.editor = new NanoSession(this.fs, operands[0] ?? ''); this.action = 'nano'; return '';
+        this.editor = new NanoSession(new VirtualFilesystem(this.state, this.fs.clock, this.fs.user), operands[0] ?? ''); this.action = 'nano'; return '';
       }]
     ]);
   }
@@ -61,7 +63,9 @@ export class Shell {
       const {argv, redirect} = parse(line, this.environment());
       command = argv[0] || 'shell';
       if (!argv.length && !redirect) return result;
-      if (redirect && ['clear', 'nano'].includes(command)) fail('output redirection is not supported for this interactive command');
+      let interactive = argv;
+      while (interactive[0] === 'sudo') interactive = interactive.slice(interactive[1] === '--' ? 2 : 1);
+      if (redirect && (['clear', 'nano', 'su', 'exit'].includes(interactive[0]) || (interactive[0] === 'top' && interactive.length === 1))) fail('output redirection is not supported for this interactive command');
       // Shell opens/truncates output before dispatch, even if the command later fails.
       const target = redirect ? this.fs.write(redirect.path, '', {append: redirect.append}) : null;
       this.outputTarget = target;
@@ -70,7 +74,7 @@ export class Shell {
         const handler = this.commands.get(command);
         if (!handler) {
           result.code = 127;
-          const future = ['fsck','mount','su','sudo','apt','dnf','ip','ping','curl','dig','traceroute','top','ps','du','df'];
+          const future = ['apt','dnf','ip','ping','curl','dig','traceroute'];
           fail(future.includes(command) ? 'not yet supported in this simulator' : 'command not found');
         }
         if (argv[1] === '--help' && argv.length === 2 && command !== 'echo') stdout = manual(command);
@@ -83,7 +87,7 @@ export class Shell {
       if (this.errors.length) { result.stderr = this.errors.map(error => `${command}: ${error}`).join('\n') + '\n'; result.code = this.commandStatus || 1; }
     } catch (error) {
       if (!(error instanceof LinuxError)) throw error;
-      result.stderr = `${command}: ${error.message}\n`; result.code ||= command === 'grep' ? 2 : 1;
+      result.stderr = `${command}: ${error.message}\n`; result.code ||= this.commandStatus || (command === 'grep' ? 2 : 1);
     }
     this.state.lastStatus = result.code;
     return result;
@@ -175,7 +179,7 @@ export function complete(shell, line, caret = line.length) {
   if (caret !== line.length || /['"\\$|&;<>]/.test(line)) return {value: line, choices: []};
   const match = line.match(/^(.*?)([^\s]*)$/), prefix = match[1], fragment = match[2];
   let choices = [], replacementPrefix = prefix;
-  if (!prefix && !fragment.includes('/')) choices = commandNames.filter(name => name.startsWith(fragment)).map(name => name + ' ');
+  if ((!prefix || /^(?:sudo\s+(?:--\s+)?|man\s+|help\s+)$/.test(prefix)) && !fragment.includes('/')) choices = commandNames.filter(name => name.startsWith(fragment)).map(name => name + ' ');
   else {
     const slash = fragment.lastIndexOf('/'), parent = slash < 0 ? '' : fragment.slice(0, slash + 1), partial = fragment.slice(slash + 1);
     const rawDirectory = parent || '.', directory = rawDirectory === '~/' ? shell.state.user.home : rawDirectory.startsWith('~/') ? shell.state.user.home + rawDirectory.slice(1) : rawDirectory;

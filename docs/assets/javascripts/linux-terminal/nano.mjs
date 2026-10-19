@@ -3,7 +3,7 @@ import {LinuxError} from './filesystem.mjs';
 // A buffer references the existing VFS. Merely opening a new name never writes a file.
 export class NanoSession {
   constructor(fs, filename = '') {
-    this.fs = fs; this.filename = filename; this.path = null; this.value = ''; this.original = '';
+    this.closed = false; this.fs = fs; this.filename = filename; this.path = null; this.value = ''; this.original = '';
     if (filename) {
       this.path = fs.resolve(filename, {missingLeaf: true});
       const node = fs.nodes[this.path];
@@ -13,7 +13,9 @@ export class NanoSession {
   }
   get dirty() { return this.value !== this.original; }
   update(value) { this.value = value; }
+  close() { this.closed = true; this.fs.actor = null; }
   save(filename = this.filename) {
+    if (this.closed) throw new LinuxError('Editor session is closed');
     if (!filename.trim()) throw new LinuxError('No filename specified');
     const expanded = filename === '~' ? this.fs.state.user.home : filename.startsWith('~/') ? this.fs.state.user.home + filename.slice(1) : filename;
     // Nano normally terminates a nonempty final line when writing a text file.
@@ -45,7 +47,7 @@ export function mountNano(root, {onClose, onSave, onVisibility}) {
   }
   function remember() { selection = [text.selectionStart, text.selectionEnd]; }
   function close() {
-    session = null; root.hidden = true; onVisibility(false); onClose();
+    session.close(); session = null; root.hidden = true; onVisibility(false); onClose();
   }
   function cancelPrompt() { mode = 'edit'; exitAfterSave = false; message.textContent = 'Cancelled. Buffer retained.'; render(); }
   function writeOut(exit = false) {

@@ -1,3 +1,4 @@
+import {allocatedBytes, volumeFor, volumeUsed, nodeCount, within} from './system-state.mjs';
 // All paths and metadata belong to this in-memory workstation, never the host.
 export class LinuxError extends Error {}
 const fail = message => { throw new LinuxError(message); };
@@ -33,10 +34,12 @@ export function seedFilesystem(now = Date.now()) {
 }
 
 export class VirtualFilesystem {
-  constructor(state, clock = Date.now) { this.state = state; this.clock = clock; }
+  constructor(state, clock = Date.now, actor = null) { this.state = state; this.clock = clock; this.actor = actor; }
+  get user() { return this.actor || this.state.user; }
+  asUser(user, run) { const previous = this.actor; this.actor = user; try { return run(); } finally { this.actor = previous; } }
   get nodes() { return this.state.nodes; }
   can(node, bits) {
-    const user = this.state.user;
+    const user = this.user;
     if (user.uid === 0) return true;
     const shift = user.uid === node.uid ? 6 : user.groups.includes(node.gid) ? 3 : 0;
     return (((node.mode >> shift) & 7) & bits) === bits;
@@ -99,7 +102,9 @@ export class VirtualFilesystem {
     const path = this.prepareWrite(input), existing = this.nodes[path];
     const text = (append && existing ? existing.content : '') + content;
     if (text.length > 1_000_000) fail(`${input}: Simulated file size limit reached (1 MB)`);
-    if (!existing && Object.keys(this.nodes).length >= 5000) fail(`${input}: Simulated filesystem entry limit reached (5000)`);
+    if (!existing && nodeCount(this.state) >= 5000) fail(`${input}: Simulated filesystem entry limit reached (5000)`);
+    const volume = volumeFor(this.state, path);
+    if (volumeUsed(this.state, volume) - (existing ? allocatedBytes(existing) : 0) + allocatedBytes({type: 'file', content: text}) > volume.capacity) fail(`${input}: No space left on device`);
     const time = this.clock();
     this.nodes[path] = existing || this.newNode('file', 0o644, time);
     Object.assign(this.nodes[path], {content: text, mtime: time, ctime: time});
@@ -107,13 +112,13 @@ export class VirtualFilesystem {
     return path;
   }
   newNode(type, mode, time) {
-    return {type, uid: this.state.user.uid, gid: this.state.user.gid, mode, atime: time, mtime: time, ctime: time};
+    return {type, uid: this.user.uid, gid: this.user.gid, mode, atime: time, mtime: time, ctime: time};
   }
   touch(input) {
     const path = this.resolve(input, {missingLeaf: true}), node = this.nodes[path], time = this.clock();
     if (!node) { this.write(input, ''); return; }
     // Owner may set current timestamps; otherwise write permission is needed.
-    if (this.state.user.uid !== node.uid) this.require(node, 2, input);
+    if (this.user.uid !== node.uid) this.require(node, 2, input);
     Object.assign(node, {atime: time, mtime: time, ctime: time});
   }
   mkdir(input, parents = false) {
@@ -136,7 +141,7 @@ export class VirtualFilesystem {
       fail(`${input}: File exists`);
     }
     this.require(this.nodes[parentPath(path)], 3, input);
-    if (Object.keys(this.nodes).length >= 5000) fail(`${input}: Simulated filesystem entry limit reached (5000)`);
+    if (nodeCount(this.state) >= 5000) fail(`${input}: Simulated filesystem entry limit reached (5000)`);
     const time = this.clock();
     this.nodes[path] = this.newNode('directory', 0o755, time);
     this.nodes[parentPath(path)].mtime = time;
@@ -146,10 +151,12 @@ export class VirtualFilesystem {
     return Object.keys(this.nodes).filter(key => key !== '/' && parentPath(key) === path).sort();
   }
   protect(path, action) {
+    if (this.state.volumes.some(v => v.mountPoint && v.mountPoint !== '/' && within(v.mountPoint, path))) fail(`${path}: Device or resource busy (mounted filesystem)`);
+    if (this.state.sessions.some(session => within(session.cwd, path))) fail(`${path}: simulator safety: directory belongs to a suspended shell`);
     if (foundations.has(path)) fail(`${path}: simulator safety: cannot ${action} a workstation foundation directory`);
   }
   unlinkPermission(path) {
-    const parent = this.nodes[parentPath(path)], node = this.nodes[path], uid = this.state.user.uid;
+    const parent = this.nodes[parentPath(path)], node = this.nodes[path], uid = this.user.uid;
     this.require(parent, 3, path);
     if ((parent.mode & 0o1000) && uid !== 0 && uid !== parent.uid && uid !== node.uid) fail(`${path}: Operation not permitted (sticky directory)`);
   }
@@ -198,6 +205,8 @@ export class VirtualFilesystem {
       }
     }
     const subtree = Object.keys(this.nodes).filter(path => inside(path, source));
+    const fromVolume = volumeFor(this.state, source), toVolume = volumeFor(this.state, dest);
+    if (fromVolume !== toVolume && volumeUsed(this.state, toVolume) + subtree.reduce((sum, path) => sum + allocatedBytes(this.nodes[path]), 0) - (target ? allocatedBytes(target) : 0) > toVolume.capacity) fail(`${dest}: No space left on device`);
     const moved = subtree.map(path => [path, dest + path.slice(source.length)]);
     if (moved.some(([, path]) => path.length >= 8192)) fail(`${dest}: File name too long`);
     const time = this.clock();
@@ -206,6 +215,7 @@ export class VirtualFilesystem {
     for (const [from, to] of moved) this.nodes[to] = this.nodes[from];
     for (const [from] of moved) delete this.nodes[from];
     this.nodes[dest].ctime = time;
+    for (const session of this.state.sessions) for (const field of ['cwd', 'oldpwd']) if (session[field] && inside(session[field], source)) session[field] = dest + session[field].slice(source.length);
     for (const field of ['cwd', 'oldpwd']) if (this.state[field] && inside(this.state[field], source)) this.state[field] = dest + this.state[field].slice(source.length);
     this.nodes[parentPath(source)].mtime = time; this.nodes[parentPath(dest)].mtime = time;
   }
@@ -231,11 +241,12 @@ export class VirtualFilesystem {
     inspect(path);
     for (const key of planned) delete this.nodes[key];
     if (this.state.oldpwd && inside(this.state.oldpwd, path)) this.state.oldpwd = null;
+    for (const session of this.state.sessions) if (session.oldpwd && inside(session.oldpwd, path)) session.oldpwd = null;
     this.nodes[parentPath(path)].mtime = this.clock();
   }
   chmod(input, specification) {
     const path = this.resolve(input), node = this.nodes[path];
-    if (this.state.user.uid !== 0 && this.state.user.uid !== node.uid) fail(`${input}: Operation not permitted`);
+    if (this.user.uid !== 0 && this.user.uid !== node.uid) fail(`${input}: Operation not permitted`);
     let mode = node.mode;
     if (/^[0-7]{3,4}$/.test(specification)) mode = Number.parseInt(specification, 8);
     else {
@@ -253,7 +264,7 @@ export class VirtualFilesystem {
     node.mode = mode; node.ctime = this.clock();
   }
   chown(input, uid, gid = null) {
-    const path = this.resolve(input), node = this.nodes[path], actor = this.state.user;
+    const path = this.resolve(input), node = this.nodes[path], actor = this.user;
     if (actor.uid !== 0 && (actor.uid !== node.uid || uid !== node.uid || (gid !== null && !actor.groups.includes(gid)))) fail(`${input}: Operation not permitted`);
     if (node.uid !== uid || (gid !== null && node.gid !== gid)) node.mode &= ~0o6000;
     node.uid = uid; if (gid !== null) node.gid = gid; node.ctime = this.clock();

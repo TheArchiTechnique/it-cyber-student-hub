@@ -116,6 +116,43 @@ const server = http.createServer(async (request, response) => {
     await run('chmod 600 recovered.txt'); await run('chown root recovered.txt');
     assert.match(await output.locator('.terminal-entry').last().textContent(), /Operation not permitted/);
     await run('rm -rf /home/student'); assert.match(await output.locator('.terminal-entry').last().textContent(), /simulator safety/);
+    // Phase 3A: exercise real UI privilege, viewer, mount and refresh behavior.
+    await run('sudo whoami'); assert.match(await output.locator('.terminal-entry').last().textContent(), /root\s*$/);
+    await run('whoami'); assert.match(await output.locator('.terminal-entry').last().textContent(), /student\s*$/);
+    await run('su -'); assert.match(await output.locator('.terminal-entry').last().textContent(), /root login is locked/);
+    await run('sudo nano /root/admin-report.txt'); await buffer.fill('Root editor report');
+    await page.locator('#nano-write').click(); await writeName.press('Enter'); await page.locator('#nano-exit').click();
+    await run('whoami'); assert.match(await output.locator('.terminal-entry').last().textContent(), /student\s*$/);
+    await run('cat /root/admin-report.txt'); assert.match(await output.locator('.terminal-entry').last().textContent(), /Permission denied/);
+    await run('sudo cat /root/admin-report.txt'); assert.match(await output.locator('.terminal-entry').last().textContent(), /Root editor report/);
+    await run('sudo chown root:root recovered.txt'); await run('sudo chmod 600 recovered.txt');
+    await run('cat recovered.txt'); assert.match(await output.locator('.terminal-entry').last().textContent(), /Permission denied/);
+    await run('sudo su -'); assert.equal(await page.locator('#prompt').textContent(), 'root@student-linux:~#');
+    await run('ps -ef'); assert.match(await output.locator('.terminal-entry').last().textContent(), /root\s+1043\s+1042/);
+    await page.reload(); await page.waitForFunction(() => document.getElementById('prompt').textContent === 'root@student-linux:~#');
+    await run('echo "$HOME $USER"'); assert.match(await output.locator('.terminal-entry').last().textContent(), /\/root root/);
+    await run('exit'); assert.equal(await page.locator('#prompt').textContent(), 'student@student-linux:~/Practice/Tickets$');
+    await run('top'); assert.ok(await page.locator('#manual-dialog').evaluate(node => node.open));
+    assert.match(await page.locator('#manual-content').textContent(), /Tasks: 4 total/);
+    assert.match(await page.locator('#manual-title').textContent(), /process monitor/);
+    await page.keyboard.press('q'); assert.equal(await input.evaluate(node => node === document.activeElement), true);
+    await run('man top'); assert.equal(await page.locator('#manual-title').textContent(), 'man top'); await page.keyboard.press('q');
+    await run('top -b -n 1'); assert.match(await output.locator('.terminal-entry').last().textContent(), /KiB Mem/);
+    await run('du -sh ~/Practice'); assert.match(await output.locator('.terminal-entry').last().textContent(), /\d+K\s+\/home\/student\/Practice/);
+    await run('sudo mount /dev/sdb1 /mnt/training-disk'); await run('cd /mnt/training-disk/Reports');
+    await run('nano volume-report.txt'); await buffer.fill('Persisted secondary report');
+    await page.locator('#nano-write').click(); await writeName.press('Enter'); await page.locator('#nano-exit').click();
+    await run('df -h .'); assert.match(await output.locator('.terminal-entry').last().textContent(), /sdb1.*1.0G/);
+    await run('sudo umount /dev/sdb1'); assert.match(await output.locator('.terminal-entry').last().textContent(), /target is busy/);
+    await page.reload(); await page.waitForFunction(() => document.getElementById('prompt').textContent.includes('/mnt/training-disk/Reports'));
+    await run('cat volume-report.txt'); assert.match(await output.locator('.terminal-entry').last().textContent(), /Persisted secondary report/);
+    await run('sudo fsck -n /dev/sdb1'); assert.match(await output.locator('.terminal-entry').last().textContent(), /mounted on/);
+    await run('cd ~/Practice/Tickets'); await run('sudo umount /dev/sdb1');
+    await run('sudo fsck -n /dev/sdb1'); assert.match(await output.locator('.terminal-entry').last().textContent(), /2 files.*2 directories/);
+    await page.reload(); await page.waitForFunction(() => document.getElementById('prompt').textContent.includes('~/Practice/Tickets'));
+    await run('sudo mount /dev/sdb1 /mnt/training-disk');
+    await run('cat /mnt/training-disk/Reports/volume-report.txt');
+    assert.match(await output.locator('.terminal-entry').last().textContent(), /Persisted secondary report/);
     await run('cd ~/Documents');
     await run('echo "<img src=x onerror=globalThis.injected=true>" > literal.txt'); await run('cat literal.txt');
     assert.equal(await output.locator('img').count(), 0); assert.equal(await page.evaluate(() => globalThis.injected), undefined);
@@ -130,7 +167,12 @@ const server = http.createServer(async (request, response) => {
     assert.equal(await page.locator('#reset-dialog').evaluate(node => node.open), true);
     await page.getByRole('button', {name: 'Keep my work'}).click();
     await run('cat report.txt'); assert.match(await output.locator('.terminal-entry').last().textContent(), /Linux workstation report/);
+    await run('sudo su -');
     await page.locator('#reset-workstation').click(); await page.locator('#confirm-reset').click();
+    const resetState = await page.evaluate(() => JSON.parse(localStorage.getItem('student-hub:linux-terminal:v1')));
+    assert.equal(resetState.volumes[1].mountPoint, null); assert.deepEqual(resetState.sessions, []);
+    assert.equal(resetState.processes.length, 4); assert.equal(resetState.user.name, 'student');
+    assert.ok(!resetState.nodes['/root/admin-report.txt']);
     assert.equal(await page.locator('#prompt').textContent(), 'student@student-linux:~$');
     assert.equal(await page.evaluate(() => localStorage.getItem('student-hub:other-progress')), 'keep');
     await run('cat Practice/Reports/report.txt'); assert.match(await output.textContent(), /No such file/);
@@ -143,6 +185,10 @@ const server = http.createServer(async (request, response) => {
       for (const scheme of ['default', 'slate']) {
         await page.locator('body').evaluate((node, value) => node.dataset.mdColorScheme = value, scheme);
         assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${width} ${scheme} page overflow`);
+        await run('top');
+        assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `top ${width} ${scheme} fits`);
+        assert.match(await page.locator('#manual-content').textContent(), /cinnamon/);
+        await page.keyboard.press('q');
         await run('man ls');
         assert.ok(await page.locator('#manual-content').isVisible());
         assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
@@ -197,6 +243,10 @@ const server = http.createServer(async (request, response) => {
     await touchPage.locator('#nano-exit').tap();
     await touchPage.locator('#command').fill('cat touch-report.txt'); await touchPage.locator('#terminal-form button[type=submit]').tap();
     assert.match(await touchPage.locator('#terminal-output').textContent(), /Status: Saved/);
+    await touchPage.locator('#command').fill('top'); await touchPage.locator('#terminal-form button[type=submit]').tap();
+    assert.match(await touchPage.locator('#manual-content').textContent(), /Tasks: 4 total/);
+    await touchPage.locator('#close-manual').tap();
+    assert.equal(await touchPage.locator('#manual-dialog').evaluate(node => node.open), false);
     await touch.close();
     const invalid = await browser.newContext();
     await invalid.addInitScript(() => localStorage.setItem('student-hub:linux-terminal:v1', '{broken'));
@@ -216,6 +266,6 @@ const server = http.createServer(async (request, response) => {
     assert.match(await blockedPage.locator('#terminal-output').textContent(), /Offline/);
     await blocked.close();
     assert.deepEqual(errors, []);
-    console.log('PASS: Phase 1 regression; Nano keyboard editing/save/exit/help, unsaved decisions, denied-save recovery and real touch controls; file/search/permission workflow, refresh persistence; desktop/mobile themes, isolation, storage failure, reset, links and deferred discovery.');
+    console.log('PASS: Phase 3A privilege/editor identity, nested shell and mounted/detached refresh, ps/top UI, accounting, reset and touch monitor; Phase 1 regression; Nano keyboard editing/save/exit/help, unsaved decisions, denied-save recovery and real touch controls; file/search/permission workflow, refresh persistence; desktop/mobile themes, isolation, storage failure, reset, links and deferred discovery.');
   } finally { await browser.close(); }
 })().catch(error => {console.error(error); process.exitCode = 1;}).finally(() => server.close());
