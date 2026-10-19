@@ -21,13 +21,10 @@ Find a quick lookup topic. For explanations and examples, use [Learn](../learn/R
 
 
 hub:hidden -->
-<!-- hub:hidden
-- [Linux Commands](linux-commands.md)
+- [Linux Command-Line Reference](linux-commands.md)
 
-    Common command lookup.
+    Find Linux Mint examples, permissions, Nano shortcuts, and configuration-file explanations.
 
-
-hub:hidden -->
 <!-- hub:hidden
 - [PowerShell Commands](powershell-commands.md)
 

@@ -23,6 +23,7 @@ A concept such as subnetting belongs in Learn once. Certification paths link to 
 - Use `README.md` for section landing pages. Do not add an `index.md` beside it.
 - Keep exam version numbers out of directories. Put verified versions and review dates in the relevant page when content is introduced.
 - Use ordinary Markdown links to explicit relative `.md` paths. Link directly to the canonical file, including headings when helpful.
+- When a new resource depends on or reinforces published material, add a useful contextual link near the relevant explanation or task. Link prerequisites and supporting references directly; avoid placeholder links to future content and unrelated resource lists.
 - Write descriptive link labels. Each navigation card is an ordinary list item with one link and a short paragraph.
 - Link back to the parent section and the root `README.md`. Certification-specific practice should also link back to its certification.
 - Use headers and prose for lessons; cards are applied only to README landing pages. Use flat lists with one link per card on those pages.

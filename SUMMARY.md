@@ -42,3 +42,4 @@
 - [Reference](docs/reference/README.md)
   - [Ports & Protocols](docs/reference/ports-and-protocols.md)
   - [Windows Command-Line Reference](docs/reference/windows-command-line.md)
+  - [Linux Command-Line Reference](docs/reference/linux-commands.md)

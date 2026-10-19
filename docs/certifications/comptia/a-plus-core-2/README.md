@@ -172,14 +172,11 @@ hub:hidden -->
 
     Learn CMD tools with practical examples, result explanations, and safe mini exercises.
 
-<!-- hub:hidden
-- [Linux Commands](../../../reference/linux-commands.md)
+- [Linux Command-Line Reference](../../../reference/linux-commands.md)
 
-    Common command lookup.
-
+    Learn Linux tools with Mint examples, result explanations, permissions, and Nano guidance.
 
 
-hub:hidden -->
 <!-- hub:hidden
 - [PowerShell Commands](../../../reference/powershell-commands.md)
 

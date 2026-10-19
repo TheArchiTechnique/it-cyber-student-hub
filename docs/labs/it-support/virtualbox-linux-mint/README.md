@@ -209,7 +209,7 @@ findmnt /
 | `findmnt /` | Shows `/` mounted from a disk partition, typically `/dev/sda…`, using ext4. A live session commonly shows an overlay filesystem instead. |
 
 1. Close the terminal, use **Menu → Quit → Shut Down**, then start **Minty Fresh** again in VirtualBox. Confirm that your account and desktop remain available with the ISO detached.
-2. Reopen the terminal. The VM is now ready for basic Linux command-line practice.
+2. Reopen the terminal. The VM is now ready for basic Linux command-line practice. Use the [Linux Command-Line Reference](../../../reference/linux-commands.md) for practical commands, result explanations, permissions, and Nano editing steps.
 
 To release a captured keyboard or mouse back to Windows, press the **Host key** shown in the VM window's status bar. On a Windows host, the default is **Right Ctrl**.
 

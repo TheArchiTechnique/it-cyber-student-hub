@@ -103,19 +103,22 @@ hub:placeholder -->
 
 
 hub:hidden -->
-<!-- hub:hidden
 ## Reference Topics
 
+<!-- hub:hidden
 - [Windows Event IDs](../../../reference/windows-event-ids.md)
 
     Windows event lookup.
 
 
-- [Linux Commands](../../../reference/linux-commands.md)
 
-    Common command lookup.
+hub:hidden -->
+- [Linux Command-Line Reference](../../../reference/linux-commands.md)
+
+    Review Linux commands, permissions, processes, and configuration-file structure.
 
 
+<!-- hub:hidden
 - [PowerShell Commands](../../../reference/powershell-commands.md)
 
     Cmdlet and syntax lookup.

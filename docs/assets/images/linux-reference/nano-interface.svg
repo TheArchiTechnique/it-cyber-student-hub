@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="430" viewBox="0 0 900 430" role="img" aria-labelledby="title desc">
+  <title id="title">Nano interface: open, edit, save, exit</title>
+  <desc id="desc">Illustrative interface, not a screenshot. The title shows report.txt. The editing area contains status=ready. A status line confirms Wrote 1 line. Footer shortcuts include caret O Write Out and caret X Exit. Caret means hold Ctrl.</desc>
+  <rect width="900" height="430" rx="14" fill="#142c38"/>
+  <g font-family="system-ui, sans-serif" fill="#f2f6f8">
+    <text x="28" y="37" font-size="21" font-weight="700">Nano interface · instructional diagram</text>
+    <text x="28" y="65" font-size="16">1  Title bar: check the current filename</text>
+    <rect x="28" y="82" width="844" height="42" fill="#d6e7eb" rx="3"/>
+    <g font-family="monospace" font-size="20" fill="#142c38">
+      <text x="44" y="110">GNU nano</text>
+      <text x="395" y="110">report.txt</text>
+    </g>
+    <text x="44" y="164" font-family="monospace" font-size="21">status=ready</text>
+    <rect x="207" y="145" width="12" height="25" fill="#91e7cd"/>
+    <text x="44" y="211" font-size="17" fill="#b9d6e1">2  Editing area: type text and move with arrow keys</text>
+    <rect x="28" y="242" width="844" height="40" fill="#203f4b" rx="3"/>
+    <text x="44" y="269" font-family="monospace" font-size="19">[ Wrote 1 line ]</text>
+    <text x="360" y="269" font-size="17" fill="#c5e5ee">3  Status: confirms the save</text>
+    <rect x="28" y="302" width="844" height="55" fill="#d6e7eb" rx="3"/>
+    <g font-family="monospace" font-size="21" fill="#142c38">
+      <text x="44" y="337">^G Help</text>
+      <text x="300" y="337">^O Write Out</text>
+      <text x="638" y="337">^X Exit</text>
+    </g>
+    <text x="28" y="389" font-size="18">4  Shortcuts: ^ means Ctrl. Save: Ctrl+O, Enter. Exit: Ctrl+X.</text>
+    <text x="28" y="415" font-size="15" fill="#b9d6e1">Layout and shortcut labels can vary by Nano version and configuration.</text>
+  </g>
+</svg>
