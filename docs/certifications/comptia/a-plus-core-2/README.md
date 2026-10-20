@@ -121,6 +121,10 @@ hub:hidden -->
 
     Review Linux commands and system tools. Select **Play solo** on Kahoot! for independent practice.
 
+- [macOS Essentials & Troubleshooting - Kahoot!](https://create.kahoot.it/share/macos-essentials-troubleshooting/29c60a0b-f4ed-4e83-aab0-76aceba09ec9)
+
+    Review macOS features, system utilities, security, file management, backups, recovery, and troubleshooting. Select **Play solo** on Kahoot! for independent practice.
+
 <!-- BEGIN GENERATED PBQ LISTINGS -->
 
 ## Published PBQ Practice

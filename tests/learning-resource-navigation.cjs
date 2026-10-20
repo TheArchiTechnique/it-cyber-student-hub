@@ -22,6 +22,7 @@ const installTitle = 'VirtualBox: Installing Linux Mint';
 const linuxTitle = 'Linux Mint Workstation Setup and Troubleshooting';
 const windowsTitle = 'Windows Command-Line Lab';
 const linuxQuiz = 'https://create.kahoot.it/share/linux-basics-commands-and-system-tools/0fdab12a-64d9-4f53-9751-7380dea028d5';
+const macQuiz = 'https://create.kahoot.it/share/macos-essentials-troubleshooting/29c60a0b-f4ed-4e83-aab0-76aceba09ec9';
 
 (async () => {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
@@ -101,7 +102,9 @@ const linuxQuiz = 'https://create.kahoot.it/share/linux-basics-commands-and-syst
         await follow('Command Reference','reference/windows-command-line/');
         await follow('Back to Reference','reference/');
         await go('practice/questions/');
-        assert.equal(await content().locator('a[href*="create.kahoot.it/share/"]').count(),5);
+        assert.equal(await content().locator('a[href*="create.kahoot.it/share/"]').count(),6);
+        const mac = content().getByRole('link',{name:'macOS Essentials & Troubleshooting - Kahoot!',exact:true});
+        assert.equal(await mac.getAttribute('href'),macQuiz);
         const quiz = content().getByRole('link',{name:'Linux Basics: Commands and System Tools - Kahoot!',exact:true});
         assert.equal(await quiz.getAttribute('href'),linuxQuiz);
         // Observe the outgoing URL without relying on Kahoot availability or signing in.
@@ -113,7 +116,7 @@ const linuxQuiz = 'https://create.kahoot.it/share/linux-basics-commands-and-syst
       }
     }
     assert.deepEqual(errors,[]);
-    console.log('Passed: resource cards, prerequisites, grouped references, 5 quizzes, student journeys and returns, keyboard focus, desktop/mobile, and both themes.');
+    console.log('Passed: resource cards, prerequisites, grouped references, 6 quizzes, student journeys and returns, keyboard focus, desktop/mobile, and both themes.');
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));

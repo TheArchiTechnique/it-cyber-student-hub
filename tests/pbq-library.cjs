@@ -203,7 +203,8 @@ const server = http.createServer(async (request, response) => {
         'https://create.kahoot.it/share/windows-basics-accounts-settings-devices/7e99334d-8907-4c38-9f66-ac01ba962364',
         'https://create.kahoot.it/share/windows-command-line-admin-tools-quiz/4291e84a-5286-43c6-836a-3cf760328d29',
         'https://create.kahoot.it/share/windows-10-11-troubleshooting-networking-and-remote-support/6111530d-6484-4fe9-9536-9a1754846fae',
-        'https://create.kahoot.it/share/linux-basics-commands-and-system-tools/0fdab12a-64d9-4f53-9751-7380dea028d5'
+        'https://create.kahoot.it/share/linux-basics-commands-and-system-tools/0fdab12a-64d9-4f53-9751-7380dea028d5',
+        'https://create.kahoot.it/share/macos-essentials-troubleshooting/29c60a0b-f4ed-4e83-aab0-76aceba09ec9'
       ]);
       await ready();
     }
