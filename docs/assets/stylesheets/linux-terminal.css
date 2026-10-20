@@ -1,0 +1,108 @@
+/* Standalone interactive surface using the shared Hub palette and article classes. */
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--md-default-bg-color); color: var(--md-default-fg-color); font: 16px/1.65 var(--md-text-font); }
+a { color: var(--md-typeset-a-color); }
+button { font: 600 14px/1.3 var(--md-text-font); cursor: pointer; border: 1px solid var(--hub-card-border); border-radius: 7px; padding: 10px 14px; min-height: 44px; background: var(--hub-card-bg); color: var(--md-default-fg-color); }
+button:hover { background: var(--hub-card-hover-bg); border-color: var(--hub-card-hover-border); }
+:focus-visible { outline: 3px solid var(--hub-focus-outline); outline-offset: 3px; }
+.hub-terminal-header { background: #173c57; color: #fff; border-bottom: 1px solid #33536a; }
+.header-inner { max-width: 1200px; margin: auto; padding: 14px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.header-inner a { color: #fff; text-decoration: none; }
+.brand { font-weight: 750; }
+.header-inner nav { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; font-size: 14px; }
+.header-inner nav a { padding: 8px 0; }
+#theme-toggle { background: #214c65; border-color: #648496; color: #fff; }
+main.hub-page { max-width: 1152px; margin: auto; padding: 32px 24px 48px; }
+main.md-typeset { font-size: 16px; }
+main.md-typeset h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .1em; color: var(--md-default-fg-color--light); }
+code, kbd { font-family: var(--md-code-font); font-size: .9em; background: var(--hub-code-bg); color: var(--hub-code-fg); border-radius: 4px; padding: 2px 5px; overflow-wrap: anywhere; }
+.linux-terminal { margin-top: 24px; border: 1px solid #456777; border-radius: 12px; background: #102532; color: #e2edf4; min-width: 0; overflow: hidden; }
+.terminal-head { padding: 12px 18px; border-bottom: 1px solid #456777; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.terminal-head h2 { margin: 0; font-size: 16px; color: #e2edf4; }
+.linux-terminal button { background: #214759; border-color: #678594; color: #fff; }
+.linux-terminal button:hover { background: #2f5b70; }
+.linux-terminal :focus-visible { outline-color: #90e4d0; }
+#terminal-output { height: clamp(250px, 45vh, 480px); overflow: auto; overscroll-behavior: contain; padding: 16px 18px; scrollbar-color: #718da0 #102532; }
+.terminal-entry { margin-bottom: 16px; }
+#terminal-output pre { font: 14px/1.6 var(--md-code-font); background: transparent; color: inherit; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; tab-size: 4; }
+#terminal-output .transcript-command { color: #aadbc7; }
+#terminal-form { padding: 0 18px; }
+#terminal-form label { font-size: 13px; font-weight: 650; display: block; margin-bottom: 6px; }
+.command-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+#prompt { font: 14px/1.6 var(--md-code-font); color: #aadbc7; overflow-wrap: anywhere; max-width: 100%; }
+#command { flex: 1 1 260px; min-width: 0; max-width: 100%; font: 16px/1.5 var(--md-code-font); border: 1px solid #658191; border-radius: 7px; padding: 10px; background: #071a25; color: #f1f7fa; }
+#terminal-hint { font-size: 12px; line-height: 1.6; color: #b7d4df; padding: 0 18px 16px; margin: 10px 0 0; }
+#save-status { color: var(--md-default-fg-color--light); font-size: 13px; min-height: 1.65em; }
+.syntax-help { padding: 14px 18px; border: 1px solid var(--hub-card-border); border-radius: 10px; background: var(--hub-card-bg); }
+.syntax-help summary { cursor: pointer; font-weight: 650; }
+dialog { width: min(760px, calc(100% - 32px)); max-height: calc(100dvh - 40px); overflow: auto; border: 1px solid var(--hub-card-border); border-radius: 12px; padding: 22px; background: var(--hub-card-bg); color: var(--md-default-fg-color); }
+dialog::backdrop { background: #071a25aa; }
+dialog h2 { margin: 0; line-height: 1.4; font-size: 20px; }
+.dialog-head, .dialog-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.dialog-actions { justify-content: flex-end; }
+#manual-content { max-height: 52dvh; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font: 14px/1.65 var(--md-code-font); padding: 16px; background: var(--hub-code-bg); color: var(--md-default-fg-color); border-radius: 7px; }
+.skip-link { position: absolute; left: 16px; top: -100px; z-index: 5; padding: 10px; background: var(--hub-card-bg); }
+.skip-link:focus { top: 10px; }
+@media (max-width: 600px) { main.hub-page { padding: 22px 12px 32px; } .header-inner { padding: 14px 16px; } .header-inner nav { gap: 12px; } #prompt { flex-basis: 100%; } #command { flex-basis: 130px; } #terminal-output { padding: 14px 12px; } #terminal-form { padding: 0 12px; } .terminal-head { padding: 10px 12px; } }
+/* Nano occupies the same terminal surface, not a second application or overlay. */
+.linux-terminal [hidden] { display: none !important; }
+.linux-terminal button:disabled { opacity: .55; cursor: default; }
+#nano-panel { padding: 14px 18px 16px; min-width: 0; font: 14px/1.6 var(--md-code-font); }
+.nano-title { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 8px 12px; margin-bottom: 10px; background: #d6e6eb; color: #102532; }
+#nano-filename { overflow-wrap: anywhere; min-width: 0; }
+#nano-modified { font-weight: 750; }
+.nano-label { font-size: 12px; display: block; margin-bottom: 5px; }
+#nano-buffer { display: block; width: 100%; min-width: 0; height: clamp(260px, 46vh, 500px); padding: 12px; border: 1px solid #658191; border-radius: 5px; resize: vertical; background: #071a25; color: #f1f7fa; font: 16px/1.6 var(--md-code-font); tab-size: 4; overflow: auto; }
+#nano-buffer[readonly] { opacity: .8; }
+.nano-actions, .nano-save-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.nano-actions button { flex: 1 1 120px; }
+#nano-status { margin: 10px 0 2px; color: #d8e9b8; overflow-wrap: anywhere; }
+#nano-position, #nano-key-hint { font-size: 12px; color: #b7d4df; }
+#nano-write-form, #nano-exit-prompt, #nano-help { padding: 12px 0; }
+#nano-write-form label { display: block; margin-bottom: 6px; }
+#nano-write-name { flex: 1 1 240px; width: 100%; min-width: 0; border: 1px solid #658191; background: #071a25; color: #f1f7fa; font: 16px/1.5 var(--md-code-font); padding: 9px; border-radius: 5px; }
+#nano-help h3 { color: #f1f7fa; }
+#nano-help p { max-width: 75ch; }
+@media (max-width: 600px) { #nano-panel { padding: 12px; } .nano-actions button { flex-basis: 100%; } #nano-write-name { flex-basis: 100%; } }
+
+/* The existing keyboard-accessible terminal viewer also displays top snapshots. */
+#manual-dialog[data-view=top] #manual-content { white-space: pre; overflow-wrap: normal; }
+
+.terminal-head { flex-wrap: wrap; }
+.profile-control { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 0; }
+.profile-control label { font-size: 13px; }
+#workstation-profile { max-width: 100%; min-height: 44px; padding: 8px; border: 1px solid #678594; border-radius: 7px; background: #214759; color: #fff; font: 14px/1.4 var(--md-text-font); }
+#workstation-profile:disabled { opacity: .55; }
+#profile-description { padding: 0 18px; color: #b7d4df; font-size: 12px; line-height: 1.6; }
+@media (max-width: 600px) { .profile-control { flex-basis: 100%; } #profile-description { padding: 0 12px; } }
+
+/* Assignment and terminal share one responsive work surface and the Hub palette. */
+[hidden] { display: none !important; }
+.practice-controls, .stage-navigation { display: flex; flex-wrap: wrap; gap: 8px; }
+.practice-controls button[aria-pressed=true] { border-color: var(--md-typeset-a-color); box-shadow: inset 0 -3px var(--md-typeset-a-color); }
+#practice-layout { display: grid; gap: 20px; align-items: start; }
+#practice-layout.is-guided { grid-template-columns: minmax(280px, .85fr) minmax(0, 1.4fr); }
+#practice-layout .linux-terminal { margin-top: 0; position: sticky; top: 12px; }
+#guided-panel { min-width: 0; }
+#guided-panel h2 { font-size: 18px; line-height: 1.45; margin: 0 0 12px; }
+#guided-panel h3 { font-size: 18px; line-height: 1.45; }
+#guided-panel label { display: block; font-weight: 600; margin: 10px 0 6px; }
+#guided-stage { width: 100%; min-width: 0; padding: 10px 6px; min-height: 44px; font: inherit; font-size: 14px; background: var(--hub-card-bg); color: var(--md-default-fg-color); border: 1px solid var(--hub-card-border); border-radius: 7px; }
+#guided-progress { display: block; width: 100%; height: 14px; accent-color: var(--md-typeset-a-color); }
+#guided-progress-text, #guided-stage-status, .workspace-label { font-size: 13px; }
+#guided-tasks { padding-left: 23px; }
+#guided-tasks li { margin: 12px 0; overflow-wrap: anywhere; }
+#guided-panel details { margin: 16px 0; }
+#guided-example { white-space: pre-wrap; overflow-wrap: anywhere; font: 13px/1.65 var(--md-code-font); background: var(--hub-code-bg); color: var(--hub-code-fg); padding: 12px; border-radius: 6px; }
+#guided-feedback { overflow-wrap: anywhere; }
+#guided-feedback ul { padding-left: 23px; }
+#guided-feedback p, #guided-feedback li { margin: 10px 0; }
+.stage-navigation { margin-top: 16px; }
+button:disabled { opacity: .55; cursor: default; }
+@media (min-width: 980px) { main.hub-page:has(.is-guided) { max-width: 1440px; } }
+@media (max-width: 979px) {
+  #practice-layout.is-guided { grid-template-columns: minmax(0, 1fr); }
+  #guided-panel { max-height: none; overflow: visible; }
+  #practice-layout .linux-terminal { position: static; }
+}

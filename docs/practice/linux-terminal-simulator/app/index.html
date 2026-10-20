@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Linux Terminal Simulator | IT &amp; Cybersecurity Student Hub</title>
+  <link rel="stylesheet" href="../../../assets/stylesheets/hub.css">
+  <link rel="stylesheet" href="../../../assets/stylesheets/linux-terminal.css">
+  <script type="module" src="../../../assets/javascripts/linux-terminal/terminal.mjs"></script>
+</head>
+<body data-md-color-scheme="default">
+<a class="skip-link" href="#main">Skip to Linux terminal</a>
+<header class="hub-terminal-header">
+  <div class="header-inner">
+    <a class="brand" href="../../../">IT &amp; Cybersecurity Student Hub</a>
+    <nav aria-label="Student Hub navigation">
+      <a href="../../../">Student Hub</a>
+      <a href="../../../certifications/comptia/a-plus-core-2/">A+ Core 2</a>
+      <a href="../">Simulator overview</a>
+      <button type="button" id="theme-toggle" aria-pressed="false" disabled>Dark theme</button>
+    </nav>
+  </div>
+</header>
+<main id="main" class="hub-page hub-article md-typeset">
+  <p class="eyebrow">A+ CORE 2 · LINUX COMMAND PRACTICE</p>
+  <h1>Linux Terminal Simulator</h1>
+  <p>Practice on a simulated Linux Mint workstation in your browser. Commands change this workstation’s files, not your computer’s operating system. Your files and command history are saved in this browser when storage is available.</p>
+  <p>Start with <code>help</code>, explore with <code>ls</code>, or open a short manual with <code>man ls</code>. Use the <a href="../../../reference/linux-commands/">Linux Command-Line Reference</a> for broader explanations.</p>
+  <div class="practice-controls" role="group" aria-label="Practice mode">
+    <button type="button" id="guided-mode" aria-pressed="false" disabled>Guided Practice</button>
+    <button type="button" id="free-mode" aria-pressed="true" disabled>Free Practice</button>
+  </div>
+  <p id="practice-description">Choose Guided Practice for a workstation support assignment, or explore freely.</p>
+  <div id="practice-layout">
+    <section id="guided-panel" class="syntax-help" aria-labelledby="assignment-title" hidden>
+      <h2 id="assignment-title">Linux Workstation Preparation and Troubleshooting</h2>
+      <p id="guided-progress-text" role="status"></p>
+      <progress id="guided-progress" value="0" max="11" aria-label="Verified assignment stages"></progress>
+      <label for="guided-stage">Assignment stage</label>
+      <select id="guided-stage"></select>
+      <p class="workspace-label">Your workspace: <code id="guided-workspace"></code></p>
+      <h3 id="guided-title"></h3>
+      <p id="guided-concept"></p>
+      <ol id="guided-tasks"></ol>
+      <details id="guided-hint-details"><summary>Hint</summary><p id="guided-hint"></p>
+        <details id="guided-example-details"><summary>Additional help: example commands</summary><pre id="guided-example"></pre></details>
+      </details>
+      <p id="guided-stage-status"></p>
+      <button type="button" id="check-guided">Check my work</button>
+      <div id="guided-feedback" role="status" aria-atomic="true"></div>
+      <div class="stage-navigation" role="group" aria-label="Stage navigation"><button type="button" id="previous-stage">Previous stage</button><button type="button" id="next-stage">Next stage</button></div>
+      <p><button type="button" id="new-assignment">Start a new assignment</button></p>
+      <p><button type="button" id="fedora-extension">Open Fedora DNF extension</button></p>
+      <p id="fedora-separation" hidden>Mint assignment progress and files are saved separately. Select Linux Mint in the terminal to return.</p>
+    </section>
+  <section class="linux-terminal" aria-labelledby="terminal-title">
+    <div class="terminal-head"><h2 id="terminal-title">student-linux</h2><div class="profile-control"><label for="workstation-profile">Workstation</label><select id="workstation-profile" aria-describedby="profile-description" disabled><option value="mint">Linux Mint (APT)</option><option value="fedora">Fedora DNF practice</option></select></div><button type="button" id="reset-workstation" disabled>Reset workstation</button></div>
+    <p id="profile-description" role="status">Linux Mint: APT package management. Each profile keeps its own files, network settings and package inventory.</p>
+    <div id="terminal-output" role="log" aria-label="Linux terminal output" aria-live="polite" aria-relevant="additions" tabindex="0"></div>
+    <form id="terminal-form" autocomplete="off" aria-busy="true">
+      <label for="command">Linux command</label>
+      <div class="command-row"><span id="prompt" aria-hidden="true"></span><input id="command" name="command" disabled type="text" maxlength="8192" spellcheck="false" autocapitalize="off" autocorrect="off" enterkeyhint="send" aria-describedby="terminal-hint"><button type="submit" disabled>Run</button></div>
+    </form>
+    <section id="nano-panel" aria-label="Nano simulated text editor" hidden>
+      <div class="nano-title"><span>GNU nano <small>(simulated)</small></span><span id="nano-filename"></span><span id="nano-modified"></span></div>
+      <label class="nano-label" for="nano-buffer">File contents</label>
+      <textarea id="nano-buffer" spellcheck="false" autocapitalize="off" autocorrect="off" wrap="off" aria-describedby="nano-key-hint"></textarea>
+      <div id="nano-help" tabindex="-1" hidden><h3>Nano help</h3><p>Type to insert text. Enter creates a line; Backspace and Delete remove text. Use arrows, Home, and End to move the cursor. Select, copy, and paste using your browser’s normal controls.</p><p>Ctrl+O opens Write Out. Confirm the filename with Enter. Ctrl+X exits; choose Y to save, N to discard, or Ctrl+C to cancel when asked. Ctrl+G opens this help. Use the buttons below the editor on touch devices.</p><p>Saved nonempty text ends with a newline. Files and directory permissions apply when saving. Changes stay in the buffer if saving fails.</p><button type="button" id="nano-return">Return to editor</button></div>
+      <form id="nano-write-form" autocomplete="off" hidden><label for="nano-write-name">File Name to Write</label><div class="nano-save-row"><input id="nano-write-name" type="text" maxlength="8191" spellcheck="false" autocapitalize="off" autocorrect="off"><button type="submit">Save file</button><button type="button" id="nano-cancel-save">Cancel save</button></div></form>
+      <div id="nano-exit-prompt" role="group" aria-label="Save modified buffer before exiting" hidden><p>Save modified buffer?</p><div class="nano-actions"><button type="button" id="nano-save-exit">Yes, save (Y)</button><button type="button" id="nano-discard">No, discard (N)</button><button type="button" id="nano-cancel-exit">Cancel (^C)</button></div></div>
+      <p id="nano-status" role="status" aria-atomic="true"></p><p id="nano-position">Line 1, column 1</p>
+      <div id="nano-shortcuts" class="nano-actions"><button type="button" id="nano-write">^O Write Out</button><button type="button" id="nano-exit">^X Exit</button><button type="button" id="nano-show-help">^G Help</button></div>
+      <p id="nano-key-hint">Keyboard shortcuts and visible buttons perform the same actions. Ctrl+X is Nano’s exit command; standard copy/paste and text selection remain available.</p>
+    </section>
+    <p id="terminal-hint">Enter runs a command. Up/Down recalls commands. Tab completes simple command names and paths. Ctrl+C cancels input. The output area can be focused and scrolled to review or copy text.</p>
+  </section>
+  </div>
+  <p id="save-status" role="status" aria-atomic="true">Loading workstation…</p>
+  <details class="syntax-help"><summary>Supported practice and shell syntax</summary>
+    <p>Try <code>mkdir -p ~/Practice/Reports</code>, then <code>cd ~/Practice/Reports</code>. Open <code>nano workstation-report.txt</code>, write a few lines, press Ctrl+O and Enter to save, then Ctrl+X to exit. Verify with <code>cat workstation-report.txt</code>. The editor also has touch controls.</p>
+    <p>Use absolute or relative paths, <code>~</code>, <code>$HOME</code>, <code>.</code>, <code>..</code>, and quoted names with spaces. <code>&gt;</code> overwrites and <code>&gt;&gt;</code> appends. Filenames are case-sensitive. <code>touch</code> preserves existing content. Long listings show simulated permissions, ownership, text sizes in bytes, and UTC modification times; directory sizes are modeled as zero.</p>
+    <p>Available commands: <code>pwd</code>, <code>ls</code>, <code>cd</code>, <code>cat</code>, <code>whoami</code>, <code>mkdir</code>, <code>touch</code>, <code>echo</code>, <code>clear</code>, <code>help</code>, <code>man</code>. File tools: <code>nano</code>, <code>cp</code>, <code>mv</code>, <code>rm</code>, <code>grep</code>, <code>find</code>, <code>chmod</code>, <code>chown</code>. Each manual lists supported syntax. System tools: <code>sudo</code>, <code>su</code>, <code>exit</code>, <code>ps</code>, <code>top</code>, <code>du</code>, <code>df</code>, <code>mount</code>, <code>umount</code>, <code>fsck</code>. Network tools: <code>ip</code>, <code>ping</code>, <code>dig</code>, <code>traceroute</code>, <code>curl</code>. Package tools: <code>apt</code> in Mint and <code>dnf</code> in the separately saved Fedora practice profile.</p>
+    <p>Administration uses a fictional password-free training policy. <code>sudo whoami</code> runs one command as root; <code>sudo su -</code> opens a root shell and <code>exit</code> returns to your previous account. Direct root login is locked. Never enter real passwords here. <code>top</code> opens a simulated process snapshot; press Q to return.</p>
+    <p><code>du</code> counts UTF-8 text rounded up to 1 KiB per file; empty files and directories use zero modeled data blocks. <code>df</code> includes those blocks plus a fixed fictional system-image allocation. Mount <code>/dev/sdb1</code> at <code>/mnt/training-disk</code> with sudo to inspect the secondary volume. Its <code>Reports</code> directory is writable by student. Unmount before using the read-only <code>fsck -n</code> check. Repairs are not simulated.</p>
+    <p>Inspect this fictional network with <code>ip addr</code> and <code>ip route</code>. Try <code>ping -c 4 files.training.example</code>, <code>dig portal.training.example</code>, and <code>curl -I http://files.training.example</code>. Downloads such as <code>curl -o report.html http://files.training.example/report</code> create real files inside this simulated workstation. Timings and services are modeled; these commands send no network requests.</p>
+    <p>Package catalogs and versions are fictional. <code>apt show nano</code> and <code>apt search traceroute</code> inspect Mint packages. Use sudo for package changes. Removing optional curl, traceroute, or DNS utilities disables their commands until reinstalled. Nano and other foundational tools are protected. Select Fedora DNF practice to use <code>dnf info nano</code>; switching profiles preserves Mint work.</p>
+    <p>Enter one command at a time. Pipes, shell wildcard expansion, command chains, substitutions, shell scripts, and interactive standard input are not implemented. No network requests or host commands run from this terminal.</p>
+    <p>Organize a saved report with <code>cp workstation-report.txt backup.txt</code>, <code>mv backup.txt resolved-ticket.txt</code>, and <code>chmod 600 resolved-ticket.txt</code>. Search its contents using <code>grep -n "Status" workstation-report.txt</code>, or locate reports using <code>find ~/Practice -name "*.txt"</code>. Keep find patterns quoted. For searchable sample events, try <code>grep -in error /var/log/application.log</code>.</p>
+  </details>
+  <noscript><p>This simulator requires JavaScript. You can still read the Linux Command-Line Reference linked above.</p></noscript>
+</main>
+<dialog id="manual-dialog" aria-labelledby="manual-title">
+  <div class="dialog-head"><h2 id="manual-title">Short simulated manual</h2><button type="button" id="close-manual">Return to terminal</button></div>
+  <p>Scroll to read. Press <kbd>q</kbd> or <kbd>Escape</kbd> to return to the prompt.</p>
+  <pre id="manual-content" tabindex="0"></pre>
+</dialog>
+<dialog id="new-assignment-dialog" aria-labelledby="new-assignment-title" aria-describedby="new-assignment-description">
+  <h2 id="new-assignment-title">Start a new assignment?</h2>
+  <p id="new-assignment-description">A new workspace and fresh checkpoints will be assigned in this profile. Your previous files, packages, network, account, and command history stay in place. Reset workstation is a separate action.</p>
+  <p id="new-assignment-error" role="status"></p>
+  <div class="dialog-actions"><button type="button" id="cancel-assignment" autofocus>Keep this assignment</button><button type="button" id="confirm-assignment">Start new assignment</button></div>
+</dialog>
+<dialog id="reset-dialog" aria-labelledby="reset-title" aria-describedby="reset-description">
+  <h2 id="reset-title">Reset this workstation?</h2>
+  <p id="reset-description">This removes your simulated files, changes, and command history and restores the original workstation. Other Student Hub progress stays saved.</p>
+  <div class="dialog-actions"><button type="button" id="cancel-reset" autofocus>Keep my work</button><button type="button" id="confirm-reset">Reset workstation</button></div>
+</dialog>
+</body>
+</html>

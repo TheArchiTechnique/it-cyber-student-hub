@@ -15,6 +15,7 @@
     - [Ports & Protocols](docs/learn/networking/ports-and-protocols.md)
 - [Practice](docs/practice/README.md)
   - [Practice Questions](docs/practice/questions/README.md)
+  - [Linux Terminal Simulator](docs/practice/linux-terminal-simulator/README.md)
   - [PBQs](docs/practice/pbqs/README.md)
     - [A+ Core 1](docs/practice/pbqs/a-plus-core-1/README.md)
       - [IP Configuration Troubleshooting](docs/practice/pbqs/a-plus-core-1/ip-configuration-troubleshooting/README.md)

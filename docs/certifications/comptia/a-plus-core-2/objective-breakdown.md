@@ -308,7 +308,7 @@ Related practice: [IP Configuration Troubleshooting](../../../practice/pbqs/a-pl
 
 ### 1.9 Linux features and tools
 
-Use the [Linux Command-Line Reference](../../../reference/linux-commands.md) for Mint examples, permission tables, Nano guidance, and configuration-file explanations. Practice inside the VM from [VirtualBox: Installing Linux Mint](../../../labs/it-support/virtualbox-linux-mint/README.md).
+Use the [Linux Command-Line Reference](../../../reference/linux-commands.md) for Mint examples, permission tables, Nano guidance, and configuration-file explanations. Practice Linux commands in your browser with the [Linux Terminal Simulator](../../../practice/linux-terminal-simulator/README.md), or use the real VM from [VirtualBox: Installing Linux Mint](../../../labs/it-support/virtualbox-linux-mint/README.md).
 
 #### Commands
 

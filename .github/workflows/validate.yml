@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [feature/learning-resource-navigation-ux, build/initial-student-hub, feature/centralized-pbq-library, feature/pbq-catalog-certification-integration, feature/global-pbq-library, feature/automatic-content-visibility, content/virtualbox-linux-mint-shared-lab, content/a-plus-core2-network-configuration-concepts, content/a-plus-core2-windows-command-practice, content/a-plus-core2-windows-troubleshooting-pbq, content/a-plus-core2-startup-bsod-pbqs, content/a-plus-core2-linux-mint-command-lab]
+    branches: [feature/a-plus-core2-linux-terminal-simulator, feature/learning-resource-navigation-ux, build/initial-student-hub, feature/centralized-pbq-library, feature/pbq-catalog-certification-integration, feature/global-pbq-library, feature/automatic-content-visibility, content/virtualbox-linux-mint-shared-lab, content/a-plus-core2-network-configuration-concepts, content/a-plus-core2-windows-command-practice, content/a-plus-core2-windows-troubleshooting-pbq, content/a-plus-core2-startup-bsod-pbqs, content/a-plus-core2-linux-mint-command-lab]
   workflow_dispatch:
 permissions:
   contents: read
@@ -38,6 +38,7 @@ jobs:
       - run: node tests/shared-linux-lab.cjs
       - run: npm run test:linux-command-reference
       - run: npm run test:linux-mint-command-lab
+      - run: npm run test:linux-terminal
       - run: npm run test:windows-command-lab
       - run: npm run test:windows-troubleshooting
       - run: npm run test:windows-startup-recovery
