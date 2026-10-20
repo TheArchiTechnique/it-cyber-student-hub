@@ -1,5 +1,5 @@
 import {Shell, complete} from './shell.mjs';
-import {StateStore} from './state.mjs';
+import {ProfileStore, PROFILE_KEY, profiles} from './state.mjs';
 import {mountNano} from './nano.mjs';
 
 const form = document.getElementById('terminal-form');
@@ -11,7 +11,8 @@ if (form) {
   const manualDialog = document.getElementById('manual-dialog');
   const resetDialog = document.getElementById('reset-dialog');
   const manualContent = document.getElementById('manual-content');
-  const store = new StateStore({getItem: key => localStorage.getItem(key), setItem: (key, value) => localStorage.setItem(key, value)});
+  const profileSelect = document.getElementById('workstation-profile');
+  const store = new ProfileStore({getItem: key => localStorage.getItem(key), setItem: (key, value) => localStorage.setItem(key, value)});
   let shell = new Shell(store.load()), historyIndex = shell.state.history.length, draft = '';
 
   function entry(command, text = '') {
@@ -32,11 +33,16 @@ if (form) {
     onClose: () => { refresh(); focusInput(); }, onSave: () => refresh(),
     onVisibility: active => {
       output.hidden = active; form.hidden = active; document.getElementById('terminal-hint').hidden = active;
-      document.getElementById('reset-workstation').disabled = active;
+      document.getElementById('reset-workstation').disabled = active; profileSelect.disabled = active;
     }
   });
   function refresh(save = true) {
     prompt.textContent = shell.prompt();
+    profileSelect.value = store.profile;
+    const description = `${profiles[store.profile]}: ${store.profile === 'mint' ? 'APT' : 'DNF'} package management. Each profile keeps its own files, network settings and package inventory.`;
+    const profileDescription = document.getElementById('profile-description');
+    if (profileDescription.textContent !== description) profileDescription.textContent = description;
+    document.getElementById('reset-description').textContent = `Reset ${profiles[store.profile]}? This removes this profile’s simulated files, changes, and command history. The other profile and other Student Hub progress stay saved.`;
     const saved = save ? store.save(shell.state) : true;
     status.textContent = store.message || 'Files and command history will be saved after each command.';
     historyIndex = shell.state.history.length;
@@ -105,9 +111,17 @@ if (form) {
   });
   resetDialog.addEventListener('close', focusInput);
 
+  profileSelect.addEventListener('change', () => {
+    if (editor.active) { profileSelect.value = store.profile; return; }
+    shell = new Shell(store.switch(profileSelect.value, shell.state));
+    input.value = ''; draft = ''; output.replaceChildren();
+    entry(null, `${profiles[store.profile]} practice workstation\nSigned in as ${shell.state.user.name} on ${shell.state.hostname}. Type help to begin.`);
+    refresh(false); focusInput();
+  });
+
   // Independent tabs must not silently overwrite one another's workstation.
   window.addEventListener('storage', event => {
-    if (event.key === 'student-hub:linux-terminal:v1') {
+    if ([store.current.key, PROFILE_KEY].includes(event.key)) {
       status.textContent = 'This workstation changed in another tab. Reload to use that saved version, or continue here to save this tab’s version.';
     }
   });
@@ -126,6 +140,6 @@ if (form) {
     const scheme = document.body.dataset.mdColorScheme === 'slate' ? 'default' : 'slate'; theme(scheme);
     try { localStorage.setItem(themeKey, scheme); } catch { /* Keep the selected theme for this visit. */ }
   });
-  entry(null, 'Linux Mint practice workstation\nSigned in as student on student-linux. Type help or man ls.');
+  entry(null, `${profiles[store.profile]} practice workstation\nSigned in as ${shell.state.user.name} on ${shell.state.hostname}. Type help or man ls.`);
   refresh(false); focusInput();
 }

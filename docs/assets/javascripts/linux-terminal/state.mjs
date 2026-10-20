@@ -1,14 +1,20 @@
+import {seedNetwork, restoreNetwork} from './network-state.mjs';
+import {seedPackages, restorePackages} from './packages.mjs';
 import {seedSystem, accounts, identity, volumeUsed} from './system-state.mjs';
 import {seedFilesystem, parentPath} from './filesystem.mjs';
 export const STORAGE_KEY = 'student-hub:linux-terminal:v1';
-export function freshState() {
+export const PROFILE_KEY = 'student-hub:linux-terminal:profile';
+export const profiles = Object.freeze({mint: 'Linux Mint', fedora: 'Fedora DNF practice'});
+export function freshState(profile = 'mint') {
+  if (!Object.hasOwn(profiles, profile)) throw Error('Invalid workstation profile');
   return {
-    version: 3, hostname: 'student-linux', distribution: 'mint',
+    version: 4, hostname: 'student-linux', distribution: profile,
     user: {name: 'student', uid: 1000, gid: 1000, groups: [1000], home: '/home/student'},
     cwd: '/home/student', oldpwd: null, umask: 0o022, lastStatus: 0,
-    nodes: (() => { const nodes = seedFilesystem(); nodes['/mnt/training-disk'] = {...nodes['/mnt']}; return nodes; })(), history: [], progress: {},
-    ...seedSystem(),
-    network: {interface: 'enp0s3', address: '192.0.2.10/24', gateway: '192.0.2.1', dns: '192.0.2.53'}
+    nodes: (() => { const nodes = seedFilesystem(); nodes['/mnt/training-disk'] = {...nodes['/mnt']};
+      nodes['/etc/os-release'] = {...nodes['/etc/hosts'], content: profile === 'mint' ? 'NAME="Linux Mint (simulated)"\nID=linuxmint\nID_LIKE="ubuntu debian"\n' : 'NAME="Fedora DNF practice (simulated)"\nID=fedora\n'}; return nodes; })(), history: [], progress: {},
+    ...seedSystem(Date.now(), profile),
+    network: seedNetwork(), packages: seedPackages(profile)
   };
 }
 const validPath = path => typeof path === 'string' && path.startsWith('/') && !path.includes('\0')
@@ -36,18 +42,22 @@ function validateNodes(input) {
 }
 const validUser = user => user && Object.hasOwn(accounts, user.name) && ['uid', 'gid', 'home'].every(key => user[key] === accounts[user.name][key]) && Array.isArray(user.groups) && user.groups.length === 1 && user.groups[0] === user.gid;
 const validDirectory = (state, path) => validPath(path) && state.nodes[path]?.type === 'directory';
-export function restoreState(value) {
-  if (!value || ![1, 2, 3].includes(value.version)) throw Error('Invalid state version');
+export function restoreState(value, expectedProfile = null) {
+  if (!value || ![1, 2, 3, 4].includes(value.version)) throw Error('Invalid state version');
+  const profile = value.version < 4 ? 'mint' : value.distribution;
+  if (!Object.hasOwn(profiles, profile) || (expectedProfile !== null && expectedProfile !== profile)) throw Error('Invalid workstation profile');
   const nodes = validateNodes(value.nodes);
   if (nodes['/home/student']?.type !== 'directory') throw Error('Missing workstation directories');
   if (!validPath(value.cwd) || (value.oldpwd !== null && !validPath(value.oldpwd))
-    || value.hostname !== 'student-linux' || value.distribution !== 'mint'
+    || value.hostname !== 'student-linux' || value.distribution !== profile
     || (value.version < 3 ? value.user?.uid !== 1000 || value.user?.name !== 'student' : !validUser(value.user))
     || !Array.isArray(value.history) || value.history.length > 200
     || !value.history.every(line => typeof line === 'string' && line.length <= 8192)
     || !Number.isInteger(value.lastStatus) || value.lastStatus < 0 || value.lastStatus > 255) throw Error('Invalid shell session');
-  const state = freshState();
-  Object.assign(state, {nodes, cwd: value.cwd, oldpwd: value.oldpwd, history: [...value.history], lastStatus: value.lastStatus});
+  const state = freshState(profile);
+  const progress = value.progress ?? {};
+  if (typeof progress !== 'object' || Array.isArray(progress) || JSON.stringify(progress).length > 16000) throw Error('Invalid progress data');
+  Object.assign(state, {nodes, cwd: value.cwd, oldpwd: value.oldpwd, history: [...value.history], lastStatus: value.lastStatus, progress: JSON.parse(JSON.stringify(progress))});
   // A shell may still occupy a directory after chmod removes its search permission.
   // Restore identity/existence, not access; subsequent operations perform access checks.
   if (nodes[state.cwd]?.type !== 'directory') throw Error('Invalid working directory');
@@ -62,6 +72,9 @@ export function restoreState(value) {
     const seed = seedFilesystem();
     if (!nodes['/mnt/training-disk'] && nodes['/mnt']?.type === 'directory' && Object.keys(nodes).length < 5000) nodes['/mnt/training-disk'] = {...seed['/mnt']};
   } else restoreSystem(state, value);
+  if (value.version < 4) {
+    if (!nodes['/etc/os-release'] && nodes['/etc']?.type === 'directory' && Object.keys(nodes).length < 5000) nodes['/etc/os-release'] = freshState(profile).nodes['/etc/os-release'];
+  } else { state.network = restoreNetwork(value.network); state.packages = restorePackages(value.packages, profile); }
   return state;
 }
 
@@ -108,23 +121,23 @@ function restoreSystem(state, value) {
 }
 
 export class StateStore {
-  constructor(storage) { this.storage = storage; this.message = ''; }
+  constructor(storage, profile = 'mint') { this.storage = storage; this.profile = profile; this.key = profile === 'mint' ? STORAGE_KEY : 'student-hub:linux-terminal:fedora:v1'; this.message = ''; }
   load() {
     try {
-      const saved = this.storage.getItem(STORAGE_KEY);
-      if (saved === null) return freshState();
+      const saved = this.storage.getItem(this.key);
+      if (saved === null) return freshState(this.profile);
       if (saved.length > 8_000_000) throw Error('Saved data too large');
-      return restoreState(JSON.parse(saved));
+      return restoreState(JSON.parse(saved), this.profile);
     } catch {
       this.message = 'Saved workstation could not be loaded. A fresh session is open; saving will be retried after your next command.';
-      return freshState();
+      return freshState(this.profile);
     }
   }
   save(state) {
     try {
       const saved = JSON.stringify(state);
       if (saved.length > 8_000_000) throw Error('Saved data too large');
-      this.storage.setItem(STORAGE_KEY, saved);
+      this.storage.setItem(this.key, saved);
       this.message = 'Workstation saved in this browser.'; return true;
     } catch {
       this.message = 'Browser saving is unavailable or full. Keep this page open to retain your current files.'; return false;
@@ -132,6 +145,38 @@ export class StateStore {
   }
   reset() {
     // Only our namespaced key is replaced; unrelated Hub data is untouched.
-    const state = freshState(); this.save(state); return state;
+    const state = freshState(this.profile); this.save(state); return state;
+  }
+}
+
+// One shell engine, independently saved operating-system profiles. Unsaved in-memory
+// checkpoints stay available when switching profiles with blocked/full browser storage.
+export class ProfileStore {
+  constructor(storage) {
+    this.storage = storage; this.profile = 'mint'; this.cache = new Map(); this.message = '';
+    try { const selected = storage.getItem(PROFILE_KEY); if (Object.hasOwn(profiles, selected)) this.profile = selected; } catch { /* StateStore supplies the storage notice. */ }
+    this.current = new StateStore(storage, this.profile);
+  }
+  load() {
+    const state = this.cache.get(this.profile) || this.current.load();
+    this.cache.set(this.profile, state); this.message = this.current.message; return state;
+  }
+  save(state) {
+    if (state.distribution !== this.profile) throw Error('Profile checkpoint mismatch');
+    this.cache.set(this.profile, state);
+    const saved = this.current.save(state); this.message = this.current.message; return saved;
+  }
+  switch(profile, state) {
+    if (!Object.hasOwn(profiles, profile)) throw Error('Invalid workstation profile');
+    const saved = this.save(state);
+    this.profile = profile; this.current = new StateStore(this.storage, profile);
+    const next = this.load();
+    let selected = true;
+    try { this.storage.setItem(PROFILE_KEY, profile); } catch { selected = false; }
+    if (!saved || !selected) this.message = 'Profile switched in memory. Browser saving is unavailable or full; keep this page open to retain both workstations.';
+    return next;
+  }
+  reset() {
+    const state = this.current.reset(); this.cache.set(this.profile, state); this.message = this.current.message; return state;
   }
 }

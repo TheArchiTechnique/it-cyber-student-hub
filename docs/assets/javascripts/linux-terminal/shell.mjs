@@ -1,3 +1,5 @@
+import {networkCommands} from './network-commands.mjs';
+import {packageCommands, commandUnavailable} from './packages.mjs';
 import {systemCommands} from './system-commands.mjs';
 import {LinuxError, VirtualFilesystem, baseName, parentPath, modeText} from './filesystem.mjs';
 import {parse} from './parser.mjs';
@@ -38,6 +40,7 @@ export class Shell {
       ['man', args => this.man(args)], ['help', args => this.help(args)],
       ...fileCommands(this, options),
       ...systemCommands(this, options),
+      ...networkCommands(this), ...packageCommands(this),
       ['nano', args => {
         const {operands} = options(args, '');
         if (operands.length > 1) fail('only one editor buffer is supported; usage: nano [FILE]');
@@ -71,14 +74,7 @@ export class Shell {
       this.outputTarget = target;
       let stdout = '';
       if (argv.length) {
-        const handler = this.commands.get(command);
-        if (!handler) {
-          result.code = 127;
-          const future = ['apt','dnf','ip','ping','curl','dig','traceroute'];
-          fail(future.includes(command) ? 'not yet supported in this simulator' : 'command not found');
-        }
-        if (argv[1] === '--help' && argv.length === 2 && command !== 'echo') stdout = manual(command);
-        else stdout = handler(argv.slice(1));
+        stdout = this.dispatch(command, argv.slice(1));
       }
       if (redirect) this.fs.write(target, stdout, {append: true});
       else result.stdout = stdout;
@@ -91,6 +87,12 @@ export class Shell {
     }
     this.state.lastStatus = result.code;
     return result;
+  }
+  dispatch(command, args) {
+    const unavailable = commandUnavailable(this.state, command), handler = this.commands.get(command);
+    if (unavailable || !handler) { this.commandStatus = 127; fail(unavailable || 'command not found: ' + command); }
+    if (args.length === 1 && args[0] === '--help' && command !== 'echo') return manual(command);
+    return handler(args);
   }
   each(operands, run) {
     for (const operand of operands) {
@@ -170,7 +172,7 @@ export class Shell {
   help(args) {
     if (args.length > 1) fail('usage: help [COMMAND]');
     if (args.length) return manual(args[0]) || fail(`no help for ${args[0]}`);
-    return `Supported commands:\n  ${commandNames.join('  ')}\n\nUse man COMMAND for a short manual; q returns to the prompt.\nPaths: /absolute, relative, ~, $HOME, . and .. . Names are case-sensitive.\nUse quotes for spaces; > writes a file and >> appends.\nSupported syntax is listed in each manual. Pipes, globbing, command substitution,\ncommand chains, and interactive stdin are not implemented.\n`;
+    return `Supported command manuals (package availability depends on this profile):\n  ${commandNames.join('  ')}\n\nUse man COMMAND for a short manual; q returns to the prompt.\nPaths: /absolute, relative, ~, $HOME, . and .. . Names are case-sensitive.\nUse quotes for spaces; > writes a file and >> appends.\nSupported syntax is listed in each manual. Pipes, globbing, command substitution,\ncommand chains, and interactive stdin are not implemented.\n`;
   }
 }
 

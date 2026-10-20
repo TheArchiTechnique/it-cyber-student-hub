@@ -28,11 +28,9 @@ export function systemCommands(shell, options) {
       if (args[0].startsWith('-')) fail(`option '${args[0]}' is not supported; use man sudo`);
       const command = args[0];
       if (['cd', 'exit', 'help', 'clear'].includes(command)) fail(`${command}: shell builtin cannot run as a sudo program`);
-      const handler = shell.commands.get(command);
-      if (!handler) { shell.commandStatus = 127; fail(`${command}: command not found`); }
       if ((shell.sudoDepth || 0) >= 16) fail('simulated sudo nesting limit reached (16)');
       shell.sudoDepth = (shell.sudoDepth || 0) + 1;
-      try { return fs.asUser(identity('root'), () => handler(args.slice(1))); }
+      try { return fs.asUser(identity('root'), () => shell.dispatch(command, args.slice(1))); }
       finally { shell.sudoDepth--; }
     }],
     ['su', args => {
