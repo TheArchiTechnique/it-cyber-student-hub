@@ -145,5 +145,11 @@ if (form) {
     try { localStorage.setItem(themeKey, scheme); } catch { /* Keep the selected theme for this visit. */ }
   });
   entry(null, `${profiles[store.profile]} practice workstation\nSigned in as ${shell.state.user.name} on ${shell.state.hostname}. Type help or man ls.`);
-  refresh(false); focusInput();
+  refresh(false);
+  // Copied HTML can paint before module imports finish. Enable controls only
+  // after their handlers, shared shell, and persisted workstation are ready.
+  for (const id of ['theme-toggle', 'guided-mode', 'free-mode', 'workstation-profile', 'reset-workstation', 'command']) document.getElementById(id).disabled = false;
+  form.querySelector('button[type=submit]').disabled = false;
+  form.setAttribute('aria-busy', 'false');
+  focusInput();
 }

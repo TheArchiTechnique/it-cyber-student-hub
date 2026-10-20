@@ -24,6 +24,30 @@ const server = http.createServer(async (request, response) => {
   const origin = `http://127.0.0.1:${server.address().port}`, base = origin + prefix;
   const browser = await chromium.launch({executablePath: process.env.PBQ_CHROMIUM_PATH || undefined, args: ['--no-sandbox', '--disable-dev-shm-usage']});
   try {
+    // Reproduce slow module imports: pre-rendered controls must not accept a
+    // touch before the shared runtime has attached its handlers (CI regression).
+    const delayed = await browser.newContext({hasTouch:true,isMobile:true,viewport:{width:390,height:844}});
+    let releaseRuntime;
+    const runtimeGate = new Promise(resolve => { releaseRuntime = resolve; });
+    await delayed.route('**/*', async request => {
+      if (new URL(request.request().url()).origin !== origin) return request.abort();
+      if (request.request().url().endsWith('/linux-terminal/terminal.mjs')) await runtimeGate;
+      return request.continue();
+    });
+    const delayedPage = await delayed.newPage();
+    const runtimeRequest = delayedPage.waitForRequest('**/linux-terminal/terminal.mjs');
+    const navigation = delayedPage.goto(base + route, {waitUntil:'domcontentloaded'});
+    await runtimeRequest;
+    try {
+      for (const id of ['guided-mode','free-mode','command','reset-workstation','workstation-profile','theme-toggle']) assert.equal(await delayedPage.locator('#' + id).isDisabled(),true,id + ' waits for initialization');
+      assert.equal(await delayedPage.locator('#terminal-form button[type=submit]').isDisabled(),true);
+      assert.equal(await delayedPage.locator('#terminal-form').getAttribute('aria-busy'),'true');
+    } finally { releaseRuntime(); }
+    await navigation;
+    await delayedPage.locator('#guided-mode').tap();
+    assert.equal(await delayedPage.locator('#guided-stage').inputValue(),'explore');
+    assert.equal(await delayedPage.locator('#terminal-form').getAttribute('aria-busy'),'false');
+    await delayed.close();
     const context = await browser.newContext();
     const requests = [], errors = [];
     await context.route('**/*', request => new URL(request.request().url()).origin === origin ? request.continue() : request.abort());

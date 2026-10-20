@@ -101,13 +101,15 @@ export function recordCommands(state, trace, result) {
     }
     if (c === 'ip' && (out.includes('inet ') || (a.includes('-br') && out.includes('192.0.2.')))) e.ipAddress = true;
     if (c === 'ip' && out.includes('default via')) e.ipRoute = true;
-    if (c === 'ping' && out.includes('0% packet loss') && !out.includes('100% packet loss')) e.ping = true;
+    if (c === 'ping' && state.network.gateway && out.split('\n').some(line => line.startsWith(`64 bytes from ${state.network.gateway}:`))) e.ping = true;
     if (c === 'dig') {
       if (out.includes('198.51.100.20')) e.dns = true;
       if (out.includes('NXDOMAIN')) e.nxdomain = true;
       if (out.includes('203.0.113.80')) e.unavailableDNS = true;
     }
-    if (c === 'traceroute' && out.includes('198.51.100.20')) { e.trace = true; e.toolVerified = true; }
+    // A traceroute may exit zero at the hop limit; its destination header is
+    // not proof of arrival. Require the actual responding destination hop.
+    if (c === 'traceroute' && /^\s*\d+\s+198\.51\.100\.20\s+[\d.]+ ms/m.test(out)) { e.trace = true; e.toolVerified = true; }
     if (c === 'curl') {
       if (out.includes('200 OK')) e.http = true;
       if (out.includes('503 Service Unavailable')) e.service503 = true;

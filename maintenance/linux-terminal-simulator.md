@@ -178,8 +178,26 @@ The previous pre-publication assertions in `tests/linux-terminal-browser.cjs` we
 
 Phase 4B checkpoint validation passed: `npm run test:linux-terminal-engine`, `npm run test:linux-terminal`, `npm run test:linux-command-reference`, `npm run test:linux-mint-command-lab`, `npm run test:learning-resource-navigation`, `npm run test:pbq-library`, and `node tests/shared-linux-lab.cjs`. Source/navigation/PBQ catalog checks, all 31 Python tests, strict MkDocs build, built-site validation (63 HTML pages, 4030 local links/assets/fragments), internal search UI and index checks, analytics validation, and `git diff --check` passed. Browser tests used headless Chromium through the existing `PBQ_CHROMIUM_PATH` override. No confirmed integration defects remain deferred to Phase 5.
 
-## Remaining scope
+## Phase 5 final QA
 
-Phase 4B publishes and integrates the completed simulator and stops at its tested, committed and pushed checkpoint. No pull request is opened.
+Final review confirmed that main remains `727c3ffbceba0c26685a6c0270549afd0d23e447`, all six implementation checkpoints are preserved, and the feature branch contains no new dependencies, temporary previews or unrelated activity changes. The existing 27-objective-command check now also verifies exactly 36 registered commands and complete manual/registry agreement.
 
-Phase 5: final comprehensive branch QA, any confirmed corrections, and pull-request preparation. No simulator expansion or redesign is assigned. Do not automatically begin Phase 5.
+### Confirmed corrections
+
+- Phase 4B [GitHub Actions run 78](https://github.com/TheArchiTechnique/it-cyber-student-hub/actions/runs/39377256609) failed when the mobile integration journey tapped Guided Practice before module initialization, leaving an empty stage selector. The copied HTML now starts its mode, command, profile, reset and theme controls disabled with a loading status and busy form. `terminal.mjs` enables them after the shared shell, saved state and all handlers are ready, then focuses the command input. The browser suite deliberately pauses the entry module, checks that the initial controls remain disabled, releases it and verifies the first touch opens the Explore stage. This covers the actual loading race without time-based sleeps or removed assertions.
+- Guided diagnostic evidence previously accepted the destination address in a traceroute header even when all destination probes timed out and the command returned zero at its hop limit. It now requires a responding portal hop. The gateway check similarly requires an echo reply from the configured gateway; a successful loopback ping is insufficient. The guided-engine suite reproduces both incomplete outcomes, checks no credit is recorded, and verifies valid gateway-name and portal-hop results still count. Existing command syntax, exit statuses and network simulation behavior are preserved.
+- The root-login denial and short su manual now describe the simulated policy in both practice profiles, removing a Mint-specific label from the Fedora experience.
+
+The command engine, filesystem/editor architecture, guided stage structure, publication paths and validated persistence schemas remain intact. Existing saved files, permissions, root sessions, volume data, profiles and progress remain compatible.
+
+### Final validation
+
+All local commands from `.github/workflows/validate.yml` passed, including every required simulator/reference/lab/navigation/PBQ suite and the Windows command, multi-PC troubleshooting, startup recovery and BSOD/application model/browser regressions. The separate `npm run test:linux-terminal-engine` also passed. The simulator suites cover all twelve stages and negative checkpoints, actual Nano save/reopen/refresh, elevated and denied writes, ownership/permission recovery, mount/busy/unmount/remount/fsck, package removal and reinstallation, DNS/hosts/routes/HTTP faults, independent Mint/Fedora checkpoints, legacy migration, malformed/blocked storage, reset isolation, safe HTML-like text rendering and bounded shell syntax.
+
+All 31 Python tests, source/navigation/catalog checks, strict MkDocs build, built-site validation (63 HTML pages, 4030 local links/assets/fragments), actual Hub search queries, analytics tests and `git diff --check` passed. Browser QA includes 1440/390/320px in light/dark themes, keyboard/touch controls, manual/top exits, the complete Hub → simulator → Hub → reopen journey and the delayed-initialization regression. Local browser execution used the existing `PBQ_CHROMIUM_PATH` override. Final commit GitHub Actions success is the release-readiness gate before opening the PR.
+
+### Established boundaries and handoff
+
+The environment supports the syntax described by its short manuals rather than full Bash or complete Linux distributions. CPU, storage allocations, networking timings/services and package catalogs are modeled. Commands remain inside the virtual filesystem and modeled network; browser-local saves depend on storage availability and unsaved Nano buffers require saving before navigation. Report prose uses bounded section/content checks, not a general semantic grader. These are documented simulation boundaries; no unresolved confirmed defect is deferred.
+
+Open one pull request from `feature/a-plus-core2-linux-terminal-simulator` into `main` after the final commit passes CI. Merge approval and branch deletion remain with the user.

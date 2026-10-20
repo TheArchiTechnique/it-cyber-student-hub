@@ -39,7 +39,7 @@ export function systemCommands(shell, options) {
       if (args.length > 1 || args[0]?.startsWith('-')) fail('usage: su [- | -l] [root|student]');
       const name = args[0] || 'root';
       if (!Object.hasOwn(accounts, name)) fail(`${name}: user does not exist`);
-      if (fs.user.uid !== 0) fail(name === 'root' ? 'Authentication failure: direct root login is locked on this Mint workstation; use sudo su -' : 'Authentication failure: account switches require simulated root authorization');
+      if (fs.user.uid !== 0) fail(name === 'root' ? 'Authentication failure: direct root login is locked on this simulated workstation; use sudo su -' : 'Authentication failure: account switches require simulated root authorization');
       if (state.sessions.length >= 16) fail('simulated shell nesting limit reached (16)');
       const user = identity(name);
       const target = login ? fs.directory(user.home) : state.cwd;

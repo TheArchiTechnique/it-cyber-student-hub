@@ -18,7 +18,7 @@
       <a href="../../../">Student Hub</a>
       <a href="../../../certifications/comptia/a-plus-core-2/">A+ Core 2</a>
       <a href="../">Simulator overview</a>
-      <button type="button" id="theme-toggle" aria-pressed="false">Dark theme</button>
+      <button type="button" id="theme-toggle" aria-pressed="false" disabled>Dark theme</button>
     </nav>
   </div>
 </header>
@@ -28,8 +28,8 @@
   <p>Practice on a simulated Linux Mint workstation in your browser. Commands change this workstation’s files, not your computer’s operating system. Your files and command history are saved in this browser when storage is available.</p>
   <p>Start with <code>help</code>, explore with <code>ls</code>, or open a short manual with <code>man ls</code>. Use the <a href="../../../reference/linux-commands/">Linux Command-Line Reference</a> for broader explanations.</p>
   <div class="practice-controls" role="group" aria-label="Practice mode">
-    <button type="button" id="guided-mode" aria-pressed="false">Guided Practice</button>
-    <button type="button" id="free-mode" aria-pressed="true">Free Practice</button>
+    <button type="button" id="guided-mode" aria-pressed="false" disabled>Guided Practice</button>
+    <button type="button" id="free-mode" aria-pressed="true" disabled>Free Practice</button>
   </div>
   <p id="practice-description">Choose Guided Practice for a workstation support assignment, or explore freely.</p>
   <div id="practice-layout">
@@ -55,12 +55,12 @@
       <p id="fedora-separation" hidden>Mint assignment progress and files are saved separately. Select Linux Mint in the terminal to return.</p>
     </section>
   <section class="linux-terminal" aria-labelledby="terminal-title">
-    <div class="terminal-head"><h2 id="terminal-title">student-linux</h2><div class="profile-control"><label for="workstation-profile">Workstation</label><select id="workstation-profile" aria-describedby="profile-description"><option value="mint">Linux Mint (APT)</option><option value="fedora">Fedora DNF practice</option></select></div><button type="button" id="reset-workstation">Reset workstation</button></div>
+    <div class="terminal-head"><h2 id="terminal-title">student-linux</h2><div class="profile-control"><label for="workstation-profile">Workstation</label><select id="workstation-profile" aria-describedby="profile-description" disabled><option value="mint">Linux Mint (APT)</option><option value="fedora">Fedora DNF practice</option></select></div><button type="button" id="reset-workstation" disabled>Reset workstation</button></div>
     <p id="profile-description" role="status">Linux Mint: APT package management. Each profile keeps its own files, network settings and package inventory.</p>
     <div id="terminal-output" role="log" aria-label="Linux terminal output" aria-live="polite" aria-relevant="additions" tabindex="0"></div>
-    <form id="terminal-form" autocomplete="off">
+    <form id="terminal-form" autocomplete="off" aria-busy="true">
       <label for="command">Linux command</label>
-      <div class="command-row"><span id="prompt" aria-hidden="true"></span><input id="command" name="command" type="text" maxlength="8192" spellcheck="false" autocapitalize="off" autocorrect="off" enterkeyhint="send" aria-describedby="terminal-hint"><button type="submit">Run</button></div>
+      <div class="command-row"><span id="prompt" aria-hidden="true"></span><input id="command" name="command" disabled type="text" maxlength="8192" spellcheck="false" autocapitalize="off" autocorrect="off" enterkeyhint="send" aria-describedby="terminal-hint"><button type="submit" disabled>Run</button></div>
     </form>
     <section id="nano-panel" aria-label="Nano simulated text editor" hidden>
       <div class="nano-title"><span>GNU nano <small>(simulated)</small></span><span id="nano-filename"></span><span id="nano-modified"></span></div>
@@ -76,7 +76,7 @@
     <p id="terminal-hint">Enter runs a command. Up/Down recalls commands. Tab completes simple command names and paths. Ctrl+C cancels input. The output area can be focused and scrolled to review or copy text.</p>
   </section>
   </div>
-  <p id="save-status" role="status" aria-atomic="true"></p>
+  <p id="save-status" role="status" aria-atomic="true">Loading workstation…</p>
   <details class="syntax-help"><summary>Supported practice and shell syntax</summary>
     <p>Try <code>mkdir -p ~/Practice/Reports</code>, then <code>cd ~/Practice/Reports</code>. Open <code>nano workstation-report.txt</code>, write a few lines, press Ctrl+O and Enter to save, then Ctrl+X to exit. Verify with <code>cat workstation-report.txt</code>. The editor also has touch controls.</p>
     <p>Use absolute or relative paths, <code>~</code>, <code>$HOME</code>, <code>.</code>, <code>..</code>, and quoted names with spaces. <code>&gt;</code> overwrites and <code>&gt;&gt;</code> appends. Filenames are case-sensitive. <code>touch</code> preserves existing content. Long listings show simulated permissions, ownership, text sizes in bytes, and UTC modification times; directory sizes are modeled as zero.</p>

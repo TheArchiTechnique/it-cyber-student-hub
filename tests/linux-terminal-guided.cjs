@@ -103,6 +103,18 @@ const load = name => import(pathToFileURL(path.resolve(__dirname, '../docs/asset
   for (const mutate of [s => s.progress.guided.run.workspace = '/etc', s => s.progress.guided.run.evidence.invalid = true, s => s.progress.guided.run.stage = 'fedora', s => s.progress.guided.run.completed.push('fake'), s => s.progress.guided.mode = 'invalid']) {
     const corrupt = JSON.parse(JSON.stringify(state)); mutate(corrupt); assert.throws(() => restoreState(corrupt), /guided/);
   }
+  // Exit zero at a traceroute hop limit must not award destination-arrival
+  // evidence, and loopback success cannot establish gateway reachability.
+  const diagnosticState = freshState(), diagnosticShell = new Shell(diagnosticState), diagnosticRun = newRun(diagnosticState);
+  diagnosticShell.execute('ping -c 1 localhost'); assert.equal(diagnosticRun.evidence.ping, undefined);
+  diagnosticShell.execute('ping -c 1 gateway.training.example'); assert.equal(diagnosticRun.evidence.ping, true);
+  const portal = diagnosticState.network.endpoints.find(peer => peer.name === 'portal.training.example');
+  portal.reachable = false;
+  const incompleteTrace = diagnosticShell.execute('traceroute portal.training.example');
+  assert.equal(incompleteTrace.code, 0); assert.match(incompleteTrace.stdout, /198\.51\.100\.20/);
+  assert.equal(diagnosticRun.evidence.trace, undefined); assert.equal(diagnosticRun.evidence.toolVerified, undefined);
+  portal.reachable = true; diagnosticShell.execute('traceroute portal.training.example');
+  assert.equal(diagnosticRun.evidence.trace, true); assert.equal(diagnosticRun.evidence.toolVerified, true);
   // Old v4 saves without guided data and existing legacy migration paths remain valid.
   const legacy = JSON.parse(JSON.stringify(state)); delete legacy.progress.guided; assert.equal(restoreState(legacy).progress.guided, undefined);
   const memory = new Map(), storage = {getItem: k => memory.get(k) ?? null, setItem: (k, v) => memory.set(k, v)};

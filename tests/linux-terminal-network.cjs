@@ -203,6 +203,8 @@ module.exports = async function networkAndPackages() {
   const objectives = readFile(require('node:path').join(__dirname, '../docs/certifications/comptia/a-plus-core-2/objective-breakdown.md'), 'utf8').split('### 1.9 Linux features and tools')[1].split('#### Configuration files')[0];
   const objectiveCommands = [...objectives.matchAll(/^\| `([a-z]+)` \|/gm)].map(match => match[1]);
   assert.equal(objectiveCommands.length, 27);
+  assert.equal(shell.commands.size, 36, '27 objective commands plus nine supporting commands');
+  assert.deepEqual([...shell.commands.keys()].sort(), [...commandNames].sort(), 'Every registered command has a short manual');
   for (const name of objectiveCommands) { assert.ok(shell.commands.has(name), name); assert.ok(commandNames.includes(name), name); assert.match(manual(name), /SYNTAX/); }
   assert.equal(complete(shell, 'sudo pin').value, 'sudo ping ');
   console.log('PASS: Phase 3B shared network workflows and faults, file-backed DNS/NSS, HTTP writes/status/exit codes, APT/DNF transactions and availability, all 27 objective commands, v3 migration, profile isolation/persistence/reset, and malformed-state rejection.');
