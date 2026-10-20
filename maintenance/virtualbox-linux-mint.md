@@ -10,7 +10,7 @@ PBQ index availability now ignores related cross-section navigation when calcula
 
 ## Instructional source and verification
 
-Adapted from the supplied VirtualBox/Linux Mint walkthrough DOCX. The guided sequence and configuration are retained, with standard live-session installation, a normal user account, a chosen password, explicit VDI/ISO checks, and verification from the installed system. Installation is manual through the GUI; partition creation is automatic on the new empty virtual disk.
+Adapted from the supplied VirtualBox/Linux Mint walkthrough DOCX. The guided sequence is retained, with standard live-session installation, a normal user account, a chosen password, explicit VDI/ISO checks, and verification from the installed system. Installation is manual through the GUI; partition creation is automatic on the new empty virtual disk. The classroom disk is now a dynamically allocated 40 GB VDI, with approximately 50 GB available on the host as a baseline and 60 GB or more preferable for continued labs. These are classroom choices; Mint lists 20 GB minimum and 100 GB recommended guest disk space.
 
 Official documentation checked during implementation:
 
@@ -18,6 +18,11 @@ Official documentation checked during implementation:
 - [Oracle VirtualBox 7.2 VM creation](https://docs.oracle.com/en/virtualization/virtualbox/7.2/user/create-vm.html)
 - [Linux Mint installation guide](https://linuxmint-installation-guide.readthedocs.io/en/latest/install.html)
 - [Linux Mint ISO verification](https://linuxmint-installation-guide.readthedocs.io/en/latest/verify.html)
+- [Linux Mint requirements and screenshot reuse](https://linuxmint.com/faq.php)
+- [Linux Mint 22.3 release notes](https://linuxmint.com/rel_zena.php)
+- [Oracle VirtualBox 7.2 virtual storage](https://docs.oracle.com/en/virtualization/virtualbox/7.2/user/storage.html)
+
+The 22.3 release notes specify VMSVGA, 128 MB video RAM, disabled 3D acceleration, and enabled Nested Paging. They also describe a multimedia-codec playback issue without 3D acceleration; optional codecs are left unchecked for this command-line VM. The release notes identify HWE kernel compatibility issues on some VirtualBox configurations. A full guest installation is still needed to establish compatibility on a particular student's host; the guide links the release notes and does not change the taught release without a confirmed need.
 
 ## Screenshot provenance
 
@@ -30,29 +35,37 @@ Source media names refer to embedded files in the supplied DOCX. Only determinis
 | virtualbox-new.png | image3.png | New toolbar control; removes unrelated VM list. |
 | manual-install.png | image5.png | Unattended checkbox only; removes personal host paths and the outdated detected Ubuntu version. |
 | virtual-hardware.png | image6.png | Hardware controls; removes window decoration and unused space. |
-| disk-size.png | image7.png | 25 GB size field; removes personal VDI path. |
 | disk-format.png | image7.png | VDI and allocation controls; removes unrelated existing disk. |
+| live-desktop.png | Linux Mint official cinnamon.png | Original unchanged; shows the disc-style desktop installer shortcut. |
+| installer-language.png | Linux Mint official installer-language.png | Original unchanged; shows the standard graphical installer entry screen. |
 | partition-confirmation.png | image10.png | Disk-change confirmation retained; caption explains variable partition numbering. |
 | user-account.png | Linux Mint official installer-user.png | Standard account fields with the official sample identity; crops unused space and unrelated optional encryption control. |
 | installation-complete.png | Linux Mint official installer-finished.png | Authentic completion dialog retained. |
 
-Official screenshot originals are available under `https://linuxmint-installation-guide.readthedocs.io/en/latest/_images/`. Their appearance predates the supplied 22.3 captures and is identified as an official installer example rather than a current-release capture.
+Official screenshot originals are available under `https://linuxmint-installation-guide.readthedocs.io/en/latest/_images/` and in [Mint's source images](https://github.com/linuxmint/doc-installation-guide/tree/master/docs/images). Mint's [license statement](https://github.com/linuxmint/doc-installation-guide#license) identifies screenshots as CC0. Their appearance predates the supplied 22.3 captures; the guide explicitly labels them as older official examples, not current-release captures. The live desktop's open application menu is incidental; its caption directs students to the desktop shortcut.
+
+The obsolete disk-size.png was removed because it showed the former 25 GB setting and no authentic 40 GB replacement was available. Disk creation and the Storage review now specify 40 GB in text. The official installer-install.png was inspected but omitted because it shows an existing Windows Boot Manager, inconsistent with this lab's new empty VDI. No screenshot values were edited.
+
+New official originals fetched during this update have these Git blob hashes:
+
+- `live-desktop.png` / `cinnamon.png`: `5b7c670a405f062657a9d960c90b3c74a5f13a82`
+- `installer-language.png`: `13eb82855141fdb9670f885607b655ccb136c1b4`
 
 Source image4.png (empty VM fields), image8.png (unrelated machines and host paths), image9.png and image11.png (OEM installer) were reviewed and omitted. The VM fields and storage review are described explicitly in the lab.
 
 ## Remaining image coverage
 
-Fresh captures are still useful for the normal Cinnamon boot entry/live desktop, ISO attachment and removal in Storage, and the installed Cinnamon desktop with terminal verification output. Authentic matching current-release captures were not available during this work. These steps have complete text instructions; the lab does not use fabricated replacements.
+Fresh current-release captures are still useful for the normal Cinnamon boot entry, the 40 GB disk-size field, ISO attachment and removal in Storage, and the installed Cinnamon desktop with terminal verification output. The live desktop now has an authentic older official example. These steps have complete text instructions; the lab does not use fabricated replacements.
 
 ## Validation
 
 Run the standard repository validators, strict MkDocs build, and Python unit tests, then:
 
 ```sh
-node tests/pbq-library.cjs
 node tests/shared-linux-lab.cjs
+npm run test:linux-mint-command-lab
 ```
 
-The lab browser check follows Home → Labs → IT Support → lab and both certification launch cards, verifies the ten screenshot files and full-size links, tests desktop/mobile light and dark layouts, and checks representative existing content. The PBQ suite exercises filters, navigation, saved progress, and palette behavior. Use `PBQ_CHROMIUM_PATH` when a non-default Chromium binary is needed. Optional `LAB_QA_DIR` writes local QA screenshots.
+The lab browser check guards the 40 GB configuration and boot → live desktop → installer progression, follows Home → Labs → IT Support → lab and both certification launch cards, verifies eleven screenshot files and full-size links, checks the round trip to the follow-up lab, tests desktop/mobile light and dark layouts, and checks representative existing content. The command-lab check covers the follow-up snapshot workflow and article navigation. Use `PBQ_CHROMIUM_PATH` when a non-default Chromium binary is needed. Optional `LAB_QA_DIR` writes local QA screenshots.
 
 No complete guest installation was executed in this environment. Instructions were checked against the source walkthrough and official documentation; automated verification covers the published Hub and navigation.

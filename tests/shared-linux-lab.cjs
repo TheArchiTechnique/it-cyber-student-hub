@@ -23,6 +23,19 @@ const server = http.createServer(async (request, response) => {
 });
 
 (async () => {
+  const source = await fs.readFile(path.resolve(__dirname, '../docs/labs/it-support/virtualbox-linux-mint/README.md'), 'utf8');
+  assert.doesNotMatch(source, /25(?:\.00)?\s*GB|26\.8\s*GB|35\s*GB|images\/disk-size\.png/, 'Retired disk capacity and screenshot stay out of the guide');
+  assert.match(source, /New 40 GB VDI, dynamically allocated/);
+  assert.match(source, /50 GB[\s\S]*60 GB[\s\S]*snapshots/);
+  assert.match(source, /20 GB as the minimum disk space and 100 GB as recommended/);
+  const live = source.split('## 7. ')[1].split('## 8. ')[0];
+  const sequence = ['Start Linux Mint', 'live Cinnamon desktop', 'is not installed on the virtual hard disk', 'Locate **Install Linux Mint**', 'Double-click **Install Linux Mint**', 'Installation type'];
+  let previous = -1;
+  for (const step of sequence) {
+    const index = live.indexOf(step);
+    assert.ok(index > previous, `Student sequence: ${step}`);
+    previous = index;
+  }
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   const origin = `http://127.0.0.1:${server.address().port}`;
   const base = origin + prefix;
@@ -53,8 +66,11 @@ const server = http.createServer(async (request, response) => {
         assert.equal(await page.locator('h1').textContent(), title);
         assert.equal(await page.locator('.hub-article').count(), 1);
         assert.equal(await page.locator('.hub-landing').count(), 0, 'Instructions use ordinary article lists');
+        assert.equal(await page.locator('[id="7-load-the-live-desktop-and-open-the-installer"] + ol > li').count(), 7, 'Live-session steps remain one continuous ordered list');
         const images = page.locator('.hub-article img');
-        assert.equal(await images.count(), 10);
+        assert.equal(await images.count(), 11);
+        assert.equal(await page.locator('.hub-article img[src$="disk-size.png"]').count(), 0);
+        assert.match(await page.locator('.hub-article table').first().textContent(), /40 GB VDI, dynamically allocated/);
         await images.evaluateAll(nodes => Promise.all(nodes.map(im => im.decode())));
         assert.deepEqual(await images.evaluateAll(nodes => nodes.filter(im => !im.alt || !im.naturalWidth).map(im => im.src)), []);
         assert.deepEqual(await images.evaluateAll(nodes => nodes.filter(im => {
@@ -66,6 +82,11 @@ const server = http.createServer(async (request, response) => {
         for (const href of await images.evaluateAll(nodes => nodes.map(im => im.closest('a').href)))
           assert.equal((await page.request.get(href)).status(), 200, 'Full-size screenshot link');
         assert.equal(await page.locator('.hub-article > ul > li').count(), 4, 'Final verification checklist stays a list');
+        await page.locator('.hub-article').getByRole('link', {name: 'Linux Mint Workstation Setup and Troubleshooting', exact: true}).click();
+        assert.equal(page.url(), base + 'labs/it-support/linux-mint-command-line/');
+        assert.equal(await page.locator('h1').textContent(), 'Linux Mint Workstation Setup and Troubleshooting');
+        await page.locator('.hub-article').getByRole('link', {name: title, exact: true}).click();
+        assert.equal(page.url(), base + lab);
         // Both certification cards launch this same canonical article.
         for (const certification of ['a-plus-core-1', 'a-plus-core-2']) {
           await page.goto(base + `certifications/comptia/${certification}/`);
@@ -92,6 +113,6 @@ const server = http.createServer(async (request, response) => {
       assert.equal(await page.locator('.hub-article').count(), 0);
     }
     assert.deepEqual(errors, []);
-    console.log('Passed: central Labs route, both canonical certification links, 10 images, desktop/mobile light/dark layouts, and representative existing pages.');
+    console.log('Passed: 40 GB configuration, live-desktop installer sequence, central Labs route, both canonical certification links, follow-up lab round trip, 11 images, desktop/mobile light/dark layouts, and representative existing pages.');
   } finally { await browser.close(); server.close(); }
 })().catch(error => { console.error(error); server.close(); process.exitCode = 1; });
