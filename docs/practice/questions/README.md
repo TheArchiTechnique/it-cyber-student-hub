@@ -38,4 +38,10 @@ These Kahoot! reviews support independent practice: open a review and select **P
 
     Check your understanding of basic Linux commands and system tools.
 
+### macOS features and troubleshooting
+
+- [macOS Essentials & Troubleshooting - Kahoot!](https://create.kahoot.it/share/macos-essentials-troubleshooting/29c60a0b-f4ed-4e83-aab0-76aceba09ec9)
+
+    Review macOS features, system utilities, security, file management, backups, recovery, and troubleshooting.
+
 [Back to Practice](../README.md) · [A+ Core 2](../../certifications/comptia/a-plus-core-2/README.md) · [Student Hub](../../../README.md)
