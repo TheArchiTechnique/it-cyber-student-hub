@@ -10,8 +10,8 @@
     "test:windows-troubleshooting": "node tests/windows-troubleshooting.cjs --local",
     "test:windows-startup-recovery": "node tests/windows-startup-recovery.cjs --local",
     "test:windows-bsod-application": "node tests/windows-bsod-application.cjs --local",
-    "test:linux-terminal-engine": "node tests/linux-terminal.cjs",
-    "test:linux-terminal": "node tests/linux-terminal.cjs && node tests/linux-terminal-browser.cjs"
+    "test:linux-terminal-engine": "node tests/linux-terminal.cjs && node tests/linux-terminal-guided.cjs",
+    "test:linux-terminal": "node tests/linux-terminal.cjs && node tests/linux-terminal-guided.cjs && node tests/linux-terminal-browser.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"

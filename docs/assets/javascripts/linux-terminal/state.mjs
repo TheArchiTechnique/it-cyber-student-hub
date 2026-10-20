@@ -1,3 +1,4 @@
+import {restoreGuided} from './guided.mjs';
 import {seedNetwork, restoreNetwork} from './network-state.mjs';
 import {seedPackages, restorePackages} from './packages.mjs';
 import {seedSystem, accounts, identity, volumeUsed} from './system-state.mjs';
@@ -58,6 +59,8 @@ export function restoreState(value, expectedProfile = null) {
   const progress = value.progress ?? {};
   if (typeof progress !== 'object' || Array.isArray(progress) || JSON.stringify(progress).length > 16000) throw Error('Invalid progress data');
   Object.assign(state, {nodes, cwd: value.cwd, oldpwd: value.oldpwd, history: [...value.history], lastStatus: value.lastStatus, progress: JSON.parse(JSON.stringify(progress))});
+  const guided = restoreGuided(progress.guided, profile);
+  if (guided) state.progress.guided = guided;
   // A shell may still occupy a directory after chmod removes its search permission.
   // Restore identity/existence, not access; subsequent operations perform access checks.
   if (nodes[state.cwd]?.type !== 'directory') throw Error('Invalid working directory');

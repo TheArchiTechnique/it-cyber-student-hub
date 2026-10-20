@@ -76,3 +76,33 @@ dialog h2 { margin: 0; line-height: 1.4; font-size: 20px; }
 #workstation-profile:disabled { opacity: .55; }
 #profile-description { padding: 0 18px; color: #b7d4df; font-size: 12px; line-height: 1.6; }
 @media (max-width: 600px) { .profile-control { flex-basis: 100%; } #profile-description { padding: 0 12px; } }
+
+/* Assignment and terminal share one responsive work surface and the Hub palette. */
+[hidden] { display: none !important; }
+.practice-controls, .stage-navigation { display: flex; flex-wrap: wrap; gap: 8px; }
+.practice-controls button[aria-pressed=true] { border-color: var(--md-typeset-a-color); box-shadow: inset 0 -3px var(--md-typeset-a-color); }
+#practice-layout { display: grid; gap: 20px; align-items: start; }
+#practice-layout.is-guided { grid-template-columns: minmax(280px, .85fr) minmax(0, 1.4fr); }
+#practice-layout .linux-terminal { margin-top: 0; position: sticky; top: 12px; }
+#guided-panel { min-width: 0; }
+#guided-panel h2 { font-size: 18px; line-height: 1.45; margin: 0 0 12px; }
+#guided-panel h3 { font-size: 18px; line-height: 1.45; }
+#guided-panel label { display: block; font-weight: 600; margin: 10px 0 6px; }
+#guided-stage { width: 100%; min-width: 0; padding: 10px 6px; min-height: 44px; font: inherit; font-size: 14px; background: var(--hub-card-bg); color: var(--md-default-fg-color); border: 1px solid var(--hub-card-border); border-radius: 7px; }
+#guided-progress { display: block; width: 100%; height: 14px; accent-color: var(--md-typeset-a-color); }
+#guided-progress-text, #guided-stage-status, .workspace-label { font-size: 13px; }
+#guided-tasks { padding-left: 23px; }
+#guided-tasks li { margin: 12px 0; overflow-wrap: anywhere; }
+#guided-panel details { margin: 16px 0; }
+#guided-example { white-space: pre-wrap; overflow-wrap: anywhere; font: 13px/1.65 var(--md-code-font); background: var(--hub-code-bg); color: var(--hub-code-fg); padding: 12px; border-radius: 6px; }
+#guided-feedback { overflow-wrap: anywhere; }
+#guided-feedback ul { padding-left: 23px; }
+#guided-feedback p, #guided-feedback li { margin: 10px 0; }
+.stage-navigation { margin-top: 16px; }
+button:disabled { opacity: .55; cursor: default; }
+@media (min-width: 980px) { main.hub-page:has(.is-guided) { max-width: 1440px; } }
+@media (max-width: 979px) {
+  #practice-layout.is-guided { grid-template-columns: minmax(0, 1fr); }
+  #guided-panel { max-height: none; overflow: visible; }
+  #practice-layout .linux-terminal { position: static; }
+}

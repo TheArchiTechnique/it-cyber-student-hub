@@ -1,3 +1,4 @@
+import {recordNanoSave} from './guided.mjs';
 import {LinuxError} from './filesystem.mjs';
 
 // A buffer references the existing VFS. Merely opening a new name never writes a file.
@@ -9,7 +10,7 @@ export class NanoSession {
       const node = fs.nodes[this.path];
       if (node) this.value = fs.read(this.path);
     }
-    this.original = this.value;
+    this.original = this.value; this.openedContent = this.value; this.savedOnce = false;
   }
   get dirty() { return this.value !== this.original; }
   update(value) { this.value = value; }
@@ -21,6 +22,8 @@ export class NanoSession {
     // Nano normally terminates a nonempty final line when writing a text file.
     const content = this.value && !this.value.endsWith('\n') ? this.value + '\n' : this.value;
     const path = this.fs.write(expanded, content);
+    recordNanoSave(this.fs.state, path, content, this.openedContent, !this.savedOnce);
+    this.savedOnce = true;
     this.path = path; this.filename = filename; this.value = content; this.original = content;
     return content ? content.split('\n').length - 1 : 0;
   }

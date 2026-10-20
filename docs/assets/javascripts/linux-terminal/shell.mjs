@@ -1,3 +1,4 @@
+import {commandObservation, recordCommands} from './guided.mjs';
 import {networkCommands} from './network-commands.mjs';
 import {packageCommands, commandUnavailable} from './packages.mjs';
 import {systemCommands} from './system-commands.mjs';
@@ -59,6 +60,7 @@ export class Shell {
   }
   execute(line) {
     const result = {stdout: '', stderr: '', code: 0, action: null, manual: null, editor: null};
+    this.trace = [];
     this.action = null; this.manualName = null; this.editor = null; this.errors = []; this.commandStatus = 0;
     if (line.trim()) this.state.history = [...this.state.history, line.slice(0, 8192)].slice(-200);
     let command = 'shell';
@@ -85,6 +87,7 @@ export class Shell {
       if (!(error instanceof LinuxError)) throw error;
       result.stderr = `${command}: ${error.message}\n`; result.code ||= this.commandStatus || (command === 'grep' ? 2 : 1);
     }
+    recordCommands(this.state, this.trace, result);
     this.state.lastStatus = result.code;
     return result;
   }
@@ -92,7 +95,11 @@ export class Shell {
     const unavailable = commandUnavailable(this.state, command), handler = this.commands.get(command);
     if (unavailable || !handler) { this.commandStatus = 127; fail(unavailable || 'command not found: ' + command); }
     if (args.length === 1 && args[0] === '--help' && command !== 'echo') return manual(command);
-    return handler(args);
+    const observation = commandObservation(this, command, args);
+    if (observation) this.trace.push(observation);
+    const stdout = handler(args);
+    if (observation) { observation.success = true; observation.stdout = stdout; }
+    return stdout;
   }
   each(operands, run) {
     for (const operand of operands) {

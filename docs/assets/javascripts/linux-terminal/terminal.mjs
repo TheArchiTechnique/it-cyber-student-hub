@@ -1,3 +1,4 @@
+import {mountGuided} from './guided-view.mjs';
 import {Shell, complete} from './shell.mjs';
 import {ProfileStore, PROFILE_KEY, profiles} from './state.mjs';
 import {mountNano} from './nano.mjs';
@@ -29,9 +30,11 @@ if (form) {
     while (output.children.length > 120) output.firstElementChild.remove();
     output.scrollTop = output.scrollHeight;
   }
+  const guided = mountGuided({getState: () => shell.state, save: () => refresh(), switchFedora: () => { profileSelect.value = 'fedora'; profileSelect.dispatchEvent(new Event('change')); }});
   const editor = mountNano(document.getElementById('nano-panel'), {
     onClose: () => { refresh(); focusInput(); }, onSave: () => refresh(),
     onVisibility: active => {
+      guided.editorVisibility(active);
       output.hidden = active; form.hidden = active; document.getElementById('terminal-hint').hidden = active;
       document.getElementById('reset-workstation').disabled = active; profileSelect.disabled = active;
     }
@@ -42,7 +45,8 @@ if (form) {
     const description = `${profiles[store.profile]}: ${store.profile === 'mint' ? 'APT' : 'DNF'} package management. Each profile keeps its own files, network settings and package inventory.`;
     const profileDescription = document.getElementById('profile-description');
     if (profileDescription.textContent !== description) profileDescription.textContent = description;
-    document.getElementById('reset-description').textContent = `Reset ${profiles[store.profile]}? This removes this profile’s simulated files, changes, and command history. The other profile and other Student Hub progress stay saved.`;
+    document.getElementById('reset-description').textContent = `Reset ${profiles[store.profile]}? This removes this profile’s simulated files, changes, command history, and guided assignment progress. The other profile and other Student Hub progress stay saved.`;
+    guided.render();
     const saved = save ? store.save(shell.state) : true;
     status.textContent = store.message || 'Files and command history will be saved after each command.';
     historyIndex = shell.state.history.length;

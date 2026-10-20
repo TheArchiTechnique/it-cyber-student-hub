@@ -338,6 +338,7 @@ const server = http.createServer(async (request, response) => {
     await blockedPage.locator('#command').fill('ls'); await blockedPage.locator('#command').press('Enter');
     assert.match(await blockedPage.locator('#terminal-output').textContent(), /Offline/);
     await blocked.close();
+    await require('./linux-terminal-guided-browser.cjs')({browser, base, route, origin});
     assert.deepEqual(errors, []);
     console.log('PASS: Phase 3B typed network/package workflows, resolver Nano edits, network faults, HTTP text/downloads, independent Mint/Fedora persistence and reset, desktop/mobile profiles and no external command traffic; Phase 3A privilege/editor identity, nested shell and mounted/detached refresh, ps/top UI, accounting, reset and touch monitor; Phase 1 regression; Nano keyboard editing/save/exit/help, unsaved decisions, denied-save recovery and real touch controls; file/search/permission workflow, refresh persistence; desktop/mobile themes, isolation, storage failure, reset, links and deferred discovery.');
   } finally { await browser.close(); }
