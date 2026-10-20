@@ -83,8 +83,8 @@ const linuxQuiz = 'https://create.kahoot.it/share/linux-basics-commands-and-syst
         await go('labs/');
         assert.deepEqual(await content().locator('li a').allTextContents(),['IT Support']);
         await follow('IT Support','labs/it-support/');
-        assert.deepEqual(await content().locator('li a').allTextContents(),[installTitle,linuxTitle,windowsTitle]);
-        assert.match(await content().locator('li').nth(1).innerText(),/Prerequisite: complete the Linux Mint installation lab first/);
+        assert.deepEqual(await content().locator('li a').allTextContents(),['Linux Terminal Simulator',installTitle,linuxTitle,windowsTitle]);
+        assert.match(await content().locator('li').nth(2).innerText(),/Prerequisite: complete the Linux Mint installation lab first/);
         await follow(installTitle,'labs/it-support/virtualbox-linux-mint/');
         await follow(linuxTitle,'labs/it-support/linux-mint-command-line/');
         await follow('Back to IT Support Labs','labs/it-support/');

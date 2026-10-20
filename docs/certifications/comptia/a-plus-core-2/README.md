@@ -50,6 +50,10 @@ hub:hidden -->
     Find A+ Core 2 performance-based practice.
 
 
+- [Linux Terminal Simulator](../../../practice/linux-terminal-simulator/README.md)
+
+    Practice Linux commands in your browser with guided workstation exercises, Nano file editing, troubleshooting tools, and free practice. No VM required.
+
 - [Labs](../../../labs/README.md)
 
     Browse hands-on activities.

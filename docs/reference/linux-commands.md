@@ -25,7 +25,9 @@ Choose a category, then expand a command. Examples use the Bash shell in Linux M
 
 ## Before you practice
 
-Use the installed **Minty Fresh** VM from [VirtualBox: Installing Linux Mint](../labs/it-support/virtualbox-linux-mint/README.md). Boot from its virtual disk, sign in, and press **Ctrl+Alt+T** inside Mint. These are Linux commands; enter them in the guest terminal, rather than Windows CMD or PowerShell.
+For browser-based command-line practice, open the [Linux Terminal Simulator](../practice/linux-terminal-simulator/README.md). No VM is required. Use this reference for explanations and the simulator's `man` pages for its supported command syntax.
+
+For practice on a real Linux system, use the installed **Minty Fresh** VM from [VirtualBox: Installing Linux Mint](../labs/it-support/virtualbox-linux-mint/README.md). Boot from its virtual disk, sign in, and press **Ctrl+Alt+T** inside Mint. These are Linux commands; enter them in the guest terminal, rather than Windows CMD or PowerShell.
 
 For one continuous support assignment using your installed VM, follow [Linux Mint Workstation Setup and Troubleshooting](../labs/it-support/linux-mint-command-line/README.md). Build a workstation report, use Linux's native help to investigate unfamiliar options, and preserve before/after snapshots while keeping this reference available for lookup.
 

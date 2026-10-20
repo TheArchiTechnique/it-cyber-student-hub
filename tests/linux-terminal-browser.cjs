@@ -293,12 +293,7 @@ const server = http.createServer(async (request, response) => {
         await page.screenshot({path: path.join(process.env.LINUX_TERMINAL_QA_DIR, `${width}-${scheme}.png`), fullPage: true});
       }
     }
-    // Foundation is directly addressable without changing Hub discovery this phase.
-    const search = await (await page.request.get(base + 'search/search_index.json')).json();
-    assert.ok(!search.docs.some(doc => doc.location.startsWith(route)));
-    for (const source of ['labs/it-support/', 'certifications/comptia/a-plus-core-2/']) {
-      await page.goto(base + source); assert.equal(await page.locator(`a[href*="linux-terminal-simulator"]`).count(), 0);
-    }
+    await require('./linux-terminal-integration.cjs')({browser, base, route, origin});
     assert.ok(requests.filter(url => new URL(url).origin !== origin).every(url => url === 'https://cloud.umami.is/script.js'), 'Only the existing Hub analytics script may request an external URL');
     const touch = await browser.newContext({hasTouch:true, isMobile:true, viewport:{width:390,height:844}});
     await touch.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort());
@@ -340,6 +335,6 @@ const server = http.createServer(async (request, response) => {
     await blocked.close();
     await require('./linux-terminal-guided-browser.cjs')({browser, base, route, origin});
     assert.deepEqual(errors, []);
-    console.log('PASS: Phase 3B typed network/package workflows, resolver Nano edits, network faults, HTTP text/downloads, independent Mint/Fedora persistence and reset, desktop/mobile profiles and no external command traffic; Phase 3A privilege/editor identity, nested shell and mounted/detached refresh, ps/top UI, accounting, reset and touch monitor; Phase 1 regression; Nano keyboard editing/save/exit/help, unsaved decisions, denied-save recovery and real touch controls; file/search/permission workflow, refresh persistence; desktop/mobile themes, isolation, storage failure, reset, links and deferred discovery.');
+    console.log('PASS: Phase 3B typed network/package workflows, resolver Nano edits, network faults, HTTP text/downloads, independent Mint/Fedora persistence and reset, desktop/mobile profiles and no external command traffic; Phase 3A privilege/editor identity, nested shell and mounted/detached refresh, ps/top UI, accounting, reset and touch monitor; Phase 1 regression; Nano keyboard editing/save/exit/help, unsaved decisions, denied-save recovery and real touch controls; file/search/permission workflow, refresh persistence; desktop/mobile themes, isolation, storage failure, reset, links and published discovery.');
   } finally { await browser.close(); }
 })().catch(error => {console.error(error); process.exitCode = 1;}).finally(() => server.close());

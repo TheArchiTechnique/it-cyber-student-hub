@@ -1,10 +1,10 @@
 # Linux Terminal Simulator
 
-Phase 4A continues from Phase 3B commit `116b437efa62fb5bd91937ed152ba2bacd785620` on `feature/a-plus-core2-linux-terminal-simulator` from Phase 1 commit `2c1118d7a75fdcbf7cd009a659290bd7084bafd3` and Phase 2 commit `32833724a565d85bf23e8225f92aa9bfbc2a1673` and Phase 3A commit `5246db0deb436f79114907969df8fa71f1f23782`. GitHub is the checkpoint for subsequent work.
+Phase 4B continues from Phase 4A commit `165f38db4c937789424e9ef91544a29974a7844c` on `feature/a-plus-core2-linux-terminal-simulator` from Phase 1 commit `2c1118d7a75fdcbf7cd009a659290bd7084bafd3` and Phase 2 commit `32833724a565d85bf23e8225f92aa9bfbc2a1673` and Phase 3A commit `5246db0deb436f79114907969df8fa71f1f23782`. GitHub is the checkpoint for subsequent work.
 
 ## Canonical runtime and boundaries
 
-The single runtime remains `docs/practice/linux-terminal-simulator/app/index.html`, built at `practice/linux-terminal-simulator/app/` beneath the Pages project subpath. It uses the existing copied `app/` convention, shared Hub palette/article classes, and standard build-time analytics. It stays outside catalogs, generated navigation, and search until Phase 4B. Existing command references, real-VM labs, global layouts, and navigation remain unchanged. No dependencies or frameworks were added.
+The single runtime remains `docs/practice/linux-terminal-simulator/app/index.html`, built at `practice/linux-terminal-simulator/app/` beneath the Pages project subpath. It uses the existing copied `app/` convention, shared Hub palette/article classes, and standard build-time analytics. Phase 4B publishes its Markdown launch page through existing Practice navigation and Hub search. The simulator remains outside the PBQ catalog. Existing command references, real-VM labs, global layouts, and navigation remain unchanged. No dependencies or frameworks were added.
 
 Phase 1 commands remain: `pwd`, `ls`, `cd`, `cat`, `whoami`, `mkdir`, `touch`, `echo`, `clear`, `help`, `man`. Phase 2 adds `cp`, `mv`, `rm`, `grep`, `find`, `chmod`, `chown`, and `nano`. Phase 3A adds `sudo`, `su`, `exit`, `ps`, `top`, `du`, `df`, `mount`, `umount`, and `fsck`. Phase 3B adds `ip`, `ping`, `dig`, `traceroute`, `curl`, `apt`, and `dnf`. All 27 commands in the Core 2 Objective 1.9 command table are implemented; nine supporting commands bring the complete registry to 36. All 36 have short manuals through the existing `man` presentation. `help` and command completion use that same command list.
 
@@ -149,10 +149,37 @@ Checkpoint verification: both simulator npm scripts, all Linux reference/lab and
 
 `tests/linux-terminal-guided-browser.cjs` is invoked by the original browser harness against the built Pages subpath. It types the complete Mint/Fedora assignment, checks each partial and successful stage, uses real Nano keyboard save/exit and touch controls, tests disabled editor-time actions, mode/state sharing, refresh and stage navigation, new-run confirmation/cancellation, profile independence and reset. Existing Phase 1/2/3A/3B engine/browser regressions remain in the same scripts. Layout checks cover 1440/390/320px in both themes and verify desktop columns versus mobile stacking and no horizontal page overflow. Only the existing Hub Umami analytics request is allowed outside the local test origin; simulated commands make no real requests.
 
+## Phase 4B Student Hub integration
+
+Continuation preflight confirmed that main remains `727c3ffbceba0c26685a6c0270549afd0d23e447` and the feature branch contains all previous phases. Phase 4A's final GitHub Actions validation completed successfully: [Validate student hub, run 77](https://github.com/TheArchiTechnique/it-cyber-student-hub/actions/runs/39375065620), commit `165f38db4c937789424e9ef91544a29974a7844c`.
+
+The published launch page is `docs/practice/linux-terminal-simulator/README.md`, with normal `hub.kind: resource` metadata. Its concise introduction covers browser practice without a VM, installation or account; Guided/Free modes; Nano and man; browser-local persistence; independent Mint/Fedora environments; and the separate real-VM learning path. Its launch card follows existing interactive-resource conventions and points to the configured canonical Pages URL, `https://thearchitechnique.github.io/it-cyber-student-hub/practice/linux-terminal-simulator/app/`. The canonical app and all engine modules remain in place.
+
+| Discovery location | Integration |
+| --- | --- |
+| A+ Core 2 overview | One resource card alongside the existing practice and lab links, outside generated PBQ listings. |
+| Core 2 objective breakdown, Linux features and tools | One contextual browser-practice link beside the reference and VM option; all command definitions are preserved. |
+| Practice overview and MkDocs Practice navigation | One resource card and one navigation entry. `SUMMARY.md` was regenerated through the existing navigation script. |
+| IT Support Labs | A browser option without prerequisites, followed by the unchanged installation → real-VM workstation lab sequence and separate Windows CMD lab. |
+| Linux Command-Line Reference, Before you practice | One contextual link explaining browser practice and the relationship between reference explanations and supported simulated man syntax. |
+| Simulator header | Simulator overview returns to the launch page, which links to Practice, Core 2, the Linux reference, IT Support Labs and the VM labs. Existing Hub/Core 2 returns remain. |
+
+The normal publication hook and MkDocs search plugin index the launch page's title and text, including Linux terminal, Linux commands and command-line practice. A concise Command-line practice section heading makes the broad practice query discoverable through the existing title-weighted search as well; its section record belongs to the same canonical overview. The standalone app retains its existing external-search `noindex` setting: it is copied HTML, not a second MkDocs lesson. That setting does not exclude the launch page from the Hub's internal search. No second search system or publication registry was added.
+
+No shared publication/navigation code, PBQ catalog data, generated PBQ listings, simulation command handlers, curriculum, progress schema, framework or dependency was changed. Existing unpublished categories remain hidden. The normal visibility script regenerated only the expected new `SUMMARY.md` entry; explicit resource registration prevents duplicate navigation entries.
+
+### Integration validation
+
+`tests/test_linux_terminal_publication.py` adds three checks covering publication metadata, one Practice/SUMMARY entry, search vocabulary and launch URL, unique contextual links, 27 preserved objective commands, the separate ordered VM labs, absence from the PBQ catalog/listings, relative app assets and overview return.
+
+`tests/linux-terminal-integration.cjs` is called from the existing simulator browser harness. It serves this branch's built files at the configured Pages origin using request interception, preserving the production absolute launch link and same-origin storage behavior without loading the live main site. It exercises the actual Material search UI for three search phrases; starts from Core 2; launches Guided Practice; verifies two stages; creates and saves a Nano report; leaves through the Hub; follows the home page’s A+ Core 2 card to reopen; and compares files, progress, location, identity, command history, packages and network state. It then checks Free Practice/man and contextual return paths, Practice/Lab/reference/objective discovery, the separately accessible installation/VM assignment, exactly one navigation entry and indexed overview, no PBQ registration, module/style responses, and keyboard/touch navigation. Launch-page and app layout checks cover 1440/390/320px in both themes. No preview copies or screenshot/ZIP packages are created.
+
+The previous pre-publication assertions in `tests/linux-terminal-browser.cjs` were replaced with this positive publication journey. `tests/learning-resource-navigation.cjs` now expects the additional browser-practice card while preserving the VM prerequisite and sequencing checks. All prior simulator engine, guided, networking and browser tests remain active.
+
+Phase 4B checkpoint validation passed: `npm run test:linux-terminal-engine`, `npm run test:linux-terminal`, `npm run test:linux-command-reference`, `npm run test:linux-mint-command-lab`, `npm run test:learning-resource-navigation`, `npm run test:pbq-library`, and `node tests/shared-linux-lab.cjs`. Source/navigation/PBQ catalog checks, all 31 Python tests, strict MkDocs build, built-site validation (63 HTML pages, 4030 local links/assets/fragments), internal search UI and index checks, analytics validation, and `git diff --check` passed. Browser tests used headless Chromium through the existing `PBQ_CHROMIUM_PATH` override. No confirmed integration defects remain deferred to Phase 5.
+
 ## Remaining scope
 
-Phase 4A implements guided learning and stops at its tested, committed and pushed checkpoint. No pull request is opened.
+Phase 4B publishes and integrates the completed simulator and stops at its tested, committed and pushed checkpoint. No pull request is opened.
 
-Phase 4B: publish the simulator through the appropriate global Hub catalog, search, certification and navigation surfaces, keeping this canonical application and the approved Hub architecture.
-
-Phase 5: final branch review, any remaining confirmed QA corrections, and pull-request preparation after prior phases are committed and pushed. Do not recreate the simulator or automatically begin either later phase.
+Phase 5: final comprehensive branch QA, any confirmed corrections, and pull-request preparation. No simulator expansion or redesign is assigned. Do not automatically begin Phase 5.

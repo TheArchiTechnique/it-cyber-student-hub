@@ -5,7 +5,7 @@ hub:
 ---
 # IT Support Labs
 
-Build a Linux practice workstation or work through Windows CMD support tasks. Follow the two Linux labs in order; the Windows lab is a separate starting point.
+Practice Linux in your browser without installing a VM, or build a real Linux practice workstation. Follow the two VM labs in order; browser practice and the Windows CMD lab are separate starting points.
 
 <!-- hub:placeholder
 No labs published yet.
@@ -18,6 +18,10 @@ hub:placeholder -->
 
 
 hub:hidden -->
+- [Linux Terminal Simulator](../../practice/linux-terminal-simulator/README.md)
+
+    Practice Linux commands in your browser with guided workstation tasks, Nano, and free practice. No VM or installation lab is required.
+
 - [VirtualBox: Installing Linux Mint](virtualbox-linux-mint/README.md)
 
     Step 1: Create a VirtualBox VM, install Linux Mint, and verify that it boots from its virtual disk. Start here if you do not yet have the installed VM.

@@ -85,6 +85,7 @@ nav:
 - Practice:
   - Overview: practice/README.md
   - Practice Questions: practice/questions/README.md
+  - Linux Terminal Simulator: practice/linux-terminal-simulator/README.md
   # BEGIN GENERATED PBQ NAVIGATION
   - PBQs:
     - Overview: practice/pbqs/README.md

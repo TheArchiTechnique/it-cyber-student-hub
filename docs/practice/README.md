@@ -4,11 +4,15 @@ hub:
 ---
 # Practice
 
-Use short exercises to check your decisions and problem-solving skills.
+Practice commands, check your decisions, and develop problem-solving skills.
 
 - [Practice Questions](questions/README.md)
 
     Find self-paced quizzes and knowledge reviews.
+
+- [Linux Terminal Simulator](linux-terminal-simulator/README.md)
+
+    Practice Linux commands in your browser with guided workstation tasks and free practice. Create files with Nano, use command help, and investigate a simulated system. No VM required.
 
 - [PBQ Practice](pbqs/README.md)
 
