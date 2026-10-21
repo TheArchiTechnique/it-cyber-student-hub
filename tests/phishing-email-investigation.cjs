@@ -28,6 +28,32 @@ for(const m of M.bank){
  assert.equal(M.gradeMessage(m,{classification:m.classification==='Phishing'?'Spam':'Phishing',response:'invalid'}).classification,0);
  assert.ok(m.context.length>70&&m.explanation.length>100);for(const l of m.links)assert.ok(new URL(l.destination).hostname.endsWith('.example'));assert.ok(m.from.split('@')[1].endsWith('.example'));assert.ok(m.to.endsWith('.example'));
 }
+// Independently reviewed answer key: do not derive the expected evidence from model.indicators.
+const reviewed={
+ password:['Phishing',['from','renew','request']],payroll:['Phishing',['from','reply','request']],
+ sharing:['Phishing',['document']],executive:['Phishing',['reply','request','secrecy']],
+ attachment:['Phishing',['from','file','request']],qr:['Phishing',['from','request','qr-image']],
+ shipment:['Phishing',['from','tracking','request']],marketing:['Spam',[]],survey:['Spam',[]],webinar:['Spam',[]],
+ it:['Legitimate',[]],hr:['Legitimate',[]],vendor:['Legitimate',[]],helpdesk:['Legitimate',[]]
+};
+let evidenceCases=0;
+for(const [id,[classification,expected]]of Object.entries(reviewed)){
+ const m=M.bank.find(m=>m.id===id),response=classification==='Phishing'?'Report to Information Security':classification==='Spam'?'Mark as junk / block sender':'No additional action';
+ assert.equal(m.classification,classification,id);assert.equal(m.response,response,id);assert.deepEqual(Object.keys(m.indicators).sort(),expected.slice().sort(),id);
+ const ids=M.details(m).map(d=>d.id),trueWeight=expected.length?3/expected.length:0,falseWeight=3/(ids.length-expected.length);
+ for(let mask=0;mask<2**ids.length;mask++){
+  const selected=ids.filter((_,i)=>mask&(1<<i));
+  let points=expected.length?0:3;for(const key of selected)points+=expected.includes(key)?trueWeight:-falseWeight;
+  const want=Math.round(100*(Math.max(0,points)+1e-9))/100,actual=M.gradeMessage(m,{classification,response,evidence:selected});
+  assert.ok(Math.abs(actual.evidence-want)<.001,`${id}: evidence subset ${mask}`);assert.ok(Math.abs(actual.score-(4+want))<.001,id);evidenceCases++;
+ }
+}
+for(const id of ['payroll','executive','qr']){
+ const m=M.bank.find(m=>m.id===id);assert.match(m.context,/directory|catalog/i);assert.doesNotMatch(m.context,/confirms no|did not request|nonexistent|no .* underway/i);
+ assert.doesNotMatch(Object.values(m.indicators).join(' ')+m.explanation,/confirmed impersonation|independent confirmation|nonexistent badge|confirmed absence/i);
+}
+console.log(`PASS independent QA: all 14 reviewed answer keys and ${evidenceCases} evidence subsets; workflow facts without pre-submission investigation verdicts.`);
+assert.equal(M.gradeMessage(M.bank.find(m=>m.id==='executive'),{evidence:['name','reply']}).evidence,.63,'Round the exact .625-point tie upwards');
 const bec=M.bank.find(m=>m.id==='executive');assert.equal(bec.links.length+bec.attachments.length,0);assert.equal(bec.from,'elena.ruiz@northbridge.example');assert.ok(M.bank.some(m=>m.classification==='Legitimate'&&m.reply));
 for(const raw of [null,{},[],{version:1,ids:[]},{version:1,ids:Array(7).fill('it')},{version:1,ids:['password','payroll','sharing','executive','attachment','qr','shipment']},{version:9}])assert.equal(M.restore(raw).ids.length,7);
 {const s=M.initial(seeded(5));s.answers[s.selected]={classification:'<script>',response:'invalid',evidence:['bad','subject','subject']};const r=M.restore(s);assert.equal(r.answers[r.selected].classification,'');assert.equal(r.answers[r.selected].response,'');assert.deepEqual(r.answers[r.selected].evidence,['subject']);}
@@ -48,7 +74,7 @@ async function browser(origin){
  for(const prefix of ['', '/it-cyber-student-hub']){
   base=origin+prefix;await load(forMessage('password'));assert.equal(await p.locator('#results').isHidden(),true);assert.equal(await p.locator('#results').innerHTML(),'');assert.equal(await p.locator('#message [aria-pressed=true]').count(),0);
   await click('submit');assert.match(await p.locator('#notice').innerText(),/every message/);assert.equal(await p.locator('#results').isHidden(),true);
-  await load(forMessage('password'));await p.locator('[data-evidence=from]').focus();await p.keyboard.press('Enter');assert.equal(await p.locator('[data-evidence=from]').getAttribute('aria-pressed'),'true');await p.keyboard.press('Space');assert.equal(await p.locator('[data-evidence=from]').getAttribute('aria-pressed'),'false');await p.keyboard.press('Enter');
+  await load(forMessage('password'));await p.locator('[data-evidence=from]').focus();assert.equal(await p.locator('[data-evidence=from]').evaluate(n=>getComputedStyle(n).outlineStyle),'solid','Evidence has visible keyboard focus');await p.keyboard.press('Enter');assert.equal(await p.locator('[data-evidence=from]').getAttribute('aria-pressed'),'true');await p.keyboard.press('Space');assert.equal(await p.locator('[data-evidence=from]').getAttribute('aria-pressed'),'false');await p.keyboard.press('Enter');
   const inspect=p.locator('#message summary').first();await inspect.focus();await p.keyboard.press('Enter');assert.equal(await p.locator('#message .destination').isVisible(),true);assert.equal(await p.locator('#message a,#message [href],#message [download]').count(),0);
   await p.locator('#classification').selectOption('Phishing');await p.locator('#response').selectOption(M.responses[2]);const selected=(await store()).selected;const second=(await store()).ids.find(id=>id!==selected);await p.locator(`[data-message="${second}"]`).focus();await p.keyboard.press('Enter');assert.equal(await p.locator(`[data-message="${second}"]`).evaluate(e=>e===document.activeElement),true);assert.match(await p.locator(`[data-message="${second}"]`).innerText(),/Read/);await p.locator(`[data-message="${selected}"]`).click();assert.equal(await p.locator('#classification').inputValue(),'Phishing');assert.equal(await p.locator('[data-evidence=from]').getAttribute('aria-pressed'),'true');await p.reload();assert.equal(await p.locator('#classification').inputValue(),'Phishing');
   await click('reset');await p.keyboard.press('Escape');assert.equal(await p.locator('#confirm').isVisible(),false);assert.equal(await p.locator('#classification').inputValue(),'Phishing');const before=await store();await confirm('reset');assert.deepEqual((await store()).ids,before.ids);assert.ok(Object.values((await store()).answers).every(a=>!a.classification&&!a.response&&!a.evidence.length));
@@ -66,8 +92,16 @@ async function browser(origin){
  // Every message and destination at desktop and mobile widths, plus feedback and lesson overflow.
  for(const width of [1440,768,390,320]){
   await p.setViewportSize({width,height:1000});
-  for(const m of M.bank){await load(forMessage(m.id));assert.equal(await p.locator('#message [data-evidence]').count(),M.details(m).length,m.id);for(const detail of M.details(m))assert.ok((await p.locator('#message').innerText()).includes(detail.text),m.id+' missing '+detail.id);for(let i=0;i<m.links.length;i++){await p.locator('#message summary').nth(i).click();assert.equal(await p.locator('#message .destination').nth(i).innerText(),m.links[i].destination);}assert.equal(await p.locator('#message a,#message [download],#message input').count(),0);await overflow();if(process.env.PBQ_QA_SCREENSHOT_DIR&&m.id==='qr'&&[1440,390].includes(width)){fs.mkdirSync(process.env.PBQ_QA_SCREENSHOT_DIR,{recursive:true});await p.screenshot({path:path.join(process.env.PBQ_QA_SCREENSHOT_DIR,`phishing-${width}.png`),fullPage:true});}
+  for(const m of M.bank){await load(forMessage(m.id));assert.equal(await p.locator('#message [data-evidence]').count(),M.details(m).length,m.id);for(const detail of M.details(m))assert.ok((await p.locator('#message').innerText()).includes(detail.text),m.id+' missing '+detail.id);for(let i=0;i<m.links.length;i++){await p.locator('#message summary').nth(i).click();assert.equal(await p.locator('#message .destination').nth(i).innerText(),m.links[i].destination);}assert.equal(await p.locator('#message a,#message [download],#message input').count(),0);
+   const inspectorNames=await p.locator('#message summary').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('aria-label')||n.textContent.trim()));assert.equal(new Set(inspectorNames).size,inspectorNames.length,m.id+' destination controls need distinct accessible names');
+   for(const link of m.links)assert.ok(inspectorNames.some(name=>name.includes(link.text)),m.id+' destination control identifies its link');
+   await overflow();if(process.env.PBQ_QA_SCREENSHOT_DIR&&m.id==='qr'&&[1440,390].includes(width)){fs.mkdirSync(process.env.PBQ_QA_SCREENSHOT_DIR,{recursive:true});await p.screenshot({path:path.join(process.env.PBQ_QA_SCREENSHOT_DIR,`phishing-${width}.png`),fullPage:true});}
    const boxes=await p.locator('.inbox,.reading-pane').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {x:r.x,y:r.y,right:r.right,bottom:r.bottom};}));const [a,b]=boxes;assert.ok(a.right<=b.x||a.bottom<=b.y,'mail panes overlap at '+width);
+   if(width===1440){
+    const investigation=forMessage(m.id);for(const id of investigation.ids){const [classification,evidence]=reviewed[id];investigation.answers[id]={classification,response:classification==='Phishing'?'Report to Information Security':classification==='Spam'?'Mark as junk / block sender':'No additional action',evidence};}
+    await load(investigation);await click('submit');const feedback=p.locator('#results article').filter({has:p.getByRole('heading',{name:m.subject+' · 7 / 7',exact:true})});
+    assert.equal(await feedback.count(),1,m.id+' feedback');assert.ok((await feedback.innerText()).includes(m.explanation),m.id+' explanation');for(const indicator of Object.values(m.indicators))assert.ok((await feedback.innerText()).includes(indicator),m.id+' evidence reasoning');
+   }
   }
   const s=forMessage('executive');for(const id of s.ids){const m=M.bank.find(m=>m.id===id);s.answers[id]={classification:m.classification,response:m.response,evidence:[]};}s.submitted=true;await load(s);await overflow();await click('lesson-tab');await overflow();
  }

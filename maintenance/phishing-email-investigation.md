@@ -11,9 +11,9 @@ The interactive activity reveals the following criteria only after submission.
 | Password expiration | Phishing; report | Lookalike sender domain, unrelated renewal destination, company-password request through an unapproved workflow |
 | Benefits reconciliation | Phishing; report | Impersonated benefits domain, unrelated reply mailbox, request for password and MFA code |
 | Document-sharing invitation | Phishing; report | Displayed document URL differs from its actual unapproved sign-in destination |
-| Executive supplier deposit | Phishing; report | External Reply-To, bypassed payment approvals, instruction to avoid independent verification; independent CFO confirmation establishes impersonation |
+| Executive supplier deposit | Phishing; report | External Reply-To, bypassed payment approvals, instruction to avoid independent verification |
 | Revised invoice viewer | Phishing; report | Impersonated supplier domain, final .js attachment extension, request to run a script and bypass protection |
-| Mobile badge verification | Phishing; report | Unapproved sender domain, nonexistent badge/password workflow, unrelated QR sign-in destination |
+| Mobile badge verification | Phishing; report | Unapproved sender domain, unapproved badge/password workflow, unrelated QR sign-in destination |
 | Delivery exception | Phishing; report | Impersonated carrier domain, unrelated tracking destination, unsupported card-payment request |
 | Office accessory catalog | Spam; junk/block | None; independent security review confirms unsolicited bulk advertising |
 | Product-preference survey | Spam; junk/block | None; independently verified non-sensitive marketing survey with no sign-in |
