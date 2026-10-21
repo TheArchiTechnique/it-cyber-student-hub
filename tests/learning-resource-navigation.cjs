@@ -23,6 +23,9 @@ const linuxTitle = 'Linux Mint Workstation Setup and Troubleshooting';
 const windowsTitle = 'Windows Command-Line Lab';
 const linuxQuiz = 'https://create.kahoot.it/share/linux-basics-commands-and-system-tools/0fdab12a-64d9-4f53-9751-7380dea028d5';
 const macQuiz = 'https://create.kahoot.it/share/macos-essentials-troubleshooting/29c60a0b-f4ed-4e83-aab0-76aceba09ec9';
+const day7Quiz = 'https://create.kahoot.it/share/windows-security-and-access-control-basics/5148cf77-ef81-49e0-85cf-8a49271e7949';
+const day8Quiz = 'https://create.kahoot.it/details/2d759456-7668-494e-8d8d-aab1931ebfef';
+const day9Quiz = 'https://create.kahoot.it/share/enter-kahoot-title/45b5f987-2795-4566-9a2f-b710ceb09a94';
 
 (async () => {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
@@ -102,9 +105,17 @@ const macQuiz = 'https://create.kahoot.it/share/macos-essentials-troubleshooting
         await follow('Command Reference','reference/windows-command-line/');
         await follow('Back to Reference','reference/');
         await go('practice/questions/');
-        assert.equal(await content().locator('a[href*="create.kahoot.it/share/"]').count(),6);
+        // Count both Kahoot share and details URLs, including all nine Core 2 reviews.
+        assert.equal(await content().locator('a[href^="https://create.kahoot.it/"]').count(),9);
         const mac = content().getByRole('link',{name:'macOS Essentials & Troubleshooting - Kahoot!',exact:true});
         assert.equal(await mac.getAttribute('href'),macQuiz);
+        for (const [name, href] of [
+          ['Windows Security and Access Control Basics - Kahoot!',day7Quiz],
+          ['Cybersecurity Essentials: Threats and Defenses - Kahoot!',day8Quiz],
+          ['Wi-Fi Security, Power & Safety Essentials - Kahoot!',day9Quiz]
+        ]) {
+          assert.equal(await content().getByRole('link',{name,exact:true}).getAttribute('href'),href);
+        }
         const quiz = content().getByRole('link',{name:'Linux Basics: Commands and System Tools - Kahoot!',exact:true});
         assert.equal(await quiz.getAttribute('href'),linuxQuiz);
         // Observe the outgoing URL without relying on Kahoot availability or signing in.
@@ -116,7 +127,7 @@ const macQuiz = 'https://create.kahoot.it/share/macos-essentials-troubleshooting
       }
     }
     assert.deepEqual(errors,[]);
-    console.log('Passed: resource cards, prerequisites, grouped references, 6 quizzes, student journeys and returns, keyboard focus, desktop/mobile, and both themes.');
+    console.log('Passed: resource cards, prerequisites, grouped references, 9 quizzes, student journeys and returns, keyboard focus, desktop/mobile, and both themes.');
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));
