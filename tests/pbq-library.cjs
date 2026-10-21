@@ -196,15 +196,19 @@ const server = http.createServer(async (request, response) => {
       await page.locator('.hub-page a').filter({ hasText: /^Practice Questions$/ }).click();
       assert.ok(page.url().endsWith('/practice/questions/'));
       // evaluateAll reads immediately; wait for the destination content after navigation.
-      await page.locator('.hub-page a[href*="create.kahoot.it/share/"]').first().waitFor();
-      assert.deepEqual(await page.locator('.hub-page a[href*="create.kahoot.it/share/"]')
+      // Include both Kahoot share URLs and the Day 8 details URL.
+      await page.locator('.hub-page a[href^="https://create.kahoot.it/"]').first().waitFor();
+      assert.deepEqual(await page.locator('.hub-page a[href^="https://create.kahoot.it/"]')
         .evaluateAll(links => links.map(link => link.href)), [
         'https://create.kahoot.it/share/operating-systems-and-file-systems-essentials/3fd97dce-08bb-475e-a0d3-a743d981b5f8',
         'https://create.kahoot.it/share/windows-basics-accounts-settings-devices/7e99334d-8907-4c38-9f66-ac01ba962364',
         'https://create.kahoot.it/share/windows-command-line-admin-tools-quiz/4291e84a-5286-43c6-836a-3cf760328d29',
         'https://create.kahoot.it/share/windows-10-11-troubleshooting-networking-and-remote-support/6111530d-6484-4fe9-9536-9a1754846fae',
         'https://create.kahoot.it/share/linux-basics-commands-and-system-tools/0fdab12a-64d9-4f53-9751-7380dea028d5',
-        'https://create.kahoot.it/share/macos-essentials-troubleshooting/29c60a0b-f4ed-4e83-aab0-76aceba09ec9'
+        'https://create.kahoot.it/share/macos-essentials-troubleshooting/29c60a0b-f4ed-4e83-aab0-76aceba09ec9',
+        'https://create.kahoot.it/share/windows-security-and-access-control-basics/5148cf77-ef81-49e0-85cf-8a49271e7949',
+        'https://create.kahoot.it/details/2d759456-7668-494e-8d8d-aab1931ebfef',
+        'https://create.kahoot.it/share/enter-kahoot-title/45b5f987-2795-4566-9a2f-b710ceb09a94'
       ]);
       await ready();
     }
