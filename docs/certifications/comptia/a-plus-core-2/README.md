@@ -147,6 +147,10 @@ hub:hidden -->
 
     Configure three network diagrams using IPv4 addresses, LAN and screened-subnet placement, service ports, Wi-Fi security, NAT, and port forwarding.
 
+- [Phishing Email Investigation](../../../practice/pbqs/a-plus-core-2/phishing-email-investigation/README.md)
+
+    Investigate a simulated corporate inbox, inspect message evidence, distinguish legitimate mail from spam and phishing, and choose safe responses.
+
 - [Windows BSOD and Application Troubleshooting](../../../practice/pbqs/a-plus-core-2/windows-bsod-application/README.md)
 
     Investigate driver and memory stop errors and application failures using interactive Windows tools, perform evidence-based repairs, and verify recovery.

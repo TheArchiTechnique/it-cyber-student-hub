@@ -36,6 +36,9 @@
     },
     "software": {
       "title": "Software"
+    },
+    "security": {
+      "title": "Security"
     }
   },
   "topics": {
@@ -102,6 +105,10 @@
     "windows-management": {
       "title": "Windows management and troubleshooting",
       "subject": "software"
+    },
+    "email-security": {
+      "title": "Email security and social engineering",
+      "subject": "security"
     }
   },
   "activities": [
@@ -469,6 +476,25 @@
         "windows-command-line",
         "windows-management",
         "hardware-troubleshooting"
+      ],
+      "status": "published"
+    },
+    {
+      "id": "phishing-email-investigation",
+      "title": "Phishing Email Investigation",
+      "description": "Investigate a simulated corporate inbox, inspect message evidence, distinguish legitimate mail from spam and phishing, and choose safe responses.",
+      "activityPath": "practice/pbqs/a-plus-core-2/phishing-email-investigation/",
+      "launchPath": "practice/pbqs/a-plus-core-2/phishing-email-investigation/app/",
+      "primaryCertification": "a-plus-core-2",
+      "certificationAssociations": [
+        {
+          "certification": "a-plus-core-2",
+          "relevance": "direct",
+          "reason": "Practices antiphishing awareness, social engineering recognition, business email compromise, and safe email handling for Core 2 Security objectives 2.4 and 2.5."
+        }
+      ],
+      "topics": [
+        "email-security"
       ],
       "status": "published"
     }
