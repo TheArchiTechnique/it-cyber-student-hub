@@ -125,6 +125,18 @@ hub:hidden -->
 
     Review macOS features, system utilities, security, file management, backups, recovery, and troubleshooting. Select **Play solo** on Kahoot! for independent practice.
 
+- [Windows Security and Access Control Basics - Kahoot!](https://create.kahoot.it/share/windows-security-and-access-control-basics/5148cf77-ef81-49e0-85cf-8a49271e7949)
+
+    Review Windows accounts, permissions, Group Policy, authentication, and access control. Select **Play solo** on Kahoot! for independent practice.
+
+- [Cybersecurity Essentials: Threats and Defenses - Kahoot!](https://create.kahoot.it/details/2d759456-7668-494e-8d8d-aab1931ebfef)
+
+    Review cybersecurity threats, social engineering, password attacks, physical security, and protective controls. Select **Play solo** on Kahoot! for independent practice.
+
+- [Wi-Fi Security, Power & Safety Essentials - Kahoot!](https://create.kahoot.it/share/enter-kahoot-title/45b5f987-2795-4566-9a2f-b710ceb09a94)
+
+    Review Wi-Fi and router security, authentication, UPS and power concepts, hardware safety, and storage-media sanitization. Select **Play solo** on Kahoot! for independent practice.
+
 <!-- BEGIN GENERATED PBQ LISTINGS -->
 
 ## Published PBQ Practice

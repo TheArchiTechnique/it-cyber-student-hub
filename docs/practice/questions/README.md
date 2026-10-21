@@ -44,4 +44,22 @@ These Kahoot! reviews support independent practice: open a review and select **P
 
     Review macOS features, system utilities, security, file management, backups, recovery, and troubleshooting.
 
+### Windows security and access control
+
+- [Windows Security and Access Control Basics - Kahoot!](https://create.kahoot.it/share/windows-security-and-access-control-basics/5148cf77-ef81-49e0-85cf-8a49271e7949)
+
+    Review Windows accounts, permissions, Group Policy, authentication, and access control.
+
+### Cybersecurity threats and defenses
+
+- [Cybersecurity Essentials: Threats and Defenses - Kahoot!](https://create.kahoot.it/details/2d759456-7668-494e-8d8d-aab1931ebfef)
+
+    Review cybersecurity threats, social engineering, password attacks, physical security, and protective controls.
+
+### Wi-Fi security, power, and safety
+
+- [Wi-Fi Security, Power & Safety Essentials - Kahoot!](https://create.kahoot.it/share/enter-kahoot-title/45b5f987-2795-4566-9a2f-b710ceb09a94)
+
+    Review Wi-Fi and router security, authentication, UPS and power concepts, hardware safety, and storage-media sanitization.
+
 [Back to Practice](../README.md) · [A+ Core 2](../../certifications/comptia/a-plus-core-2/README.md) · [Student Hub](../../../README.md)
