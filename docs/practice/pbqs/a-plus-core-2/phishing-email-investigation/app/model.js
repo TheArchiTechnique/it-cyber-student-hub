@@ -3,7 +3,7 @@
 'use strict';
 // Keep the storage key so older attempts can be detected and reset by the version check.
 const KEY='student-hub-phishing-email-investigation-v1';
-const VERSION=2;
+const VERSION=3;
 const classifications=['Legitimate','Spam','Phishing'];
 const bank=[
   {
@@ -12,7 +12,7 @@ const bank=[
     "classification": "Phishing",
     "name": "Northbridge Identity Services",
     "from": "identity@northbrldge.example",
-    "subject": "Password expires this afternoon",
+    "subject": "Northbridge account notice",
     "time": "09:42",
     "body": [
       {
@@ -224,7 +224,7 @@ const bank=[
     "name": "Owen Grant, Chief Executive Officer",
     "from": "owen.grant@northbridge.example",
     "reply": "owen.office@executive-desk.example",
-    "subject": "Private: release the supplier deposit",
+    "subject": "Supplier deposit request",
     "time": "11:06",
     "body": [
       {
@@ -250,7 +250,7 @@ const bank=[
     ],
     "indicators": {
       "reply": "The Reply-To routes responses outside Northbridge despite an internal-looking From address.",
-      "request": "The request bypasses required payment authorization and introduces an unapproved beneficiary.",
+      "request": "The request explicitly bypasses payment approval and introduces a new beneficiary.",
       "secrecy": "The sender discourages independent verification while requesting an exception to payment controls."
     },
     "explanation": "This financial request targets the Chief Financial Officer and fits whaling and Business Email Compromise (BEC): a claimed executive identity asks for an unauthorized transfer. The external reply mailbox, explicit bypass of approvals, and discouraged verification support phishing. A company-looking From address does not prove spoofing or rule out a compromised account.",
@@ -333,7 +333,7 @@ const bank=[
       "file": "The final .js extension identifies a JavaScript file, not a PDF invoice.",
       "request": "Running an unexpected script and bypassing a security prompt is inconsistent with receiving a PDF invoice."
     },
-    "explanation": "A real purchase-order number can be used as bait. The double extension and request to execute a script support malware-delivery phishing; do not run the attachment to identify its payload.",
+    "explanation": "A plausible purchase-order reference can be used as bait. The double extension and request to execute a script support malware-delivery phishing; do not run the attachment to identify its payload.",
     "to": "jordan.lee@northbridge.example",
     "date": "21 October 2026",
     "links": [],
@@ -428,8 +428,8 @@ const bank=[
           "explanation": "A badge-record update invents a reason to sign in."
         },
         {
-          "term": "Urgency",
-          "explanation": "The implied loss of building access pressures the employee to act."
+          "term": "Fear of losing access",
+          "explanation": "The implied loss of building access pressures the employee to comply; no specific deadline is stated."
         }
       ],
       "technical": [
@@ -455,7 +455,7 @@ const bank=[
       },
       {
         "id": "request",
-        "text": "Confirm the delivery address and enter a company payment-card number, card security code, and employee portal password on the tracking page to settle the $2.30 redelivery fee."
+        "text": "Confirm the delivery address and enter a company payment-card number and card security code on the tracking page to settle the $2.30 redelivery fee."
       },
       {
         "id": "signature",
@@ -473,9 +473,9 @@ const bank=[
     "indicators": {
       "from": "arrowparcel-track.example adds a tracking label to the claimed ArrowParcel identity. The unrelated link and secret request make this concerning, not the external sender alone.",
       "tracking": "The real destination is under delivery-check.example, not arrowparcel.example.",
-      "request": "A redelivery claim does not justify collecting an employee portal password or company card secrets. Sharing these could expose the account and card."
+      "request": "The request seeks payment-card details through the deceptive tracking destination. In combination with that hostname mismatch, it supports payment-data theft; a delivery fee alone would not establish phishing."
     },
-    "explanation": "The delivery pretext requests both account and payment secrets at an unrelated destination, supporting phishing. The claimed carrier identity and tracking address add corroborating indicators. An unexpected delivery or small fee alone would require verification, not establish fraud.",
+    "explanation": "The delivery message seeks payment-card details at a hostname outside the claimed carrier’s domain. The deceptive tracking address and carrier impersonation support phishing. An unexpected delivery or small fee alone would require verification, not establish fraud.",
     "to": "jordan.lee@northbridge.example",
     "date": "21 October 2026",
     "attachments": [],
@@ -484,11 +484,7 @@ const bank=[
       "attacks": [
         {
           "term": "Phishing",
-          "explanation": "A carrier message is used to obtain information unrelated to arranging delivery."
-        },
-        {
-          "term": "Credential harvesting",
-          "explanation": "The form requests an employee portal password and card secrets."
+          "explanation": "A deceptive carrier message seeks payment-card information through an unrelated destination."
         }
       ],
       "tactics": [
@@ -778,12 +774,12 @@ const responseBank=[
     id:'credentials',title:'Credentials submitted',
     prompt:'An employee entered a password and Multifactor Authentication (MFA) code into a phishing page. As the support technician, what is the best next step?',
     correct:'account-process',
-    concept:{term:'Account remediation',explanation:'Restore control of an exposed account. An MFA code is an additional authentication factor; sharing it can let an attacker complete a sign-in.'},
+    concept:{term:'Account remediation',explanation:'Restore control of an exposed account. A one-time MFA code helps prove possession of an enrolled device or channel; sharing it can let an attacker complete a sign-in.'},
     options:[
       {id:'account-process',text:'Escalate immediately and start the approved account recovery process through trusted channels.',explanation:'Promptly report the exposure. Under the authorized process, coordinate a password reset, session revocation, and review of authentication factors and sign-in records. A stolen session may survive a password change.'},
-      {id:'password-only',text:'Change the password, then close the ticket without notifying the security team.',explanation:'A password reset alone may leave an attacker session active and omits the required incident assessment.'},
+      {id:'password-only',text:'Reset the password and verify successful login before treating the incident as resolved.',explanation:'A password reset and successful login do not rule out an active attacker session. The incident still requires prompt escalation and an authorized assessment.'},
       {id:'code-expiry',text:'Wait for the one-time code to expire before deciding whether to escalate.',explanation:'The attacker may already have used the code to create a session. Waiting delays containment.'},
-      {id:'reply-check',text:'Reply to the message asking whether the sign-in was recorded.',explanation:'Contacting the suspected attacker does not verify account safety and may disclose more information.'}
+      {id:'reply-check',text:'Review email delivery logs before starting the account recovery process.',explanation:'Delivery logs can support the investigation, but the reported credential exposure already calls for immediate escalation and authorized account remediation.'}
     ]
   },
   {
@@ -794,8 +790,8 @@ const responseBank=[
     options:[
       {id:'rescan',text:'Leave the network connected and run several scans before reporting the event.',explanation:'Delaying the authorized isolation may allow ongoing communication or spread. Antimalware scanning belongs in the approved response process.'},
       {id:'contain-escalate',text:'Disconnect the network as authorized, preserve the state, and escalate through the incident process.',explanation:'Use the containment step specifically authorized by the procedure, record what happened, and let the responsible team direct investigation and recovery. Do not independently wipe or power off the workstation.'},
-      {id:'wipe',text:'Immediately reinstall the operating system and delete the original attachment.',explanation:'Unauthorized reimaging or deletion can destroy evidence before the incident team has assessed it.'},
-      {id:'run-again',text:'Run the script again on another workstation to reproduce the symptoms.',explanation:'Executing suspected code on another system could create another affected endpoint.'}
+      {id:'wipe',text:'Restore yesterday’s system image before opening an incident ticket.',explanation:'Restoring an image before escalation can destroy useful evidence. First perform the authorized containment step and let the incident process direct recovery.'},
+      {id:'run-again',text:'Stop the visible script process and resume normal work if the pop-ups stop.',explanation:'Stopping a visible process does not establish that the endpoint is clean or contain other activity. The authorized network isolation and incident escalation are still needed.'}
     ]
   },
   {
@@ -806,8 +802,8 @@ const responseBank=[
     options:[
       {id:'verify-payment',text:'Hold the request, verify through a trusted directory contact, and follow finance and reporting procedures.',explanation:'An apparent executive role does not override payment controls. Confirm the request independently and escalate suspected fraud through established channels.'},
       {id:'reply-approval',text:'Reply asking the sender to approve the exception in writing.',explanation:'A reply returns to the same potentially attacker-controlled channel and is not independent verification.'},
-      {id:'small-payment',text:'Send a small test payment to establish whether the beneficiary is genuine.',explanation:'A test payment does not establish identity or authorization and risks unauthorized financial loss.'},
-      {id:'signature',text:'Accept the signature and internal-looking From address as sufficient authorization.',explanation:'Display names, signatures, and visible sender addresses cannot establish approval or exclude compromise.'}
+      {id:'small-payment',text:'Find the beneficiary’s public website and relay the request if its business details look consistent.',explanation:'A public website does not verify the requester, the bank details, or permission to bypass approval. Use an established contact and the required finance process.'},
+      {id:'signature',text:'Ask a coworker whether the executive’s wording looks familiar before relaying the request.',explanation:'Familiar writing style is not identity or authorization proof. Verify through an established contact and retain the required finance approval process.'}
     ]
   },
   {
@@ -816,10 +812,10 @@ const responseBank=[
     correct:'coordinate',
     concept:{term:'Email security gateway',explanation:'A control that filters mail and records delivery information. Authorized security staff can use its records to determine the scope of a campaign and coordinate removal.'},
     options:[
-      {id:'public-forward',text:'Forward the original message to everyone as a warning.',explanation:'Casual forwarding spreads the original lure and may increase exposure. Use approved sanitized awareness communications.'},
+      {id:'public-forward',text:'Send staff a subject-line warning and ask them to delete their copies before collecting the reports.',explanation:'An approved warning can help, but early deletion may lose useful evidence. Preserve and correlate the reports through the incident process before coordinated removal.'},
       {id:'local-delete',text:'Tell each employee to delete the message and close the reports separately.',explanation:'Deletion alone may lose useful evidence and fails to correlate a potential organization-wide campaign.'},
       {id:'coordinate',text:'Preserve reports through the approved channel and escalate the related messages for coordinated review.',explanation:'Document the recipients and times without opening the lure. The authorized team can review gateway and security logs, assess exposure, and coordinate mail removal or filtering.'},
-      {id:'global-block',text:'Independently change organization-wide mail rules and purge every similar message.',explanation:'A Tier 1 technician should not make broad changes outside their authorization. Coordinated review reduces disruption and preserves evidence.'}
+      {id:'global-block',text:'Request a sender-domain block before gathering message identifiers and recipient reports.',explanation:'A sender may be forged or a legitimate account compromised. Collect and escalate the reports so authorized staff can scope the campaign and choose appropriate controls.'}
     ]
   },
   {
@@ -828,17 +824,17 @@ const responseBank=[
     correct:'deny-verify',
     concept:{term:'Multifactor Authentication (MFA)',explanation:'Authentication using different factor types. An unsolicited approval prompt may indicate an attempted sign-in; the prompt alone does not prove a successful compromise.'},
     options:[
-      {id:'approve-once',text:'Approve one request to stop the repeated prompts, then contact support.',explanation:'Approval could authorize an attacker sign-in. Stopping the prompts does not justify granting access.'},
+      {id:'approve-once',text:'Dismiss the notification and wait for another prompt before contacting support.',explanation:'Dismissing a prompt avoids approval but does not address the attempted sign-in. Report the unexpected request promptly through a trusted support channel.'},
       {id:'deny-verify',text:'Deny the prompt, share no code, and contact support using a trusted channel.',explanation:'Keep the factor secret and report the attempted sign-in. Authorized staff can review account activity and determine whether further remediation is needed.'},
-      {id:'send-code',text:'Send the code to the email address claiming to be the help desk.',explanation:'A one-time code is an authentication secret. The message cannot validate the identity of the person requesting it.'},
-      {id:'ignore',text:'Ignore it permanently because no approval means no review is needed.',explanation:'Even without approval, an unexpected sign-in request should be reported for review under the organization’s procedure.'}
+      {id:'send-code',text:'Reply for a support callback number and use it to verify who initiated the prompt.',explanation:'A callback number obtained through the questionable message could reach the attacker. Use a known directory number or established support portal instead.'},
+      {id:'ignore',text:'Change the password through the trusted portal and close the issue without reporting the prompt.',explanation:'A trusted password change may help, but it does not replace reporting the attempted sign-in. Authorized staff should assess the account activity and any further remediation.'}
     ]
   }
 ];
 const entry=(id,text)=>({id,text});
 // Selectable regions cover meaningful fields and requests, not every line of the email.
 function details(m){
-  return [entry('from',m.from),...(m.reply?[entry('reply',m.reply)]:[]),
+  return [entry('subject',m.subject),entry('from',m.from),...(m.reply?[entry('reply',m.reply)]:[]),
     ...m.body.filter(e=>!['greeting','signature','footer','deadline'].includes(e.id)),...m.links,...m.attachments];
 }
 function shuffle(items,rng){

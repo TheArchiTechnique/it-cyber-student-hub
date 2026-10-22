@@ -23,7 +23,7 @@ The Lesson tab teaches phishing versus spam, social engineering, phishing varian
 | Security Response Decisions | Three situations × 2 points | 6 |
 | Total | | 29 |
 
-Evidence credit is available only for an actual phishing email correctly classified as Phishing. It is `3 × max(0, TP/K − FP/B)`, rounded to two decimals: `TP` is selected valid indicators, `K` is all valid indicators, `FP` is selected benign areas, and `B` is all benign selectable areas. When no benign areas are selectable, the false-positive term is zero. Duplicate or invalid selections add no credit. No evidence points are available for spam, legitimate mail, or empty evidence. The attack labels, definitions, and optional guidance are instructional and unscored.
+Evidence credit is available only for an actual phishing email correctly classified as Phishing. It is `3 × max(0, TP/K − FP/B)`, rounded to two decimals: `TP` is selected valid indicators, `K` is all valid indicators, `FP` is selected benign areas, and `B` is all benign selectable areas. Every message retains a neutral selectable subject alongside the meaningful inspection areas; selecting every available area earns zero evidence credit. Duplicate or invalid selections add no credit. No evidence points are available for spam, legitimate mail, or empty evidence. The attack labels, definitions, and optional guidance are instructional and unscored.
 
 All organizations, addresses, account references, and situations are fictional. Domains use the reserved `.example` namespace. The QR illustration cannot be scanned; its simulated encoded destination is available through the same inspection control as links.
 
