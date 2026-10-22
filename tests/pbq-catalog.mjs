@@ -4,6 +4,7 @@ import { getPBQ, launchURL, loadCatalog, selectPBQs } from '../docs/assets/javas
 
 const catalog = JSON.parse(await readFile(new URL('../docs/assets/data/pbqs.json', import.meta.url)));
 const original = JSON.stringify(catalog);
+assert.deepEqual(selectPBQs(catalog, { certification: 'a-plus-core-2', subject: 'security', topic: 'email-security', keyword: 'phishing' }).map(a => a.id), ['phishing-email-investigation']);
 const all = selectPBQs(catalog);
 assert.equal(new Set(all.map(a => a.id)).size, all.length);
 const network = selectPBQs(catalog, { certification: 'network-plus', relevance: 'foundational' });

@@ -60,7 +60,7 @@ class LinuxTerminalPublicationTests(unittest.TestCase):
     def test_simulator_never_enters_the_pbq_catalog_or_listings(self):
         catalog = json.loads((ROOT / 'docs/assets/data/pbqs.json').read_text())
         self.assertNotIn('linux-terminal-simulator', json.dumps(catalog))
-        self.assertEqual(len([a for a in catalog['activities'] if a['status'] == 'published']), 16)
+        self.assertEqual(len([a for a in catalog['activities'] if a['status'] == 'published']), 17)
         for source in ('practice/pbqs/README.md', 'practice/pbqs/a-plus-core-2/README.md'):
             self.assertNotIn('linux-terminal-simulator', self.visible(source))
         core2 = self.availability.render('certifications/comptia/a-plus-core-2/README.md')
