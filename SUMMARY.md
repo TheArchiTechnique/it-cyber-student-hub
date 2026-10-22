@@ -31,6 +31,7 @@
       - [Two-Site VoIP Troubleshooting](docs/practice/pbqs/a-plus-core-1/two-site-voip-cli/README.md)
       - [Wireless Coverage](docs/practice/pbqs/a-plus-core-1/wireless-coverage/README.md)
     - [A+ Core 2](docs/practice/pbqs/a-plus-core-2/README.md)
+      - [Malware Investigation & Remediation](docs/practice/pbqs/a-plus-core-2/malware-investigation-remediation/README.md)
       - [Network Configuration Concepts](docs/practice/pbqs/a-plus-core-2/network-configuration-concepts/README.md)
       - [Phishing Email Investigation](docs/practice/pbqs/a-plus-core-2/phishing-email-investigation/README.md)
       - [Windows BSOD and Application Troubleshooting](docs/practice/pbqs/a-plus-core-2/windows-bsod-application/README.md)

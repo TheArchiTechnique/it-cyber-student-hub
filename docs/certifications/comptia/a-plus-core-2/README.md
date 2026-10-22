@@ -143,6 +143,10 @@ hub:hidden -->
 
 ### Direct Certification Practice
 
+- [Malware Investigation & Remediation](../../../practice/pbqs/a-plus-core-2/malware-investigation-remediation/README.md)
+
+    Investigate Windows security incidents, identify malware indicators, contain threats, perform remediation, and verify system recovery using interactive troubleshooting tools.
+
 - [Network Configuration Concepts](../../../practice/pbqs/a-plus-core-2/network-configuration-concepts/README.md)
 
     Configure three network diagrams using IPv4 addresses, LAN and screened-subnet placement, service ports, Wi-Fi security, NAT, and port forwarding.

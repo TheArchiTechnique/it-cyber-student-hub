@@ -109,6 +109,10 @@
     "email-security": {
       "title": "Email security and social engineering",
       "subject": "security"
+    },
+    "malware-response": {
+      "title": "Malware investigation and response",
+      "subject": "security"
     }
   },
   "activities": [
@@ -495,6 +499,26 @@
       ],
       "topics": [
         "email-security"
+      ],
+      "status": "published"
+    },
+    {
+      "id": "malware-investigation-remediation",
+      "title": "Malware Investigation & Remediation",
+      "description": "Investigate Windows security incidents, identify malware indicators, contain threats, perform remediation, and verify system recovery using interactive troubleshooting tools.",
+      "activityPath": "practice/pbqs/a-plus-core-2/malware-investigation-remediation/",
+      "launchPath": "practice/pbqs/a-plus-core-2/malware-investigation-remediation/app/",
+      "primaryCertification": "a-plus-core-2",
+      "certificationAssociations": [
+        {
+          "certification": "a-plus-core-2",
+          "relevance": "direct",
+          "reason": "Practices malware investigation, risk-based containment, remediation, escalation, verification, and incident documentation for Core 2 objective 2.6 and supporting Windows/security troubleshooting concepts."
+        }
+      ],
+      "topics": [
+        "malware-response",
+        "windows-management"
       ],
       "status": "published"
     }

@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [improve/a-plus-core2-phishing-pbq-workflow, content/a-plus-core2-phishing-email-pbq, feature/a-plus-core2-linux-terminal-simulator, feature/learning-resource-navigation-ux, build/initial-student-hub, feature/centralized-pbq-library, feature/pbq-catalog-certification-integration, feature/global-pbq-library, feature/automatic-content-visibility, content/virtualbox-linux-mint-shared-lab, content/a-plus-core2-network-configuration-concepts, content/a-plus-core2-windows-command-practice, content/a-plus-core2-windows-troubleshooting-pbq, content/a-plus-core2-startup-bsod-pbqs, content/a-plus-core2-linux-mint-command-lab]
+    branches: [content/a-plus-core2-malware-investigation-remediation, improve/a-plus-core2-phishing-pbq-workflow, content/a-plus-core2-phishing-email-pbq, feature/a-plus-core2-linux-terminal-simulator, feature/learning-resource-navigation-ux, build/initial-student-hub, feature/centralized-pbq-library, feature/pbq-catalog-certification-integration, feature/global-pbq-library, feature/automatic-content-visibility, content/virtualbox-linux-mint-shared-lab, content/a-plus-core2-network-configuration-concepts, content/a-plus-core2-windows-command-practice, content/a-plus-core2-windows-troubleshooting-pbq, content/a-plus-core2-startup-bsod-pbqs, content/a-plus-core2-linux-mint-command-lab]
   workflow_dispatch:
 permissions:
   contents: read
@@ -44,6 +44,7 @@ jobs:
       - run: npm run test:windows-startup-recovery
       - run: npm run test:windows-bsod-application
       - run: npm run test:phishing-email-investigation
+      - run: npm run test:malware-investigation-remediation
       - uses: actions/upload-artifact@v4
         with:
           name: student-hub-preview
