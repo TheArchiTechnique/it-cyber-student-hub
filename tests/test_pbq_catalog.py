@@ -119,7 +119,7 @@ class CatalogTests(unittest.TestCase):
                 content = render_listings(self.catalog, cert, metadata[field], field == 'overviewPath')
                 content = published_markdown(content)
                 with self.subTest(cert=cert, field=field):
-                    self.assertEqual(content.count('- ['), {'a-plus-core-1': 12, 'network-plus': 8, 'a-plus-core-2': 5}.get(cert, 0))
+                    self.assertEqual(content.count('- ['), {'a-plus-core-1': 12, 'network-plus': 8, 'a-plus-core-2': 6}.get(cert, 0))
                     if cert == 'network-plus':
                         self.assertNotIn('Direct Certification Practice', content)
                         self.assertIn('Foundational Practice', content)

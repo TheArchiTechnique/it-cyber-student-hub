@@ -11,6 +11,10 @@ Performance-based practice for this certification.
 
 ## Direct Certification Practice
 
+- [Malware Investigation & Remediation](malware-investigation-remediation/README.md)
+
+    Investigate Windows security incidents, identify malware indicators, contain threats, perform remediation, and verify system recovery using interactive troubleshooting tools.
+
 - [Network Configuration Concepts](network-configuration-concepts/README.md)
 
     Configure three network diagrams using IPv4 addresses, LAN and screened-subnet placement, service ports, Wi-Fi security, NAT, and port forwarding.

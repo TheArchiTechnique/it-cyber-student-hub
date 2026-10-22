@@ -12,7 +12,8 @@
     "test:windows-bsod-application": "node tests/windows-bsod-application.cjs --local",
     "test:linux-terminal-engine": "node tests/linux-terminal.cjs && node tests/linux-terminal-guided.cjs",
     "test:linux-terminal": "node tests/linux-terminal.cjs && node tests/linux-terminal-guided.cjs && node tests/linux-terminal-browser.cjs",
-    "test:phishing-email-investigation": "node tests/phishing-email-investigation.cjs --local"
+    "test:phishing-email-investigation": "node tests/phishing-email-investigation.cjs --local",
+    "test:malware-investigation-remediation": "node tests/malware-investigation-remediation.cjs --local"
   },
   "devDependencies": {
     "playwright": "1.62.1"
