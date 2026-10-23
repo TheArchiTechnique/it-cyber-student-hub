@@ -13,7 +13,7 @@ Performance-based practice for this certification.
 
 - [Malware Investigation & Remediation](malware-investigation-remediation/README.md)
 
-    Investigate Windows security incidents, identify malware indicators, contain threats, perform remediation, and verify system recovery using interactive troubleshooting tools.
+    Troubleshoot four office computers: identify infections, isolate affected systems, correct services, quarantine threats, and verify cleanup.
 
 - [Network Configuration Concepts](network-configuration-concepts/README.md)
 
