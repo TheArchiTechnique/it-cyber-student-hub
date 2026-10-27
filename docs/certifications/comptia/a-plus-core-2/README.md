@@ -143,6 +143,10 @@ hub:hidden -->
 
 ### Direct Certification Practice
 
+- [Help Desk Ticket Triage & Resolution PBQ](../../../practice/pbqs/a-plus-core-2/helpdesk-ticket-triage/README.md)
+
+    Review help desk incidents, prioritize tickets, interpret evidence, diagnose issues, and select appropriate corrective actions in a simulated service desk.
+
 - [Malware Investigation & Remediation](../../../practice/pbqs/a-plus-core-2/malware-investigation-remediation/README.md)
 
     Troubleshoot four office computers: identify infections, isolate affected systems, correct services, quarantine threats, and verify cleanup.
