@@ -84,14 +84,15 @@ function complete(s,id){if(s.submitted||s.active!==id||!s.answers[id].issue||!s.
 const ready=s=>allReviewed(s)&&s.completed.length===tickets.length&&!s.active&&tickets.every(t=>s.answers[t.id].issue&&s.answers[t.id].action);
 function submit(s){if(s.submitted||!ready(s))return false;s.submitted=true;return true;}
 function grade(s){
- let priority=0,issues=0,actions=0;const pairs=[],details=[];
+ let issues=0,actions=0,correctRelationships=0,rankedRelationships=0;const pairs=[],details=[];
  for(let i=0;i<order.length;i++)for(let j=i+1;j<order.length;j++){
   const first=order[i],second=order[j],rank=id=>priorities[byId(id).priority].rank,samePriority=rank(first)===rank(second);
   const [before,after]=rank(first)<=rank(second)?[first,second]:[second,first],a=s.sequence.indexOf(before),b=s.sequence.indexOf(after),correct=a>=0&&b>=0&&(samePriority||a<b);
-  if(correct)priority++;pairs.push({before,after,samePriority,correct});
+  if(!samePriority){rankedRelationships++;if(correct)correctRelationships++;}pairs.push({before,after,samePriority,correct});
  }
  for(const t of tickets){const r=rubric[t.id],a=s.answers[t.id]||{},issue=a.issue===r.issue?2:0,action=a.action===r.action?2:0;issues+=issue;actions+=action;details.push({id:t.id,...r,issueKey:r.issue,actionKey:r.action,issue,action});}
- const score=priority+issues+actions;return {score,max:39,percentage:Math.round(score/39*100),priority,issues,actions,pairs,details,order:order.slice()};
+ const priority=rankedRelationships?Math.round(15*correctRelationships/rankedRelationships):0,score=priority+issues+actions;
+ return {score,max:39,percentage:Math.round(score/39*100),priority,correctRelationships,rankedRelationships,issues,actions,pairs,details,order:order.slice()};
 }
 function permutation(value,expected){return Array.isArray(value)&&value.length===expected.length&&new Set(value).size===value.length&&value.every(x=>expected.includes(x));}
 function restore(raw){

@@ -8,7 +8,7 @@ Practice six short A+ support scenarios at Northstar Logistics. Open every ticke
 
 Follow the assigned labels: **Critical → High → Medium → Low**. Tickets with the same priority may be processed in either order. Opening a ticket does not record work order. **Begin Work on This Ticket** records its position; complete it before starting another. Choose the **Most Likely Issue** and **Best Corrective Action**. You can revise answers before submission without changing your work order.
 
-Submit the full queue for up to **39 points**: 15 for correct relative ticket-priority relationships, 12 for issue identification, and 12 for corrective actions. Each technical answer is graded independently. Tickets with matching priority labels receive priority credit in either order. Inspection is required and earns no points. Technical answers and explanations appear only after submission.
+Submit the full queue for up to **39 points**: 15 for priority order, 12 for issue identification, and 12 for corrective actions. Each technical answer is graded independently. Priority points come from correctly ordering ticket pairs with different priority labels, scaled to 15 and rounded to the nearest whole point. Matching-priority pairs are ungraded; either order is accepted. Inspection is required and earns no points. Technical answers and explanations appear only after submission.
 
 The **Lesson** tab teaches ticket lifecycles, impact and urgency, workarounds, evidence interpretation, safe troubleshooting, verification, documentation, and escalation. It links to related Hub resources. Primary alignment is CompTIA A+ Core 2 **220-1202 objective 4.1**, with supporting Windows, networking, and security troubleshooting practice.
 
