@@ -509,7 +509,7 @@
     {
       "id": "malware-investigation-remediation",
       "title": "Malware Investigation & Remediation",
-      "description": "Investigate Windows security incidents, identify malware indicators, contain threats, perform remediation, and verify system recovery using interactive troubleshooting tools.",
+      "description": "Troubleshoot four office computers: identify infections, isolate affected systems, correct services, quarantine threats, and verify cleanup.",
       "activityPath": "practice/pbqs/a-plus-core-2/malware-investigation-remediation/",
       "launchPath": "practice/pbqs/a-plus-core-2/malware-investigation-remediation/app/",
       "primaryCertification": "a-plus-core-2",
@@ -517,7 +517,7 @@
         {
           "certification": "a-plus-core-2",
           "relevance": "direct",
-          "reason": "Practices malware investigation, risk-based containment, remediation, escalation, verification, and incident documentation for Core 2 objective 2.6 and supporting Windows/security troubleshooting concepts."
+          "reason": "Practices basic SOHO malware removal (2.6), malware recognition and protection (2.4), and Windows Security/Defender Antivirus (2.2) through a concise four-computer scenario."
         }
       ],
       "topics": [
