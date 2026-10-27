@@ -8,7 +8,7 @@ const transcripts={
  files:'File Explorer / R:\\Records\nName                          Type\nCase-index.docx.sealed         SEALED File\nArchive-register.xlsx.sealed   SEALED File\nDelivery-log.pdf.sealed        SEALED File\nRECOVER_FILES.txt              Text Document\n\nRECOVER_FILES.txt preview:\nYour documents have been encrypted. Payment is required for the key.\nUser observation: More filenames are changing while I watch.',
  service:'Services / Northstar Report Engine Properties\nService name: NSReportEngine\nDisplay name: Northstar Report Engine\nStartup type: Disabled\nService status: Stopped\nLog on as: Local System\nApproved baseline: Startup type Automatic; status Running.'
 };
-let state,filter='all',attachmentReturn=null,confirmReturn=null;
+let state,filter='all';
 try{state=M.restore(JSON.parse(localStorage.getItem(M.KEY)));}catch{state=M.initial();}
 function save(){let saved=true;try{localStorage.setItem(M.KEY,JSON.stringify(state));}catch{saved=false;}$('save-status').textContent=saved?'Progress saved in this browser.':'Browser storage unavailable. Progress is kept for this page session.';}
 function status(id){return state.completed.includes(id)?'Processed':state.active===id?'In progress':M.reviewed(state,id)?'Reviewed':'Awaiting review';}
@@ -62,7 +62,7 @@ $('ticket-content').addEventListener('click',e=>{
  if(b.dataset.section){section(b.dataset.section,true);return;}
  if(b.dataset.attachment){
   const a=M.byId(state.selected).attachments.find(a=>a.id===b.dataset.attachment);if(!a)return;
-  attachmentReturn={ticket:state.selected,attachment:a.id};$('evidence-title').textContent=a.title;
+  $('evidence-title').textContent=a.title;
   $('evidence-content').innerHTML=a.kind==='image'?`<button type="button" id="zoom-image" aria-pressed="false">Enlarge capture</button><div class="capture-scroll" tabindex="0" aria-label="Capture image; use arrow keys to pan when enlarged"><img src="${a.name}" alt="${escape(a.caption)}"></div><p>${escape(a.caption)}</p><h3>Readable transcript</h3><pre class="transcript">${escape(transcripts[a.view])}</pre>`:`<pre>${escape(a.content)}</pre>`;
   $('evidence').showModal();if(!state.submitted)M.inspectAttachment(state,state.selected,a.id);overview();save();return;
  }
@@ -84,7 +84,7 @@ $('evidence').addEventListener('close',()=>{
  const progress=$('ticket-content').querySelector('.section-status');if(progress)progress.textContent=`Sections inspected: ${i.sections.length} of 3 · Attachments opened: ${i.attachments.length} of ${t.attachments.length}`;
  // The final attachment can unlock Begin Work without replacing the opener.
  const begin=$('begin');if(begin){begin.disabled=state.submitted||!M.allReviewed(state)||Boolean(state.active);if(!begin.disabled)$('begin-guidance').textContent='Beginning work records this ticket’s place in your sequence.';}}
- const button=$('ticket-content').querySelector(`[data-attachment="${attachmentReturn?.attachment}"]`);if(button)button.focus();
+ // Native dialog closing restores the unchanged opener without a delayed focus move.
 });
 $('submit').addEventListener('click',()=>{
  if(state.submitted)return;
@@ -92,11 +92,10 @@ $('submit').addEventListener('click',()=>{
  if(!M.submit(state)){announce('Process all six tickets and record both decisions for each before submitting.');return;}
  render();announce('Queue submitted. Review the scoring, evidence, and priority reasoning below.');$('results').focus();
 });
-function confirmFresh(source){confirmReturn=source;$('confirm-title').textContent=source==='retry'?'Retry with a fresh attempt?':'Reset this activity?';$('confirm').showModal();}
+function confirmFresh(source){$('confirm-title').textContent=source==='retry'?'Retry with a fresh attempt?':'Reset this activity?';$('confirm').showModal();}
 $('reset').addEventListener('click',()=>confirmFresh('reset'));$('retry').addEventListener('click',()=>confirmFresh('retry'));
 $('keep').addEventListener('click',()=>$('confirm').close());
 $('confirm-action').addEventListener('click',()=>{const previous=state.queue;state=M.initial(Math.random,previous);filter='all';$('confirm').close();render();announce('Fresh attempt ready. Review progress, answers, work sequence, and score have been cleared.');$('queue').querySelector('button').focus();});
-$('confirm').addEventListener('close',()=>{if(!state.selected&&!state.sequence.length)return;$(confirmReturn).focus();});
 const tabs=[$('activity-tab'),$('lesson-tab')];
 function tab(index,focus=false){tabs.forEach((t,i)=>{t.setAttribute('aria-selected',String(i===index));t.tabIndex=i===index?0:-1;$(t.getAttribute('aria-controls')).hidden=i!==index;});if(focus)tabs[index].focus();}
 tabs.forEach((t,i)=>{t.addEventListener('click',()=>tab(i));t.addEventListener('keydown',e=>{let index;if(['ArrowRight','ArrowLeft'].includes(e.key))index=1-i;if(e.key==='Home')index=0;if(e.key==='End')index=1;if(index!==undefined){e.preventDefault();tab(index,true);}});});
