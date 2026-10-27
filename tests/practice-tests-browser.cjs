@@ -4,6 +4,8 @@ const path = require('node:path');
 const http = require('node:http');
 const { chromium } = require('playwright');
 const bank = require('../docs/assets/data/practice-tests/a-plus-core-2-questions.json');
+const total = bank.questions.length;
+const countFor = ({ domain, objective } = {}) => bank.questions.filter(q => (!domain || q.domain === domain) && (!objective || q.objectives.includes(objective))).length;
 const KEY = 'student-hub.exam.session.v1';
 
 async function whiteboardFlow(p, state, shot) {
@@ -168,7 +170,7 @@ async function browser(base) {
         await click('select-none');
         await p.locator(`[id="domain-${id.split('.')[0]}.0"]`).check();
         const block = p.locator('.domain-block').filter({ has: p.locator(`[id="objective-${id}"]`) });
-        await block.locator('summary').click();
+        if (!await block.locator('details').evaluate(el => el.open)) await block.locator('summary').click();
         const inputs = block.locator('.objectives input');
         for (let i = 0; i < await inputs.count(); i++) if (!await inputs.nth(i).isDisabled()) await inputs.nth(i).uncheck();
         await p.locator(`[id="objective-${id}"]`).check();
@@ -178,29 +180,44 @@ async function browser(base) {
       assert.equal(await p.locator('#certification option').count(), 1);
       assert.equal(await p.getByRole('button', { name: 'Whiteboard', exact: true }).count(), 0);
       assert.equal(await p.getByRole('button', { name: 'Certification Mode', exact: true }).count(), 0);
-      assert.match(await p.locator('#available').innerText(), /24 validated/);
-      assert.equal(await p.locator('[id="objective-1.2"]').isDisabled(), true, 'No empty objectives can be launched');
+      assert.match(await p.locator('#available').innerText(), new RegExp(`${total} validated`));
+      assert.equal(await p.locator('.objectives input').count(), 36);
+      assert.equal(await p.locator('.objectives input:disabled').count(), 0, 'Every official objective now has selectable coverage');
       await overflow();
       if (!prefix) await shot(p, 'practice-setup-desktop');
       await click('select-none'); assert.equal(await p.locator('#start-test').isDisabled(), true);
       await p.locator('[id="domain-2.0"]').check();
-      assert.match(await p.locator('#available').innerText(), /6 validated/);
-      assert.equal(await p.locator('#count-preset option[value="10"]').isDisabled(), true);
+      assert.match(await p.locator('#available').innerText(), new RegExp(`${countFor({ domain: '2.0' })} validated`));
+      assert.equal(await p.locator('#count-preset option[value="10"]').isDisabled(), false);
+      assert.equal(await p.locator('#count-preset option[value="20"]').isDisabled(), true);
+      await p.locator('#count-preset').selectOption('custom'); await p.locator('#custom-count').fill('99');
       await click('use-available'); assert.equal(await p.locator('#start-test').isDisabled(), false);
-      await p.locator('[id="domain-1.0"]').check(); assert.match(await p.locator('#available').innerText(), /12 validated/);
+      await p.locator('[id="domain-1.0"]').check(); assert.match(await p.locator('#available').innerText(), /36 validated/);
+      assert.equal(await p.locator('#count-preset option[value="30"]').isDisabled(), false);
+      assert.equal(await p.locator('#count-preset option[value="50"]').isDisabled(), true);
       await onlyObjective('2.2'); assert.match(await p.locator('#available').innerText(), /2 validated/);
+      for (const objective of ['1.2', '1.6', '1.7', '1.10', '1.11', '2.4', '2.7', '2.8', '2.9', '2.10', '2.11', '4.4', '4.5', '4.6', '4.9']) {
+        await onlyObjective(objective);
+        assert.match(await p.locator('#available').innerText(), new RegExp(`${countFor({ objective })} validated`));
+        await start();
+        const focused = await state();
+        assert.equal(focused.questionIds.length, countFor({ objective }));
+        assert.ok(focused.questionIds.every(id => bank.questions.find(q => q.id === id).objectives.includes(objective)));
+        await reset();
+      }
       await click('select-all');
+      assert.equal(await p.locator('#count-preset option[value="50"]').isDisabled(), false, 'The expanded full pool supports the 50-question preset');
       await p.locator('#count-preset').selectOption('custom');
       for (const value of ['0', '1.5', '99']) { await p.locator('#custom-count').fill(value); assert.equal(await p.locator('#start-test').isDisabled(), true); }
       await click('use-available');
       await start();
-      const first = await state(); assert.equal(first.questionIds.length, 24);
+      const first = await state(); assert.equal(first.questionIds.length, total);
       await context.grantPermissions(['clipboard-read', 'clipboard-write']);
       await whiteboardFlow(p, state, prefix ? async () => {} : shot);
       assert.equal(await p.locator('#feedback').isVisible(), false);
       assert.equal(await p.locator('#previous').isDisabled(), true);
       assert.equal(await p.locator('#choices legend').innerText().then(t => /Select (one|2)/.test(t)), true);
-      for (let index = 0; index < 24; index++) {
+      for (let index = 0; index < total; index++) {
         await go(index);
         const id = first.questionIds[index], q = bank.questions.find(q => q.id === id);
         assert.equal(await p.locator('#question-body').innerText().then(t => t.includes('Objectives:')), false);
@@ -216,7 +233,7 @@ async function browser(base) {
           assert.equal(restored.tools.whiteboard.text, 'diagnostic notes\n  preserved spacing');
         }
       }
-      assert.match(await p.locator('#progress-text').innerText(), /24 of 24 answered · 2 flagged/);
+      assert.match(await p.locator('#progress-text').innerText(), new RegExp(`${total} of ${total} answered · 2 flagged`));
       assert.equal(await p.locator('#next').isDisabled(), true);
       await p.getByRole('button', { name: 'Whiteboard', exact: true }).click();
       await p.getByRole('textbox', { name: 'Exam notes' }).fill('Notes persist through submission and review.');
@@ -226,7 +243,7 @@ async function browser(base) {
       await p.keyboard.press('Escape'); assert.equal((await state()).status, 'active');
       await click('submit-test'); await click('confirm-action');
       assert.equal(await p.locator('#results .score').innerText(), '100%');
-      assert.match(await p.locator('#results').innerText(), /24 correct · 0 incorrect · 0 unanswered · 24 total/);
+      assert.match(await p.locator('#results').innerText(), new RegExp(`${total} correct · 0 incorrect · 0 unanswered · ${total} total`));
       assert.equal(await p.locator('#results table').count(), 2);
       assert.equal(await p.locator('#feedback .rationale').count(), 4);
       assert.equal(await p.locator('#flag').isDisabled(), true);
@@ -274,7 +291,7 @@ async function browser(base) {
       await reset();
 
       // Hidden feedback stays hidden in results; incomplete submission requires confirmation.
-      await onlyObjective('1.9'); await p.locator('#show-answers').uncheck();
+      await onlyObjective('1.1'); await p.locator('#show-answers').uncheck();
       assert.equal(await p.locator('#show-explanations').isChecked(), false); assert.equal(await p.locator('#show-explanations').isDisabled(), true);
       assert.equal(await p.locator('#feedback-timing').isDisabled(), true);
       await start(); await click('submit-test'); assert.match(await p.locator('#confirmation-text').innerText(), /1 question is unanswered/);
@@ -288,6 +305,7 @@ async function browser(base) {
       await p.locator('#show-answers').check(); await p.locator('#show-explanations').check();
       for (const width of [320, 390, 768, 1440]) { await p.setViewportSize({ width, height: 900 }); await overflow(); }
       await onlyObjective('1.9'); await start();
+      await go((await state()).questionIds.indexOf('apc2-005'));
       assert.match(await p.locator('#question-body pre').innerText(), /-rw-r-----/);
       for (const width of [320, 390, 768, 1440]) { await p.setViewportSize({ width, height: 900 }); await overflow(); }
       await p.setViewportSize({ width: 390, height: 844 });
@@ -297,7 +315,7 @@ async function browser(base) {
       await click('theme-toggle');
 
       // Stale/corrupt sessions recover to configuration without reusing old progress.
-      const stale = await state(); stale.bankVersion = 'old';
+      const stale = await state(); stale.bankVersion = '2026-10-27.1';
       for (const raw of [JSON.stringify(stale), '{broken', JSON.stringify({ version: 99 })]) {
         await p.evaluate(({ key, raw }) => localStorage.setItem(key, raw), { key: KEY, raw }); await p.reload();
         await p.locator('#setup').waitFor({ state: 'visible' }); assert.match(await p.locator('#notice').innerText(), /saved test/i);

@@ -2,11 +2,13 @@
 
 Feature branch: `feature/certification-practice-tests`. GitHub is the continuation checkpoint. Fetch, inspect the existing branch and commits, and continue this implementation in each later phase. Do not recreate the application or commit to main. Every implementation phase ends with tests, commit, push, full SHA, and STOP. Final QA and PR creation follow implementation phases.
 
+Current checkpoint: Phase 3A expands Core 2 to 64 validated questions in bank version `2026-10-27.2`, covering all 36 official objective identifiers. Practice Mode and the shared whiteboard are implemented. Certification Mode and PBQ examination adapters are not implemented. Coverage is still too limited to describe this bank as a complete certification simulation.
+
 ## Phase 1 boundary
 
 Implemented: a shared static Practice Mode, domain and objective selection, question counts constrained by the actual eligible bank, single and multiple response questions, question/choice shuffling, flags/navigation, feedback settings, explicit immediate feedback with answer locking, exact-set scoring, local refresh recovery, results, Core 2 integration, and 24 initial questions (six per domain).
 
-The 36 Core 2 objective identifiers and domain weights come from CompTIA's official 220-1202 objectives v2.0, verified 2026-10-27. Labels are concise descriptions; the official PDF is the authoritative wording. Configuration shows objectives with no bank coverage as unavailable. Pilot distribution is deliberately even for configuration testing, not an exam-weighted simulation. The metadata records the official maximum of 90 questions and 90 minutes as future configuration, without publishing a Certification Mode launch.
+The 36 Core 2 objective identifiers and domain weights come from CompTIA's official 220-1202 objectives v2.0, verified 2026-10-27. Labels are concise descriptions; the official PDF is the authoritative wording. Configuration shows objectives with no bank coverage as unavailable. The original Phase 1 pilot was deliberately even for configuration testing; Phase 3A changes the bank distribution as documented below. The metadata records the official maximum of 90 questions and 90 minutes as future configuration, without publishing a Certification Mode launch.
 
 ## Files and contracts
 
@@ -66,11 +68,50 @@ The pure suite covers backward-compatible state restoration, oversized/corrupt n
 
 Limitations: the whiteboard is plain text and browser-local; no drawing, rich text, cross-device synchronization, or external clipboard permission is required by the application. A denied/full browser store cannot preserve notes through a refresh. Geometry is local to the safe surface and may be reduced for a shorter question. Certification Mode and PBQ reuse are adapter contracts; their examination interfaces are deferred, not implemented in this phase.
 
+## Phase 3A: Core 2 bank expansion
+
+The existing 24 question records, stable identifiers, choices, keys, rationales, and resource links are unchanged. Added `apc2-025` through `apc2-064` using the same schema and per-question validation metadata. Bank version changes from `2026-10-27.1` to `2026-10-27.2`; the session schema remains version 1.
+
+| Domain | Before | Added | After | Objectives covered before / after |
+| --- | ---: | ---: | ---: | --- |
+| 1.0 Operating Systems | 6 | 12 | 18 | 6 of 11 / 11 of 11 |
+| 2.0 Security | 6 | 12 | 18 | 5 of 11 / 11 of 11 |
+| 3.0 Software Troubleshooting | 6 | 9 | 15 | 4 of 4 / 4 of 4 |
+| 4.0 Operational Procedures | 6 | 7 | 13 | 6 of 10 / 10 of 10 |
+| Total | 24 | 40 | 64 | 21 of 36 / 36 of 36 |
+
+All 15 prior gaps are covered: 1.2, 1.6, 1.7, 1.10, 1.11; 2.4, 2.7, 2.8, 2.9, 2.10, 2.11; 4.4, 4.5, 4.6, 4.9. No objective remains uncovered. New domain totals approximately follow the published 28/28/23/21 weights; Practice Mode still samples its selected pool normally and does not allocate a weighted exam.
+
+The additions comprise 36 single-answer and four two-response items; the combined bank has 58 single-answer and six two-response items. Added difficulty tags: five foundation, 26 applied, nine analysis. Combined tags: eight foundation, 40 applied, 16 analysis. These are editorial categories, not psychometrically calibrated difficulty scores. Seven combined questions include preformatted evidence, including network settings, application requirements, certificate dates, mobile-data settings, Linux permissions, service status, and a Hosts-file mapping.
+
+### Technical and editorial review
+
+Each addition was checked for official objective alignment, a defensible answer or complete answer set, entry-level scope, sufficient scenario evidence, plausible alternatives, and useful overall/choice-specific explanations. Primary references are recorded on each question: Microsoft, Apple, Google, GNU manuals distributed by Debian, NIST, FTC, OSHA, Dell, and hardware-licensing vendor documentation. The official objectives remain the scope reference; a schema pass alone is not the editorial acceptance criterion.
+
+Corrections made during review include:
+
+- Removed a synthetic-full backup distractor that could also simplify recovery. The final question distinguishes differential change sets from incremental chains, weekday full sets, and live mirroring.
+- Specified x64 Windows, active Defender Antivirus, and enabled WinRE for the offline-scan item rather than implying identical support on every Windows 11 platform.
+- Specified a supervised corporate iPhone and full management context for remote wipe; a queued command is distinguished from completed erasure.
+- Kept the UEFI/GPT answer independent of a universal claim about every MBR disk-sector configuration. Partition style is distinguished from filesystem format.
+- Distinguished a data reset from restoring a modified Android OS; browser encryption from site legitimacy; file deletion from sanitization; and recipient authorization from encrypted delivery.
+- Shortened correct choices that contained unnecessary explanatory detail. Existing validated questions were not mechanically rewritten. Among the 36 added single-answer items, five correct choices are longest including ties and 11 are shortest including ties. In the combined 58 single-answer items, 12 are longest including ties and 18 are shortest including ties. There is no answer-length acceptance quota; these diagnostics informed manual review.
+
+All 64 stems are distinct. A text-similarity check found no pair above a 0.60 SequenceMatcher ratio; manual topic review also checked for near-duplicate scenarios rather than relying on text similarity. Related backup, browser, and malware items test different decisions or mechanisms. Every addition has a verified objective-breakdown link; relevant existing Linux/Windows references and published network, malware, and troubleshooting PBQs provide additional follow-up where appropriate. No reference pages were duplicated.
+
+### Validation and future coverage
+
+The expanded tests assert the 64-question total, 18/18/15/13 domain counts, all 36 objectives, stable sequential IDs, 40 additions, four added multiple-response items, resource paths/anchors, 1/10/20/30/50/all selection, 200 shuffled sessions, every single-answer key in all four displayed positions, and exact-set scoring. A genuine previous-version 24-question attempt is rejected without mutating its saved responses or notes. Browser checks launch all 15 previously uncovered objectives, complete all 64 questions, test feedback combinations and persistence, and exercise the Phase 2 whiteboard in both themes at 320/390/768/1440px and both hosting prefixes.
+
+Local verification passed: `npm run test:practice-tests`, strict MkDocs build, generated navigation and listing freshness, source checks, 31 Python tests, catalog model/schema checks, 19 canonical PBQ validations, site checks covering 71 HTML pages and 4,563 local links/assets/fragments, and the existing resource-navigation, PBQ-library, and analytics regression suites. Desktop configuration and mobile whiteboard/question layouts were visually inspected. No shared examination JavaScript, whiteboard code, session schema, grading rules, or examination styles changed in this phase.
+
+Future expansion must deepen subtopic coverage and produce enough distinct questions for full-length randomized attempts. Fifteen objectives still have only one question: 1.1, 1.3, 1.4, 1.5; 2.1, 2.3, 2.5, 2.6; 4.2, 4.4, 4.5, 4.7, 4.8, 4.9, 4.10. Having one item mapped to an objective does not assess every bullet or establish mastery. Bank changes deliberately require a new attempt; there is no silent migration of old responses to a revised bank.
+
 ## Remaining implementation phases
 
 1. Curated bank expansion in bounded batches: broaden Core 2 objective coverage and variety before presenting a full certification simulation. Add other certifications only with verified metadata and validated banks, preserving existing Hub exam versions unless explicitly updated.
-2. Certification Mode: version-specific exam configuration, published domain weights with documented integer allocation, sufficient bank coverage, persisted absolute deadline, countdown, expiry submission, flags/review, no feedback until submission, and transparent practice scoring. Do not advertise the 24-item pilot as a full-length exam. Full PBQ adapters are separate work; an unknown type must be rejected rather than silently misgraded as an MCQ.
-3. Final integration, regression review, and PR. Do not create the PR during Phase 2.
+2. Certification Mode: version-specific exam configuration, published domain weights with documented integer allocation, sufficient bank coverage, persisted absolute deadline, countdown, expiry submission, flags/review, no feedback until submission, and transparent practice scoring. Do not advertise the 64-question bank as a full-length simulation. Full PBQ adapters are separate work; an unknown type must be rejected rather than silently misgraded as an MCQ.
+3. Final integration, regression review, and PR. Do not create the PR during Phase 3A.
 
 ## Editorial review of the pilot
 

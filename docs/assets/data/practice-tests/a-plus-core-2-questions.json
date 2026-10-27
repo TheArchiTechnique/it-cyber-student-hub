@@ -1,7 +1,7 @@
 {
   "certification": "a-plus-core-2",
   "examVersion": "220-1202",
-  "version": "2026-10-27.1",
+  "version": "2026-10-27.2",
   "questions": [
     {
       "id": "apc2-001",
@@ -1443,6 +1443,2411 @@
           {
             "title": "CompTIA 220-1202 objectives v2.0",
             "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-025",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.2"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A technician is installing Windows 11 on a new, empty 4 TB system drive. Setup was started in UEFI mode, and the entire drive must be usable. Which partition style should the technician select?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "MBR",
+          "explanation": "MBR is associated with legacy BIOS boot in this Windows installation scenario. Windows Setup booted in UEFI mode requires the GPT partition scheme instead."
+        },
+        {
+          "id": "b",
+          "text": "GPT",
+          "explanation": "GPT supports Windows boot in UEFI mode and drives beyond the usual MBR capacity limit. It meets both the firmware and capacity requirements."
+        },
+        {
+          "id": "c",
+          "text": "NTFS",
+          "explanation": "NTFS is a filesystem used within a volume. It does not specify the disk partition style, even though the Windows partition will normally use it."
+        },
+        {
+          "id": "d",
+          "text": "exFAT",
+          "explanation": "exFAT is a filesystem often used for removable storage. Choosing a filesystem does not configure the UEFI system disk partition scheme."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "Partition style and filesystem format describe different layers of disk organization. GPT is the appropriate partition scheme for this UEFI Windows installation and large drive. NTFS can then format the Windows volume. The drive is explicitly empty, so preserving an existing installation is not part of this decision.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.2 OS installation and upgrades",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#12-os-installation-and-upgrades"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked UEFI/GPT and filesystem distinctions against Microsoft; a new empty drive avoids implying that repartitioning preserves existing data.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Windows Setup and MBR/GPT partition styles",
+            "url": "https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/windows-setup-installing-using-the-mbr-or-gpt-partition-style?view=windows-11"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-026",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.2"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "An office is moving a compatible Windows 10 Pro workstation to Windows 11 Pro. A verified backup exists, and the applications have passed compatibility checks. The technician must retain installed applications, user files, and settings. Which installation approach BEST fits?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Clean installation from bootable media",
+          "explanation": "A clean installation creates a fresh Windows environment. Applications and settings must be rebuilt rather than retained by the installation process."
+        },
+        {
+          "id": "b",
+          "text": "Factory recovery from the OEM image",
+          "explanation": "Factory recovery returns the computer to the manufacturer image. It does not migrate the current application installation to the new Windows version."
+        },
+        {
+          "id": "c",
+          "text": "Reset this PC using Keep my files",
+          "explanation": "Keeping personal files during a reset does not retain installed desktop applications. A reset is also not the requested version-upgrade approach."
+        },
+        {
+          "id": "d",
+          "text": "In-place upgrade within Windows",
+          "explanation": "A supported in-place upgrade can retain applications, files, and settings. Starting Setup from the current installation exposes the appropriate retention choices."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "The requirement is migration to the newer supported Windows release while preserving the existing working environment. An in-place upgrade is designed for that requirement when hardware, edition, architecture, and application compatibility permit it. A backup remains necessary because retaining data during Setup is not a substitute for recovery protection.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.2 OS installation and upgrades",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#12-os-installation-and-upgrades"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Reviewed supported same-edition migration and retention options; distinguishes upgrade, reset, clean installation, and OEM recovery without treating Windows 10 as the intended final OS.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Reinstall Windows with installation media",
+            "url": "https://support.microsoft.com/en-us/windows/deployment/install-upgrade/reinstall-windows-with-the-installation-media"
+          },
+          {
+            "title": "Microsoft: Windows upgrade paths",
+            "url": "https://learn.microsoft.com/en-us/windows/deployment/upgrade/windows-upgrade-paths"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-027",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.6"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "After connecting an HDMI monitor, a Windows 11 user hears no system sounds through a working USB headset. Settings shows the monitor as the output device. The headset works when tested directly, and applications use the system default. Which change should the technician make?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Select the USB headset as the sound output",
+          "explanation": "The system is sending playback to the monitor. Selecting the working headset redirects the default output without changing drivers or recording settings."
+        },
+        {
+          "id": "b",
+          "text": "Select the USB headset as the recording input",
+          "explanation": "The recording input determines where microphone audio is captured. It does not determine which device plays system sounds."
+        },
+        {
+          "id": "c",
+          "text": "Change the headset microphone sample rate",
+          "explanation": "Microphone format affects captured audio quality and compatibility. It does not redirect playback from the HDMI device to the headset."
+        },
+        {
+          "id": "d",
+          "text": "Enable spatial audio for the HDMI monitor",
+          "explanation": "Spatial audio changes playback processing on the selected device. It leaves the system output directed to the monitor rather than the headset."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "The evidence identifies an output-routing setting, not failed audio hardware. Windows can expose several playback devices at once, including HDMI audio and a USB headset. Set the desired playback destination under Sound output; input-device selection and audio processing options address different parts of the audio path.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.6 Windows settings",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#16-windows-settings"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified playback versus recording settings; states that applications follow the system default to avoid a second defensible per-app routing fix.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Audio output selection in Windows",
+            "url": "https://support.microsoft.com/en-us/windows/hardware/audio/fix-audio-issues-when-no-sound-plays-from-speakers-or-headphones-in-windows"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-028",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.6"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A technician reviewing downloaded files needs File Explorer to display the actual suffix of every filename, including familiar types such as .pdf and .exe. Which setting should the technician change?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Enable display of hidden files and folders",
+          "explanation": "Hidden visibility controls items marked with the hidden attribute. It does not make known filename extensions appear on otherwise visible files."
+        },
+        {
+          "id": "b",
+          "text": "Enable display of protected system files",
+          "explanation": "Protected operating-system file visibility is separate from extension display. It exposes sensitive system items without meeting the stated viewing requirement."
+        },
+        {
+          "id": "c",
+          "text": "Enable display of file name extensions",
+          "explanation": "This reveals the final extension, helping distinguish a document from an executable with a misleading name. It does not change the file contents."
+        },
+        {
+          "id": "d",
+          "text": "Disable grouping by the file type column",
+          "explanation": "Grouping changes how files are organized in the view. It does not reveal an extension that Explorer is configured to hide."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "A filename extension is the suffix used to identify or associate a file type. File Explorer can hide known extensions independently of hidden-file visibility. Showing extensions helps a technician inspect a complete name, but the displayed suffix is not by itself proof that a file is safe or that its contents match the name.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.6 Windows settings",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#16-windows-settings"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked independent Explorer visibility settings; avoids claiming that revealing a suffix validates the safety or true content of a downloaded file.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: File Explorer and file name extensions",
+            "url": "https://support.microsoft.com/en-gb/windows/experience/fileexplorer/file-explorer-in-windows?nochrome=true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-029",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.7"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "A statically configured Windows workstation can reach its local file server and DNS server but cannot reach other networks. The office router uses 192.0.2.1, and no device uses 192.0.2.254. Which IPv4 setting should the technician correct?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Preferred DNS server",
+          "explanation": "The listed DNS server is reachable, and a default route is needed even when a remote destination is addressed by IP. Changing DNS does not repair this routing setting."
+        },
+        {
+          "id": "b",
+          "text": "Subnet mask",
+          "explanation": "The mask correctly places the workstation, local servers, and office router in the same /24 subnet. The supplied evidence does not require a different mask."
+        },
+        {
+          "id": "c",
+          "text": "Workstation IP address",
+          "explanation": "The workstation address is valid in this subnet, and local communication works. Moving it to another subnet would introduce a separate configuration problem."
+        },
+        {
+          "id": "d",
+          "text": "Default gateway",
+          "explanation": "The gateway points to an unused address. It should identify the reachable router interface, 192.0.2.1, so off-subnet traffic can leave the local network."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "Hosts deliver same-subnet traffic directly but normally send traffic for other networks to a default gateway. Here local connectivity is successful while the configured gateway does not exist. Correcting the gateway addresses the evidence without changing a valid workstation address, subnet mask, or reachable DNS server.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.7 Windows client networking",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#17-windows-client-networking"
+        },
+        {
+          "title": "Network Configuration Concepts",
+          "path": "practice/pbqs/a-plus-core-2/network-configuration-concepts/README.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Reviewed local versus routed connectivity; supplied the real router address and unused gateway to distinguish routing from DNS and subnet-mask faults.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Essential network settings and tasks in Windows",
+            "url": "https://support.microsoft.com/en-gb/windows/experience/connectivity-networking/essential-network-settings-and-tasks-in-windows"
+          }
+        ]
+      },
+      "evidence": "IPv4 address:    192.0.2.40\nSubnet mask:     255.255.255.0\nDefault gateway: 192.0.2.254\nDNS server:      192.0.2.53\nLocal file server 192.0.2.20: reachable"
+    },
+    {
+      "id": "apc2-030",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.7"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A Windows 11 workstation must advertise file sharing on a trusted office LAN but remain undiscoverable on public Wi-Fi. Its current office connection is classified as Public. Which configuration BEST meets both requirements?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Enable network discovery for the Public profile",
+          "explanation": "This applies discovery to public connections, including the untrusted Wi-Fi networks that should remain undiscoverable."
+        },
+        {
+          "id": "b",
+          "text": "Enable Private-profile discovery on the office LAN",
+          "explanation": "Classifying only the trusted LAN as Private permits profile-specific discovery and sharing while leaving discovery disabled for Public networks."
+        },
+        {
+          "id": "c",
+          "text": "Keep the Public profile and disable the local firewall",
+          "explanation": "Disabling the firewall removes a protection instead of applying a trusted-network exception. It does not preserve the required public-network boundary."
+        },
+        {
+          "id": "d",
+          "text": "Use Private for both the office LAN and public Wi-Fi",
+          "explanation": "Treating public Wi-Fi as Private extends trusted-network behavior to an untrusted environment. It conflicts with the stated discovery requirement."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "Network profiles let Windows apply different discovery and firewall behavior to trusted and untrusted connections. Use a Private profile only for the known office network, enable the needed discovery and sharing for that profile, and keep Public discovery off. A Private profile does not itself grant SMB permissions; access permissions are configured separately.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.7 Windows client networking",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#17-windows-client-networking"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked profile-specific discovery and sharing; all alternatives concern the trust boundary, and the explanation distinguishes discoverability from share authorization.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Essential network settings and tasks in Windows",
+            "url": "https://support.microsoft.com/en-gb/windows/experience/connectivity-networking/essential-network-settings-and-tasks-in-windows"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-031",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.10"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "An application installer requires 64-bit Windows on an x64 computer. The technician checks the existing workstation below. The vendor offers no 32-bit package. Which requirement is NOT met?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Operating-system architecture",
+          "explanation": "The CPU supports x64, but the installed operating system is 32-bit. A 64-bit Windows application cannot be installed into that 32-bit Windows environment."
+        },
+        {
+          "id": "b",
+          "text": "Processor architecture",
+          "explanation": "The system has an x64-capable processor. CPU capability is distinct from the architecture of the Windows installation currently running on it."
+        },
+        {
+          "id": "c",
+          "text": "Available installation storage",
+          "explanation": "The 45 GB available exceeds the stated 8 GB storage requirement. There is no evidence that disk capacity is preventing this installation."
+        },
+        {
+          "id": "d",
+          "text": "Installed physical memory",
+          "explanation": "The installed 4 GB meets the supplied minimum. Additional RAM does not make the existing 32-bit operating system able to run a 64-bit application."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "Application requirements must be checked against the installed OS as well as the processor. An x64 processor can have a 32-bit OS installed, but that does not provide a 64-bit application environment. Plan a supported 64-bit OS installation and data/application migration rather than attempting to solve the architecture mismatch with elevation or compatibility settings.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.10 Application installation requirements",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#110-application-installation-requirements"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified that 64-bit installers cannot target 32-bit Windows; uses a legacy installed OS intentionally and supplies all other application requirements.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Windows Installer on 64-bit operating systems",
+            "url": "https://learn.microsoft.com/en-us/windows/win32/msi/about-windows-installer-on-64-bit-operating-systems"
+          }
+        ]
+      },
+      "evidence": "Workstation: x64-based processor; 32-bit Windows installed\nRAM: 4 GB; free storage: 45 GB\nApplication minimum: 64-bit Windows, x64 processor, 4 GB RAM, 8 GB storage"
+    },
+    {
+      "id": "apc2-032",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.10"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A newly installed design application meets its CPU, RAM, OS, and storage requirements. Its licensing instructions require an assigned USB hardware key to be present whenever the application runs. No key is connected. Which action should the technician take?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Mount the installation ISO as a virtual drive",
+          "explanation": "An ISO supplies installation files. Mounting it does not provide the external licensing hardware that this application requires at runtime."
+        },
+        {
+          "id": "b",
+          "text": "Increase the application compatibility-mode level",
+          "explanation": "Compatibility settings alter aspects of application execution. They do not replace an explicitly required physical licensing key."
+        },
+        {
+          "id": "c",
+          "text": "Connect the assigned USB licensing key",
+          "explanation": "The specified key supplies the required hardware license credential. The scenario has already ruled out the stated computing-resource requirements."
+        },
+        {
+          "id": "d",
+          "text": "Run the installer under an administrator account",
+          "explanation": "Elevation may be needed for installation tasks, but the application is installed. Administrative privileges do not substitute for its hardware license credential."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "Application readiness can depend on an external hardware token in addition to CPU, memory, storage, and OS support. In this scenario the vendor explicitly requires a USB licensing key at runtime. Connect the assigned key and follow its documented setup requirements; neither an installation image nor administrative access supplies that credential.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.10 Application installation requirements",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#110-application-installation-requirements"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Validated the general hardware-licensing requirement with primary vendor documentation; does not assume a particular key brand, driver model, or network-license feature.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Thales: Hardware licensing key activation",
+            "url": "https://docs.sentinel.thalesgroup.com/softwareandservices/LDK/LDKdocs/SPNL/LDK_SLnP_Guide/Licensing/KeyProtectionHL_Activation.htm"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-033",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.11"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A user needs a OneDrive project folder during a flight without internet access. Its files currently show the online-only cloud icon. Which action should the technician complete before the user leaves?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Pause OneDrive synchronization for the folder",
+          "explanation": "Pausing sync stops transfers. It does not download online-only file contents, so the required documents would still be unavailable offline."
+        },
+        {
+          "id": "b",
+          "text": "Select Free up space for the project folder",
+          "explanation": "Free up space removes local file content while keeping cloud copies. That moves the folder away from the required offline availability."
+        },
+        {
+          "id": "c",
+          "text": "Create a desktop shortcut to the cloud folder",
+          "explanation": "A shortcut points to an existing location. It does not make the target files available without the network connection needed to download them."
+        },
+        {
+          "id": "d",
+          "text": "Mark the folder Always keep on this device",
+          "explanation": "This requests persistent local copies. Confirm that the download completes before disconnecting so the folder can be opened offline."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "An online-only file is represented in Explorer without its complete content being stored locally. Marking the folder Always keep on this device downloads its files for offline use and consumes local disk space. The setting must be applied while connectivity is available, and completion should be verified before travel.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.11 Cloud productivity tools",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#111-cloud-productivity-tools"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked online-only versus always-available states and download completion; avoids implying that a shortcut, paused sync, or a filename placeholder includes file content.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: OneDrive Files On-Demand for Windows",
+            "url": "https://support.microsoft.com/en-us/onedrive/save-disk-space-with-onedrive-files-on-demand-for-windows"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-034",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.11"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "Two employees using supported versions of Word must edit the same proposal at the same time. Emailing separate attachments has produced conflicting versions. Which arrangement BEST supports the requirement?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Give both employees edit access to one OneDrive document",
+          "explanation": "A supported shared cloud document permits coauthoring in one working copy. Both employees need permission to edit that same document."
+        },
+        {
+          "id": "b",
+          "text": "Email each employee an editable copy with the same filename",
+          "explanation": "Identical filenames do not link independent attachments. Each employee would still create a separate revision that must later be reconciled."
+        },
+        {
+          "id": "c",
+          "text": "Publish a PDF copy and grant both employees viewing access",
+          "explanation": "A viewing copy supports distribution, but it does not let both users coauthor the editable Word proposal."
+        },
+        {
+          "id": "d",
+          "text": "Store the proposal locally and send a read-only sharing link",
+          "explanation": "A read-only link does not grant editing rights, and a local file alone does not establish the cloud coauthoring arrangement required here."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "Coauthoring requires a supported document stored in a collaboration service and suitable permissions on the same file. Sharing a OneDrive document with edit access meets those conditions. Separate attachments produce separate working copies; a PDF or a read-only link addresses viewing rather than simultaneous editing.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.11 Cloud productivity tools",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#111-cloud-productivity-tools"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified shared-file storage, supported clients, and edit permission; alternatives distinguish distribution copies from coauthoring rather than relying on an unexplained organizational workflow.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Coauthor documents anywhere",
+            "url": "https://support.microsoft.com/en-us/word/coauthor-documents-anywhere"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-035",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.8"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A macOS application stops responding and will not quit through its normal menu or Command-Q. Finder and other applications still work. The user confirms that no unsaved work is needed. Which built-in feature should the technician try before restarting the Mac?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Disk Utility First Aid",
+          "explanation": "First Aid checks storage structures. The evidence describes one unresponsive application rather than a reported filesystem problem."
+        },
+        {
+          "id": "b",
+          "text": "Force Quit Applications",
+          "explanation": "Force Quit can end the unresponsive application while leaving the rest of the working desktop running. Normal quitting has already been attempted."
+        },
+        {
+          "id": "c",
+          "text": "Time Machine recovery",
+          "explanation": "Time Machine restores backed-up data. It is not a process-control tool and would not directly end the currently unresponsive application."
+        },
+        {
+          "id": "d",
+          "text": "Keychain Access repair",
+          "explanation": "Keychain Access manages stored credentials and certificates. No authentication or credential-store failure is indicated by this isolated application hang."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "Use Force Quit for an application that cannot exit normally while the rest of macOS remains usable. Force quitting can discard unsaved changes, which the scenario explicitly addresses. A complete restart is a broader step if ending the affected app does not work; disk and credential utilities target different problems.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.8 macOS features and tools",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#18-macos-features-and-tools"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked Apple normal-quit then force-quit guidance; supplies application isolation and unsaved-work conditions to distinguish the focused action from a restart.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Apple: Force an app to quit on Mac",
+            "url": "https://support.apple.com/en-us/102586"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-036",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.9"
+      ],
+      "type": "multiple",
+      "difficulty": "applied",
+      "stem": "A Linux user needs two human-readable storage reports: available space on the filesystem containing /home/student/Projects, and the total disk space occupied by that directory tree. The directory is readable. Which TWO commands should the technician use?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "df -h /home/student/Projects",
+          "explanation": "df reports capacity and available space for the filesystem containing the path. The -h option uses human-readable size units."
+        },
+        {
+          "id": "b",
+          "text": "ls -ld /home/student/Projects",
+          "explanation": "This lists the directory entry itself. It does not total the disk usage of the files and subdirectories within the tree."
+        },
+        {
+          "id": "c",
+          "text": "free -h",
+          "explanation": "free reports memory and swap statistics. Human-readable RAM output does not describe filesystem free space or the Projects directory tree."
+        },
+        {
+          "id": "d",
+          "text": "du -sh /home/student/Projects",
+          "explanation": "du totals disk space used by the directory tree. The -s option summarizes the argument, and -h displays human-readable units."
+        }
+      ],
+      "correct": [
+        "a",
+        "d"
+      ],
+      "explanation": "Filesystem availability and the space used by a directory tree are different measurements. df -h reports the containing filesystem, while du -sh summarizes that directory and its descendants. A directory listing does not recursively total its contents, and free measures memory rather than storage. Actual df and du totals can differ because they account for space differently.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.9 Linux features and tools",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#19-linux-features-and-tools"
+        },
+        {
+          "title": "Linux Command-Line Reference",
+          "path": "reference/linux-commands.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified GNU df path semantics and du -s/-h flags in distribution-published manuals; two selections serve two distinct requested measurements.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "GNU coreutils: df manual, distributed by Debian",
+            "url": "https://manpages.debian.org/bookworm/coreutils/df.1.en.html"
+          },
+          {
+            "title": "GNU coreutils: du manual, distributed by Debian",
+            "url": "https://manpages.debian.org/bookworm/coreutils/du.1.en.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-037",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.4"
+      ],
+      "type": "single",
+      "difficulty": "foundation",
+      "stem": "A security scan identifies an unauthorized program using a workstation's processing power to generate cryptocurrency for another person. Which malware category BEST describes the program's observed purpose?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Ransomware",
+          "explanation": "Ransomware restricts access to data or systems to demand payment. Unauthorized computation for cryptocurrency is a different observed purpose."
+        },
+        {
+          "id": "b",
+          "text": "Keylogger",
+          "explanation": "A keylogger captures keystrokes to obtain information such as credentials. The scenario instead describes use of processor resources to produce cryptocurrency."
+        },
+        {
+          "id": "c",
+          "text": "Cryptominer",
+          "explanation": "An unauthorized cryptominer consumes CPU or GPU resources to perform cryptocurrency mining for someone else. That is the activity the scan identifies."
+        },
+        {
+          "id": "d",
+          "text": "Stalkerware",
+          "explanation": "Stalkerware covertly monitors a person or their activity. It is not the term for the cryptocurrency-generation function described here."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "Malware categories describe behavior or purpose and can overlap within a larger infection. The specific observed function here is unauthorized cryptocurrency mining, often called cryptojacking. High CPU use by itself would not prove this diagnosis, but the scan has identified the mining activity rather than merely reporting a busy processor.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.4 Malware and protective tools",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#24-malware-and-protective-tools"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked unauthorized mining terminology; uses a confirmed function rather than inferring malware from CPU use alone, and does not claim mutually exclusive malware capabilities.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Cryptojacking and unauthorized compute use",
+            "url": "https://www.microsoft.com/en-us/security/blog/2023/07/25/cryptojacking-understanding-and-defending-against-cloud-compute-resource-abuse/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-038",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.4"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "An x64 Windows 11 workstation with active Microsoft Defender Antivirus remains isolated after malware detection. Updated scans in the running OS repeatedly fail to remove the threat. Windows Recovery Environment is enabled. Which built-in scan runs outside the normal Windows session?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Microsoft Defender Offline scan",
+          "explanation": "This restarts into a separate recovery environment to scan outside the normal Windows session. It is intended for threats that are difficult to remove while Windows is running."
+        },
+        {
+          "id": "b",
+          "text": "Microsoft Defender quick scan",
+          "explanation": "A normal quick scan checks commonly affected locations within the running system. It does not provide the requested separate boot environment."
+        },
+        {
+          "id": "c",
+          "text": "Controlled folder access configuration",
+          "explanation": "Controlled folder access limits which apps may change protected files. It is a protection setting, not an offline malware scan."
+        },
+        {
+          "id": "d",
+          "text": "Windows Firewall rule review",
+          "explanation": "Firewall rules control permitted network traffic. Reviewing them does not launch an antimalware scan outside the installed Windows session."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "An offline scan changes the environment in which malware is examined. Microsoft Defender Offline runs in the Windows Recovery Environment, reducing interference from malware active in the regular OS. It requires a restart, so save work and follow the supported preparation steps. An offline scan is a remediation option, not a guarantee that every infection can be removed.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.4 Malware and protective tools",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#24-malware-and-protective-tools"
+        },
+        {
+          "title": "Malware Investigation and Remediation",
+          "path": "practice/pbqs/a-plus-core-2/malware-investigation-remediation/README.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified the recovery environment, x64 platform support, active Defender Antivirus, and restart requirements; distinguishes scanning from protection and network-control settings.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Microsoft Defender Offline scan",
+            "url": "https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-offline"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-039",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.7"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "Employees use Windows workstations for email and document editing. Support staff install approved software when needed. Which account arrangement BEST limits the effect of an employee accidentally running unwanted software?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Give employees administrator accounts with longer passwords",
+          "explanation": "A stronger password protects sign-in but does not reduce the privileges of software launched under an administrator account."
+        },
+        {
+          "id": "b",
+          "text": "Use administrator accounts with a short automatic screen lock",
+          "explanation": "A screen lock protects an unattended session. It does not limit the rights of an application the signed-in employee chooses to run."
+        },
+        {
+          "id": "c",
+          "text": "Rename each employee's administrator account",
+          "explanation": "Changing the account name does not change its group memberships or privileges. Software still runs with the rights associated with that account."
+        },
+        {
+          "id": "d",
+          "text": "Use standard daily accounts with separate elevation",
+          "explanation": "Daily work receives only the rights it needs. Administrative credentials or elevation are reserved for the approved support tasks that require them."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "Least privilege reduces unnecessary access during routine work. Standard accounts limit the system-wide changes available to ordinary user processes, while separate controlled elevation permits legitimate administration. Password strength, account naming, and screen locking are useful in other ways, but they do not replace a reduction in assigned privileges.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.7 Workstation security and hardening",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#27-workstation-security-and-hardening"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Reviewed least privilege and task-specific elevation; alternatives are genuine account-hardening measures but do not reduce process privileges.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "NIST: Least privilege",
+            "url": "https://csrc.nist.gov/glossary/term/least_privilege"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-040",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.7"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A user has reused the same long password for work and several personal services. One personal service reports that password records were exposed. Which practice BEST reduces the chance that a future breach of one service will compromise the others?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Use one longer passphrase across the same services",
+          "explanation": "Length helps resist guessing, but reusing the same secret still links the accounts. An exposed password can be tried against each service that shares it."
+        },
+        {
+          "id": "b",
+          "text": "Use distinct, manager-generated passwords for each service",
+          "explanation": "Unique secrets limit the usefulness of a password exposed elsewhere. An approved password manager makes generating and retaining distinct passwords practical."
+        },
+        {
+          "id": "c",
+          "text": "Use the same password with a different capital letter at each service",
+          "explanation": "Small predictable variations create related passwords that attackers may guess after obtaining one version. They are weaker separation than independent generated secrets."
+        },
+        {
+          "id": "d",
+          "text": "Use the same password but change it on a fixed monthly schedule",
+          "explanation": "A schedule does not eliminate the window in which one exposed password works at several services. Reuse remains the underlying cross-account risk."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "Credential stuffing relies on people using the same credentials at multiple services. Distinct passwords prevent one exposed secret from directly unlocking those other accounts. The user should also replace exposed or reused credentials and use available MFA, but the practice being tested is independent per-service passwords rather than a longer or frequently rotated shared secret.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.7 Workstation security and hardening",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#27-workstation-security-and-hardening"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked credential-reuse reasoning against current NIST authentication guidance; does not present arbitrary periodic password changes or cosmetic variations as equivalent controls.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "NIST SP 800-63B-4: Authentication and authenticator management",
+            "url": "https://pages.nist.gov/800-63-4/sp800-63b.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-041",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.8"
+      ],
+      "type": "multiple",
+      "difficulty": "applied",
+      "stem": "An approved Android document-scanning app needs its camera and network connection to capture and upload pages. Testing confirms that it works without audio or location information. The app currently has camera, microphone, and location permissions. Which TWO changes reduce unnecessary access while retaining its required functions?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Deny the app microphone access",
+          "explanation": "The app does not need audio for the stated workflow. Revoking microphone permission reduces collection without preventing the tested camera and upload functions."
+        },
+        {
+          "id": "b",
+          "text": "Deny the app camera access",
+          "explanation": "The camera is needed to capture pages. Revoking that permission would stop a required function rather than remove an unnecessary permission."
+        },
+        {
+          "id": "c",
+          "text": "Deny the app location access",
+          "explanation": "Location is not needed for the documented workflow. Revoking it removes an unnecessary source of personal information while retaining page capture and upload."
+        },
+        {
+          "id": "d",
+          "text": "Disable the app's network connectivity",
+          "explanation": "The app must upload the captured pages. Blocking its network connection would prevent a required function rather than just limit unused sensor access."
+        }
+      ],
+      "correct": [
+        "a",
+        "c"
+      ],
+      "explanation": "Mobile permissions should match the functions an application actually needs. This workflow requires the camera and network but has been tested without microphone or location access. Revoke those two unnecessary sensor permissions and verify normal operation. Approval to install an app does not mean every permission it requests is necessary.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.8 Mobile device security",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#28-mobile-device-security"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Reviewed per-app Android permission semantics; names the required camera/network functions and verified optional sensors so the two-answer set is complete and unique.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Google: Change Android app permissions",
+            "url": "https://support.google.com/android/answer/9431959?hl=en"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-042",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.8"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A supervised, company-owned iPhone enrolled with the company's device management service has been stolen. Its business data is backed up, and the company has authorized erasing the device contents. Which management action directly performs that data removal when the phone receives the command?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Enable Managed Lost Mode",
+          "explanation": "Lost Mode locks the device and can display recovery information. It supports loss response but does not itself erase the stored contents."
+        },
+        {
+          "id": "b",
+          "text": "Request the device's current location",
+          "explanation": "Location information may help find the device. Requesting it does not remove the data that the company has authorized erasing."
+        },
+        {
+          "id": "c",
+          "text": "Send a remote wipe command",
+          "explanation": "A remote wipe instructs the device to erase its contents. The device must receive and process the command before erasure can be treated as completed."
+        },
+        {
+          "id": "d",
+          "text": "Assign a stricter passcode policy",
+          "explanation": "A passcode policy can strengthen access protection. It does not carry out the requested removal of existing device contents."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "Remote locking, location requests, passcode enforcement, and remote wiping have different purposes. Wiping is the action that removes device contents; the authorization and backup conditions are supplied here. A queued management command is not proof of completed erasure, especially if the missing device cannot currently communicate with the management service.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.8 Mobile device security",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#28-mobile-device-security"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified supervised-device management wipe versus Lost Mode and location controls; supplies an eligible corporate management context, explicit erasure authorization, and delivery-versus-completion distinction.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Apple: Managed Lost Mode and remote wipe",
+            "url": "https://support.apple.com/guide/security/managed-lost-mode-and-remote-wipe-secc46f3562c/web"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-043",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.9"
+      ],
+      "type": "single",
+      "difficulty": "foundation",
+      "stem": "A technician proposes sanitizing a retired SSD by placing it in a degausser. Why does this method fail to address the SSD's storage technology?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Degaussing must follow a conversion from NTFS to FAT32",
+          "explanation": "Changing a filesystem does not make flash cells magnetic. Degaussing suitability depends on the storage medium, not its filesystem."
+        },
+        {
+          "id": "b",
+          "text": "Flash cells do not store data as magnetic patterns",
+          "explanation": "Degaussing targets magnetic recording. An SSD uses non-magnetic flash storage, so this method does not sanitize the data in its cells."
+        },
+        {
+          "id": "c",
+          "text": "The SSD must remain connected to a SATA controller",
+          "explanation": "A data-cable connection does not change the recording technology. Connecting the SSD to a controller would not make degaussing effective."
+        },
+        {
+          "id": "d",
+          "text": "Degaussing requires a mounted operating-system volume",
+          "explanation": "Degaussing is a physical magnetic process rather than a mounted-volume command. The limitation here is flash memory, not OS mounting status."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "A sanitization method must be suitable for the medium. Degaussing can address magnetic media under appropriate conditions but should not be used for flash-based SSDs. Select a supported sanitization method or approved physical destruction process based on the device and required disposition, then verify and document the result.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.9 Data destruction and disposal",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#29-data-destruction-and-disposal"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked the explicit flash-storage exclusion in NIST SP 800-88 Rev. 2; separates medium type from filesystem, cable, and mounting state.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "NIST SP 800-88 Rev. 2: Guidelines for media sanitization",
+            "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-88r2.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-044",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.9"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A functioning SSD containing confidential files will be reassigned outside the company. The drive must remain usable. Its manufacturer documents a supported sanitize operation, and company policy approves that procedure for this model. Which action BEST meets the requirement?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Use the approved sanitize procedure and verify completion",
+          "explanation": "The supported, approved procedure targets stored data while allowing reuse. Confirming completion and recording the result are part of carrying out the procedure."
+        },
+        {
+          "id": "b",
+          "text": "Delete the partitions and create a new empty filesystem",
+          "explanation": "Partition removal and filesystem creation change logical organization. They do not demonstrate that the old confidential data has been sanitized."
+        },
+        {
+          "id": "c",
+          "text": "Delete the files and empty the operating-system recycle bin",
+          "explanation": "Deleting directory entries makes files less visible but does not establish that their stored content has been removed from the underlying flash."
+        },
+        {
+          "id": "d",
+          "text": "Shred the flash components and retain the SSD enclosure",
+          "explanation": "Physical destruction can be appropriate when reuse is not required. Destroying the flash contradicts the requirement to reassign a usable drive."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "Data disposal is more than making a drive appear empty. The scenario supplies both device support and policy approval for a sanitization procedure, so use that procedure and verify its outcome. Do not assume one generic erase command is appropriate for every SSD. If the supported procedure cannot complete, do not report successful sanitization or release the drive as though it had completed.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.9 Data destruction and disposal",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#29-data-destruction-and-disposal"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Reviewed device-specific sanitization and outcome verification; explicitly supplies model support and policy approval rather than promising universal SSD overwrite or crypto-erase behavior.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "NIST SP 800-88 Rev. 2: Guidelines for media sanitization",
+            "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-88r2.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-045",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.10"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "Visitors to a small office need internet access but must not reach the office NAS or employee workstations. The wireless router supports a guest network with an option to block access to the local LAN. Which configuration BEST meets the requirement?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Rename the employee SSID and share its password with visitors",
+          "explanation": "Changing the name does not create a network boundary. Visitors using the employee network may still reach the internal devices."
+        },
+        {
+          "id": "b",
+          "text": "Hide the employee SSID and provide visitors its connection details",
+          "explanation": "A hidden SSID does not isolate clients. A visitor who joins that same network still receives access according to its existing network controls."
+        },
+        {
+          "id": "c",
+          "text": "Place visitor addresses at the end of the employee DHCP pool",
+          "explanation": "Addresses at different positions in one subnet are not a security boundary. A DHCP allocation range alone does not block access to office devices."
+        },
+        {
+          "id": "d",
+          "text": "Enable the guest network and block guest access to the local LAN",
+          "explanation": "The guest network can provide internet connectivity while its local-LAN restriction prevents access to employee devices and the NAS."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "Guest access should be separated by an actual access boundary, not merely by a different network name or address range. This router explicitly supports the needed guest-to-LAN restriction. Enable it, use suitable guest credentials, and verify that a guest can reach the internet while attempts to access internal resources are blocked.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.10 SOHO network security",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#210-soho-network-security"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked guest-network separation; states that LAN isolation is supported rather than assuming that a second SSID by itself creates isolation.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "FTC: Secure a home Wi-Fi network",
+            "url": "https://consumer.ftc.gov/articles/how-secure-your-home-wi-fi-network"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-046",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.10"
+      ],
+      "type": "multiple",
+      "difficulty": "analysis",
+      "stem": "A SOHO router uses its factory administrator password and accepts management connections from the internet. The owner manages it only from the local office LAN. Which TWO changes directly address the identified management risks?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Disable the broadcast of the wireless network name",
+          "explanation": "SSID broadcast affects discovery of the Wi-Fi network. It does not close internet-facing management or replace the known administrator credential."
+        },
+        {
+          "id": "b",
+          "text": "Replace the factory administrator password with a unique one",
+          "explanation": "Changing the management credential prevents continued use of a publicly known default password. This is separate from the Wi-Fi connection password."
+        },
+        {
+          "id": "c",
+          "text": "Disable automatic address assignment for local clients",
+          "explanation": "Disabling DHCP changes local address configuration. It does not remove the internet management interface or strengthen its administrator password."
+        },
+        {
+          "id": "d",
+          "text": "Disable management access from the internet-facing interface",
+          "explanation": "The owner has no need for WAN management. Removing that exposure limits administration to the intended local path."
+        }
+      ],
+      "correct": [
+        "b",
+        "d"
+      ],
+      "explanation": "The evidence identifies two independent issues: a known management credential and unnecessary WAN exposure. Correct both while preserving authorized local administration. Hiding an SSID or turning off DHCP does not fix either problem. Confirm that remote management is disabled and that the new administrator credential works through the approved local connection.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.10 SOHO network security",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#210-soho-network-security"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified distinct management-password and remote-management controls; the stated local-only administration requirement makes exactly two options directly responsive.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "FTC: Secure a home Wi-Fi network",
+            "url": "https://consumer.ftc.gov/articles/how-secure-your-home-wi-fi-network"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-047",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.11"
+      ],
+      "type": "single",
+      "difficulty": "foundation",
+      "stem": "An email leads a user to an unfamiliar payroll website. The browser shows HTTPS and a valid certificate for the displayed hostname. Which conclusion is supported by that connection information?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "The payroll instructions on the site have been independently reviewed",
+          "explanation": "TLS does not review whether a website's instructions are accurate or appropriate. An encrypted site can still publish deceptive content."
+        },
+        {
+          "id": "b",
+          "text": "The employer has approved the site to collect employee credentials",
+          "explanation": "A certificate for a hostname does not establish an employer's authorization. The user must verify the destination through a trusted company source."
+        },
+        {
+          "id": "c",
+          "text": "Traffic to the displayed site is protected by an encrypted connection",
+          "explanation": "HTTPS protects the connection to the hostname being visited. It does not by itself prove that the organization behind the site is the intended payroll provider."
+        },
+        {
+          "id": "d",
+          "text": "Downloads provided by the site have passed an antimalware review",
+          "explanation": "Transport encryption and malware scanning are separate functions. A valid TLS connection does not certify that downloaded files are harmless."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "Connection security and business legitimacy are different questions. HTTPS protects traffic in transit to the site whose certificate the browser accepted. A fraudulent site can also use HTTPS for its own hostname. Verify that the address belongs to the intended service before supplying credentials; do not treat a secure connection indicator as an approval of the site's purpose.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.11 Browser security",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#211-browser-security"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Reviewed TLS connection meaning against browser documentation; avoids treating HTTPS as proof of site legitimacy, content review, or malware-free downloads.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Google: Check whether a site connection is secure",
+            "url": "https://support.google.com/chrome/answer/95617?hl=en"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-048",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.11"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A Windows user receives unwanted Chrome notifications labeled with a website visited earlier. That site appears in Chrome's allowed-notification list. The user wants those alerts stopped while retaining notifications from approved sites. Which setting should the technician change?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Block notification permission for the unwanted website",
+          "explanation": "Removing the specific origin's permission stops its authorized notification channel while leaving other sites' permissions available."
+        },
+        {
+          "id": "b",
+          "text": "Clear the browser's cached images and downloaded files",
+          "explanation": "Cached content and downloaded files are different from notification permission. Removing them does not directly revoke the site's permission to send alerts."
+        },
+        {
+          "id": "c",
+          "text": "Delete entries from the browser's browsing history",
+          "explanation": "History records past visits. Deleting that record does not by itself change the saved site permission responsible for these alerts."
+        },
+        {
+          "id": "d",
+          "text": "Change the browser's default search provider",
+          "explanation": "A search-provider setting controls where searches are sent. It does not govern a website's permission to display browser notifications."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "A website can be permitted to send notifications independently of whether its page is currently being viewed. The evidence identifies the origin and its saved permission, so revoke or block that permission specifically. This addresses the notification source without disabling every approved site or assuming that an operating-system infection has been established.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.11 Browser security",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#211-browser-security"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified per-origin notification settings; uses visible permission evidence and does not confuse notification grants with history, cache, search settings, or confirmed malware.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Google: Chrome notification permissions",
+            "url": "https://support.google.com/chrome/answer/3220216?hl=en"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-049",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.1"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "One Windows user repeatedly receives a temporary profile at sign-in. Another account works normally on the same PC. Support has confirmed corruption in the affected profile, and the user's files have been backed up. Which repair is MOST appropriate?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Reinstall the user's document-editing application",
+          "explanation": "An application reinstall does not rebuild the Windows user profile used during sign-in. The failure occurs before the document-editing application is relevant."
+        },
+        {
+          "id": "b",
+          "text": "Create a new profile and migrate the user files",
+          "explanation": "A new profile replaces the corrupted user environment. Migrate the backed-up personal data and reconfigure applications as needed without copying the corrupted profile wholesale."
+        },
+        {
+          "id": "c",
+          "text": "Reset the functioning network adapter configuration",
+          "explanation": "The working second account and confirmed profile corruption point to a user environment problem, not an adapter configuration that affects the computer."
+        },
+        {
+          "id": "d",
+          "text": "Repartition the system drive and reinstall Windows",
+          "explanation": "A complete rebuild is broader than the confirmed single-profile fault. The evidence supports repairing that user environment while retaining the functioning OS."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "A Windows profile stores a user-specific environment. Failure of one confirmed-corrupted profile while another works supports a focused profile repair rather than rebuilding the entire computer. Create the replacement through the supported account/profile process, migrate the personal files, and verify sign-in and applications. Do not delete the original data before backup and verification.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.1 Windows OS issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#31-windows-os-issues"
+        },
+        {
+          "title": "Windows BSOD and Application Troubleshooting",
+          "path": "practice/pbqs/a-plus-core-2/windows-bsod-application/README.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified supported profile recreation and data migration; explicitly confirms corruption and a backup so diagnosis and preservation steps are not left to assumption.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Fix a corrupted user profile",
+            "url": "https://support.microsoft.com/en-us/windows/security/identity-signin/fix-a-corrupted-user-profile"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-050",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.1"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "A Windows workstation is slow for several minutes after each sign-in, then works normally. Task Manager identifies an approved, optional meeting client with high startup impact. The user only needs it for scheduled meetings. Which change BEST reduces that recurring sign-in workload without removing the application?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "End the meeting client's current process",
+          "explanation": "Ending the process may help the current session but does not change its configured startup behavior. The same automatic launch can recur at the next sign-in."
+        },
+        {
+          "id": "b",
+          "text": "Raise the meeting client's process priority",
+          "explanation": "Higher priority gives the process more favorable CPU scheduling. It does not remove the unnecessary startup workload and can compete with other applications."
+        },
+        {
+          "id": "c",
+          "text": "Disable the meeting client in Startup apps",
+          "explanation": "Disabling its startup entry prevents the optional client from launching at every sign-in. The user can still open the installed application when a meeting is needed."
+        },
+        {
+          "id": "d",
+          "text": "Configure Windows to start in Safe Mode",
+          "explanation": "Safe Mode is a diagnostic environment that limits normal services and drivers. It is not an appropriate everyday configuration for avoiding one optional startup app."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "The timing and startup-impact evidence identify unnecessary automatic application loading as a reasonable target. Disable the optional application's startup entry, then test a normal sign-in and manual application launch. This changes future startup behavior; merely ending a process changes the current session. Do not disable required security or business components without reviewing their purpose.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.1 Windows OS issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#31-windows-os-issues"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked persistent startup configuration versus current process control; explicitly makes the identified application optional and approved rather than treating high impact alone as malicious.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Configure startup applications in Windows",
+            "url": "https://support.microsoft.com/en-us/windows/experience/startup-boot/configure-startup-applications-in-windows"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-051",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.1"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "Several HTTPS sites fail on one Windows workstation, while the same sites open on another PC. The technician compares the values below. Which action should be taken FIRST to address the common cause shown?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Import each website certificate as a trusted root",
+          "explanation": "Changing trust anchors does not correct an inaccurate system date. It would bypass a different part of certificate validation without addressing the supplied date evidence."
+        },
+        {
+          "id": "b",
+          "text": "Remove the browser's stored cookies and cached pages",
+          "explanation": "Cookies and cached content do not determine the Windows clock used in certificate validity checks. Clearing them leaves the common date problem unresolved."
+        },
+        {
+          "id": "c",
+          "text": "Replace the workstation's preferred DNS server",
+          "explanation": "The workstation is reaching the sites and receiving their certificates. A resolver change does not correct the date used to evaluate those certificates."
+        },
+        {
+          "id": "d",
+          "text": "Synchronize the system clock to the approved source",
+          "explanation": "The workstation date falls beyond the certificate's validity period even though the independently verified current date is within it. Correct time restores the basis for valid checks."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "Certificate validity is evaluated against the client's current date and time. A clock far in the future can make otherwise valid certificates appear expired across unrelated sites. Correct the system date/time configuration and retest before changing certificates or browser data. If the clock drifts again, investigate the time-synchronization or hardware cause rather than disabling validation.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.1 Windows OS issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#31-windows-os-issues"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified certificate-date error behavior; provides a trusted date and validity interval so the initial clock correction follows objective evidence.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Google: Chrome connection and certificate-date errors",
+            "url": "https://support.google.com/chrome/answer/95669?hl=en-en"
+          }
+        ]
+      },
+      "evidence": "Browser error: NET::ERR_CERT_DATE_INVALID\nWorkstation date (UTC): 2028-10-27\nIndependently verified date (UTC): 2026-10-27\nOne affected certificate: valid 2026-09-01 through 2027-08-31"
+    },
+    {
+      "id": "apc2-052",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.2"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "An Android app still crashes after a device restart and available updates have been installed. The vendor recommends regenerating its temporary files before a reinstall. The technician must retain the app's stored user data. Which action BEST fits this instruction?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Clear the app cache",
+          "explanation": "Clearing cache removes temporary files that the app can regenerate. This differs from clearing its persistent application storage."
+        },
+        {
+          "id": "b",
+          "text": "Clear the app storage",
+          "explanation": "Clear storage removes the app's persistent data and settings. It does not meet the requirement to retain that data during the initial repair."
+        },
+        {
+          "id": "c",
+          "text": "Uninstall the app",
+          "explanation": "Uninstalling can remove locally stored application data and requires reinstallation. The vendor recommends a narrower action before taking that step."
+        },
+        {
+          "id": "d",
+          "text": "Factory-reset the device",
+          "explanation": "A factory reset affects the whole device and can remove user data. It is much broader than regenerating temporary files for one application."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "Android distinguishes temporary app cache from persistent app storage. The vendor's recommended regeneration step corresponds to clearing cache, after which the app may need time to rebuild temporary resources. Clearing storage, uninstalling, and factory resetting have broader data effects. Preserve or back up data before any later repair step that could remove it.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.2 Mobile OS and application issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#32-mobile-os-and-application-issues"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked cache versus persistent-storage effects and vendor-directed troubleshooting order; restart and update checks are already complete, and no universal fix is promised.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Google: Clear app cache versus app storage",
+            "url": "https://support.google.com/android/answer/15728899?hl=en"
+          },
+          {
+            "title": "Google: Fix an installed Android app",
+            "url": "https://support.google.com/android/answer/2668665?hl=en"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-053",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.2"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "An Android messaging app receives new messages on Wi-Fi and while open on cellular data, but not in the background on cellular. Other connectivity tests pass. Which change BEST addresses the configuration shown while retaining Data Saver for other apps?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Lower the mobile-data usage warning threshold",
+          "explanation": "A warning threshold reports usage at a chosen level. It does not create an exception to the active restriction on background cellular traffic."
+        },
+        {
+          "id": "b",
+          "text": "Allow unrestricted cellular data for this app",
+          "explanation": "A per-app unrestricted-data exception allows the required background traffic while Data Saver continues limiting other apps."
+        },
+        {
+          "id": "c",
+          "text": "Disable background data permission for this app",
+          "explanation": "That would impose another restriction on the traffic the user needs. It moves in the opposite direction from restoring background message delivery."
+        },
+        {
+          "id": "d",
+          "text": "Mark the home Wi-Fi connection as metered",
+          "explanation": "The problem occurs on cellular, not on the functioning Wi-Fi connection. Changing Wi-Fi treatment would not grant the needed cellular exception."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "Data Saver normally limits background mobile-data use, even though a currently active app can still use cellular data. The foreground-versus-background and Wi-Fi-versus-cellular pattern matches that setting. Grant an unrestricted-data exception only to the app that requires it, then test delivery while it is in the background. This preserves the restriction for other apps.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.2 Mobile OS and application issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#32-mobile-os-and-application-issues"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified Data Saver foreground/background behavior and per-app exceptions; evidence states that normal background-data permission is already enabled.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Google: Data Saver and unrestricted background data",
+            "url": "https://support.google.com/pixelphone/answer/7055392?hl=en"
+          }
+        ]
+      },
+      "evidence": "Data Saver: On\nMessaging app background data: Allowed\nMessaging app unrestricted data: Off\nWi-Fi background delivery: Works\nCellular foreground delivery: Works"
+    },
+    {
+      "id": "apc2-054",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.3"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A user installed a banking app from a link in a text message. Its name and icon match the bank, but it requests unusual access to personal information. Before the user enters credentials, which check BEST helps establish whether this is the bank's intended app?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Compare the installed app's icon with the bank's logo",
+          "explanation": "Names and icons are easy for an impostor to copy. A visual resemblance does not establish that the publisher or package is the one distributed by the bank."
+        },
+        {
+          "id": "b",
+          "text": "Compare the app's download count with another popular bank app",
+          "explanation": "Popularity is not proof of publisher identity. A download count also does not connect this installed package to the bank's own distribution instructions."
+        },
+        {
+          "id": "c",
+          "text": "Follow the app's own support link to confirm its publisher",
+          "explanation": "An impostor app can supply an impostor support destination. Checking through the same untrusted source does not provide independent verification."
+        },
+        {
+          "id": "d",
+          "text": "Verify the app through the bank's official download listing",
+          "explanation": "An independently reached official bank source can identify its intended store listing and publisher. It avoids treating the text message or installed app as its own proof of authenticity."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "A convincing appearance is not reliable evidence of application origin. Use an independently known official source to verify where the bank distributes its app and who publishes it. An unfamiliar link, unusual permissions, or a security warning warrants investigation before credentials are entered. Store screening and device protection help, but neither an icon nor a claim inside the app proves authenticity.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.3 Mobile security issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#33-mobile-security-issues"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Reviewed unofficial-source and application-spoofing concepts; requires independent publisher verification and avoids assuming that branding, popularity, or a store listing guarantees safety.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Google: Play Protect and harmful apps from other sources",
+            "url": "https://support.google.com/googleplay/answer/2812853?hl=en"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-055",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.3"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A company blocks work applications on rooted Android devices. A device check confirms that an employee replaced the original OS with a rooted custom build. Reinstalling the work app did not resolve the block. Which action addresses the underlying device-state problem?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Reinstall the work app from a different download site",
+          "explanation": "Changing the app source does not restore the OS security state. Using another source can also introduce an unnecessary application-origin risk."
+        },
+        {
+          "id": "b",
+          "text": "Factory-reset the currently installed custom OS",
+          "explanation": "A data reset does not necessarily replace a flashed custom OS with the manufacturer's signed build. The rooted platform can remain after user data is cleared."
+        },
+        {
+          "id": "c",
+          "text": "Restore the manufacturer's approved original OS image",
+          "explanation": "The problem is the altered platform. Returning to the approved signed OS and rechecking device compliance addresses that cause rather than changing only the application."
+        },
+        {
+          "id": "d",
+          "text": "Rename the root-management app before retrying enrollment",
+          "explanation": "Changing a utility's name does not remove the platform modification. Concealing an indicator is not restoration of the required device security state."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "Root access and a custom OS can change the platform's security protections, independently of whether a work app was reinstalled. Follow the manufacturer's supported restoration process, preserve required data beforehand, and verify the approved OS and compliance status before work use. A factory data reset should not be assumed to replace the installed firmware or OS image.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.3 Mobile security issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#33-mobile-security-issues"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked platform modification versus app installation and factory-data reset; policy and confirmed root state are explicit, and restoration remains a manufacturer-supported procedure rather than improvised flashing steps.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Google: Security risks of modified Android versions",
+            "url": "https://support.google.com/accounts/answer/9211246?hl=en"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-056",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.4"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A browser page imitates an antivirus alert and demands a call to a displayed support number. Its tab will not close normally, but Windows and other applications respond. No information has been entered, no download has run, and the user has no unsaved browser work. Which action is the BEST initial response?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "End the affected browser using Task Manager",
+          "explanation": "This ends the unresponsive browser session without using controls or contact details supplied by the suspicious page. The rest of the OS remains responsive."
+        },
+        {
+          "id": "b",
+          "text": "Start a full Windows reinstall from recovery media",
+          "explanation": "A full rebuild is disproportionate to the evidence of one deceptive browser page. It is not the best first step for closing that unresponsive session."
+        },
+        {
+          "id": "c",
+          "text": "Call the support number displayed in the alert",
+          "explanation": "The number is supplied by the untrusted page. Contacting it can connect the user to the party operating the support scam rather than trusted assistance."
+        },
+        {
+          "id": "d",
+          "text": "Install the cleanup utility recommended by the page",
+          "explanation": "The offered tool comes from the same untrusted source as the warning. Installing it could create an infection that has not otherwise been established."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "A webpage can imitate a system-security warning without being the operating system's trusted antimalware interface. When the suspicious tab cannot be closed normally, Task Manager can end its browser process. Then use trusted support channels and approved security tools as appropriate. Closing a page stops that interaction; it does not independently prove that the computer is free of malware.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.4 PC security issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#34-pc-security-issues"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified browser-based support-scam behavior; specifies a responsive OS, failed normal close, and no unsaved work to justify the initial process-control action.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Protect against technical support scams",
+            "url": "https://support.microsoft.com/en-us/office/protect-yourself-from-tech-support-scams"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-057",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.4"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "All browsers on one workstation reach the wrong server for an internal portal. Other workstations reach the correct server, and the DNS server returns its correct address. Support confirms that the local override shown below is unauthorized. Which correction directly addresses the evidence?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Replace the correct portal record on the DNS server",
+          "explanation": "The DNS server is already returning the approved address. Changing that record could disrupt working clients while leaving this workstation's local override in place."
+        },
+        {
+          "id": "b",
+          "text": "Remove the unauthorized entry from the Hosts file",
+          "explanation": "The Hosts file maps the portal name to the wrong address on this workstation. Removing the unauthorized entry allows normal resolution to use the approved mapping."
+        },
+        {
+          "id": "c",
+          "text": "Flush the workstation's DNS cache without changing the file",
+          "explanation": "Flushing cached records does not remove a persistent Hosts entry. The local override can continue to supply the wrong address afterward."
+        },
+        {
+          "id": "d",
+          "text": "Reinstall the most recently used web browser",
+          "explanation": "The behavior affects all browsers and is explained by an OS-level name override. Reinstalling one browser does not remove that local file entry."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "Windows can use a Hosts-file mapping instead of the DNS server's answer. That explains why this workstation is redirected across browsers while other clients work. Remove only the confirmed unauthorized entry through the approved repair process, refresh resolution as needed, and retest. Investigate how the file changed; fixing the mapping alone is not proof that any associated malware has been removed.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.4 PC security issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#34-pc-security-issues"
+        },
+        {
+          "title": "Windows Command-Line Reference",
+          "path": "reference/windows-command-line.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked Hosts-file override behavior and persistent-file versus cached-DNS distinctions; the bad entry is explicitly unauthorized, so legitimate local mappings need not be discarded.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: The Hosts file and name resolution",
+            "url": "https://support.microsoft.com/en-us/windows/experience/how-to-reset-the-hosts-file-back-to-the-default"
+          }
+        ]
+      },
+      "evidence": "Approved portal address: 192.0.2.15\nDNS server answer for portal.example.test: 192.0.2.15\nObserved browser destination on affected PC: 192.0.2.200\nC:\\Windows\\System32\\drivers\\etc\\hosts contains:\n192.0.2.200    portal.example.test"
+    },
+    {
+      "id": "apc2-058",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.4"
+      ],
+      "type": "multiple",
+      "difficulty": "applied",
+      "stem": "A technician has disconnected power from a desktop and is preparing to replace memory. The approved service area has a common ESD grounding point. Which TWO practices protect the removed components against electrostatic discharge?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Wear a wired ESD wrist strap bonded to the approved grounding point",
+          "explanation": "The strap provides a controlled path for static charge and helps equalize potential during component handling. Use the approved grounded service setup."
+        },
+        {
+          "id": "b",
+          "text": "Place the removed modules in an ordinary plastic storage bag",
+          "explanation": "Ordinary plastic is not specified as ESD-protective packaging and can accumulate static charge. Use suitable antistatic or shielding packaging for storage."
+        },
+        {
+          "id": "c",
+          "text": "Use ordinary insulating rubber gloves instead of ESD grounding",
+          "explanation": "Ordinary insulating gloves are not a substitute for an ESD-control system. Electrical insulation alone does not establish a controlled static-discharge path."
+        },
+        {
+          "id": "d",
+          "text": "Use an ESD mat bonded to the approved grounding point",
+          "explanation": "A properly grounded ESD mat provides a controlled handling surface for sensitive parts. It complements the wrist strap in the approved work area."
+        }
+      ],
+      "correct": [
+        "a",
+        "d"
+      ],
+      "explanation": "ESD protection controls potential differences between the technician, work surface, and components. A wired grounded ESD strap and properly grounded mat address that purpose. Disconnecting power is a separate safety step and does not itself eliminate static charge. Use ESD-rated handling and storage materials rather than assuming ordinary gloves or plastic bags provide equivalent protection.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.4 Safety procedures",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#44-safety-procedures"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified grounded wired-strap and mat practices against manufacturer service guidance; the PC is disconnected and an approved grounding point is explicitly available.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Dell: ESD straps, mats, and service safety",
+            "url": "https://www.dell.com/support/manuals/en-us/native-edge-clnt-solutions/nativeedge-sm/safety-precautions?guid=guid-809cd872-eb9d-4e89-9957-8cda8d924b66&lang=en-us"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-059",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.5"
+      ],
+      "type": "single",
+      "difficulty": "foundation",
+      "stem": "A printer cartridge leaks toner in a storage area. Before selecting cleanup equipment, the technician needs the product's hazard, exposure, and accidental-release precautions. Which document is the MOST appropriate source?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Service-level agreement (SLA)",
+          "explanation": "An SLA describes service commitments such as availability or response targets. It does not supply the material-specific exposure and spill precautions needed here."
+        },
+        {
+          "id": "b",
+          "text": "Acceptable use policy (AUP)",
+          "explanation": "An AUP defines permitted use of organizational technology. It is not the manufacturer's material-hazard and cleanup reference for the toner."
+        },
+        {
+          "id": "c",
+          "text": "Safety data sheet (SDS)",
+          "explanation": "The product SDS provides hazard and handling information, including accidental-release measures. Older materials may refer to a material safety data sheet, or MSDS."
+        },
+        {
+          "id": "d",
+          "text": "Non-disclosure agreement (NDA)",
+          "explanation": "An NDA governs disclosure of information between parties. It does not describe the toner's physical hazards or approved cleanup precautions."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "Use the specific product's safety data sheet to identify appropriate handling, exposure controls, and accidental-release measures before selecting a cleanup method. The Core 2 objectives use the older MSDS terminology; SDS is the current document name. Service, usage, and confidentiality agreements serve different purposes and are not substitutes for product safety information.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.5 Environmental controls",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#45-environmental-controls"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked SDS accidental-release and handling sections using OSHA material; explains current SDS versus objective MSDS terminology without prescribing a universal toner-cleanup method.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "OSHA: Safety data sheet sections and spill precautions",
+            "url": "https://www.osha.gov/Publications/OSHA3514.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-060",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.6"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A support vendor is authorized to receive an application error screenshot, but not customer personal information. The screenshot also shows unrelated customer names and government ID numbers. Which action BEST meets the sharing restriction?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Upload the screenshot with a confidential watermark",
+          "explanation": "A watermark labels information but does not remove it. The vendor would still receive the customer details it is not authorized to receive."
+        },
+        {
+          "id": "b",
+          "text": "Redact the unrelated personal information and verify the result",
+          "explanation": "Removing unnecessary personal data before sharing meets the scope restriction. Verify that the final image does not expose the data rather than merely covering it reversibly."
+        },
+        {
+          "id": "c",
+          "text": "Encrypt the original screenshot and send the vendor its password",
+          "explanation": "Encryption protects the transfer or stored file from other parties. Giving the recipient the password still discloses the unauthorized personal information to that recipient."
+        },
+        {
+          "id": "d",
+          "text": "Rename the screenshot to omit the customer's name",
+          "explanation": "Renaming changes the filename but leaves visible personal information inside the image. It does not meet the stated content restriction."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "Data minimization applies to what the recipient receives, not just how a file is transported or labeled. Share the needed error details through the approved channel after removing unrelated personal information and checking the final artifact. Encryption is useful for confidentiality in transit or storage, but it does not authorize disclosure of the decrypted contents.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.6 Privacy, licensing, and policy",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#46-privacy-licensing-and-policy"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Reviewed minimum-necessary disclosure and recipient authorization; distinguishes content redaction from encryption, labeling, and filename changes without inventing jurisdiction-specific law.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "NIST SP 800-122: Protecting personally identifiable information",
+            "url": "https://csrc.nist.gov/pubs/sp/800/122/final"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-061",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.6"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A small business wants to deploy a utility at work. The free edition's license explicitly permits personal, noncommercial use only. Which action should the technician take before deployment?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Install the free edition under local accounts rather than domain accounts",
+          "explanation": "The type of Windows account does not change the business purpose of the deployment. It does not satisfy the stated license restriction."
+        },
+        {
+          "id": "b",
+          "text": "Run the free edition without administrator permissions",
+          "explanation": "Least privilege is a security control, not a change to software-use rights. A business deployment remains business use under the stated terms."
+        },
+        {
+          "id": "c",
+          "text": "Record the download as freeware in the asset inventory",
+          "explanation": "An inventory label does not override the publisher's license terms. A zero purchase price does not imply permission for every use."
+        },
+        {
+          "id": "d",
+          "text": "Obtain a license permitting the intended business use",
+          "explanation": "The stated license does not cover this deployment. Obtain appropriate rights or choose an approved alternative whose terms permit the intended use."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "Software cost, technical ability to install it, and permission to use it are separate issues. The scenario supplies an explicit personal-use restriction, so a business needs appropriate use rights before deploying that edition. Do not infer commercial permission from a free download, low account privileges, or a local inventory description.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.6 Privacy, licensing, and policy",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#46-privacy-licensing-and-policy"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified personal-use versus corporate-use licensing alignment; the restriction is explicitly supplied and does not assert the terms of any particular named product.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Software license terms",
+            "url": "https://www.microsoft.com/en-us/useterms"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-062",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.9"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A verified help-desk technician must demonstrate a settings change on a Windows 11 user's current desktop. The user must watch the actions and approve control of the same session. Which connection type BEST fits?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "An SSH command-line session",
+          "explanation": "SSH provides secure command-line access but does not by itself share the Windows user's graphical desktop for an observed settings demonstration."
+        },
+        {
+          "id": "b",
+          "text": "A VPN connection by itself",
+          "explanation": "A VPN supplies a network path. It does not itself provide shared-screen viewing or a workflow for granting control of the current desktop."
+        },
+        {
+          "id": "c",
+          "text": "A remote-assistance session",
+          "explanation": "Remote assistance can share the user's existing desktop and request their permission for control. It matches the need for the user to observe the demonstration."
+        },
+        {
+          "id": "d",
+          "text": "A standard Windows RDP desktop sign-in",
+          "explanation": "A normal incoming RDP sign-in on a Windows client does not provide this same shared, locally observed assistance workflow. Remote desktop access and screen-sharing assistance serve different needs."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "Choose a remote method based on the required interaction. Consent-based remote assistance lets a technician work with a user on the current desktop, while a VPN supplies connectivity and SSH normally supplies a shell. Standard client RDP access differs from sharing that user's visible session. Verify the support identity and obtain the required viewing/control consent.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.9 Remote access technologies",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#49-remote-access-technologies"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked shared-screen assistance and explicit control consent; distinguishes ordinary Windows client RDP from assistance rather than making a blanket claim about all RDP session-shadowing features.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Quick Assist and consent to remote control",
+            "url": "https://support.microsoft.com/en-us/windows/apps/solve-pc-problems-remotely-using-quick-assist"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-063",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.3"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "A workstation receives a full backup each Sunday. Weekday jobs must create change-only backup sets rather than new full sets. Recovery should need the Sunday full and just the latest weekday set, without a chain of earlier weekday sets. Which weekday backup type BEST fits?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Differential",
+          "explanation": "Each differential includes changes since the full backup. The latest full plus the latest differential supplies the required two-backup recovery path."
+        },
+        {
+          "id": "b",
+          "text": "Incremental",
+          "explanation": "An incremental contains changes since the preceding backup. Recovering several days normally requires the full and every subsequent incremental in the chain."
+        },
+        {
+          "id": "c",
+          "text": "Full",
+          "explanation": "Another full backup could simplify recovery, but the scenario explicitly rules out weekday full backups. It does not fit the allowed weekday operation."
+        },
+        {
+          "id": "d",
+          "text": "Mirror synchronization",
+          "explanation": "A live mirror can propagate current changes and deletions. It does not by itself create the requested Sunday-full-plus-daily-backup recovery sets."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "Differential backups accumulate changes since the most recent full. That uses more daily backup storage over the week than a simple incremental strategy, but avoids restoring every intervening incremental. Here weekday jobs must create change-only backups with that two-set recovery dependency. A live synchronized mirror is not the same arrangement and does not by itself establish recoverable prior versions.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.3 Backup and recovery",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#43-backup-and-recovery"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified differential versus incremental dependencies and contrast with live mirroring; excludes weekday full sets and avoids a synthetic-full alternative that could also simplify recovery.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "NIST SP 800-34 Rev. 1: Backup and recovery methods",
+            "url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-34r1.pdf"
+          },
+          {
+            "title": "Microsoft: Synchronization and propagated file deletions",
+            "url": "https://support.microsoft.com/en-us/onedrive/save-disk-space-with-onedrive-files-on-demand-for-windows"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-064",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.1"
+      ],
+      "type": "single",
+      "difficulty": "foundation",
+      "stem": "A technician must match one of several identical laptops to its inventory record before changing the assigned user. The laptop has been reimaged and renamed. Which identifier is the BEST match to the same physical device?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Current DHCP address",
+          "explanation": "A leased IP address identifies a current network assignment and can change or be reused. It is not a reliable long-term identifier for one physical laptop."
+        },
+        {
+          "id": "b",
+          "text": "Manufacturer serial number",
+          "explanation": "A manufacturer-assigned serial number or equivalent unique service identifier identifies the physical device independently of its Windows name or current user."
+        },
+        {
+          "id": "c",
+          "text": "Windows build number",
+          "explanation": "A build number identifies an OS version shared by many computers. Reimaging can change it without changing the physical laptop."
+        },
+        {
+          "id": "d",
+          "text": "Signed-in user name",
+          "explanation": "A user name identifies an account, not a particular laptop. Users can sign in on different devices, and the assignment itself is being changed."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "Asset records should be tied to a stable physical identifier such as a unique serial number or asset tag. Computer names, IP leases, OS builds, and assigned users describe attributes that can change or be shared across devices. Match the device identifier first, then update the assignment and other changed attributes in its existing record.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.1 Documentation and support systems",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#41-documentation-and-support-systems"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked unique manufacturer service identifiers and distinguishes physical identity from mutable OS, user, and network attributes; does not claim motherboard replacement can never alter identifiers.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Dell: Unique device Service Tags",
+            "url": "https://www.dell.com/support/contents/en-us/article/product-support/self-support-knowledgebase/locate-service-tag/notebook"
           }
         ]
       }
