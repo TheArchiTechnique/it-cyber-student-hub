@@ -1,7 +1,7 @@
 {
   "certification": "a-plus-core-2",
   "examVersion": "220-1202",
-  "version": "2026-10-27.2",
+  "version": "2026-10-27.3",
   "questions": [
     {
       "id": "apc2-001",
@@ -3848,6 +3848,2409 @@
           {
             "title": "Dell: Unique device Service Tags",
             "url": "https://www.dell.com/support/contents/en-us/article/product-support/self-support-knowledgebase/locate-service-tag/notebook"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-065",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.1"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A workstation runs an OS release that has passed the end of vendor support. No extended security-update program covers the installation. Its applications still run. Which statement BEST describes the significance of this lifecycle status?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "The OS can continue running without receiving new vendor security fixes.",
+          "explanation": "End of support does not switch off the installed OS. Without an applicable extended program, newly discovered OS vulnerabilities can remain unpatched."
+        },
+        {
+          "id": "b",
+          "text": "The OS will stop accepting local sign-ins at its next scheduled restart.",
+          "explanation": "A support deadline does not normally disable local authentication. Operational failure is not the defining consequence of reaching end of support."
+        },
+        {
+          "id": "c",
+          "text": "The installed antivirus now provides the missing vendor OS security fixes.",
+          "explanation": "Antivirus can detect some threats, but it does not replace vendor patches to the OS code. Its presence does not restore the OS support lifecycle."
+        },
+        {
+          "id": "d",
+          "text": "The OS will continue receiving security fixes but no new user-interface features.",
+          "explanation": "That can describe an earlier support phase or a separate update arrangement. The scenario explicitly states that vendor support has ended and no extended program applies."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "Support status and present-day functionality are separate considerations. An unsupported OS may run existing applications normally while losing a dependable source of fixes for newly discovered OS flaws. The technician should plan a supported migration rather than treating successful sign-in or current antivirus definitions as evidence that the OS remains supported.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.1 Operating system types and purposes",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#11-operating-system-types-and-purposes"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked end-of-support behavior; excludes extended-update coverage and avoids attaching the question to a changing product retirement date.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Lifecycle FAQ, Fixed Policy",
+            "url": "https://learn.microsoft.com/en-us/lifecycle/faq/fixed-policy"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-066",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.2"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "During a clean Windows 11 installation, Setup lists no destination drives. Firmware detects the healthy SSD. The computer manufacturer specifies a storage-controller driver that is absent from the installation media and requires the current controller mode. What should the technician do NEXT?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Recreate the installation USB with an MBR partition table",
+          "explanation": "Changing the installer USB partition layout does not supply the missing storage-controller driver. Setup has already booted successfully from the current media."
+        },
+        {
+          "id": "b",
+          "text": "Change the SSD data partition from NTFS to exFAT",
+          "explanation": "Setup must be able to communicate with the controller before it can work with partitions. Reformatting is unrelated to the stated driver requirement."
+        },
+        {
+          "id": "c",
+          "text": "Use Load driver with the extracted manufacturer driver",
+          "explanation": "Loading the matching preinstallation storage driver lets Setup communicate with the controller while retaining the manufacturer-required configuration."
+        },
+        {
+          "id": "d",
+          "text": "Disable the configured storage-controller mode in firmware",
+          "explanation": "Changing modes can sometimes bypass a driver requirement, but the manufacturer requires the current mode here. Loading its supported driver meets that constraint."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "Detection in firmware does not guarantee that Windows Setup includes the driver needed to access a drive through its controller. Use the correct extracted driver package for this model and Windows architecture at the disk-selection stage. Neither filesystem changes nor a different USB partition layout addresses the identified missing software layer.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.2 OS installation and upgrades",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#12-os-installation-and-upgrades"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified Windows Setup storage-driver loading; establishes a healthy drive, missing controller driver, and required controller mode to avoid multiple defensible fixes.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Install a boot-start driver",
+            "url": "https://learn.microsoft.com/en-us/windows-hardware/drivers/install/installing-a-boot-start-driver"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-067",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.3"
+      ],
+      "type": "single",
+      "difficulty": "foundation",
+      "stem": "A Windows 11 Pro N workstation runs an application that requires media technologies omitted from N editions. The vendor confirms that the missing Windows components, rather than an audio driver, cause the failure. Which addition provides those components?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "DirectX runtime package",
+          "explanation": "DirectX supplies graphics and multimedia runtime components for applications that require it. It does not restore the Windows media technologies specifically omitted from N editions."
+        },
+        {
+          "id": "b",
+          "text": "Media Feature Pack",
+          "explanation": "The Media Feature Pack restores the media technologies omitted from Windows N editions. It is available as an optional Windows feature."
+        },
+        {
+          "id": "c",
+          "text": "Microsoft Store Media Player app",
+          "explanation": "A player application is distinct from the underlying Windows media components. Installing a player alone does not provide the full feature set omitted from the N edition."
+        },
+        {
+          "id": "d",
+          "text": "An additional third-party audio codec",
+          "explanation": "A codec can support a particular media encoding. It does not restore the broader Windows media APIs and components that this vendor requires from the OS."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "The N designation describes an edition variant that omits certain media functionality. Installing the appropriate Media Feature Pack addresses that difference without changing the business edition or replacing a functioning audio device. Follow the Windows optional-feature procedure and complete any required restart before retesting the application.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.3 Microsoft Windows editions",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#13-microsoft-windows-editions"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified Windows 11 N optional-feature availability; distinguishes omitted OS media components from device-driver and edition-upgrade problems.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Media Feature Pack for Windows N",
+            "url": "https://support.microsoft.com/en-us/windows/experience/platform-variants/media-feature-pack-for-windows-n"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-068",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.4"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A Windows desktop application unexpectedly closed at 09:20. Before changing the installation, a technician wants to inspect recorded application errors and faulting-module details from that time. Which tool and location are MOST appropriate?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Resource Monitor, CPU activity",
+          "explanation": "Resource Monitor shows current resource activity. It is useful for a live bottleneck, but it is not the historical application-error log for the earlier crash."
+        },
+        {
+          "id": "b",
+          "text": "Task Manager, Startup apps",
+          "explanation": "Startup apps identifies programs launched at sign-in. It does not supply the recorded faulting-module details of a previous application crash."
+        },
+        {
+          "id": "c",
+          "text": "Event Viewer, Windows Logs > Security",
+          "explanation": "The Security log focuses on audited security activity. Ordinary Application Error crash records belong in the Application log instead."
+        },
+        {
+          "id": "d",
+          "text": "Event Viewer, Windows Logs > Application",
+          "explanation": "The Application log can contain Application Error records with a faulting application, module, and event timestamp. Filter around the reported failure."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "Use recorded evidence that matches both the symptom and its time. Event Viewer exposes the Application log, where a crash event can identify the executable and module involved. A module named in an event is an investigative lead rather than proof of the root cause; retain the event details before selecting a repair.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.4 Windows features and tools",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#14-windows-features-and-tools"
+        },
+        {
+          "title": "Windows BSOD and Application Troubleshooting",
+          "path": "practice/pbqs/a-plus-core-2/windows-bsod-application/README.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked the Application Error log and faulting-module fields; asks for evidence collection rather than assuming an event alone proves a diagnosis.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Application or service crashing behavior",
+            "url": "https://learn.microsoft.com/en-us/troubleshoot/windows-server/performance/troubleshoot-application-service-crashing-behavior"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-069",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.5"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "A local application cannot start its TCP listener on port 8080 because another process is already using that port. A technician captures the excerpt below. Which value should be matched to the PID column in Task Manager to identify the existing listener?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "51544",
+          "explanation": "51544 is the local ephemeral port of a different established connection. It is not the process identifier associated with the 8080 listener."
+        },
+        {
+          "id": "b",
+          "text": "9128",
+          "explanation": "PID 9128 owns the established connection to a remote HTTPS endpoint. The separate LISTENING row identifies the process occupying local port 8080."
+        },
+        {
+          "id": "c",
+          "text": "6040",
+          "explanation": "The row for local port 8080 ends with PID 6040. Match that process ID in Task Manager before deciding whether any service should be stopped."
+        },
+        {
+          "id": "d",
+          "text": "8080",
+          "explanation": "8080 identifies the local TCP port. A port number and a process ID are different values even when both are displayed as decimal numbers."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "With -a, -n, and -o, netstat can show listeners, numeric endpoints, and owning process IDs. Read the local address to find the contested port, then follow that same row to its PID. LISTENING describes a socket waiting for connections; the unrelated ESTABLISHED row is not the listener preventing this application from binding.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.5 Windows command-line tools",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#15-windows-command-line-tools"
+        },
+        {
+          "title": "Windows Command-Line Reference",
+          "path": "reference/windows-command-line.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked netstat flags and Windows TCP column layout; all candidate values occur in the excerpt and only one belongs to the requested listener.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: netstat command reference",
+            "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/netstat"
+          }
+        ]
+      },
+      "evidence": "C:\\>netstat -ano\n\nActive Connections\n\n  Proto  Local Address          Foreign Address        State           PID\n  TCP    0.0.0.0:8080           0.0.0.0:0              LISTENING       6040\n  TCP    192.0.2.44:51544       198.51.100.20:443       ESTABLISHED     9128"
+    },
+    {
+      "id": "apc2-070",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.6"
+      ],
+      "type": "single",
+      "difficulty": "foundation",
+      "stem": "A Windows laptop must preserve its open application session during an extended period without power to RAM. The device supports hibernation, and hybrid sleep is disabled. Which power option meets the requirement?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Sleep",
+          "explanation": "Traditional sleep keeps the working session in powered RAM. The requirement specifically excludes depending on continued power to memory."
+        },
+        {
+          "id": "b",
+          "text": "Hibernate",
+          "explanation": "Hibernate writes the session state to the system drive. It can restore that state without maintaining power to RAM during the inactive period."
+        },
+        {
+          "id": "c",
+          "text": "Shut down with fast startup",
+          "explanation": "Fast startup preserves kernel-session information, but the user session is closed. It does not retain the open application session requested here."
+        },
+        {
+          "id": "d",
+          "text": "Turn off the display",
+          "explanation": "Turning off the display changes only a component power state. Applications and system memory can remain active and continue consuming power."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "Hibernation saves the working state to nonvolatile storage and powers down RAM. Ordinary sleep favors fast resume by retaining memory contents with power. Fast startup is a shutdown optimization, not preservation of the signed-in user's applications. Stating that hybrid sleep is disabled avoids a second option that can also save a hibernation file.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.6 Windows settings",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#16-windows-settings"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified hibernate, traditional sleep, and fast-startup user-session behavior; explicitly removes hybrid-sleep ambiguity.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: System power states",
+            "url": "https://learn.microsoft.com/en-us/windows/win32/power/system-power-states"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-071",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.7"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A Windows application expects project files on drive P:. The user can already open \\\\FS01\\Projects and has the required permissions. The same network folder should appear as P: after future sign-ins. Which configuration should the technician use?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Map P: with Reconnect at sign-in",
+          "explanation": "A drive mapping associates the UNC share with a drive letter. Reconnect at sign-in preserves that mapping for subsequent sessions when the share is reachable."
+        },
+        {
+          "id": "b",
+          "text": "Pin the folder to Quick access",
+          "explanation": "Quick access makes a folder easier to browse, but it does not assign the drive letter required by this application."
+        },
+        {
+          "id": "c",
+          "text": "Create a desktop network shortcut",
+          "explanation": "A shortcut points to the existing network location. It does not make that location available to applications as drive P:."
+        },
+        {
+          "id": "d",
+          "text": "Share a new local Projects folder",
+          "explanation": "Creating a new local share publishes a different folder. It neither maps the existing server data nor satisfies the required client drive letter."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "The share and permissions already work; the missing requirement is how the client presents that location. Map the existing UNC path to the available letter P: and enable reconnection for later sign-ins. A persistent mapping still depends on network reachability and valid credentials; it does not download an offline copy of the server data.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.7 Windows client networking",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#17-windows-client-networking"
+        },
+        {
+          "title": "Network Configuration Concepts",
+          "path": "practice/pbqs/a-plus-core-2/network-configuration-concepts/README.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified File Explorer drive mapping and reconnect behavior; separates UNC access, shortcuts, drive letters, and offline availability.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: File sharing over a network in Windows",
+            "url": "https://support.microsoft.com/en-us/windows/experience/connectivity-networking/file-sharing-over-a-network-in-windows"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-072",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.8"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "An Intel Mac without a T2 security chip has an unencrypted startup disk. The owner needs built-in protection for the files if the powered-off computer is stolen. Which macOS feature should the technician configure?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Keychain",
+          "explanation": "Keychain manages secrets such as passwords and certificates. It does not encrypt all ordinary files on the startup disk."
+        },
+        {
+          "id": "b",
+          "text": "Time Machine",
+          "explanation": "Time Machine creates recoverable backups. A backup policy does not itself encrypt the original startup disk in the stolen computer."
+        },
+        {
+          "id": "c",
+          "text": "Gatekeeper",
+          "explanation": "Gatekeeper checks downloaded software before it runs. It addresses application trust rather than confidentiality of stored files on a stolen Mac."
+        },
+        {
+          "id": "d",
+          "text": "FileVault",
+          "explanation": "FileVault encrypts the startup-disk data on this Mac and ties access to authorized unlocking. Recovery information must be stored separately and securely."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "FileVault supplies disk encryption for the stated data-at-rest requirement. Backups, software trust checks, and password storage each protect a different asset or failure mode. The hardware context matters: Apple silicon and T2 Macs already encrypt storage automatically, while FileVault adds credential-based protection; this question specifies a Mac without those chips.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.8 macOS features and tools",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#18-macos-features-and-tools"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked FileVault against Apple guidance and explicitly identifies non-T2 Intel hardware to avoid treating every modern Mac as initially unencrypted.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Apple: Protect data on your Mac with FileVault",
+            "url": "https://support.apple.com/guide/mac-help/protect-data-on-your-mac-with-filevault-mh11785/mac"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-073",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.9"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "On a Linux Mint workstation, sudo apt update completes successfully. The technician notices that the versions of installed applications have not changed. Which explanation is correct?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "The command installed security fixes while holding application versions.",
+          "explanation": "APT update does not install even a security-only set of package upgrades. It obtains repository information that can later identify which updates are available."
+        },
+        {
+          "id": "b",
+          "text": "The command refreshed package information without installing upgrades.",
+          "explanation": "APT update downloads current repository package information. Installing newer package versions is a separate operation, such as apt upgrade."
+        },
+        {
+          "id": "c",
+          "text": "The command downloaded upgrades that will install at the next sign-in.",
+          "explanation": "APT update does not stage a general application upgrade for the next login. Refreshing the repository index is distinct from installing package files."
+        },
+        {
+          "id": "d",
+          "text": "The command upgraded the OS release while preserving application versions.",
+          "explanation": "APT update does not perform a distribution-release upgrade. Release migration is a separate supported procedure and can change many installed packages."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "Package metadata tells APT which versions and dependencies are available. Refreshing that metadata does not replace the installed software. The technician would review and run the appropriate upgrade operation afterward if authorized. This distinction helps explain why a successful update command can leave every application binary at its previous version.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.9 Linux features and tools",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#19-linux-features-and-tools"
+        },
+        {
+          "title": "Linux Command-Line Reference",
+          "path": "reference/linux-commands.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked APT update versus upgrade semantics in the upstream package manual; no distribution-specific automatic-update behavior is assumed.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "APT project: apt manual, distributed by Debian",
+            "url": "https://manpages.debian.org/bookworm/apt/apt.8.en.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-074",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.10"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "An approved Windows application is distributed as a standard ISO image. The technician mounts the image before launching its installer. What does mounting accomplish?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "It replaces the running Windows installation with the image contents.",
+          "explanation": "Applying an OS image is a deployment operation. Simply mounting an ISO exposes its files without replacing the installed operating system."
+        },
+        {
+          "id": "b",
+          "text": "It copies the application into Program Files and registers its license.",
+          "explanation": "Mounting does not execute Setup or activate a license. Installation and any licensing steps still need to be completed separately."
+        },
+        {
+          "id": "c",
+          "text": "It exposes the image contents through a virtual optical drive.",
+          "explanation": "Windows can present an ISO as a virtual optical disc so its files can be accessed. The technician can then start the appropriate installer."
+        },
+        {
+          "id": "d",
+          "text": "It converts the system drive into a new writable data partition.",
+          "explanation": "Mounting an ISO does not repartition the system drive. A standard mounted optical image also is not a newly created writable data volume."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "An ISO is a disc image, not an installed application. Mounting provides access to its contents as if suitable media were inserted in an optical drive. Starting the installer remains a separate action, with its own permissions, system requirements, and licensing. Dismounting afterward removes the virtual media rather than uninstalling the application.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.10 Application installation requirements",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#110-application-installation-requirements"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified ISO mounting as exposure of virtual media; distinguishes mounting from installation, image application, and partition changes.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Mount-DiskImage",
+            "url": "https://learn.microsoft.com/en-us/powershell/module/storage/mount-diskimage?view=windowsserver2025-ps"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-075",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.11"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "A new employee can sign in to the organization's Microsoft 365 portal, but the installed desktop applications will not activate for that account. A licensed colleague can activate the same installation. The administrator collects the information below. Which action addresses the missing requirement?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Assign the user an available Apps license",
+          "explanation": "The subscription has an available license, but this user has no assignment. Assigning the correct product entitlement addresses the account-specific activation gap."
+        },
+        {
+          "id": "b",
+          "text": "Reinstall the same desktop applications",
+          "explanation": "The same installation activates for another licensed account. Reinstalling its unchanged files does not provide the new employee with a product entitlement."
+        },
+        {
+          "id": "c",
+          "text": "Reset the employee account password",
+          "explanation": "Portal sign-in succeeds and the account is permitted to authenticate. A password reset does not assign a missing Microsoft 365 product license."
+        },
+        {
+          "id": "d",
+          "text": "Add the employee to local Administrators",
+          "explanation": "Local elevation changes workstation permissions. It does not grant the cloud account a Microsoft 365 Apps subscription entitlement."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "Creating a cloud identity and assigning a subscription license are separate administration tasks. Successful authentication establishes who the employee is, not which paid applications the account may use. Verify the intended product and available entitlement, assign it through the supported administration workflow, then allow assignment processing and retry activation with that account.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.11 Cloud productivity tools",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#111-cloud-productivity-tools"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified individual product-license assignment; successful comparison account and available entitlement distinguish licensing from local installation and authentication faults.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Assign or unassign user licenses",
+            "url": "https://learn.microsoft.com/en-us/microsoft-365/admin/manage/assign-licenses-to-users?view=o365-worldwide"
+          }
+        ]
+      },
+      "evidence": "Administrator findings\nOrganization subscription: Microsoft 365 Apps for business, active\nUnassigned licenses available: 3\nEmployee sign-in: permitted\nEmployee product-license assignments: none"
+    },
+    {
+      "id": "apc2-076",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.1"
+      ],
+      "type": "single",
+      "difficulty": "foundation",
+      "stem": "After authenticating to the company identity service, an employee opens several integrated business applications without separately entering credentials into each one. Which security capability is illustrated?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Multifactor authentication",
+          "explanation": "MFA combines different factor categories during authentication. The scenario describes reuse of an authenticated identity across applications, without specifying multiple factors."
+        },
+        {
+          "id": "b",
+          "text": "Directory synchronization",
+          "explanation": "Directory synchronization copies or reconciles identity records between directories. Matching account records alone does not provide the seamless application sign-in described."
+        },
+        {
+          "id": "c",
+          "text": "Single sign-on",
+          "explanation": "SSO lets an authentication relationship support access to several integrated applications. Each application can still apply its own authorization rules."
+        },
+        {
+          "id": "d",
+          "text": "Password synchronization",
+          "explanation": "Synchronizing passwords can make credentials match across systems. It does not by itself carry an authenticated session between applications or eliminate their separate prompts."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "SSO reduces repeated authentication prompts across participating applications. It does not mean that every application grants the same permissions, or that authentication uses only one factor. MFA can protect the initial sign-in while SSO carries the resulting identity relationship to other services. Authentication experience and resource authorization remain distinct concepts.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.1 Security measures and purposes",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#21-security-measures-and-purposes"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked NIST SSO definition; distinguishes shared authentication relationships from matching directory records, matching passwords, and the number of factors used.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "NIST: Single sign-on glossary",
+            "url": "https://csrc.nist.gov/glossary/term/single_sign_on"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-077",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.2"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "Before reimaging a Windows 11 Pro workstation, a technician verifies a backup that retains the user's EFS-encrypted files in encrypted form. The current user can still open the originals. No recovery agent is configured. Which additional item should be preserved to decrypt the restored files under the replacement profile?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "A copy of the original NTFS permission entries",
+          "explanation": "Permissions control authorized access to the file object, but they do not contain the private key needed to decrypt its EFS-protected contents."
+        },
+        {
+          "id": "b",
+          "text": "The user's EFS certificate and private key",
+          "explanation": "The EFS certificate and matching private key provide the user's decryption material. Export and protect them before removing the working profile."
+        },
+        {
+          "id": "c",
+          "text": "The workstation's BitLocker recovery password",
+          "explanation": "BitLocker recovery unlocks a protected volume. It is a different encryption layer and does not replace the user's EFS private key for these files."
+        },
+        {
+          "id": "d",
+          "text": "An export of the EFS public certificate alone",
+          "explanation": "The public certificate can identify an encryption recipient, but the matching private key is necessary for decryption. A public-only export is incomplete."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "Backing up encrypted files is not enough if their decryption keys are lost with the profile. Preserve the working user's EFS certificate and private key in a protected export, and verify the recovery procedure before reimaging. Restoring permissions, choosing the same username, or possessing a separate BitLocker recovery password does not recreate that EFS key.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.2 Windows security settings",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#22-windows-security-settings"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified EFS certificate-and-key backup; specifies encrypted-form backup, a working original profile, and no recovery agent to make the necessary key material unambiguous.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: cipher command and EFS key backup",
+            "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/cipher"
+          },
+          {
+            "title": "Microsoft: EFS file encryption and raw encrypted backup",
+            "url": "https://learn.microsoft.com/en-us/windows/win32/fileio/file-encryption"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-078",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.3"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A SOHO access point and all clients support WPA2-Personal with AES, but none support WPA3. The office uses a shared passphrase and has no enterprise authentication service. Which available security setting is the BEST choice?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "WPA-Personal with TKIP",
+          "explanation": "The older WPA/TKIP combination is weaker than the available WPA2/AES option. A shared passphrase does not require using the older protocol."
+        },
+        {
+          "id": "b",
+          "text": "WPA2-Personal with TKIP",
+          "explanation": "Selecting TKIP retains an obsolete cipher even though every device supports AES. The WPA2 label alone is not a reason to choose this combination."
+        },
+        {
+          "id": "c",
+          "text": "WEP with a shared key",
+          "explanation": "WEP uses obsolete protection with significant known weaknesses. Compatibility is not a reason to select it when the entire fleet supports WPA2/AES."
+        },
+        {
+          "id": "d",
+          "text": "WPA2-Personal with AES",
+          "explanation": "This is the strongest suitable listed configuration supported by the stated devices. It supplies WPA2 protection with the appropriate AES-based cipher."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "Evaluate both the authentication mode and encryption selection. Personal mode suits the stated shared-passphrase arrangement, and AES is the appropriate available cipher. WPA3 would normally be preferable on compatible equipment, but it is unavailable here. Neither legacy-client compatibility nor an enterprise identity requirement justifies retaining TKIP or WEP in this scenario.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.3 Wireless security and authentication",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#23-wireless-security-and-authentication"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked WPA2-Personal/AES compatibility and deprecated alternatives; WPA3 and enterprise authentication are explicitly outside this equipment configuration.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Apple: Recommended settings for Wi-Fi routers",
+            "url": "https://support.apple.com/en-us/102766"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-079",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.4"
+      ],
+      "type": "single",
+      "difficulty": "foundation",
+      "stem": "A downloaded utility performs its advertised file-conversion task while secretly opening unauthorized remote access. The investigation finds no file-infection or self-replication behavior. Which malware category BEST describes its presentation as useful software?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Trojan",
+          "explanation": "A Trojan appears useful or legitimate while containing a hidden malicious function. The advertised conversion task helps persuade the user to run it."
+        },
+        {
+          "id": "b",
+          "text": "Virus",
+          "explanation": "A virus depends on infecting another file or host object to propagate. No file-infection behavior is described, so that is not the defining characteristic here."
+        },
+        {
+          "id": "c",
+          "text": "Rootkit",
+          "explanation": "A rootkit emphasizes concealed or privileged persistence. Hidden malicious functionality alone does not establish the system-level hiding mechanisms of a rootkit."
+        },
+        {
+          "id": "d",
+          "text": "Boot sector virus",
+          "explanation": "A boot sector virus infects boot-related disk structures. Nothing indicates altered boot sectors; the evidence concerns an apparently useful downloaded program."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "Malware labels can describe different aspects of a threat. Here the question concerns a deceptive program that mixes a visible legitimate task with an unauthorized payload, which is characteristic of a Trojan. Remote access is the payload behavior; it does not by itself establish file infection, boot-sector infection, or rootkit techniques.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.4 Malware and protective tools",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#24-malware-and-protective-tools"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked NIST Trojan definition; asks about deceptive presentation and explicitly avoids inferring unrelated propagation or concealment mechanisms.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "NIST: Trojan horse glossary",
+            "url": "https://csrc.nist.gov/glossary/term/trojan_horse"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-080",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.5"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A visitor connects to a wireless network using the airport's advertised network name. Airport IT confirms that the access point belongs to an attacker and was configured to resemble the legitimate airport service so travelers would connect to it. Which threat is MOST specifically illustrated?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "A wireless denial-of-service attack",
+          "explanation": "A denial-of-service attack disrupts availability. The described goal is to attract users to an impersonated network, not to prevent wireless service from operating."
+        },
+        {
+          "id": "b",
+          "text": "DNS cache poisoning",
+          "explanation": "DNS poisoning changes name-resolution information. Matching the trusted wireless network's identity at an attacker-owned access point is a different mechanism."
+        },
+        {
+          "id": "c",
+          "text": "An evil twin access point",
+          "explanation": "An evil twin impersonates a legitimate wireless network to lure clients onto attacker-controlled infrastructure. The verified look-alike access point fits that mechanism."
+        },
+        {
+          "id": "d",
+          "text": "A password brute-force attack",
+          "explanation": "Brute force repeatedly guesses credentials. The evidence describes a fraudulent wireless service rather than repeated attempts to discover a password."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "A familiar network name does not authenticate the device broadcasting it. An evil twin exploits that trust by presenting attacker-controlled wireless infrastructure as the expected service. This can enable interception or fraudulent sign-in pages, but the scenario does not require assuming that HTTPS encryption was defeated or that every connected account was compromised.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.5 Social engineering, threats, and vulnerabilities",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#25-social-engineering-threats-and-vulnerabilities"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked MITRE evil-twin definition; uses verified impersonation rather than treating every duplicate SSID as malicious or assuming that HTTPS is automatically broken.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "MITRE ATT&CK: Evil Twin, T1557.004",
+            "url": "https://attack.mitre.org/techniques/T1557/004/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-081",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.6"
+      ],
+      "type": "multiple",
+      "difficulty": "applied",
+      "stem": "A Windows Home workstation has completed malware remediation. Follow-up checks are clean, normal operation is verified, and recurring scans and updates are configured. System Restore was disabled during removal. Following the remaining CompTIA SOHO malware-removal steps, which TWO actions should the technician complete?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Enable System Restore and create a restore point",
+          "explanation": "The prescribed process restores recovery protection after remediation and establishes a new recovery point from the cleaned system state."
+        },
+        {
+          "id": "b",
+          "text": "Apply a restore point from before remediation",
+          "explanation": "Restoring the previous system state can undo successful remediation and may reintroduce unwanted changes. The requested next step is a new clean recovery point."
+        },
+        {
+          "id": "c",
+          "text": "Keep System Restore disabled during normal use",
+          "explanation": "Disabling recovery protection is a temporary removal step in the stated process. Leaving it disabled omits the later requirement to restore protection."
+        },
+        {
+          "id": "d",
+          "text": "Explain prevention and reporting to the user",
+          "explanation": "The final user-education step helps address the infection route and explains what to do if suspicious symptoms return. A clean scan alone does not replace that instruction."
+        }
+      ],
+      "correct": [
+        "a",
+        "d"
+      ],
+      "explanation": "The scenario has already completed eradication, verification, and scan/update scheduling. The remaining prescribed steps are to enable System Restore with a new restore point and educate the end user. A recovery point made after successful cleanup provides a different baseline from an older point; education reduces repeat exposure and supports early reporting.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.6 SOHO malware removal",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#26-soho-malware-removal"
+        },
+        {
+          "title": "Malware Investigation and Remediation",
+          "path": "practice/pbqs/a-plus-core-2/malware-investigation-remediation/README.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked the remaining steps directly against official objective 2.6; specifies Windows Home and completed prior steps without implying that every infection requires reinstallation.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-082",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.7"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "Company policy requires a local Windows account to lock after five consecutive failed sign-in attempts. Testing shows that repeated incorrect passwords never lock the account. Which setting below must be changed to meet the requirement?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Account lockout duration",
+          "explanation": "Duration controls how long an account remains locked once a lockout occurs. Increasing it does not enable lockouts when the threshold remains zero."
+        },
+        {
+          "id": "b",
+          "text": "Account lockout threshold",
+          "explanation": "A threshold of zero means failed attempts do not lock the account. Setting the required threshold of five activates the stated failure-count rule."
+        },
+        {
+          "id": "c",
+          "text": "Reset account lockout counter after",
+          "explanation": "The reset interval controls how long failure history is retained. It does not replace the nonzero threshold needed to trigger a lockout."
+        },
+        {
+          "id": "d",
+          "text": "Maximum password age",
+          "explanation": "Password age controls how long a password remains valid before expiration. It does not count failed authentication attempts or trigger account lockouts."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "Different account-policy values control the trigger, the locked period, and the failure-counter reset. The observed unlimited attempts follow directly from a threshold of zero. Apply the organization's stated threshold and verify the policy in the appropriate account scope. Five is a scenario requirement, not a universal recommendation for every environment.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.7 Workstation security and hardening",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#27-workstation-security-and-hardening"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified zero-threshold semantics and related policy distinctions; uses an explicit organizational requirement rather than prescribing an arbitrary universal lockout value.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Account lockout threshold",
+            "url": "https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/security-policy-settings/account-lockout-threshold"
+          }
+        ]
+      },
+      "evidence": "Local account policy\nAccount lockout threshold:          0 invalid logon attempts\nAccount lockout duration:           15 minutes\nReset account lockout counter after: 15 minutes\nMaximum password age:              60 days"
+    },
+    {
+      "id": "apc2-083",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.8"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "An organization reviews mobile-device controls for a case in which an attacker obtains an offline copy of a lost phone's storage. Which control directly protects the confidentiality of the stored file contents?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "A short screen-inactivity timeout",
+          "explanation": "A timeout limits use through an unattended screen. It does not itself transform the underlying file contents in an offline copy of storage."
+        },
+        {
+          "id": "b",
+          "text": "Remote location tracking",
+          "explanation": "Location tracking may help find a lost device. It does not make an already obtained copy of its file contents unreadable."
+        },
+        {
+          "id": "c",
+          "text": "Device data encryption",
+          "explanation": "Encryption stores protected file contents in encoded form. Without the required decryption keys, an offline copy does not provide the original readable data."
+        },
+        {
+          "id": "d",
+          "text": "A failed-sign-in lockout policy",
+          "explanation": "A lockout limits interactive authentication attempts. It does not independently encrypt copied file data when that sign-in interface is not being used."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "Match the control to the access path. Encryption protects data at rest, while screen locks and lockouts regulate interactive access and tracking addresses device recovery. Device encryption works together with secure key handling and authentication. It does not promise protection after an attacker obtains valid decryption keys or reads data through an already unlocked session.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.8 Mobile device security",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#28-mobile-device-security"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked Android data-at-rest encryption; distinguishes offline storage exposure from an unlocked session and does not imply every current phone offers a manual encryption toggle.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Android Open Source Project: Encryption",
+            "url": "https://source.android.com/docs/security/features/encryption"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-084",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.9"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "Company policy requires destruction of retired drives and a record tying the completed work to each drive's serial number. A disposal vendor has collected and processed the drives. Which document BEST establishes the required completion record?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "A certificate listing serials, destruction method, and verification",
+          "explanation": "A destruction or sanitization certificate links the specific media to the method performed and recorded outcome. It should be checked against the original serial-number list."
+        },
+        {
+          "id": "b",
+          "text": "A collection receipt listing serials and the pickup location",
+          "explanation": "The receipt documents transfer to the vendor, not the destruction result. The drives could have been collected without the required processing being completed."
+        },
+        {
+          "id": "c",
+          "text": "A recycling invoice listing shipment weight and total charges",
+          "explanation": "Weight and charges establish billing information. They do not identify which individual drives were destroyed or verify the outcome for those serial numbers."
+        },
+        {
+          "id": "d",
+          "text": "A service agreement listing disposal duties and retention terms",
+          "explanation": "The agreement defines obligations before or during service. It is not evidence that the specified processing actually occurred on each drive."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "Collection, contractual requirements, and completion are different records. The requested evidence must connect each physical drive to the performed destruction process and its verified outcome. Review the certificate for the matching serials, date, method, and responsible party; retaining a document with an appropriate title alone is not a substitute for checking its contents.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.9 Data destruction and disposal",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#29-data-destruction-and-disposal"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked NIST SP 800-88r2 documentation and certificate fields; treats a certificate as a record to reconcile rather than claiming its title independently proves successful destruction.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "NIST SP 800-88 Rev. 2: Media sanitization and documentation",
+            "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-88r2.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-085",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.10"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A supported SOHO router has a documented software vulnerability. The manufacturer has released a firmware update for the exact model and hardware revision to correct it. No compromise is indicated. Which action directly addresses the vulnerable router code?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Replace the wireless network passphrase",
+          "explanation": "A unique wireless passphrase controls who can join the network. It does not replace or correct the vulnerable firmware code."
+        },
+        {
+          "id": "b",
+          "text": "Change the router administrator password",
+          "explanation": "A strong administrator password protects management authentication. It is useful hardening but does not patch the software defect described."
+        },
+        {
+          "id": "c",
+          "text": "Disable the wireless network-name broadcast",
+          "explanation": "Suppressing the advertised network name does not patch firmware and is not a reliable replacement for wireless authentication or encryption."
+        },
+        {
+          "id": "d",
+          "text": "Install the matching vendor firmware update",
+          "explanation": "The model-specific firmware update replaces the affected router software. Verify its source and compatibility and follow the manufacturer's update procedure."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "Configuration hardening and software maintenance solve different problems. In this case the vendor has identified and corrected a defect in router software, so the matching trusted firmware update addresses the cause. Plan for the update's service interruption and verify operation afterward. Changing credentials alone leaves that vulnerable implementation in place.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.10 SOHO network security",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#210-soho-network-security"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified firmware maintenance against FTC guidance; establishes vendor compatibility and no evidence of compromise so the question does not omit incident-response prerequisites.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "FTC: Secure internet-connected devices and firmware",
+            "url": "https://consumer.ftc.gov/articles/securing-your-internet-connected-devices-home"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-086",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.11"
+      ],
+      "type": "single",
+      "difficulty": "foundation",
+      "stem": "A user closes every Microsoft Edge InPrivate window after a browsing session on a shared computer. Which benefit does InPrivate provide for that session?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "It hides the destinations from the network administrator.",
+          "explanation": "InPrivate does not make network activity anonymous. Administrators and services can still observe activity available through their systems and logs."
+        },
+        {
+          "id": "b",
+          "text": "It removes that session's normal browsing history from Edge.",
+          "explanation": "Closing all InPrivate windows clears the session's normal browser history and associated temporary browsing data. This limits what the next browser user sees."
+        },
+        {
+          "id": "c",
+          "text": "It encrypts downloaded files against other local accounts.",
+          "explanation": "InPrivate does not apply file encryption to downloads. Downloaded files can remain on the device after the private windows close."
+        },
+        {
+          "id": "d",
+          "text": "It prevents the visited sites from recording account activity.",
+          "explanation": "A website can still record activity performed on its service, including activity linked to an account. InPrivate primarily changes local browser-data retention."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "Private browsing reduces local browser traces after the private session ends; it is not a VPN, disk-encryption system, or guarantee of anonymity. All InPrivate windows must close for the session cleanup. Downloads and deliberately saved favorites can remain, so the user should not treat the feature as comprehensive sanitization of a shared computer.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.11 Browser security",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#211-browser-security"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified Edge InPrivate lifecycle and limitations; specifies all windows closing and avoids claiming that downloads, saved favorites, or external logs are erased.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Browse InPrivate in Microsoft Edge",
+            "url": "https://support.microsoft.com/en-us/edge/browse-inprivate-in-microsoft-edge"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-087",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.1"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "A Windows workstation pauses when the user switches among several business applications. The technician collects the observations below. Which condition MOST likely explains the pauses?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Insufficient free capacity on the system drive",
+          "explanation": "The system drive still has substantial free capacity. Frequent pagefile activity points to active-memory pressure rather than evidence that storage space is exhausted."
+        },
+        {
+          "id": "b",
+          "text": "Insufficient RAM for the concurrent workload",
+          "explanation": "Very high memory use, paging, and recovery when unused applications close support memory pressure. The active application workload exceeds comfortable physical-memory capacity."
+        },
+        {
+          "id": "c",
+          "text": "Processor saturation from a background task",
+          "explanation": "The observed CPU utilization is low during the pauses. The evidence instead follows memory consumption and pagefile activity."
+        },
+        {
+          "id": "d",
+          "text": "Congestion on the office network connection",
+          "explanation": "The affected work uses local documents, and network activity is low. Closing memory-consuming local applications relieves the symptom without changing the network."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "A busy disk is not automatically the original bottleneck. When the working set does not fit comfortably in RAM, Windows may move data between memory and the pagefile, slowing application switching. The low CPU load, free disk capacity, and improvement after closing applications support that explanation. These observations do not by themselves prove defective RAM or a memory leak.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.1 Windows OS issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#31-windows-os-issues"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked memory-pressure and paging behavior; includes an intervention and independent observations instead of diagnosing low RAM from one utilization number.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Memory footprint optimization",
+            "url": "https://learn.microsoft.com/en-us/windows-hardware/test/wpt/memory-footprint-optimization"
+          }
+        ]
+      },
+      "evidence": "Technician observations during the pauses\nCPU utilization: approximately 12%\nPhysical memory in use: approximately 96%\nFree space on system drive: 80 GB\nResource Monitor: frequent pagefile.sys reads and writes\nNetwork activity: low; affected documents are local\nClosing unused applications: memory use falls to 61%; pauses stop"
+    },
+    {
+      "id": "apc2-088",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.1"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "Windows 11 stopped starting after the latest cumulative quality update. There was no feature-version upgrade. Startup Repair did not resolve the issue, and no restore point is available. From Windows RE, which option attempts to reverse the implicated change while retaining installed applications?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Reset this PC using Keep my files",
+          "explanation": "This reset can retain personal files but removes installed desktop applications. It is broader than reversing the recent update and fails the application-retention requirement."
+        },
+        {
+          "id": "b",
+          "text": "Uninstall latest feature update",
+          "explanation": "A feature-update rollback addresses a version upgrade. The scenario specifies a cumulative quality update with no feature-version change."
+        },
+        {
+          "id": "c",
+          "text": "Recover from the factory system image",
+          "explanation": "A factory recovery restores a different system baseline and can remove current applications. It is not the targeted reversal of the latest quality update."
+        },
+        {
+          "id": "d",
+          "text": "Uninstall latest quality update",
+          "explanation": "The Windows RE update-removal option targets the latest quality update. It can reverse that change without performing a reset or factory restoration."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "Choose the recovery operation that matches the type of change. A quality update differs from a feature-version upgrade, so their removal options are not interchangeable. The question specifies the prior repair results and asks for a targeted recovery attempt, not a guarantee that an update is the only possible cause. After recovery, investigate the failure before retrying the affected update.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.1 Windows OS issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#31-windows-os-issues"
+        },
+        {
+          "title": "Windows Startup Recovery",
+          "path": "practice/pbqs/a-plus-core-2/windows-startup-recovery/README.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified Windows RE update removal; distinguishes quality and feature changes, removes an available-restore-point alternative, and retains application preservation as a meaningful constraint.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Uninstall a Windows update from Windows RE",
+            "url": "https://support.microsoft.com/en-us/windows/deployment/updates-lifecycle/how-to-uninstall-a-windows-update"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-089",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.1"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "One desktop application no longer opens after its update was interrupted. Windows and other applications work normally. The software vendor confirms that a required DLL in the application's own installation folder is missing and recommends its supported repair function. Which action is MOST appropriate?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Run System File Checker with /scannow",
+          "explanation": "SFC repairs protected Windows system files. The missing DLL belongs to this third-party application, so its supported installation repair is the appropriate target."
+        },
+        {
+          "id": "b",
+          "text": "Run CHKDSK with filesystem-repair options",
+          "explanation": "CHKDSK addresses filesystem consistency problems. No disk corruption is established, and it does not obtain and reinstall the missing application component."
+        },
+        {
+          "id": "c",
+          "text": "Repair the affected application installation",
+          "explanation": "The application's supported repair process can restore its missing installed components. It addresses the confirmed defect without replacing a functioning OS."
+        },
+        {
+          "id": "d",
+          "text": "Enable an older Windows compatibility mode",
+          "explanation": "Compatibility settings can help applications written for earlier Windows behavior. They do not reinstall an absent private application DLL after an interrupted update."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "Match the repair to ownership of the missing component. A DLL in an application's private installation can be restored by that vendor's installer or supported Repair option; it is not necessarily a protected Windows file. Use trusted installation sources, complete the repair, and reopen the application to verify success before considering broader system changes.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.1 Windows OS issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#31-windows-os-issues"
+        },
+        {
+          "title": "Windows BSOD and Application Troubleshooting",
+          "path": "practice/pbqs/a-plus-core-2/windows-bsod-application/README.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked supported application-repair behavior; explicitly separates a third-party application DLL from protected Windows files and does not recommend downloading individual DLLs.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Repair apps and programs in Windows",
+            "url": "https://support.microsoft.com/en-us/windows/apps/repair-apps-and-programs-in-windows"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-090",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.2"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "An approved iPhone meeting app carries audio calls but shows no local video. The built-in Camera app works, and the user previously declined the meeting app's request to use the camera. No management restriction applies. Which setting should the technician change?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Allow camera access for the meeting app",
+          "explanation": "iOS grants camera access per application. Enabling the approved app's previously denied camera permission addresses the specific failure while leaving other app permissions unchanged."
+        },
+        {
+          "id": "b",
+          "text": "Allow Bluetooth access for the meeting app",
+          "explanation": "Bluetooth permission controls access to relevant nearby devices. It does not authorize use of the iPhone's built-in camera."
+        },
+        {
+          "id": "c",
+          "text": "Enable cellular data for the meeting app",
+          "explanation": "The app already has working call connectivity. Cellular-data permission does not grant local camera access and would not correct the earlier denial."
+        },
+        {
+          "id": "d",
+          "text": "Enable microphone access for the meeting app",
+          "explanation": "Audio already works, so microphone capture is not the missing permission. Camera and microphone permissions are separate controls."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "A working built-in Camera app makes a general camera failure less likely, and the earlier denial identifies an app-specific access problem. Review the meeting app under the camera privacy permissions and allow the required access, then retest video. Granting unrelated permissions or resetting the entire device is unnecessary for the supplied evidence.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.2 Mobile OS and application issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#32-mobile-os-and-application-issues"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified per-app iOS camera permissions; rules out device management and separates working audio/network functions from the denied video-capture function.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Apple: Control access to hardware features on iPhone",
+            "url": "https://support.apple.com/guide/iphone/control-access-to-hardware-features-iph168c4bbd5/ios"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-091",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.2"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "An iPad remains in portrait orientation when turned sideways in several applications that support landscape mode. The display and touch input otherwise work. Before considering hardware service, which setting should the technician check FIRST?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Automatic screen brightness",
+          "explanation": "Automatic brightness adjusts the display for ambient light. It does not determine whether supported applications can rotate between portrait and landscape."
+        },
+        {
+          "id": "b",
+          "text": "Auto-Lock timeout",
+          "explanation": "Auto-Lock controls when an inactive iPad locks its screen. It does not lock the display orientation while the user is actively turning the device."
+        },
+        {
+          "id": "c",
+          "text": "Display text-size adjustment",
+          "explanation": "Text size changes readability and layout. It is not the device-wide orientation lock that can prevent rotation across multiple compatible applications."
+        },
+        {
+          "id": "d",
+          "text": "Rotation Lock in Control Center",
+          "explanation": "Rotation Lock can hold the iPad in its current orientation. Check and disable it before investigating a sensor or arranging hardware service."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "First check the ordinary setting that can account for the behavior across otherwise functioning applications. Rotation Lock prevents orientation changes even when the apps support them. If it is off and the symptom remains after appropriate software troubleshooting, investigate further. Explicit landscape support matters because an application designed for only one orientation is not evidence of a device fault.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.2 Mobile OS and application issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#32-mobile-os-and-application-issues"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified iPad rotation-lock behavior and app-specific limitations; asks for an initial settings check, not an unsupported diagnosis of a failed motion sensor.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Apple: Rotate the screen on your iPad",
+            "url": "https://support.apple.com/en-us/102499"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-092",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.3"
+      ],
+      "type": "multiple",
+      "difficulty": "applied",
+      "stem": "Support has confirmed that a downloaded Android app is malicious. The personal phone is not enrolled in organizational management, and its owner can change the settings shown below. Which TWO actions are needed to remove this app through the normal settings workflow?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Deactivate the app as a device administrator",
+          "explanation": "An active device-administrator app must first be unregistered from that role before normal uninstallation. Remove this malicious app's administrator status using the accessible settings."
+        },
+        {
+          "id": "b",
+          "text": "Clear the app's cached temporary files",
+          "explanation": "Clearing the cache removes temporary data. It does not unregister the app as an administrator or remove its installed executable code."
+        },
+        {
+          "id": "c",
+          "text": "Uninstall the malicious application",
+          "explanation": "Once administrator status is deactivated, normal app removal deletes the installed application. Removing its privileged role alone leaves the unwanted app installed."
+        },
+        {
+          "id": "d",
+          "text": "Change the default home-screen launcher",
+          "explanation": "Changing the launcher changes the home-screen interface. It does not revoke the app's administrator role or remove the malicious program from the phone."
+        }
+      ],
+      "correct": [
+        "a",
+        "c"
+      ],
+      "explanation": "The settings identify a removal prerequisite rather than an unavailable package or a company-enforced management policy. Deactivate the malicious app's device-administrator role, then uninstall it. Cache cleanup or a different launcher does not accomplish either step. After removal, complete the appropriate security checks; these two actions alone do not prove that no related threat remains.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.3 Mobile security issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#33-mobile-security-issues"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked Android device-administrator removal prerequisite. Maps to malicious applications under objective 3.3; specifies an unmanaged personal phone and accessible deactivation control rather than assuming enterprise device-owner restrictions can be bypassed.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Android Developers: Device administration and unregistration before uninstall",
+            "url": "https://developer.android.com/work/device-admin"
+          }
+        ]
+      },
+      "evidence": "Android settings findings\nApp: QuickTools, downloaded from an unapproved website\nDevice administrator: active\nApp info > Uninstall: disabled\nDevice-administrator deactivation control: available to owner"
+    },
+    {
+      "id": "apc2-093",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.3"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "An Android phone with Google Play services develops unusual background activity after several apps were installed from websites. The technician wants to check the installed applications for harmful behavior, including apps obtained outside the official store. Which tool directly supports this check?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Google Play Protect",
+          "explanation": "Play Protect checks installed apps for potentially harmful behavior, including applications from sources outside Google Play. Its coverage is not limited to store downloads."
+        },
+        {
+          "id": "b",
+          "text": "Chrome Safe Browsing",
+          "explanation": "Safe Browsing helps identify dangerous websites and downloads in supported browsing contexts. It is not the installed-application scanning service requested here."
+        },
+        {
+          "id": "c",
+          "text": "Android Data Saver",
+          "explanation": "Data Saver limits some background cellular-data use. It can change traffic levels but does not analyze installed application code for harmful behavior."
+        },
+        {
+          "id": "d",
+          "text": "Android battery optimization",
+          "explanation": "Battery optimization constrains background work to reduce energy use. It does not provide a verdict on whether an installed application is malicious."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "Match the investigation tool to the suspected software layer. Play Protect can assess installed Android applications, including sideloaded apps. Browser protections, data limits, and power controls serve different purposes. Unusual activity alone does not establish malware, and a scan that reports no findings is useful evidence rather than a guarantee that every threat is absent.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.3 Mobile security issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#33-mobile-security-issues"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked Google scanning coverage for apps from outside the store; aligns with unofficial application sources and malicious apps in objective 3.3. Does not infer malware solely from background activity or treat a clean scan as conclusive.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Google: Play Protect checks apps from Google Play and other sources",
+            "url": "https://support.google.com/googleplay/answer/2812853?hl=en"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-094",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.4"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "After unwanted software is removed, Edge and Chrome still fail to load websites on a Windows workstation. Both use the system proxy settings. The office permits direct internet access, requires no proxy, and confirms the setting below is unauthorized. No service listens on the listed local port. Which correction directly addresses the evidence?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Renew the workstation's DHCP lease",
+          "explanation": "A new lease refreshes network addressing. It does not remove a browser instruction to send web traffic through an unavailable local proxy."
+        },
+        {
+          "id": "b",
+          "text": "Flush the workstation's DNS cache",
+          "explanation": "Flushing cached records can help stale name resolution. The browsers are instead directed to an unauthorized proxy endpoint that is not accepting connections."
+        },
+        {
+          "id": "c",
+          "text": "Turn off the unauthorized manual proxy",
+          "explanation": "The configured proxy sends web requests to a nonexistent service on the local computer. Removing that setting restores the permitted direct connection path."
+        },
+        {
+          "id": "d",
+          "text": "Change the preferred DNS server address",
+          "explanation": "Changing the resolver leaves the system proxy enabled. A correctly resolved website can still fail when requests are routed through the unavailable proxy."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "A proxy setting can remain after the program that created it is removed. The loopback address refers to this workstation, not to a functioning external gateway. Because the office explicitly allows direct access and the local endpoint is absent, disable the unauthorized manual proxy and verify browsing. Continue the security checks; successful browsing alone does not prove that cleanup is complete.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.4 PC security issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#34-pc-security-issues"
+        },
+        {
+          "title": "Malware Investigation and Remediation",
+          "path": "practice/pbqs/a-plus-core-2/malware-investigation-remediation/README.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified manual Windows proxy address/port behavior; establishes system-proxy use, permitted direct access, and an absent local service so DNS and DHCP changes are not equivalent repairs.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Use a proxy server in Windows",
+            "url": "https://support.microsoft.com/en-us/windows/experience/connectivity-networking/use-a-proxy-server-in-windows"
+          }
+        ]
+      },
+      "evidence": "Windows Settings > Network & internet > Proxy\nManual proxy setup\n  Use a proxy server: On\n  Proxy IP address: 127.0.0.1\n  Port: 8181"
+    },
+    {
+      "id": "apc2-095",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.4"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "A user sees a payment demand on a Windows desktop. Closing the browser does not restore access to documents. Several independent applications cannot open previously usable files, and checks confirm that their contents have been encrypted without authorization. Which issue BEST explains these findings?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "A damaged Windows user profile",
+          "explanation": "Profile corruption can affect sign-in and user settings. It does not account for verified encryption of document contents together with an extortion demand."
+        },
+        {
+          "id": "b",
+          "text": "A browser-only scareware advertisement",
+          "explanation": "A deceptive browser alert can falsely claim that files are locked. Here the loss of access persists outside the browser and unauthorized encryption is independently confirmed."
+        },
+        {
+          "id": "c",
+          "text": "An expired document-application license",
+          "explanation": "License expiry can restrict a specific application. It does not explain multiple applications finding the underlying documents encrypted without authorization."
+        },
+        {
+          "id": "d",
+          "text": "A ransomware infection",
+          "explanation": "Unauthorized file encryption combined with a demand for payment is characteristic of ransomware. The evidence establishes a data-level problem beyond a browser message."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "An alert alone does not prove ransomware, but independently verified unauthorized encryption of formerly readable files strongly supports it. The effects in other applications distinguish actual data damage from a browser-only fraudulent warning. Follow the established containment and recovery procedure rather than treating the demand as a valid repair instruction or assuming payment guarantees recovery.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.4 PC security issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#34-pc-security-issues"
+        },
+        {
+          "title": "Malware Investigation and Remediation",
+          "path": "practice/pbqs/a-plus-core-2/malware-investigation-remediation/README.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked ransomware file-encryption behavior; contrasts confirmed effects outside the browser with the existing browser-only scareware item rather than repeating its initial response.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Protect your PC from ransomware",
+            "url": "https://support.microsoft.com/en-us/windows/security/protect-your-pc-from-ransomware"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-096",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.1"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "A help desk uses the priority policy below. Each reported service is required for the affected users' work, and no workaround is available for an outage. Which ticket should receive HIGH priority under this policy?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Email is unavailable to every employee at the site.",
+          "explanation": "A required service is unavailable site-wide, so the supplied policy places this ticket in Critical rather than High. Business impact must be evaluated against the stated categories."
+        },
+        {
+          "id": "b",
+          "text": "The payroll application is unavailable to the payroll department.",
+          "explanation": "A required service is unavailable to an entire department, with no workaround. This matches the stated High category rather than the site-wide Critical category."
+        },
+        {
+          "id": "c",
+          "text": "One employee cannot sign in to an otherwise working workstation.",
+          "explanation": "The incident prevents one person from working but does not affect a department or the whole site. The supplied policy assigns that scope to Medium."
+        },
+        {
+          "id": "d",
+          "text": "An application displays the previous company logo on its splash screen.",
+          "explanation": "The logo issue is cosmetic and does not stop the work. Under this explicit policy it belongs in Low rather than an outage category."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "Priority should follow the documented policy and the actual scope of impact, not how strongly a requester describes the problem. The payroll outage affects a department, while the email outage meets the separate site-wide category. A different organization could define these labels differently; this question supplies the rules needed to make one defensible assignment.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.1 Documentation and support systems",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#41-documentation-and-support-systems"
+        },
+        {
+          "title": "Help Desk Ticket Triage",
+          "path": "practice/pbqs/a-plus-core-2/helpdesk-ticket-triage/README.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked ticket categorization against objective 4.1; includes a complete four-level local policy and workaround context instead of assuming universal severity labels or subjective business priorities.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          }
+        ]
+      },
+      "evidence": "Help-desk priority policy\nCritical: required service unavailable to the entire site\nHigh: required service unavailable to one department\nMedium: one user unable to perform a required task\nLow: cosmetic issue or routine information request"
+    },
+    {
+      "id": "apc2-097",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.2"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A tested configuration change is approved for Saturday's maintenance window. On Friday, the technician finds time to implement it early. The change policy requires approval for changes to the scheduled window. What should the technician do before deploying on Friday?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Deploy using the existing change number, then record the earlier time.",
+          "explanation": "The original approval covers the scheduled window, not any convenient time. Recording the deviation afterward does not satisfy the required prior approval."
+        },
+        {
+          "id": "b",
+          "text": "Send affected users a notice, then use the original approval.",
+          "explanation": "User notification is useful, but it does not replace authorization for the schedule change. The explicit policy requires approval of the new window."
+        },
+        {
+          "id": "c",
+          "text": "Request approval for the revised maintenance window.",
+          "explanation": "The implementation time is part of the approved change. Obtain authorization for the revised window and complete the required communication before proceeding."
+        },
+        {
+          "id": "d",
+          "text": "Move the planned start time in the ticket after deployment.",
+          "explanation": "An administrative edit after the work does not establish authorization before deployment. It can also obscure the difference between the approved plan and actual execution."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "Successful testing and an existing change number do not make every production schedule interchangeable. A maintenance window can reflect user availability, dependencies, staffing, and recovery arrangements. Follow the stated policy to approve the new timing; if the revision is not approved, use the existing authorized window. A post-change record should accurately describe what actually occurred.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.2 Change management",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#42-change-management"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked approval and schedule control against objective 4.2; states the governing policy and does not imply every organization requires the same approval mechanism.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-098",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.3"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A backup job reports successful completion each night. The team needs evidence that the backed-up documents can actually be recovered and used. Which validation provides the STRONGEST evidence for that requirement?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Restore sample documents separately and open them successfully.",
+          "explanation": "A separate test restoration exercises the recovery path and verifies readable output. It directly tests the requested capability without overwriting the live documents."
+        },
+        {
+          "id": "b",
+          "text": "Confirm that the backup schedule is enabled for the next run.",
+          "explanation": "An enabled schedule establishes that future work is planned. It does not show that an existing backup contains recoverable, usable documents."
+        },
+        {
+          "id": "c",
+          "text": "Verify that the backup repository accepts an administrator sign-in.",
+          "explanation": "Repository access is one recovery prerequisite. It does not demonstrate that the stored backup can reconstruct documents that applications can open."
+        },
+        {
+          "id": "d",
+          "text": "Compare the backup file size with the previous night's file.",
+          "explanation": "A plausible size can help identify anomalies, but size alone does not validate content integrity, recovery tooling, or readability of restored documents."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "A completion status shows what the backup job reported, while a restore test checks whether recovery actually works. Restore representative data to a separate location, open it with the intended applications, and record the result. Sampling is useful evidence rather than proof that every file or every full-system recovery scenario has been tested.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.3 Backup and recovery",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#43-backup-and-recovery"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked NIST backup testing and information integrity; uses a separate restore location and limits the claim to the representative data actually tested.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "NIST SP 800-34 Rev. 1: Contingency planning and recovery testing",
+            "url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-34r1.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-099",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.4"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A technician notices that a laptop battery has swollen and is lifting the case. The laptop is still operating. Which action is MOST appropriate?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Run a calibration cycle before deciding whether replacement is needed.",
+          "explanation": "Calibration addresses charge reporting, not physical swelling. Continuing a use cycle delays the manufacturer-recommended removal of the affected battery from service."
+        },
+        {
+          "id": "b",
+          "text": "Keep using AC power and schedule the battery check for the next visit.",
+          "explanation": "Leaving the machine in ordinary service does not address the swollen battery. An AC connection does not remove the defective battery or make continued use appropriate."
+        },
+        {
+          "id": "c",
+          "text": "Press the case flat and retighten the cover screws.",
+          "explanation": "Compressing or forcing the enclosure can damage the swollen battery. Mechanical pressure is not a repair for the underlying battery condition."
+        },
+        {
+          "id": "d",
+          "text": "Stop use and arrange the manufacturer's battery-service procedure.",
+          "explanation": "Discontinue use, disconnect external power as directed, and arrange appropriate battery service. Follow model-specific handling and disposal instructions rather than forcing the case or battery."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "Physical swelling requires a handling and service response, even if the laptop still turns on. Follow the manufacturer's directions for taking the affected device out of use and arranging battery replacement. Do not improvise disassembly or disposal. A working display or an accurate charge percentage does not establish that the battery is suitable for continued operation.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.4 Safety procedures",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#44-safety-procedures"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified manufacturer swollen-battery handling; asks for stopping routine use and model-specific service, without teaching puncturing, improvised discharge, or forced removal.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Dell: Handling swollen lithium-ion batteries",
+            "url": "https://dl.dell.com/topicspdf/swollenbattery-3_en-us.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-100",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.5"
+      ],
+      "type": "single",
+      "difficulty": "foundation",
+      "stem": "A desktop and small file server must remain powered during brief utility outages so work can be saved and both systems can shut down normally. Which device should be selected with enough capacity and runtime for that load?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "A surge suppressor",
+          "explanation": "A surge suppressor helps limit voltage spikes. It does not provide the stored energy needed to keep these systems running when utility power is absent."
+        },
+        {
+          "id": "b",
+          "text": "An uninterruptible power supply",
+          "explanation": "A suitably sized UPS supplies backup power during an outage. Its actual load and battery runtime determine the available time to save work and shut down."
+        },
+        {
+          "id": "c",
+          "text": "A basic power distribution strip",
+          "explanation": "A basic power strip distributes an available source to multiple outlets. It does not generate backup power when that source fails."
+        },
+        {
+          "id": "d",
+          "text": "A line conditioner without a battery",
+          "explanation": "A line conditioner can address some voltage-quality problems while input power is available. Without stored energy, it does not sustain an outage workload."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "Protection from a voltage spike and continuity during a loss of power are different requirements. Battery backup in a UPS provides a limited operating interval, so capacity and runtime must match the connected devices. Graceful automatic shutdown also needs an appropriate supported connection and configuration; the presence of a UPS alone does not configure that behavior.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.5 Environmental controls",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#45-environmental-controls"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified UPS backup power versus surge suppression; requires load/runtime sizing and does not promise automatic shutdown or indefinite operation from an unspecified unit.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Schneider Electric: UPS versus surge protection",
+            "url": "https://www.se.com/us/en/faqs/FAQ000281890/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-101",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.7"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A technician has escalated an unresolved application problem to the vendor. No reliable repair time is available. The user needs to plan the afternoon's work. Which response BEST sets an expectation the technician can reasonably meet?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "The vendor usually fixes this type of issue today, so plan to resume work this afternoon.",
+          "explanation": "A general vendor expectation is not a confirmed repair time. Presenting it as a basis for the user's work plan promises an outcome outside the technician's control."
+        },
+        {
+          "id": "b",
+          "text": "The ticket remains open in the portal; check it periodically for any vendor changes.",
+          "explanation": "The portal can provide visibility, but this response places all follow-up on the user and makes no clear commitment to communicate the current status."
+        },
+        {
+          "id": "c",
+          "text": "I have escalated the case and will update you by 3 p.m., even if a repair is still pending.",
+          "explanation": "A specific status-update time is a commitment the technician can control. It communicates the escalation and avoids presenting an unverified repair estimate as certain."
+        },
+        {
+          "id": "d",
+          "text": "I will contact you when the vendor confirms a fix; there is no further update until then.",
+          "explanation": "Waiting indefinitely for a final fix leaves the user without a useful status timeline. An interim update can communicate progress or continued uncertainty without inventing a completion time."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "Professional support communication separates an update commitment from a repair guarantee. Explain the current status and agree on a realistic next contact, then follow through even if the technical situation has not changed. Where available, discuss approved workarounds or alternatives. Escalation transfers part of the investigation, not the responsibility to keep the requester informed.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.7 Communication and professionalism",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#47-communication-and-professionalism"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked expectations, timelines, and status communication against objective 4.7; all options concern plausible communication plans, with no invented SLA or guaranteed vendor outcome.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-102",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.8"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A technician reviews the short PowerShell script below. This Test-Path check returns true only when the specified folder exists. Which task does this script perform?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Reports whether a backup folder exists",
+          "explanation": "The conditional tests the path and writes one of two messages. It collects and reports a fact about the folder without changing or backing up its contents."
+        },
+        {
+          "id": "b",
+          "text": "Creates the backup folder when it is missing",
+          "explanation": "The Missing branch writes a message. No folder-creation command appears, so the script does not create the directory when the test is false."
+        },
+        {
+          "id": "c",
+          "text": "Copies local documents into the backup folder",
+          "explanation": "There is no file-copy operation or source-document path. The Ready message reports that the path exists, not that a backup was performed."
+        },
+        {
+          "id": "d",
+          "text": "Maps the backup folder to a network drive",
+          "explanation": "No drive-mapping action or remote share is configured. Inspecting a local path does not create a mapped drive letter."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "Scripts can gather information as well as make changes. Here the conditional chooses a status message based on the presence of C:\\Backups. Neither output string performs the task it describes: Ready is not proof of a completed backup, and Missing does not create the folder. Read the actual operations rather than inferring behavior from a label or filename.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.8 Scripting basics",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#48-scripting-basics"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked PowerShell conditional and Test-Path behavior, including Container to distinguish a folder from a same-named file. Defines the helper in the stem so the item tests basic information gathering rather than additional command memorization.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: PowerShell about_If",
+            "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_if?view=powershell-7.5"
+          },
+          {
+            "title": "Microsoft: PowerShell Test-Path",
+            "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/test-path?view=powershell-7.5"
+          }
+        ]
+      },
+      "evidence": "if (Test-Path -Path 'C:\\Backups' -PathType Container) {\n    Write-Output 'Ready'\n} else {\n    Write-Output 'Missing'\n}"
+    },
+    {
+      "id": "apc2-103",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.9"
+      ],
+      "type": "multiple",
+      "difficulty": "applied",
+      "stem": "An employee at home must use the graphical desktop of an office Windows 11 Pro PC. The PC accepts built-in Remote Desktop connections at its private office address. The company provides a VPN gateway and requires that the PC have no direct inbound access from the internet. Which TWO client connections meet these requirements together?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "An SFTP file-transfer connection",
+          "explanation": "SFTP transfers files through SSH. It does not provide the Windows graphical desktop or, by itself, the required connection into the private office network."
+        },
+        {
+          "id": "b",
+          "text": "A connection to the corporate VPN",
+          "explanation": "The approved VPN provides the remote network path to the private office address. It does not by itself display or control the workstation desktop."
+        },
+        {
+          "id": "c",
+          "text": "An SMB network-drive connection",
+          "explanation": "SMB can expose shared files after network access is established. Mapping a share does not provide an interactive Windows desktop session."
+        },
+        {
+          "id": "d",
+          "text": "A Remote Desktop client connection to the PC",
+          "explanation": "RDP provides the supported interactive desktop session. After the VPN establishes reachability, the client can connect to the PC's permitted private address."
+        }
+      ],
+      "correct": [
+        "b",
+        "d"
+      ],
+      "explanation": "These technologies serve complementary purposes: the VPN supplies access to the private network, and Remote Desktop supplies the graphical session on the authorized host. Using the approved path avoids opening a public inbound RDP port on the office router. The PC still needs to be available, permit the user, and accept the required traffic through its firewall.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.9 Remote access technologies",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#49-remote-access-technologies"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Verified VPN plus private-address RDP access; specifies a supported host edition, authorized gateway, and no public inbound exposure, without treating a VPN alone as remote desktop.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Remote Desktop access from outside the network",
+            "url": "https://learn.microsoft.com/en-us/windows-server/remote/remote-desktop-services/remotepc/remote-desktop-allow-outside-access"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-104",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.10"
+      ],
+      "type": "single",
+      "difficulty": "foundation",
+      "stem": "A generative AI assistant confidently recommends a vendor update and provides a support-article citation. The technician checks the vendor's official records and confirms that both the update and cited article are fabricated. Which AI limitation is illustrated?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Bias",
+          "explanation": "Bias concerns systematic skew or unfair tendencies in outputs. The defining evidence here is invented factual material, not a demonstrated pattern of unequal treatment."
+        },
+        {
+          "id": "b",
+          "text": "Disclosure of private data",
+          "explanation": "A privacy failure involves exposing information that should not be shared. The scenario establishes nonexistent technical references, not disclosure of actual confidential records."
+        },
+        {
+          "id": "c",
+          "text": "Plagiarism",
+          "explanation": "Plagiarism concerns presenting someone else's work without appropriate attribution. The records here are fabricated; no copied source material is established."
+        },
+        {
+          "id": "d",
+          "text": "Hallucination",
+          "explanation": "A hallucination is plausible-sounding output that contains invented or false information. Confidence and a realistic-looking citation do not make the claim accurate."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "Generative output can contain convincing detail without a factual basis. NIST also describes this behavior as confabulation. Verify technical recommendations and their citations against authoritative records before using them. A fabricated citation is not evidence that a real vendor instruction exists, even when the assistant presents it in a professional tone.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.10 Artificial intelligence basics",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#410-artificial-intelligence-basics"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Checked NIST AI 600-1 confabulation definition and objective 4.10 terminology; distinguishes fabricated factual claims from bias, plagiarism, and actual private-data exposure.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "NIST AI 600-1: Generative AI profile, confabulation",
+            "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf"
           }
         ]
       }

@@ -10,7 +10,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = file => JSON.parse(fs.readFileSync(path.join(root, 'docs/assets/data/practice-tests', file)));
 const exam = read('a-plus-core-2.json'), bank = read('a-plus-core-2-questions.json');
 const total = bank.questions.length;
-const domainCounts = { '1.0': 18, '2.0': 18, '3.0': 15, '4.0': 13 };
+const domainCounts = { '1.0': 29, '2.0': 29, '3.0': 24, '4.0': 22 };
 const catalog = JSON.parse(fs.readFileSync(path.join(root, 'docs/assets/data/pbqs.json')));
 const copy = value => JSON.parse(JSON.stringify(value));
 const config = (patch = {}) => ({ certification: exam.id, mode: 'practice', domains: exam.domains.map(d => d.id), objectives: exam.objectives.map(o => o.id), count: total, feedback: 'end', showAnswers: true, showExplanations: true, ...patch });
@@ -18,26 +18,29 @@ const seeded = seed => () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 2 *
 const fresh = (patch, seed = 10) => E.createSession(exam, bank, config(patch), seeded(seed));
 
 assert.deepEqual(E.validateBank(exam, bank), []);
-assert.equal(total, 64);
-assert.equal(bank.version, '2026-10-27.2');
+assert.equal(total, 104);
+assert.equal(bank.version, '2026-10-27.3');
 assert.deepEqual(bank.questions.map(q => q.id), Array.from({ length: total }, (_, i) => `apc2-${String(i + 1).padStart(3, '0')}`));
 assert.equal(exam.objectives.length, 36);
 assert.equal(certifications.length, 5);
 assert.equal(certifications.filter(c => c.bank && c.metadata).length, 1);
 assert.equal(new Set(bank.questions.map(q => q.stem.trim().toLowerCase())).size, total);
 for (const domain of exam.domains) assert.equal(bank.questions.filter(q => q.domain === domain.id).length, domainCounts[domain.id]);
-assert.equal(bank.questions.filter(q => q.type === 'multiple').length, 6);
-const additions = bank.questions.slice(24);
+assert.equal(bank.questions.filter(q => q.type === 'multiple').length, 9);
+const additions = bank.questions.slice(64);
 assert.equal(additions.length, 40);
-assert.equal(additions.filter(q => q.type === 'multiple').length, 4);
+assert.equal(additions.filter(q => q.type === 'multiple').length, 3);
+for (const [domain, count] of Object.entries({ '1.0': 11, '2.0': 11, '3.0': 9, '4.0': 9 })) {
+  assert.equal(additions.filter(q => q.domain === domain).length, count);
+}
 for (const objective of exam.objectives) {
   const selected = config({ domains: [objective.domain], objectives: [objective.id], count: 1 });
   const eligible = E.eligibleQuestions(exam, bank, selected);
-  assert.ok(eligible.length > 0, `Missing objective coverage: ${objective.id}`);
+  assert.ok(eligible.length >= 2, `Fewer than two questions for objective: ${objective.id}`);
   assert.equal(E.validateConfig(exam, bank, selected), null);
   assert.ok(E.createSession(exam, bank, selected).questionIds.every(id => eligible.some(q => q.id === id)));
 }
-for (const count of [1, 10, 20, 30, 50, total]) {
+for (const count of [1, 10, 20, 30, 50, 64, 99, 100, total]) {
   const state = fresh({ count });
   assert.equal(state.questionIds.length, count);
   assert.equal(new Set(state.questionIds).size, count);
@@ -159,17 +162,19 @@ for (const mutate of [
 ]) { const state = fresh(); mutate(state); assert.equal(E.restoreSession(state, exam, bank), null); }
 
 const memory = new Map(), storage = { getItem: key => memory.get(key) ?? null, setItem: (key, value) => memory.set(key, value), removeItem: key => memory.delete(key) };
-const previousBank = { ...bank, version: '2026-10-27.1', questions: bank.questions.slice(0, 24) };
-const previousAttempt = E.createSession(exam, previousBank, config({ count: 24 }));
-E.answer(previousAttempt, previousBank, previousAttempt.questionIds[0], previousBank.questions.find(q => q.id === previousAttempt.questionIds[0]).correct);
-previousAttempt.tools.whiteboard.text = 'Earlier attempt notes';
-const previousSnapshot = copy(previousAttempt);
-assert.equal(E.restoreSession(previousAttempt, exam, bank), null);
-assert.deepEqual(previousAttempt, previousSnapshot, 'Rejecting an old bank version must not mutate the saved answers or notes');
-E.saveSession(storage, previousAttempt);
-const incompatible = E.loadSession(storage, exam, bank);
-assert.equal(incompatible.session, null); assert.equal(incompatible.available, true); assert.match(incompatible.notice, /incompatible/);
-assert.deepEqual(JSON.parse(storage.getItem(E.STORAGE_KEY)), previousSnapshot);
+for (const [version, count] of [['2026-10-27.1', 24], ['2026-10-27.2', 64]]) {
+  const previousBank = { ...bank, version, questions: bank.questions.slice(0, count) };
+  const previousAttempt = E.createSession(exam, previousBank, config({ count }));
+  E.answer(previousAttempt, previousBank, previousAttempt.questionIds[0], previousBank.questions.find(q => q.id === previousAttempt.questionIds[0]).correct);
+  previousAttempt.tools.whiteboard.text = 'Earlier attempt notes';
+  const previousSnapshot = copy(previousAttempt);
+  assert.equal(E.restoreSession(previousAttempt, exam, bank), null);
+  assert.deepEqual(previousAttempt, previousSnapshot, 'Rejecting an old bank version must not mutate the saved answers or notes');
+  E.saveSession(storage, previousAttempt);
+  const incompatible = E.loadSession(storage, exam, bank);
+  assert.equal(incompatible.session, null); assert.equal(incompatible.available, true); assert.match(incompatible.notice, /incompatible/);
+  assert.deepEqual(JSON.parse(storage.getItem(E.STORAGE_KEY)), previousSnapshot);
+}
 assert.equal(E.saveSession(storage, immediate), true);
 assert.deepEqual(E.loadSession(storage, exam, bank).session, immediate);
 storage.setItem(E.STORAGE_KEY, '{corrupt'); assert.equal(E.loadSession(storage, exam, bank).session, null);
@@ -180,4 +185,4 @@ for (const prefix of ['/', '/it-cyber-student-hub/']) {
   assert.equal(E.resourceURL('reference/linux-commands.md', `https://example.test${prefix}`), `https://example.test${prefix}reference/linux-commands/`);
   assert.equal(E.resourceURL('practice/pbqs/a-plus-core-2/helpdesk-ticket-triage/README.md', `https://example.test${prefix}`), `https://example.test${prefix}practice/pbqs/a-plus-core-2/helpdesk-ticket-triage/`);
 }
-console.log(`PASS practice tests: ${total} validated questions, all 36 objectives covered, domain targets, 40 additions including four multiple-response items, 1/10/20/30/50/all question counts, local resources, invalid banks/configs, 200 shuffled sessions, every answer position, exact multi-response scoring, old-bank rejection without mutation, locks, restore/corruption, whiteboard isolation, and storage denial.`);
+console.log(`PASS practice tests: ${total} validated questions, all 36 objectives have at least two questions, domain targets, 40 additions including three multiple-response items, counts through 100 and all available, local resources, invalid banks/configs, 200 shuffled sessions, every answer position, exact multi-response scoring, 24/64-question old-bank rejection without mutation, locks, restore/corruption, whiteboard isolation, and storage denial.`);

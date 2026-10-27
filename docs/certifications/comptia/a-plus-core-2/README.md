@@ -103,7 +103,7 @@ hub:hidden -->
 
 - [A+ Core 2 Practice Test](../../../practice/tests/README.md)
 
-    Choose domains, objectives, and a question count from the 64-question bank covering all 36 objectives. Configure correct-answer feedback and detailed explanations, then review your results by domain and objective.
+    Choose domains, objectives, and a question count from the 104-question bank covering all 36 objectives, with at least two questions per objective. Configure correct-answer feedback and detailed explanations, then review your results by domain and objective.
 
 - [Operating Systems and File Systems Essentials — Kahoot!](https://create.kahoot.it/share/operating-systems-and-file-systems-essentials/3fd97dce-08bb-475e-a0d3-a743d981b5f8)
 

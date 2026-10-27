@@ -4,6 +4,7 @@ const path = require('node:path');
 const http = require('node:http');
 const { chromium } = require('playwright');
 const bank = require('../docs/assets/data/practice-tests/a-plus-core-2-questions.json');
+const exam = require('../docs/assets/data/practice-tests/a-plus-core-2.json');
 const total = bank.questions.length;
 const countFor = ({ domain, objective } = {}) => bank.questions.filter(q => (!domain || q.domain === domain) && (!objective || q.objectives.includes(objective))).length;
 const KEY = 'student-hub.exam.session.v1';
@@ -164,7 +165,11 @@ async function browser(base) {
       const click = id => p.locator('#' + id).click();
       const overflow = async () => assert.equal(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true, `Horizontal overflow at ${p.viewportSize().width}px`);
       const reset = async () => { await click('new-test'); await click('confirm-action'); await p.locator('#setup').waitFor({ state: 'visible' }); };
-      const start = async (count = 'all') => { await p.locator('#count-preset').selectOption(count); await click('start-test'); await p.locator('#exam').waitFor({ state: 'visible' }); };
+      const start = async (count = 'all', customCount) => {
+        await p.locator('#count-preset').selectOption(count);
+        if (count === 'custom') await p.locator('#custom-count').fill(String(customCount));
+        await click('start-test'); await p.locator('#exam').waitFor({ state: 'visible' });
+      };
       const go = index => p.locator('#question-navigator button').nth(index).click();
       const onlyObjective = async id => {
         await click('select-none');
@@ -189,14 +194,15 @@ async function browser(base) {
       await p.locator('[id="domain-2.0"]').check();
       assert.match(await p.locator('#available').innerText(), new RegExp(`${countFor({ domain: '2.0' })} validated`));
       assert.equal(await p.locator('#count-preset option[value="10"]').isDisabled(), false);
-      assert.equal(await p.locator('#count-preset option[value="20"]').isDisabled(), true);
+      assert.equal(await p.locator('#count-preset option[value="20"]').isDisabled(), false);
+      assert.equal(await p.locator('#count-preset option[value="30"]').isDisabled(), true);
       await p.locator('#count-preset').selectOption('custom'); await p.locator('#custom-count').fill('99');
       await click('use-available'); assert.equal(await p.locator('#start-test').isDisabled(), false);
-      await p.locator('[id="domain-1.0"]').check(); assert.match(await p.locator('#available').innerText(), /36 validated/);
+      await p.locator('[id="domain-1.0"]').check();
+      assert.match(await p.locator('#available').innerText(), new RegExp(`${countFor({ domain: '1.0' }) + countFor({ domain: '2.0' })} validated`));
       assert.equal(await p.locator('#count-preset option[value="30"]').isDisabled(), false);
-      assert.equal(await p.locator('#count-preset option[value="50"]').isDisabled(), true);
-      await onlyObjective('2.2'); assert.match(await p.locator('#available').innerText(), /2 validated/);
-      for (const objective of ['1.2', '1.6', '1.7', '1.10', '1.11', '2.4', '2.7', '2.8', '2.9', '2.10', '2.11', '4.4', '4.5', '4.6', '4.9']) {
+      assert.equal(await p.locator('#count-preset option[value="50"]').isDisabled(), false);
+      for (const { id: objective } of exam.objectives) {
         await onlyObjective(objective);
         assert.match(await p.locator('#available').innerText(), new RegExp(`${countFor({ objective })} validated`));
         await start();
@@ -208,8 +214,18 @@ async function browser(base) {
       await click('select-all');
       assert.equal(await p.locator('#count-preset option[value="50"]').isDisabled(), false, 'The expanded full pool supports the 50-question preset');
       await p.locator('#count-preset').selectOption('custom');
-      for (const value of ['0', '1.5', '99']) { await p.locator('#custom-count').fill(value); assert.equal(await p.locator('#start-test').isDisabled(), true); }
-      await click('use-available');
+      for (const value of ['0', '1.5', String(total + 1)]) { await p.locator('#custom-count').fill(value); assert.equal(await p.locator('#start-test').isDisabled(), true); }
+      for (const count of [99, 100, total]) {
+        await p.locator('#custom-count').fill(String(count));
+        assert.equal(await p.locator('#start-test').isDisabled(), false);
+      }
+      await start('custom', 100);
+      const hundred = await state();
+      assert.equal(hundred.questionIds.length, 100);
+      assert.equal(new Set(hundred.questionIds).size, 100);
+      await p.reload(); await p.locator('#exam').waitFor({ state: 'visible' });
+      assert.deepEqual(await state(), hundred, 'A 100-question attempt must restore without changing its ordering');
+      await reset();
       await start();
       const first = await state(); assert.equal(first.questionIds.length, total);
       await context.grantPermissions(['clipboard-read', 'clipboard-write']);
@@ -252,6 +268,14 @@ async function browser(base) {
       await p.getByRole('textbox', { name: 'Exam notes' }).fill('Review notes do not affect scores.');
       assert.equal(await p.locator('#results .score').innerText(), '100%');
       await p.getByRole('button', { name: 'Close Whiteboard', exact: true }).click();
+      // Check new evidence verbatim at a narrow viewport, including command and script formatting.
+      await p.setViewportSize({ width: 320, height: 900 });
+      for (const q of bank.questions.slice(64).filter(q => q.evidence)) {
+        await go(first.questionIds.indexOf(q.id));
+        assert.equal(await p.locator('#question-body pre').textContent(), q.evidence);
+        await overflow();
+      }
+      await p.setViewportSize({ width: 1440, height: 1000 });
       for (const resource of new Set(bank.questions.flatMap(q => q.resources.map(r => r.path)))) {
         const [file, fragment] = resource.split('#');
         const href = file.replace(/README\.md$/, '').replace(/\.md$/, '/');
@@ -266,7 +290,7 @@ async function browser(base) {
       await reset(); assert.equal(await state(), null);
 
       // Immediate feedback commits explicitly, locks the answer, and survives refresh.
-      await onlyObjective('1.5'); await p.locator('#feedback-timing').selectOption('immediate'); await start();
+      await onlyObjective('1.5'); await p.locator('#feedback-timing').selectOption('immediate'); await start('custom', 1);
       const immediate = await state(); assert.notEqual(immediate.id, first.id); assert.equal(immediate.tools.whiteboard.text, '');
       assert.equal(immediate.tools.whiteboard.visible, false); assert.equal(immediate.tools.whiteboard.bounds, null);
       assert.equal(immediate.tools.whiteboard.minimized, false); assert.equal(immediate.tools.whiteboard.docked, false);
@@ -283,10 +307,13 @@ async function browser(base) {
 
       // Correct answers without explanations; a partially selected multi-response earns zero.
       await onlyObjective('2.1'); await p.locator('#show-explanations').uncheck(); await p.locator('#feedback-timing').selectOption('end'); await start();
-      await p.locator('#answer-options input[value="a"]').check();
+      const multiState = await state();
+      const multiple = bank.questions.find(q => q.type === 'multiple' && multiState.questionIds.includes(q.id));
+      await go(multiState.questionIds.indexOf(multiple.id));
+      await p.locator(`#answer-options input[value="${multiple.correct[0]}"]`).check();
       await click('submit-test'); await click('confirm-action');
       assert.equal(await p.locator('#results .score').innerText(), '0%');
-      assert.match(await p.locator('#results').innerText(), /0 correct · 1 incorrect · 0 unanswered/);
+      assert.match(await p.locator('#results').innerText(), new RegExp(`0 correct · 1 incorrect · ${multiState.questionIds.length - 1} unanswered`));
       assert.equal(await p.locator('#feedback').isVisible(), true); assert.equal(await p.locator('#feedback .rationale').count(), 0);
       await reset();
 
@@ -294,7 +321,7 @@ async function browser(base) {
       await onlyObjective('1.1'); await p.locator('#show-answers').uncheck();
       assert.equal(await p.locator('#show-explanations').isChecked(), false); assert.equal(await p.locator('#show-explanations').isDisabled(), true);
       assert.equal(await p.locator('#feedback-timing').isDisabled(), true);
-      await start(); await click('submit-test'); assert.match(await p.locator('#confirmation-text').innerText(), /1 question is unanswered/);
+      await start('custom', 1); await click('submit-test'); assert.match(await p.locator('#confirmation-text').innerText(), /1 question is unanswered/);
       await click('cancel-action'); assert.equal((await state()).status, 'active');
       await click('submit-test'); await click('confirm-action');
       assert.match(await p.locator('#results').innerText(), /0 correct · 0 incorrect · 1 unanswered/);
@@ -315,7 +342,7 @@ async function browser(base) {
       await click('theme-toggle');
 
       // Stale/corrupt sessions recover to configuration without reusing old progress.
-      const stale = await state(); stale.bankVersion = '2026-10-27.1';
+      const stale = await state(); stale.bankVersion = '2026-10-27.2';
       for (const raw of [JSON.stringify(stale), '{broken', JSON.stringify({ version: 99 })]) {
         await p.evaluate(({ key, raw }) => localStorage.setItem(key, raw), { key: KEY, raw }); await p.reload();
         await p.locator('#setup').waitFor({ state: 'visible' }); assert.match(await p.locator('#notice').innerText(), /saved test/i);

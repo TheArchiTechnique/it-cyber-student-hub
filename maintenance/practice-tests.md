@@ -2,7 +2,7 @@
 
 Feature branch: `feature/certification-practice-tests`. GitHub is the continuation checkpoint. Fetch, inspect the existing branch and commits, and continue this implementation in each later phase. Do not recreate the application or commit to main. Every implementation phase ends with tests, commit, push, full SHA, and STOP. Final QA and PR creation follow implementation phases.
 
-Current checkpoint: Phase 3A expands Core 2 to 64 validated questions in bank version `2026-10-27.2`, covering all 36 official objective identifiers. Practice Mode and the shared whiteboard are implemented. Certification Mode and PBQ examination adapters are not implemented. Coverage is still too limited to describe this bank as a complete certification simulation.
+Current checkpoint: Phase 3B expands Core 2 to 104 validated questions in bank version `2026-10-27.3`, with at least two questions for each of the 36 official objective identifiers. Practice Mode and the shared whiteboard are implemented. Certification Mode and PBQ examination adapters are not implemented. Objective-level coverage does not imply complete subtopic coverage or a full certification simulation.
 
 ## Phase 1 boundary
 
@@ -107,11 +107,54 @@ Local verification passed: `npm run test:practice-tests`, strict MkDocs build, g
 
 Future expansion must deepen subtopic coverage and produce enough distinct questions for full-length randomized attempts. Fifteen objectives still have only one question: 1.1, 1.3, 1.4, 1.5; 2.1, 2.3, 2.5, 2.6; 4.2, 4.4, 4.5, 4.7, 4.8, 4.9, 4.10. Having one item mapped to an objective does not assess every bullet or establish mastery. Bank changes deliberately require a new attempt; there is no silent migration of old responses to a revised bank.
 
+## Phase 3B: Core 2 coverage depth
+
+Preserved all 64 existing question records, including stable identifiers, choices, answer sets, rationales, resources, and validation metadata. Added `apc2-065` through `apc2-104` with the existing schema. The bank version moves from `2026-10-27.2` to `2026-10-27.3`; the session schema remains version 1. Old attempts require a fresh test rather than silently reusing answers with the updated bank.
+
+| Domain | Before | Added | After | Objectives covered | Minimum items per objective |
+| --- | ---: | ---: | ---: | --- | ---: |
+| 1.0 Operating Systems | 18 | 11 | 29 | 11 of 11 | 2 |
+| 2.0 Security | 18 | 11 | 29 | 11 of 11 | 2 |
+| 3.0 Software Troubleshooting | 15 | 9 | 24 | 4 of 4 | 5 |
+| 4.0 Operational Procedures | 13 | 9 | 22 | 10 of 10 | 2 |
+| Total | 64 | 40 | 104 | 36 of 36 | 2 |
+
+All 15 previously single-item objectives now have two questions: 1.1, 1.3, 1.4, 1.5; 2.1, 2.3, 2.5, 2.6; 4.2, 4.4, 4.5, 4.7, 4.8, 4.9, 4.10. Objective 4.6 retains its two existing items; the remaining additions broaden other subtopics without duplicating those privacy and licensing questions. The 29/29/24/22 totals approximate the published domain weights, but ordinary Practice Mode selection remains unweighted.
+
+Added 37 single-answer items and three two-response items. Combined bank: 95 single-answer and nine two-response items. Added difficulty tags: seven foundation, 25 applied, eight analysis. Combined tags: 15 foundation, 65 applied, 24 analysis. These remain editorial categories rather than calibrated exam difficulty scores. Eight additions include preformatted evidence; the combined bank has 15 evidence-bearing items. New evidence includes Windows listener/PID output, cloud-license findings, account-policy values, memory/pagefile observations, Android administrator settings, a Windows proxy configuration, an explicit ticket-priority policy, and a short PowerShell script.
+
+### Technical and editorial review
+
+Reviewed all 40 additions against official objective scope and primary technical documentation, with checked dates and item-specific review notes on every record. The additions reference 39 distinct source URLs including the scope PDF. Sources include Microsoft, Apple, Google/Android, APT documentation distributed by Debian, NIST, MITRE, FTC, Dell, and Schneider Electric. Operational priority and approval questions supply their governing local policies instead of assuming universal business rules.
+
+Corrections and distinctions established during review:
+
+- Added `-PathType Container` to the script's `Test-Path` check so a same-named file cannot be treated as a backup folder. The stem defines the check, and feedback distinguishes reporting readiness from actually creating a backup.
+- Replaced two mobile-account drafts with Android application-security items directly tied to objective 3.3: removing an active malicious device-administrator app and scanning sideloaded apps with Play Protect. The removal item specifies an unmanaged phone with owner-accessible deactivation rather than bypassing organizational device ownership.
+- Used adjacent media/runtime distractors for the Windows N item and authentication-related distractors for SSO. Replaced weaker package-management and application-repair alternatives with plausible neighboring operations.
+- Specified encrypted-form EFS backup and the required private key; separated it from NTFS permission records and BitLocker recovery. Specified non-T2 Intel Mac hardware for the FileVault item rather than implying that modern Apple hardware starts with unencrypted storage.
+- Separated missing Windows Setup storage drivers from filesystem changes, quality-update removal from feature rollback, firmware patching from credential changes, and confirmed ransomware file changes from a browser-only warning.
+- Labeled condensed findings as observations or settings; the netstat excerpt uses the real Windows column/flag conventions. Synthetic scenario values do not purport to be a captured production incident.
+
+All 104 stems are distinct. A combined text-similarity diagnostic found no pair above a 0.60 SequenceMatcher ratio (maximum approximately 0.569). Manual review also checked mechanisms and decisions: related items such as browser-only scareware versus confirmed file encryption, ordinary uninstall versus device-administrator removal, and Hosts-file versus proxy changes assess different causes or procedures. No duplicate scenario was identified by that review; text similarity alone is not the acceptance criterion.
+
+Among the 37 added single-answer items, seven correct choices are longest including ties and 13 are shortest including ties. Across all 95 single-answer items, 19 are longest including ties and 31 are shortest including ties. The additions' stored key positions are 9/9/10/9 for a/b/c/d; the displayed choices are randomized independently. These diagnostics informed wording review without imposing artificial equal-length choices or a length quota.
+
+### Validation and remaining limits
+
+The engine suite asserts 104 validated records, the four domain totals and additions, all 36 objectives with at least two eligible items, stable sequential IDs, three added multiple-response items, and unique selection for counts including 99, 100, and all 104. It checks 200 shuffled full-bank sessions, every single-answer key in each displayed position, exact-set multi-response credit, and rejection of genuine 24-question and 64-question previous-version attempts without mutating their saved answers or notes.
+
+Browser coverage launches every objective, tests custom-count availability and a persisted 100-question attempt, completes all 104 questions, checks new evidence verbatim at 320px, follows Hub resources and anchors, and retains the feedback, navigation, whiteboard, storage-failure, theme, and hosting-prefix regressions. Feedback tests select explicit single-item samples or locate the intended multi-response item instead of relying on an objective having only one eligible record.
+
+Local verification passed: `npm run test:practice-tests` (engine and full browser suite), `mkdocs build --strict`, generated PBQ/navigation freshness, source checks, 31 Python tests, the catalog model and 19 canonical PBQ validations, generated-site checks covering 71 HTML pages and 4,563 local links/assets/fragments, and analytics. Existing PBQ-library, learning-resource-navigation, help-desk triage, malware-remediation, Windows startup-recovery, Windows BSOD/application, and Linux command-reference suites also passed. Local browser checks used the installed Chromium headless shell through the existing `PBQ_CHROMIUM_PATH` option because the full browser executable could not start in this runtime. No shared application JavaScript, whiteboard implementation, stylesheet, grading rule, or session-schema change was needed; the existing landing/configuration descriptions now show the accurate bank size and minimum coverage.
+
+Further curation should deepen individual subtopics, especially Windows command/disk tools, macOS/Linux administration, mobile and browser hardening, backup rotation, incident records, and AI privacy. Two questions mapped to an objective do not cover all its bullets. A 100-question custom Practice Mode attempt is now possible, but a timed, weighted certification examination and PBQ examination adapters remain separate implementation work. Existing independently authored practice and percentage-scoring notices remain visible.
+
 ## Remaining implementation phases
 
-1. Curated bank expansion in bounded batches: broaden Core 2 objective coverage and variety before presenting a full certification simulation. Add other certifications only with verified metadata and validated banks, preserving existing Hub exam versions unless explicitly updated.
-2. Certification Mode: version-specific exam configuration, published domain weights with documented integer allocation, sufficient bank coverage, persisted absolute deadline, countdown, expiry submission, flags/review, no feedback until submission, and transparent practice scoring. Do not advertise the 64-question bank as a full-length simulation. Full PBQ adapters are separate work; an unknown type must be rejected rather than silently misgraded as an MCQ.
-3. Final integration, regression review, and PR. Do not create the PR during Phase 3A.
+1. Certification Mode: version-specific exam configuration, published domain weights with documented integer allocation, persisted absolute deadline, countdown, expiry submission, flags/review, no feedback until submission, and transparent practice scoring. Full PBQ adapters are separate work; an unknown type must be rejected rather than silently misgraded as an MCQ.
+2. Continued question curation in bounded batches as needed. Add other certifications only with verified metadata and validated banks, preserving existing Hub exam versions unless explicitly updated. Objective counts alone do not establish complete examination coverage.
+3. Final integration, regression review, and PR after the assigned implementation phases. Do not create the PR during Phase 3B.
 
 ## Editorial review of the pilot
 
