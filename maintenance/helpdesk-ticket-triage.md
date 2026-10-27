@@ -2,6 +2,20 @@
 
 Canonical route: `docs/practice/pbqs/a-plus-core-2/helpdesk-ticket-triage/`. Catalog ID: `helpdesk-ticket-triage`. Feature branch: `content/a-plus-core2-helpdesk-ticket-triage`.
 
+## Current update: assigned priorities and shorter A+ cases
+
+Continued on the existing feature branch after PR #57 merged. This update supersedes the original strict six-ticket ranking and the longer scenario wording documented in the historical checkpoints below.
+
+Each queue row and ticket detail shows a text priority badge. The activity instructions and Lesson state the rule: Critical, High, Medium, then Low. HD-7352 is Critical; HD-7329 and HD-7318 are High; HD-7341 is Medium; HD-7335 and HD-7346 are Low. Same-category tickets may be processed in either order with full credit. The 15 pair relationships and 39-point maximum remain; the two same-category pairs receive credit once both tickets have been processed, regardless of their relative position. Results identify an accepted example sequence and explain equal-priority pairs without implying a hidden tie-breaker.
+
+All six requests, contexts, notes, technical choices, and feedback are shorter and use basic A+ troubleshooting clues. The former service-account password scenario is now a Windows account-lockout scenario. The other cases retain ransomware recognition and initial isolation, approved folder access, client DNS, a disabled application service, and browser zoom. Attachments retain three screenshot captures and three concise text records. Removed the business-deadline ranking exercise and detailed enterprise response/authorization conditions. The dashboard, inspection requirements, processing controls, resources, and 39-point categories are retained.
+
+The unchanged browser storage key now uses schema version 2 because a scenario and its answer IDs changed. Older attempts start fresh with an update notice; current attempts retain their queue, selections, processing order, and submitted state. Priority labels and grading come from the scenario model, not saved priority fields.
+
+Regression coverage independently checks all 720 sequences against the displayed categories, all four valid orders within tied categories, full and partial scores, all 48 technical choices, initial and detail badges, equal-priority feedback through student controls, legacy-state reset, and responsive badge layout at 320/390/768/1440px. The six-scenario wording and clues were reviewed against the linked official 220-1202 objectives, particularly Windows users/groups and Services, Windows network commands/settings, malware recognition, and ticket severity.
+
+Local verification passed: strict MkDocs build; listing/navigation/source/catalog/site and analytics checks; all 31 Python tests; the expanded Help Desk model/browser suite; and the current Malware Investigation model/browser regression. The full-credit and partial-credit submissions, equal-priority orders, saved-state reset/restore, keyboard/touch controls, and all four required viewport sizes passed. Desktop and mobile renders were visually inspected. Only this PBQ, its existing maintenance record, and its regression suite changed.
+
 ## Phase 1 implementation
 
 The existing Windows Startup Recovery stylesheet supplies the PBQ shell, tabs, controls, panels, and result presentation. The standard MkDocs post-build hook supplies Student Hub navigation and analytics. Activity-specific CSS styles the fictional Northstar service desk interior; no shared runtime or stylesheet changes are required.

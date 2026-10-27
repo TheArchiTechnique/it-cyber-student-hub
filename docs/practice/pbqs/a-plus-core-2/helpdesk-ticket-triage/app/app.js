@@ -3,13 +3,14 @@
 const M=window.HelpDeskTriage,$=id=>document.getElementById(id);
 const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const labels={request:'Request',context:'Context',notes:'Technician Notes'};
+const priorityTag=(t,prefix='')=>`<span class="priority-tag priority-${t.priority}">${prefix}${M.priorities[t.priority].label}</span>`;
 const transcripts={
  browser:'Microsoft Edge / Project portal\nAddress: https://projects.northstar.example\nPage zoom: 175%\nZoom controls: Minus | 175% | Plus | Reset\nPage content: Project overview / Current design files\nWindows display scaling (support note): 100%\nAll other sites and Windows applications: normal size.',
  files:'File Explorer / R:\\Records\nName                          Type\nCase-index.docx.sealed         SEALED File\nArchive-register.xlsx.sealed   SEALED File\nDelivery-log.pdf.sealed        SEALED File\nRECOVER_FILES.txt              Text Document\n\nRECOVER_FILES.txt preview:\nYour documents have been encrypted. Payment is required for the key.\nUser observation: More filenames are changing while I watch.',
  service:'Services / Northstar Report Engine Properties\nService name: NSReportEngine\nDisplay name: Northstar Report Engine\nStartup type: Disabled\nService status: Stopped\nLog on as: Local System\nApproved baseline: Startup type Automatic; status Running.'
 };
-let state,filter='all';
-try{state=M.restore(JSON.parse(localStorage.getItem(M.KEY)));}catch{state=M.initial();}
+let state,filter='all',updatedAttempt=false;
+try{const raw=JSON.parse(localStorage.getItem(M.KEY));updatedAttempt=Boolean(raw&&raw.version!==M.VERSION);state=M.restore(raw);}catch{state=M.initial();}
 function save(){let saved=true;try{localStorage.setItem(M.KEY,JSON.stringify(state));}catch{saved=false;}$('save-status').textContent=saved?'Progress saved in this browser.':'Browser storage unavailable. Progress is kept for this page session.';}
 function status(id){return state.completed.includes(id)?'Processed':state.active===id?'In progress':M.reviewed(state,id)?'Reviewed':'Awaiting review';}
 function announce(text){$('notice').textContent=text;}
@@ -23,7 +24,7 @@ function overview(){
 }
 function renderQueue(){
  const ids=state.queue.filter(id=>filter==='all'||filter==='review'&&!M.reviewed(state,id)||filter==='active'&&state.active===id||filter==='completed'&&state.completed.includes(id));
- $('queue').innerHTML=ids.length?ids.map(id=>{const t=M.byId(id);return `<button type="button" class="ticket-row" data-ticket="${id}" aria-current="${state.selected===id}"><strong>${id}</strong><span class="row-subject">${escape(t.title)}</span><span class="row-person">${escape(t.requester)} · ${escape(t.department)}</span><span class="row-meta"><span>Tue · ${t.submitted}</span><span class="status-tag">${status(id)}</span></span></button>`;}).join(''):'<p class="empty-filter">No tickets in this view. Choose All tickets to see the queue.</p>';
+ $('queue').innerHTML=ids.length?ids.map(id=>{const t=M.byId(id);return `<button type="button" class="ticket-row" data-ticket="${id}" aria-current="${state.selected===id}"><span class="row-heading"><strong>${id}</strong>${priorityTag(t,'Priority: ')}</span><span class="row-subject">${escape(t.title)}</span><span class="row-person">${escape(t.requester)} · ${escape(t.department)}</span><span class="row-meta"><span>Tue · ${t.submitted}</span><span class="status-tag">${status(id)}</span></span></button>`;}).join(''):'<p class="empty-filter">No tickets in this view. Choose All tickets to see the queue.</p>';
  for(const b of $('queue-filters').querySelectorAll('button'))b.setAttribute('aria-pressed',String(b.dataset.filter===filter));
 }
 function optionList(t,field){const options=field==='issue'?t.issues:t.actions,ids=state.options[t.id][field==='issue'?'issues':'actions'];return '<option value="" disabled>Choose an answer</option>'+ids.map(id=>`<option value="${id}">${escape(options.find(o=>o.id===id).text)}</option>`).join('');}
@@ -34,7 +35,7 @@ function renderTicket(){
  const recorded=state.sequence.includes(t.id),editable=recorded&&!state.submitted,position=state.sequence.indexOf(t.id)+1,i=state.inspections[t.id];
  const beginReason=!M.allReviewed(state)?'Review every ticket section and attachment before beginning work.':state.active&&state.active!==t.id?`Complete ${state.active} before beginning another ticket.`:'';
  $('ticket-content').innerHTML=`<div class="ticket-toolbar"><span>${t.id} · Submitted Tuesday ${t.submitted}</span><span class="status-tag">${status(t.id)}</span></div>
-  <div class="ticket-header"><h2 id="ticket-title" tabindex="-1">${escape(t.title)}</h2><dl class="ticket-meta"><dt>Requester</dt><dd>${escape(t.requester)}</dd><dt>Department</dt><dd>${escape(t.department)}</dd><dt>Device</dt><dd>${escape(t.device)}</dd><dt>Affected</dt><dd>${escape(t.scope)}</dd></dl></div>
+  <div class="ticket-header"><h2 id="ticket-title" tabindex="-1">${escape(t.title)}</h2><dl class="ticket-meta"><dt>Priority</dt><dd>${priorityTag(t)}</dd><dt>Requester</dt><dd>${escape(t.requester)}</dd><dt>Department</dt><dd>${escape(t.department)}</dd><dt>Device</dt><dd>${escape(t.device)}</dd><dt>Affected</dt><dd>${escape(t.scope)}</dd></dl></div>
   <nav class="ticket-sections" role="tablist" aria-label="Ticket information">${M.sections.map(key=>`<button type="button" role="tab" id="section-${key}" data-section="${key}" aria-controls="section-panel" aria-selected="${state.section===key}" tabindex="${state.section===key?0:-1}">${labels[key]}${i.sections.includes(key)?' · Read':''}</button>`).join('')}</nav>
   <section id="section-panel" class="ticket-section" role="tabpanel" aria-labelledby="section-${state.section}"><h3>${labels[state.section]}</h3><p>${escape(t.sections[state.section])}</p><p class="section-status">Sections inspected: ${i.sections.length} of 3 · Attachments opened: ${i.attachments.length} of ${t.attachments.length}</p></section>
   <section class="attachments" aria-labelledby="attachment-title"><h3 id="attachment-title">Attached evidence</h3>${t.attachments.length?`<div class="attachment-list">${t.attachments.map(a=>`<button type="button" data-attachment="${a.id}">${escape(a.name)}<small>${a.kind==='image'?'Image capture and readable transcript':'Text attachment'} · ${i.attachments.includes(a.id)?'Opened':'Not opened'}</small></button>`).join('')}</div>`:'<p>No attachments. Review the three information sections above.</p>'}</section>
@@ -45,10 +46,10 @@ function renderTicket(){
 }
 function results(){
  const node=$('results');node.hidden=!state.submitted;if(!state.submitted){node.replaceChildren();return;}
- const g=M.grade(state),sequence=ids=>`<ol>${ids.map(id=>`<li><strong>${id}</strong> · ${escape(M.byId(id).title)}</li>`).join('')}</ol>`;
- node.innerHTML=`<h2 id="score-title">Service desk results</h2><p class="score">${g.score} / 39 points · ${g.percentage}%</p><p class="breakdown">Priority relationships: ${g.priority}/15 · Issue identification: ${g.issues}/12 · Corrective actions: ${g.actions}/12</p><p>Each correctly ordered ticket pair earns 1 point. Each issue and action earns 2 points independently. Reviewing evidence is required and earns no points.</p>
-  <div class="sequence-compare"><div><h3>Your processing sequence</h3>${sequence(state.sequence)}</div><div><h3>Correct processing sequence</h3>${sequence(g.order)}</div></div>
-  <details><summary>Priority relationship review · ${g.priority} of 15</summary><ul>${g.pairs.map(p=>`<li>${p.correct?'Correct':'Reversed'}: ${p.before} before ${p.after}</li>`).join('')}</ul></details>
+ const g=M.grade(state),sequence=ids=>`<ol>${ids.map(id=>`<li><strong>${id}</strong> · ${escape(M.byId(id).title)} ${priorityTag(M.byId(id))}</li>`).join('')}</ol>`;
+ node.innerHTML=`<h2 id="score-title">Service desk results</h2><p class="score">${g.score} / 39 points · ${g.percentage}%</p><p class="breakdown">Priority relationships: ${g.priority}/15 · Issue identification: ${g.issues}/12 · Corrective actions: ${g.actions}/12</p><p>Priority is graded from the displayed labels. Each ticket pair earns 1 point when the higher priority comes first; either order is accepted when the labels match. Each issue and action earns 2 points independently.</p>
+  <div class="sequence-compare"><div><h3>Your processing sequence</h3>${sequence(state.sequence)}</div><div><h3>One accepted processing sequence</h3>${sequence(g.order)}<p>Tickets with the same priority can be processed in either order.</p></div></div>
+  <details><summary>Priority relationship review · ${g.priority} of 15</summary><ul>${g.pairs.map(p=>`<li>${p.correct?'Correct':'Reversed'}: ${p.samePriority?`${p.before} and ${p.after} have the same priority; either order is accepted`:`${p.before} (${M.priorities[M.byId(p.before).priority].label}) before ${p.after} (${M.priorities[M.byId(p.after).priority].label})`}</li>`).join('')}</ul></details>
   <h3>Evidence and response review</h3>${g.order.map(id=>{const t=M.byId(id),r=g.details.find(x=>x.id===id),a=state.answers[id],issue=t.issues.find(x=>x.id===a.issue),action=t.actions.find(x=>x.id===a.action);return `<article class="feedback ${r.issue+r.action===4?'good':''}" data-review="${id}"><h4>${id} · ${escape(t.title)}</h4><dl><dt>Most Likely Issue · ${r.issue}/2</dt><dd>Your choice: ${escape(issue.text)}<br>Correct issue: <strong>${escape(t.issues.find(o=>o.id===r.issueKey).text)}</strong></dd><dt>Best Corrective Action · ${r.action}/2</dt><dd>Your choice: ${escape(action.text)}<br>Correct action: <strong>${escape(t.actions.find(o=>o.id===r.actionKey).text)}</strong></dd><dt>Interpret the evidence</dt><dd>${escape(r.evidence)}</dd><dt>Appropriate response and verification</dt><dd>${escape(r.fix)}</dd><dt>Why this relative priority?</dt><dd>${escape(r.priority)}</dd></dl></article>`;}).join('')}`;
 }
 function render(){overview();renderQueue();renderTicket();results();save();}
@@ -100,4 +101,5 @@ const tabs=[$('activity-tab'),$('lesson-tab')];
 function tab(index,focus=false){tabs.forEach((t,i)=>{t.setAttribute('aria-selected',String(i===index));t.tabIndex=i===index?0:-1;$(t.getAttribute('aria-controls')).hidden=i!==index;});if(focus)tabs[index].focus();}
 tabs.forEach((t,i)=>{t.addEventListener('click',()=>tab(i));t.addEventListener('keydown',e=>{let index;if(['ArrowRight','ArrowLeft'].includes(e.key))index=1-i;if(e.key==='Home')index=0;if(e.key==='End')index=1;if(index!==undefined){e.preventDefault();tab(index,true);}});});
 render();
+if(updatedAttempt)announce('The tickets have been updated. A fresh attempt has been started.');
 })();

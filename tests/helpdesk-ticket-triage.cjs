@@ -3,11 +3,13 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const M=require('../docs/practice/pbqs/a-plus-core-2/helpdesk-ticket-triage/app/model.js');
-// Reviewed independently from the runtime rubric: active harm, stopped operations,
-// blocked near deadline, three-user workaround, single-user workaround, usability.
+// Independently specified displayed categories; no hidden ranking within a category.
 const reviewedOrder=['HD-7352','HD-7329','HD-7318','HD-7341','HD-7335','HD-7346'];
+const priorityLabels={'HD-7352':'Critical','HD-7329':'High','HD-7318':'High','HD-7341':'Medium','HD-7335':'Low','HD-7346':'Low'};
+const priorityRanks={Critical:0,High:1,Medium:2,Low:3};
+const tiedOrder=['HD-7352','HD-7318','HD-7329','HD-7341','HD-7346','HD-7335'];
 const answers={
- 'HD-7352':['ransomware','contain'],'HD-7329':['service-password','service-owner'],
+ 'HD-7352':['ransomware','contain'],'HD-7329':['lockout','unlock'],
  'HD-7318':['membership','group'],'HD-7341':['dns-server','dns-config'],
  'HD-7335':['dependency','service-start'],'HD-7346':['zoom','zoom-reset']
 };
@@ -26,14 +28,17 @@ for(let seed=0;seed<200;seed++){
 assert.ok(arrangements.size>100);for(const set of optionPositions.values())assert.equal(set.size,4);
 const incomplete=review(M.initial(),'endpoint-log');assert.equal(M.allReviewed(incomplete),false);assert.equal(M.begin(incomplete,'HD-7352'),false);M.inspectAttachment(incomplete,'HD-7352','endpoint-log');assert.equal(M.allReviewed(incomplete),true);
 assert.equal(M.answer(incomplete,'HD-7352','issue','ransomware'),false);assert.equal(M.begin(incomplete,'invalid'),false);assert.ok(M.begin(incomplete,'HD-7318'));assert.equal(M.begin(incomplete,'HD-7352'),false);assert.equal(M.complete(incomplete,'HD-7318'),false);assert.equal(M.complete(incomplete,'HD-7352'),false);assert.equal(M.answer(incomplete,'HD-7318','issue','nonexistent'),false);assert.equal(M.answer(incomplete,'HD-7318','__proto__','group'),false);assert.deepEqual(M.restore(incomplete),incomplete);
-const reversed=solve(reviewedOrder.slice().reverse());assert.equal(M.grade(reversed).priority,0);assert.equal(M.grade(reversed).score,24);
+for(const t of M.tickets)assert.equal(M.priorities[t.priority].label,priorityLabels[t.id]);
+assert.equal(M.grade(solve(tiedOrder)).score,39);assert.equal(M.grade(solve(tiedOrder)).pairs.filter(p=>p.samePriority&&p.correct).length,2);
+const legacy=solve();legacy.version=1;assert.equal(M.grade(M.restore(legacy)).score,0);assert.deepEqual(M.restore(legacy).sequence,[]);
+const reversed=solve(reviewedOrder.slice().reverse());assert.equal(M.grade(reversed).priority,2);assert.equal(M.grade(reversed).score,26);
 const oneSwap=reviewedOrder.slice();[oneSwap[0],oneSwap[1]]=[oneSwap[1],oneSwap[0]];assert.equal(M.grade(solve(oneSwap)).priority,14);assert.equal(M.grade(solve(oneSwap)).score,38);
 let s=solve();M.answer(s,'HD-7352','issue','corruption');assert.equal(M.grade(s).issues,10);assert.equal(M.grade(s).actions,12);assert.equal(M.grade(s).score,37);M.answer(s,'HD-7352','action','restore');assert.equal(M.grade(s).score,35);assert.deepEqual(s.sequence,reviewedOrder);
 for(const t of M.tickets)for(const o of t.issues){s=solve();M.answer(s,t.id,'issue',o.id);assert.equal(M.grade(s).issues,o.id===answers[t.id][0]?12:10);assert.equal(M.grade(s).actions,12);}
 for(const t of M.tickets)for(const o of t.actions){s=solve();M.answer(s,t.id,'action',o.id);assert.equal(M.grade(s).actions,o.id===answers[t.id][1]?12:10);assert.equal(M.grade(s).issues,12);}
-// Every possible priority sequence is checked against an independent inversion count.
+// Only inversions between different categories lose credit. Four tied orders are valid.
 function* permutations(values){if(!values.length){yield [];return;}for(let i=0;i<values.length;i++)for(const rest of permutations(values.filter((_,j)=>j!==i)))yield [values[i],...rest];}
-let n=0;for(const order of permutations(reviewedOrder)){const indices=order.map(id=>reviewedOrder.indexOf(id));let inversions=0;for(let i=0;i<6;i++)for(let j=i+1;j<6;j++)if(indices[i]>indices[j])inversions++;assert.equal(M.grade(solve(order)).priority,15-inversions);n++;}assert.equal(n,720);
+let n=0,perfectOrders=0;for(const order of permutations(reviewedOrder)){const ranks=order.map(id=>priorityRanks[priorityLabels[id]]);let inversions=0;for(let i=0;i<6;i++)for(let j=i+1;j<6;j++)if(ranks[i]>ranks[j])inversions++;assert.equal(M.grade(solve(order)).priority,15-inversions);if(!inversions)perfectOrders++;n++;}assert.equal(n,720);assert.equal(perfectOrders,4);
 for(const invalid of [null,{},[],{version:0},'bad'])assert.equal(M.grade(M.restore(invalid)).score,0);
 for(const mutate of [x=>x.sequence.push('bad'),x=>x.sequence.push(x.sequence[0]),x=>x.completed.reverse(),x=>x.active='HD-7346',x=>x.inspections['HD-7352'].attachments=[],x=>x.answers['HD-7318'].issue='bad',x=>x.queue.push('bad')]){const raw=solve();mutate(raw);assert.equal(M.grade(M.restore(raw)).score,0);}
 const malicious=M.initial();malicious.inspections['HD-7352']={opened:true,sections:{includes:3},attachments:'endpoint-log'};assert.doesNotThrow(()=>M.restore(malicious));
@@ -43,8 +48,8 @@ for(const field of ['issue','action']){
  assert.equal(M.grade(state).score,27);assert.equal(M.grade(state)[field==='issue'?'issues':'actions'],0);
  state.score=39;state.percentage=100;state.result={score:39};assert.equal(M.grade(M.restore(JSON.parse(JSON.stringify(state)))).score,27,'Saved score fields must not award points');
 }
-const allWrong=solve(reviewedOrder.slice().reverse());for(const t of M.tickets){M.answer(allWrong,t.id,'issue',t.issues.find(o=>o.id!==answers[t.id][0]).id);M.answer(allWrong,t.id,'action',t.actions.find(o=>o.id!==answers[t.id][1]).id);}assert.equal(M.grade(allWrong).score,0);
-assert.equal(M.grade(solve([reviewedOrder[2],reviewedOrder[0],reviewedOrder[1],reviewedOrder[5],reviewedOrder[3],reviewedOrder[4]])).score,35);
+const allWrong=solve(reviewedOrder.slice().reverse());for(const t of M.tickets){M.answer(allWrong,t.id,'issue',t.issues.find(o=>o.id!==answers[t.id][0]).id);M.answer(allWrong,t.id,'action',t.actions.find(o=>o.id!==answers[t.id][1]).id);}assert.equal(M.grade(allWrong).score,2,'Only the two correctly unordered equal-priority pairs earn credit');
+assert.equal(M.grade(solve([reviewedOrder[2],reviewedOrder[0],reviewedOrder[1],reviewedOrder[5],reviewedOrder[3],reviewedOrder[4]])).score,37);
 const canonical=value=>{const copy=JSON.parse(JSON.stringify(value));for(const i of Object.values(copy.inspections)){i.sections.sort();i.attachments.sort();}return copy;};
 const milestone=M.initial(seeded(701)),checkpoint=()=>assert.deepEqual(canonical(M.restore(JSON.parse(JSON.stringify(milestone)))),canonical(milestone));
 checkpoint();M.inspect(milestone,milestone.queue[0],'context');checkpoint();review(milestone);checkpoint();
@@ -52,7 +57,7 @@ for(const id of reviewedOrder){M.begin(milestone,id);checkpoint();M.answer(miles
 M.submit(milestone);checkpoint();
 // The correct fix must not be identifiable by always taking the longest or shortest.
 for(const extreme of [Math.max,Math.min])assert.ok(M.tickets.some(t=>t.actions.find(o=>o.id===answers[t.id][1]).text.length!==extreme(...t.actions.map(o=>o.text.length))));
-console.log('PASS model: 200 stable shuffled attempts; all 720 priority sequences; 48 diagnosis/action choices; gated review, serialized processing, independent partial credit, immutable submission, fresh attempts, and validated restore.');
+console.log('PASS model: 200 stable shuffled attempts; all 720 labeled priority sequences and four accepted tied orders; 48 diagnosis/action choices; gated review, serialized processing, independent partial credit, immutable submission, fresh attempts, and validated restore.');
 
 async function browser(base){
  const {chromium}=require('playwright');const b=await chromium.launch({headless:true,executablePath:process.env.PBQ_CHROMIUM_PATH||undefined,args:['--no-sandbox','--disable-dev-shm-usage']});
@@ -64,13 +69,17 @@ async function browser(base){
   await p.route('**/*',r=>r.request().url().startsWith(base)?r.continue():r.abort());
   const url=base+prefix+route,storage=()=>p.evaluate(key=>JSON.parse(localStorage.getItem(key)),M.KEY),click=id=>p.locator('#'+id).click();
   const open=id=>p.locator(`[data-ticket="${id}"]`).click();
-  const checkNoOverflow=async()=>assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Horizontal overflow');
+  const checkNoOverflow=async()=>{
+   assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Horizontal overflow');
+   assert.deepEqual(await p.locator('#queue .priority-tag,#ticket-content .priority-tag').evaluateAll(nodes=>nodes.filter(n=>{const b=n.getBoundingClientRect(),parent=n.closest('.ticket-row')||n.closest('dd'),p=parent.getBoundingClientRect();return b.left<p.left-1||b.right>p.right+1;}).map(n=>n.textContent)),[],'Priority badges fit their queue rows and ticket details');
+  };
   async function inspectAll(){
-   for(const id of (await storage()).queue){await open(id);for(const section of M.sections)await p.locator(`[data-section="${section}"]`).click();for(const a of M.byId(id).attachments){await p.locator(`[data-attachment="${a.id}"]`).click();assert.equal(await p.locator('#evidence').isVisible(),true);assert.ok((await p.locator('#evidence-content').innerText()).length>80);if(a.kind==='image')await p.waitForFunction(()=>{const n=document.querySelector('#evidence-content img');return n?.complete&&n.naturalWidth>0;});if(a.kind==='image')assert.equal(await p.locator('#evidence-content img').evaluate(n=>n.complete&&n.naturalWidth>0),true);await click('close-evidence');await p.waitForFunction(id=>document.activeElement?.dataset.attachment===id,a.id);assert.equal(await p.locator(`[data-attachment="${a.id}"]`).evaluate(n=>document.activeElement===n),true);}}
+   for(const id of (await storage()).queue){await open(id);assert.equal(await p.locator('#ticket-content .priority-tag').innerText(),priorityLabels[id]);for(const section of M.sections)await p.locator(`[data-section="${section}"]`).click();for(const a of M.byId(id).attachments){await p.locator(`[data-attachment="${a.id}"]`).click();assert.equal(await p.locator('#evidence').isVisible(),true);assert.ok((await p.locator('#evidence-content').innerText()).length>80);if(a.kind==='image')await p.waitForFunction(()=>{const n=document.querySelector('#evidence-content img');return n?.complete&&n.naturalWidth>0;});if(a.kind==='image')assert.equal(await p.locator('#evidence-content img').evaluate(n=>n.complete&&n.naturalWidth>0),true);await click('close-evidence');await p.waitForFunction(id=>document.activeElement?.dataset.attachment===id,a.id);assert.equal(await p.locator(`[data-attachment="${a.id}"]`).evaluate(n=>document.activeElement===n),true);}}
   }
   async function processQueue(order=reviewedOrder,wrong=false){for(const id of order){await open(id);await click('begin');await p.locator('#issue').selectOption(wrong&&id==='HD-7352'?'corruption':answers[id][0]);await p.locator('#action').selectOption(answers[id][1]);await click('complete');}}
   async function fresh(trigger='reset'){await click(trigger);await click('confirm-action');}
   await p.goto(url);assert.equal(await p.locator('[data-ticket]').count(),6);assert.deepEqual(await p.locator('#overview .metric strong').allTextContents(),['6','6','0','0']);assert.equal(await p.locator('#ticket-empty').isVisible(),true);await click('submit');assert.match(await p.locator('#notice').innerText(),/Inspect every ticket/);assert.equal(await p.locator('#results').innerHTML(),'');
+  for(const [id,label]of Object.entries(priorityLabels)){const badge=p.locator(`[data-ticket="${id}"] .priority-tag`);assert.equal(await badge.innerText(),'Priority: '+label);assert.equal(await badge.isVisible(),true);}assert.match(await p.locator('.assignment').innerText(),/Critical → High → Medium → Low/);
   const initial=await storage();await p.reload();assert.deepEqual(await storage(),initial);await open('HD-7318');assert.equal(await p.locator('#begin').isDisabled(),true);assert.equal(await p.locator('#issue').isDisabled(),true);assert.equal(await p.locator('[data-attachment]').count(),0);const inspected=await storage();await p.reload();assert.deepEqual(await storage(),inspected);
   await p.locator('[data-section=request]').focus();await p.keyboard.press('End');assert.equal((await storage()).section,'notes');assert.equal(await p.locator('[data-section=notes]').evaluate(n=>document.activeElement===n),true);
   await inspectAll();assert.deepEqual((await storage()).sequence,[]);assert.match(await p.locator('#review-progress').innerText(),/Tickets reviewed: 6 of 6/);assert.equal(await p.locator('#results').innerHTML(),'');
@@ -84,6 +93,9 @@ async function browser(base){
   assert.match(await p.locator('#results').innerText(),/39 \/ 39 points · 100%/);assert.equal(await p.locator('[data-review]').count(),6);assert.equal(await p.locator('#issue').isDisabled(),true);
   for(const item of M.grade(solve()).details){const text=await p.locator(`[data-review="${item.id}"]`).innerText();for(const field of ['priority','evidence','fix'])assert.ok(text.includes(item[field]));}
   await p.reload();assert.equal(await p.locator('#results').isVisible(),true);await click('retry');await p.keyboard.press('Escape');assert.equal(await p.locator('#results').isVisible(),true);const old=await storage();await fresh('retry');const next=await storage();assert.notDeepEqual(next.queue,old.queue);assert.equal(M.grade(next).score,0);assert.equal(await p.locator('#results').innerHTML(),'');assert.equal(await p.locator('#ticket-empty').isVisible(),true);
+  await inspectAll();await processQueue(tiedOrder);await click('submit');assert.match(await p.locator('#results').innerText(),/39 \/ 39 points/);assert.deepEqual((await storage()).sequence,tiedOrder);
+  await p.locator('#results details summary').click();assert.equal(await p.locator('#results details li').filter({hasText:'same priority; either order is accepted'}).count(),2);assert.doesNotMatch(await p.locator('#results details').innerText(),/Reversed/);assert.match(await p.locator('#results').innerText(),/One accepted processing sequence/);
+  await p.reload();assert.match(await p.locator('#results').innerText(),/39 \/ 39 points/);assert.deepEqual((await storage()).sequence,tiedOrder);await fresh();
   await inspectAll();await processQueue([reviewedOrder[1],reviewedOrder[0],...reviewedOrder.slice(2)],true);await click('submit');assert.match(await p.locator('#results').innerText(),/36 \/ 39 points/);assert.match(await p.locator('#results').innerText(),/Priority relationships: 14\/15/);assert.match(await p.locator('[data-review="HD-7352"]').innerText(),/Most Likely Issue · 0\/2/);assert.match(await p.locator('[data-review="HD-7352"]').innerText(),/Best Corrective Action · 2\/2/);
   await fresh();await open((await storage()).queue[0]);await click('reset');await click('keep');assert.equal(await p.locator('#confirm').isVisible(),false);assert.equal(await p.locator('#reset').evaluate(n=>document.activeElement===n),true);
   // Reproduce the asynchronous close-event focus race seen in Phase 1 CI.
@@ -94,6 +106,7 @@ async function browser(base){
   }
   await p.locator('#activity-tab').focus();await p.keyboard.press('End');assert.equal(await p.locator('#lesson').isVisible(),true);for(const href of await p.locator('#lesson a').evaluateAll(a=>a.map(x=>x.href).filter(x=>x.startsWith(location.origin)))){const r=await p.request.get(href);assert.equal(r.status(),200,href);if(new URL(href).hash){const html=await r.text();assert.ok(html.includes('id="'+new URL(href).hash.slice(1)+'"'),href);}}
   await p.keyboard.press('Home');assert.equal(await p.locator('#activity').isVisible(),true);
+  assert.equal(await p.locator('[data-pbq-nav]').count(),3);
   for(const href of await p.locator('[data-pbq-nav]').evaluateAll(a=>a.map(x=>x.href)))assert.equal((await p.request.get(href)).status(),200);
   // Every ticket, all capture types, lesson and long results at four widths.
   for(const width of [1440,768,390,320]){await p.setViewportSize({width,height:900});for(const t of M.tickets){await open(t.id);for(const section of M.sections){await p.locator(`[data-section="${section}"]`).click();assert.ok((await p.locator('#section-panel').innerText()).includes(t.sections[section]));await checkNoOverflow();}for(const a of t.attachments){await p.locator(`[data-attachment="${a.id}"]`).click();await checkNoOverflow();if(a.kind==='image'){const fitted=await p.locator('#evidence-content img').evaluate(n=>n.getBoundingClientRect().width);await click('zoom-image');assert.equal(await p.locator('#zoom-image').getAttribute('aria-pressed'),'true');assert.ok(await p.locator('#evidence-content img').evaluate((n,fitted)=>n.getBoundingClientRect().width>fitted,fitted),'Magnification must increase image size');assert.equal(await p.locator('.capture-scroll').evaluate(n=>n.scrollWidth>n.clientWidth),true);await checkNoOverflow();await click('zoom-image');assert.ok(await p.locator('#evidence-content img').evaluate((n,fitted)=>Math.abs(n.getBoundingClientRect().width-fitted)<1,fitted));}for(const key of ['Tab','Tab','Tab','Tab','Shift+Tab']){await p.keyboard.press(key);assert.equal(await p.locator('#evidence').evaluate(n=>n.contains(document.activeElement)),true);}await p.keyboard.press('Escape');assert.equal(await p.locator('#evidence').isVisible(),false);}}
@@ -104,11 +117,12 @@ async function browser(base){
    await p.evaluate(({key,state})=>localStorage.setItem(key,JSON.stringify(state)),{key:M.KEY,state:snapshot});await p.reload();
   }
   if(process.env.PBQ_QA_SCREENSHOT_DIR){fs.mkdirSync(process.env.PBQ_QA_SCREENSHOT_DIR,{recursive:true});await p.setViewportSize({width:1440,height:1000});await p.screenshot({path:path.join(process.env.PBQ_QA_SCREENSHOT_DIR,'helpdesk-desktop.png'),fullPage:true});await p.setViewportSize({width:390,height:844});await p.screenshot({path:path.join(process.env.PBQ_QA_SCREENSHOT_DIR,'helpdesk-mobile.png'),fullPage:true});}
+  const legacy=solve();legacy.version=1;await p.evaluate(({key,state})=>localStorage.setItem(key,JSON.stringify(state)),{key:M.KEY,state:legacy});await p.reload();assert.match(await p.locator('#notice').innerText(),/tickets have been updated/);assert.equal((await storage()).version,2);assert.equal(M.grade(await storage()).score,0);
   for(const raw of ['{broken',JSON.stringify({version:100}),JSON.stringify({...solve(),sequence:['HD-7352','HD-7352']})]){await p.evaluate(({key,raw})=>localStorage.setItem(key,raw),{key:M.KEY,raw});await p.reload();assert.equal(M.grade(await storage()).score,0);assert.equal(await p.locator('#results').innerHTML(),'');}
   // Reverse order plus correct fixes/incorrect diagnoses; then the inverse categories.
   await fresh();await inspectAll();await processQueue(reviewedOrder.slice().reverse(),true);
   for(const id of reviewedOrder){await open(id);const wrong=M.byId(id).issues.find(o=>o.id!==answers[id][0]);await p.locator('#issue').selectOption(wrong.id);}
-  await click('submit');assert.match(await p.locator('#results').innerText(),/12 \/ 39 points/);assert.match(await p.locator('#results').innerText(),/Priority relationships: 0\/15/);
+  await click('submit');assert.match(await p.locator('#results').innerText(),/14 \/ 39 points/);assert.match(await p.locator('#results').innerText(),/Priority relationships: 2\/15/);
   await fresh();await inspectAll();await processQueue();for(const id of reviewedOrder){await open(id);const wrong=M.byId(id).actions.find(o=>o.id!==answers[id][1]);await p.locator('#action').selectOption(wrong.id);}await click('submit');assert.match(await p.locator('#results').innerText(),/27 \/ 39 points/);
   await p.setViewportSize({width:1440,height:1000});await p.goto(base+prefix+'/practice/pbqs/');await p.locator('#pbq-topic').selectOption('help-desk-operations');assert.equal(await p.locator('[data-pbq-id="helpdesk-ticket-triage"]').count(),1);await p.locator('[data-pbq-id="helpdesk-ticket-triage"] .pbq-library-launch').click();assert.ok(p.url().endsWith(route));
   await p.goto(base+prefix+'/certifications/comptia/a-plus-core-2/');await p.locator('.hub-page a').filter({hasText:'Help Desk Ticket Triage & Resolution PBQ'}).click();assert.ok(p.url().endsWith('/helpdesk-ticket-triage/'));
@@ -117,7 +131,7 @@ async function browser(base){
  const denied=await b.newContext(),p=await denied.newPage();await p.addInitScript(()=>{Storage.prototype.getItem=()=>{throw new DOMException('Blocked','SecurityError');};Storage.prototype.setItem=()=>{throw new DOMException('Blocked','SecurityError');};});await p.goto(base+route);assert.match(await p.locator('#save-status').innerText(),/unavailable/);await p.locator('[data-ticket]').first().click();assert.equal(await p.locator('#ticket-content').isVisible(),true);await denied.close();
  const nojs=await b.newContext({javaScriptEnabled:false}),plain=await nojs.newPage();await plain.goto(base+route);assert.equal(await plain.locator('#lesson').isVisible(),true);await nojs.close();
  const touch=await b.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true}),mobile=await touch.newPage();await mobile.goto(base+route);await mobile.locator('[data-ticket="HD-7352"]').tap();await mobile.locator('[data-attachment="file-capture"]').tap();assert.equal(await mobile.locator('#evidence').isVisible(),true);await mobile.locator('#close-evidence').tap();await mobile.locator('[data-section=notes]').tap();await mobile.locator('#lesson-tab').tap();assert.equal(await mobile.locator('#lesson').isVisible(),true);await touch.close();
- console.log('PASS browser: six tickets and attachments, real-control full/partial scores, review gating, serial processing, edits, reloads, fresh retry/reset, keyboard/modal focus, touch, 320/390/768/1440px, no-JS/storage denial, resource routes, and root/project-subpath Hub discovery.');
+ console.log('PASS browser: six labeled A+ tickets and attachments, equal-priority credit, real-control full/partial scores, review gating, serial processing, edits, reloads, fresh retry/reset, keyboard/modal focus, touch, 320/390/768/1440px, no-JS/storage denial, resource routes, and root/project-subpath Hub discovery.');
  }finally{await b.close();}
 }
 if(process.argv.includes('--local')){

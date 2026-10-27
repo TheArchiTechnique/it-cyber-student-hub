@@ -4,11 +4,11 @@ Review help desk incidents, prioritize tickets, interpret evidence, diagnose iss
 
 - [Launch Help Desk Ticket Triage & Resolution PBQ](https://thearchitechnique.github.io/it-cyber-student-hub/practice/pbqs/a-plus-core-2/helpdesk-ticket-triage/app/)
 
-Act as the on-duty Tier 1 technician at Northstar Logistics. Inspect all six tickets, their Request, Context, and Technician Notes sections, and every available attachment before processing the queue. Some tickets have no attachments. Evidence includes original Windows and browser captures with readable transcripts, diagnostic output, and event records. Nothing requires an external download.
+Practice six short A+ support scenarios at Northstar Logistics. Open every ticket, read its Request, Context, and Technician Notes, and view all available attachments before beginning work. Some tickets have no attachments. Screenshots have readable transcripts; nothing requires an external download.
 
-Inspection does not establish priority. **Begin Work on This Ticket** records a ticket’s position in your processing sequence. Complete that ticket before beginning the next one. Choose the **Most Likely Issue** and **Best Corrective Action** for each ticket; you can revise responses before final submission without changing the work order. A processed security or service ticket can represent an authorized Tier 1 handoff rather than a completed repair.
+Follow the assigned labels: **Critical → High → Medium → Low**. Tickets with the same priority may be processed in either order. Opening a ticket does not record work order. **Begin Work on This Ticket** records its position; complete it before starting another. Choose the **Most Likely Issue** and **Best Corrective Action**. You can revise answers before submission without changing your work order.
 
-Submit the full queue for up to **39 points**: 15 for correct relative ticket-priority relationships, 12 for issue identification, and 12 for corrective actions. Each technical answer is graded independently. Inspection is a workflow requirement and earns no points. Correct answers, evidence explanations, and priority reasoning appear only after submission.
+Submit the full queue for up to **39 points**: 15 for correct relative ticket-priority relationships, 12 for issue identification, and 12 for corrective actions. Each technical answer is graded independently. Tickets with matching priority labels receive priority credit in either order. Inspection is required and earns no points. Technical answers and explanations appear only after submission.
 
 The **Lesson** tab teaches ticket lifecycles, impact and urgency, workarounds, evidence interpretation, safe troubleshooting, verification, documentation, and escalation. It links to related Hub resources. Primary alignment is CompTIA A+ Core 2 **220-1202 objective 4.1**, with supporting Windows, networking, and security troubleshooting practice.
 
