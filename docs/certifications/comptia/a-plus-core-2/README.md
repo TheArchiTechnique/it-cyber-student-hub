@@ -101,6 +101,10 @@ hub:hidden -->
 hub:hidden -->
 ## Practice Quizzes
 
+- [A+ Core 2 Practice Test](../../../practice/tests/README.md)
+
+    Choose domains, objectives, and a question count from the initial 24-question bank. Configure correct-answer feedback and detailed explanations, then review your results by domain and objective.
+
 - [Operating Systems and File Systems Essentials — Kahoot!](https://create.kahoot.it/share/operating-systems-and-file-systems-essentials/3fd97dce-08bb-475e-a0d3-a743d981b5f8)
 
     Review operating systems and file systems independently. On Kahoot!, select **Play solo** to begin. No instructor session or game PIN is required.

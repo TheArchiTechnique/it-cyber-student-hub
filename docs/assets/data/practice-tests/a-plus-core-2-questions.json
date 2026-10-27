@@ -1,0 +1,1451 @@
+{
+  "certification": "a-plus-core-2",
+  "examVersion": "220-1202",
+  "version": "2026-10-27.1",
+  "questions": [
+    {
+      "id": "apc2-001",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.1"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A technician prepares a USB drive to transfer 8 GB video files between Windows 11 and macOS computers. Both systems must read and write the files without additional filesystem software. Which format BEST meets these requirements?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "NTFS",
+          "explanation": "Windows can read and write NTFS, but macOS does not provide normal native NTFS write support. It does not meet the two-system write requirement."
+        },
+        {
+          "id": "b",
+          "text": "exFAT",
+          "explanation": "exFAT supports files larger than 4 GB and native read/write use on both Windows and macOS. It suits this removable-drive exchange."
+        },
+        {
+          "id": "c",
+          "text": "FAT32",
+          "explanation": "FAT32 works with both platforms but limits an individual file to about 4 GB. The 8 GB files exceed that limit."
+        },
+        {
+          "id": "d",
+          "text": "APFS",
+          "explanation": "APFS is native to modern macOS. Windows does not natively read and write an APFS volume, so it needs additional software."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "Filesystem compatibility and individual file size are separate requirements. exFAT meets both here. Before reformatting an existing drive, preserve its data because formatting removes the existing filesystem contents.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.1 Operating system types and purposes",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#11-operating-system-types-and-purposes"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: File system comparison",
+            "url": "https://learn.microsoft.com/en-us/windows/win32/fileio/filesystem-functionality-comparison"
+          },
+          {
+            "title": "Apple: File system formats",
+            "url": "https://support.apple.com/guide/disk-utility/file-system-formats-dsku19ed921c/mac"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-002",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.3"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A small business is choosing a Windows 11 edition for new workstations. Each must join an on-premises Active Directory domain and use managed BitLocker drive encryption. Which edition is the minimum suitable choice?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Windows 11 Home",
+          "explanation": "Home does not support joining an on-premises Active Directory domain. Device Encryption on eligible Home devices does not supply the full Pro feature set."
+        },
+        {
+          "id": "b",
+          "text": "Windows 11 Enterprise",
+          "explanation": "Enterprise can meet these needs, but Pro also provides the required features. Enterprise is not the minimum suitable edition."
+        },
+        {
+          "id": "c",
+          "text": "Windows 11 Pro",
+          "explanation": "Pro supports on-premises domain join and BitLocker management. No Enterprise-specific requirement is given."
+        },
+        {
+          "id": "d",
+          "text": "Windows 11 Home in S mode",
+          "explanation": "S mode limits application installation and does not add Pro domain-join features to Home. It cannot satisfy the domain requirement."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "Choose the least edition that meets the stated requirements. Domain join and BitLocker management make Pro appropriate. The scenario does not require advanced Enterprise capabilities.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.3 Microsoft Windows editions",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#13-microsoft-windows-editions"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: BitLocker overview",
+            "url": "https://learn.microsoft.com/en-us/windows/security/operating-system-security/data-protection/bitlocker/"
+          },
+          {
+            "title": "Microsoft: Join a computer to an Active Directory domain",
+            "url": "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/join-computer-to-domain"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-003",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.5"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A domain user reports that a recently deployed desktop policy is missing. The technician needs a summary of the Group Policy objects that have actually applied to the signed-in user. Which command should the technician run?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "gpupdate /force",
+          "explanation": "This refreshes Group Policy processing. It does not display a summary of the policies that applied."
+        },
+        {
+          "id": "b",
+          "text": "whoami /groups",
+          "explanation": "This lists security-group membership. Membership may help investigate filtering, but it is not the applied-policy report."
+        },
+        {
+          "id": "c",
+          "text": "net user",
+          "explanation": "This displays local user-account information unless other options are used. It does not report the resultant policy set."
+        },
+        {
+          "id": "d",
+          "text": "gpresult /r",
+          "explanation": "This displays a summary of Resultant Set of Policy information, including applied Group Policy objects for the relevant scope."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "Distinguish observing a configuration from changing or refreshing it. gpresult /r reports applied policy, while gpupdate requests another processing cycle. The report helps identify whether the expected GPO appears before further troubleshooting.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.5 Windows command-line tools",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#15-windows-command-line-tools"
+        },
+        {
+          "title": "Windows Command-Line Reference",
+          "path": "reference/windows-command-line.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: gpresult",
+            "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/gpresult"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-004",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.4"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "An approved inventory script must run every weekday at 02:00 on a Windows workstation, including when no user is signed in. The script and service credentials have been tested. Which tool should the technician use to configure the recurring run?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Task Scheduler",
+          "explanation": "Task Scheduler supports time-based triggers and an appropriate security context for unattended runs, including the option to run whether a user is logged on or not."
+        },
+        {
+          "id": "b",
+          "text": "Task Manager",
+          "explanation": "Task Manager can inspect and end running processes and manage startup entries. It does not create a recurring time-based job."
+        },
+        {
+          "id": "c",
+          "text": "System Configuration",
+          "explanation": "System Configuration is used for startup and troubleshooting settings. It is not the scheduler for a weekday 02:00 script."
+        },
+        {
+          "id": "d",
+          "text": "Performance Monitor",
+          "explanation": "Performance Monitor collects performance counters and can support diagnostic logging. It is not the appropriate general script scheduler for this task."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "Use Task Scheduler to pair the weekday trigger with the approved script action and account. Configure unattended execution deliberately, grant only the necessary rights, and verify the task history after a scheduled run.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.4 Windows features and tools",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#14-windows-features-and-tools"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: schtasks",
+            "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/schtasks"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-005",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.9"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "A Linux user owns collect.sh and needs to execute it directly. Group members must retain read access, and all other permissions must stay unchanged. Which command meets the requirement?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "chmod g+x collect.sh",
+          "explanation": "This adds execution for the group, while the owner still lacks execution. It changes the wrong permission class."
+        },
+        {
+          "id": "b",
+          "text": "chmod u+x collect.sh",
+          "explanation": "u selects the owner and +x adds execute without removing existing bits. Group read and other permissions remain unchanged."
+        },
+        {
+          "id": "c",
+          "text": "chmod a+x collect.sh",
+          "explanation": "This adds execute for everyone. It changes group and other permissions beyond the stated requirement."
+        },
+        {
+          "id": "d",
+          "text": "chmod u=x collect.sh",
+          "explanation": "The equals form replaces the owner permissions with execute only. It removes the owner read and write permissions."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "Read the permissions in owner, group, and other triplets. The initial owner permissions are rw-. Adding u+x changes only that triplet to rwx. This preserves the existing group read access and grants no access to others.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.9 Linux features and tools",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#19-linux-features-and-tools"
+        },
+        {
+          "title": "Linux Command-Line Reference",
+          "path": "reference/linux-commands.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "GNU chmod manual",
+            "url": "https://man7.org/linux/man-pages/man1/chmod.1.html"
+          }
+        ]
+      },
+      "evidence": "-rw-r----- 1 alex support 402 Oct 27 09:00 collect.sh"
+    },
+    {
+      "id": "apc2-006",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "1.0",
+      "objectives": [
+        "1.8"
+      ],
+      "type": "single",
+      "difficulty": "foundation",
+      "stem": "A macOS user deleted a document yesterday. The document exists in an automatic backup made before the deletion. Which built-in feature should the technician use to restore that saved version?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Disk Utility",
+          "explanation": "Disk Utility manages disks, volumes, images, and filesystem repair. It is not the interface for browsing a Time Machine document backup."
+        },
+        {
+          "id": "b",
+          "text": "Keychain Access",
+          "explanation": "Keychain Access manages stored credentials and certificates. It does not recover deleted document versions from a backup."
+        },
+        {
+          "id": "c",
+          "text": "Time Machine",
+          "explanation": "Time Machine keeps backup history that can be browsed to locate and restore a file from before its deletion."
+        },
+        {
+          "id": "d",
+          "text": "Activity Monitor",
+          "explanation": "Activity Monitor inspects processes and resource use. It does not provide backup-history restoration."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "Time Machine supports restoring individual files from available backups. Choose a backup timestamp before the deletion and verify the recovered document. A backup must already contain the file; the tool cannot recreate data never backed up.",
+      "resources": [
+        {
+          "title": "Core 2 objective 1.8 macOS features and tools",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#18-macos-features-and-tools"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Apple: Time Machine",
+            "url": "https://support.apple.com/en-us/104984"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-007",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.1"
+      ],
+      "type": "multiple",
+      "difficulty": "applied",
+      "stem": "An application already requires an account password. It must add a second authentication factor. Which TWO options could each satisfy that additional-factor requirement?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "A code generated by a hardware token",
+          "explanation": "A hardware token supplies a possession factor. Its one-time code can be used with the existing password to add a different factor category."
+        },
+        {
+          "id": "b",
+          "text": "A recovery-question answer",
+          "explanation": "A recovery-question answer is another knowledge factor. Adding it to an existing password does not add a different factor category."
+        },
+        {
+          "id": "c",
+          "text": "A code from an authenticator application",
+          "explanation": "An authenticator application on the enrolled device supplies a possession factor. Its code can supplement the existing knowledge-based password."
+        },
+        {
+          "id": "d",
+          "text": "A memorized account PIN",
+          "explanation": "A memorized PIN is a knowledge factor. Adding it to a password does not meet the requirement for a second factor category."
+        }
+      ],
+      "correct": [
+        "a",
+        "c"
+      ],
+      "explanation": "The existing password is a knowledge factor. Either a hardware-token code or an authenticator-app code can add possession as the second category. The two correct options are alternative ways to meet that requirement; a second memorized secret remains in the same knowledge category.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.1 Security measures and purposes",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#21-security-measures-and-purposes"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales. Revised to ask for two alternative possession factors for an existing password, removing ambiguous combinations of knowledge credentials.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "NIST: Digital identity authentication",
+            "url": "https://pages.nist.gov/800-63-4/sp800-63b.html"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-008",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.2"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "A user accesses a Windows folder through an SMB share. The user has Share: Read and NTFS: Modify through one group. No other permissions or deny entries apply. What can the user do through this share?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Create and edit files but not delete them",
+          "explanation": "Share Read does not permit creating or editing files. NTFS Modify cannot override the share-level restriction."
+        },
+        {
+          "id": "b",
+          "text": "Modify and delete the existing files",
+          "explanation": "NTFS Modify would allow these operations locally, but network access must also pass the share permission check."
+        },
+        {
+          "id": "c",
+          "text": "Change permissions on the shared folder",
+          "explanation": "Neither share Read nor NTFS Modify grants the user permission to change the folder ACL."
+        },
+        {
+          "id": "d",
+          "text": "Open and read files without changing them",
+          "explanation": "The share permits only Read. Access over SMB is constrained by both permission layers, leaving read access in this case."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "For access through a share, both the share permissions and the NTFS permissions must allow an operation. Here, share Read limits network access despite the NTFS Modify grant. Local access to the same folder would not be subject to share permissions.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.2 Windows security settings",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#22-windows-security-settings"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Share and NTFS permissions",
+            "url": "https://learn.microsoft.com/en-us/iis/web-hosting/configuring-servers-in-the-windows-web-platform/configuring-share-and-ntfs-permissions"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-009",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.3"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A company must give each employee an individual Wi-Fi sign-in and revoke one employee without changing everyone else's credential. The access points support WPA2-Enterprise. Which service should validate these sign-ins?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "RADIUS",
+          "explanation": "RADIUS supports centralized authentication for enterprise wireless access. Individual identities can be managed and revoked centrally."
+        },
+        {
+          "id": "b",
+          "text": "DHCP",
+          "explanation": "DHCP assigns network configuration such as addresses and gateways. It does not validate the enterprise wireless sign-in."
+        },
+        {
+          "id": "c",
+          "text": "DNS",
+          "explanation": "DNS resolves names and can help clients locate services. It is not the service that authenticates Wi-Fi users."
+        },
+        {
+          "id": "d",
+          "text": "TACACS+",
+          "explanation": "TACACS+ is commonly used for administrative access to network devices. RADIUS is the appropriate choice for this enterprise Wi-Fi authentication scenario."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "Enterprise wireless authentication uses individual credentials rather than one shared preshared key. A RADIUS service works with the wireless infrastructure to validate the user. Disabling an individual account avoids distributing a replacement shared password to every employee.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.3 Wireless security and authentication",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#23-wireless-security-and-authentication"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Network Policy Server overview",
+            "url": "https://learn.microsoft.com/en-us/windows-server/networking/technologies/nps/nps-top"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-010",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.5"
+      ],
+      "type": "single",
+      "difficulty": "foundation",
+      "stem": "An employee receives an SMS claiming that a package cannot be delivered. It links to an imitation payment page asking for card information. Which attack is illustrated?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Vishing",
+          "explanation": "Vishing uses a voice call or other voice interaction. This scenario uses a text message."
+        },
+        {
+          "id": "b",
+          "text": "Smishing",
+          "explanation": "Smishing delivers a phishing lure through SMS. The fake delivery fee and payment page are part of that lure."
+        },
+        {
+          "id": "c",
+          "text": "Tailgating",
+          "explanation": "Tailgating involves following an authorized person into a restricted physical area. No physical entry is described."
+        },
+        {
+          "id": "d",
+          "text": "Shoulder surfing",
+          "explanation": "Shoulder surfing obtains information by watching someone enter or display it. The attacker here is sending a deceptive message."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "The delivery method distinguishes smishing from voice phishing. A believable shipping issue and a small payment demand create urgency. Verify a shipment through a known legitimate channel rather than following the message link.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.5 Social engineering, threats, and vulnerabilities",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#25-social-engineering-threats-and-vulnerabilities"
+        },
+        {
+          "title": "Phishing Email Investigation",
+          "path": "practice/pbqs/a-plus-core-2/phishing-email-investigation/README.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-011",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.6"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A SOHO technician has verified malware on a workstation. It is still connected to the office network. Following the CompTIA malware-removal process, what should the technician do NEXT?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Run the scheduled full scan",
+          "explanation": "Scheduled scanning supports ongoing protection, but containment comes before proceeding with cleanup on a connected infected workstation."
+        },
+        {
+          "id": "b",
+          "text": "Create a new restore point",
+          "explanation": "A new clean restore point belongs after successful remediation. Creating one now can preserve the infected state."
+        },
+        {
+          "id": "c",
+          "text": "Quarantine the workstation",
+          "explanation": "After confirming the symptoms, isolate the infected system from the network to reduce further communication or spread."
+        },
+        {
+          "id": "d",
+          "text": "Reinstall the affected application",
+          "explanation": "Application repair does not first contain the infected system. It can also leave other persistence or malware untouched."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "The question explicitly uses the CompTIA SOHO sequence: investigate and verify, then quarantine the infected system. Network isolation contains the problem while remediation is planned. It is distinct from an antivirus tool quarantining one detected file.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.6 SOHO malware removal",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#26-soho-malware-removal"
+        },
+        {
+          "title": "Malware Investigation & Remediation",
+          "path": "practice/pbqs/a-plus-core-2/malware-investigation-remediation/README.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-012",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "2.0",
+      "objectives": [
+        "2.2"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A technician must protect all files on a removable USB drive used with supported Windows 11 workstations. The drive must require an unlock password after it is lost or removed. Which Windows feature BEST fits?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Encrypting File System",
+          "explanation": "EFS encrypts selected files on NTFS using a certificate-based identity. It is not the removable-drive password-unlock feature described."
+        },
+        {
+          "id": "b",
+          "text": "Windows Defender Firewall",
+          "explanation": "The firewall filters network traffic. It does not encrypt stored files on removable media."
+        },
+        {
+          "id": "c",
+          "text": "NTFS folder permissions",
+          "explanation": "NTFS permissions control access within Windows. They do not provide the requested password-unlocked drive encryption against offline access."
+        },
+        {
+          "id": "d",
+          "text": "BitLocker To Go",
+          "explanation": "BitLocker To Go encrypts removable data drives and supports password-based unlocking on compatible Windows systems."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "Encryption protects data at rest when possession of the media is lost. BitLocker To Go applies this to a removable drive. Securely retain the recovery information separately so an authorized user can regain access if the unlock password is forgotten.",
+      "resources": [
+        {
+          "title": "Core 2 objective 2.2 Windows security settings",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#22-windows-security-settings"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: BitLocker FAQ",
+            "url": "https://learn.microsoft.com/en-us/windows/security/operating-system-security/data-protection/bitlocker/faq"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-013",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.1"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "A workstation began showing a BSOD immediately after a video-driver update. It starts reliably in Safe Mode. The previous signed driver worked correctly, and Roll Back Driver is available. Which action is the BEST initial repair?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Roll back the video driver in Device Manager",
+          "explanation": "The failure followed a specific driver change, and the previous version was stable. Rolling back reverses that change with a focused repair."
+        },
+        {
+          "id": "b",
+          "text": "Replace the workstation's system memory",
+          "explanation": "Memory faults can cause crashes, but no memory evidence is given. The immediate driver-change relationship supports a less disruptive initial repair."
+        },
+        {
+          "id": "c",
+          "text": "Perform a clean installation of Windows",
+          "explanation": "A clean installation is much more disruptive than reversing a known problematic driver. It is not the best initial step here."
+        },
+        {
+          "id": "d",
+          "text": "Increase the workstation's paging-file size",
+          "explanation": "A paging-file change does not address the newly introduced driver fault. No low-memory condition is described."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "Use the timing of the change and the Safe Mode behavior to focus the repair. Safe Mode loads a reduced driver set, so stability there supports investigating the new driver. After rollback, verify a normal boot and the affected workload.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.1 Windows OS issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#31-windows-os-issues"
+        },
+        {
+          "title": "Windows BSOD and Application Troubleshooting",
+          "path": "practice/pbqs/a-plus-core-2/windows-bsod-application/README.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Device Manager drivers",
+            "url": "https://support.microsoft.com/en-us/windows/update-drivers-through-device-manager-in-windows-ec62f46c-ff14-c91d-eead-d7126dc1f7b6"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-014",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.1"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "A Windows workstation sends no jobs to any of its installed printers. A technician finds the state below. There are no stuck jobs, and the print service has no other reported errors. What should the technician try FIRST?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Reinstall each printer driver",
+          "explanation": "Multiple installed printers failing together and a stopped shared service point first to the spooler rather than separate driver installations."
+        },
+        {
+          "id": "b",
+          "text": "Start the Print Spooler service",
+          "explanation": "The spooler is configured for automatic startup but is stopped. Starting the common service is the focused first repair, followed by a test print."
+        },
+        {
+          "id": "c",
+          "text": "Recreate each printer's TCP/IP port",
+          "explanation": "Port settings affect individual network printer connections. They do not address the stopped local spooler shared by the installed printers."
+        },
+        {
+          "id": "d",
+          "text": "Remove and re-add each print queue",
+          "explanation": "Recreating every queue changes working configuration without first restoring the service they depend on."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "A common dependency can explain failures across otherwise separate devices. A stopped Print Spooler prevents normal Windows print-queue processing. Start it and verify printing; if it stops again, investigate its logs rather than repeatedly restarting it.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.1 Windows OS issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#31-windows-os-issues"
+        },
+        {
+          "title": "Help Desk Ticket Triage & Resolution",
+          "path": "practice/pbqs/a-plus-core-2/helpdesk-ticket-triage/README.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: Print Spooler service not running",
+            "url": "https://support.microsoft.com/en-us/windows/hardware/printer/fix-print-spooler-service-not-running-errors-in-windows"
+          }
+        ]
+      },
+      "evidence": "Service: Print Spooler\nStartup type: Automatic\nStatus: Stopped"
+    },
+    {
+      "id": "apc2-015",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.1"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "Several Windows components fail to open. An administrator has repaired the component store and then confirmed that protected system files are corrupted. Which command should the technician run NEXT to attempt repair of those files?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "chkdsk C: /f",
+          "explanation": "This checks and repairs filesystem errors. It is not the command for restoring protected Windows system-file contents."
+        },
+        {
+          "id": "b",
+          "text": "sfc /verifyonly",
+          "explanation": "This checks protected files but makes no repairs. The task requires attempting to repair known corruption."
+        },
+        {
+          "id": "c",
+          "text": "sfc /scannow",
+          "explanation": "This scans protected Windows system files and attempts repair. The prerequisite component-store issue has already been addressed."
+        },
+        {
+          "id": "d",
+          "text": "gpupdate /force",
+          "explanation": "This refreshes Group Policy processing. It does not replace damaged protected operating-system files."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "System File Checker repairs protected Windows files when suitable repair content is available. The scenario states that the component store is already repaired, so sfc /scannow is the next targeted action. Review its result and retest the failed components.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.1 Windows OS issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#31-windows-os-issues"
+        },
+        {
+          "title": "Windows Command-Line Reference",
+          "path": "reference/windows-command-line.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: sfc",
+            "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/sfc"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-016",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.2"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "An iPhone has a stable Wi-Fi connection and is connected to power. Its supported OS update will not install and reports insufficient storage. Which action is MOST appropriate?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Reset the Wi-Fi network settings",
+          "explanation": "Connectivity is stable, and the error identifies local storage. A network reset does not free installation space."
+        },
+        {
+          "id": "b",
+          "text": "Change the phone's DNS server",
+          "explanation": "DNS affects name resolution. It does not address the explicitly reported shortage of local storage."
+        },
+        {
+          "id": "c",
+          "text": "Disable the phone's automatic screen lock",
+          "explanation": "Screen-lock timing does not create room for the downloaded update or its temporary installation files."
+        },
+        {
+          "id": "d",
+          "text": "Remove backed-up media or unused apps",
+          "explanation": "Safely removing unneeded local content frees storage for the update. Confirm important content is backed up before removing it."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "Use the specific error to select the repair. OS updates require space for the download and installation work. Free storage safely and retry the supported update; avoid changing unrelated networking or security settings.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.2 Mobile OS and application issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#32-mobile-os-and-application-issues"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Apple: iOS update requirements",
+            "url": "https://support.apple.com/en-us/108905"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-017",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.3"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "An Android user installed a flashlight app from an unofficial download site. Soon afterward, advertisements began appearing over unrelated apps. The user has not granted device-administrator access. Which action is the BEST initial response?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Uninstall the downloaded flashlight app",
+          "explanation": "The new untrusted app is directly associated with the onset of systemwide ads. Removing it is a focused first response, followed by security checks."
+        },
+        {
+          "id": "b",
+          "text": "Clear the web browser's cached images",
+          "explanation": "The ads appear over unrelated apps rather than just a page in the browser. Browser cache cleanup does not remove the suspect app."
+        },
+        {
+          "id": "c",
+          "text": "Replace the phone's current SIM card",
+          "explanation": "A SIM replacement affects carrier identity and service. It does not remove an installed application displaying unwanted overlays."
+        },
+        {
+          "id": "d",
+          "text": "Reset the saved Wi-Fi network profiles",
+          "explanation": "Network profiles control connectivity. They do not uninstall the newly introduced software associated with the ads."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "An untrusted app followed by new cross-application advertising supports investigating that app. Remove it, review permissions, and use the platform's security checks. If symptoms continue or removal is blocked, escalate the remediation rather than assuming removal was sufficient.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.3 Mobile security issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#33-mobile-security-issues"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Google: Remove unsafe software",
+            "url": "https://support.google.com/accounts/answer/9924802?co=GENIE.Platform%3DAndroid&hl=en"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-018",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "3.0",
+      "objectives": [
+        "3.4"
+      ],
+      "type": "multiple",
+      "difficulty": "analysis",
+      "stem": "One Windows browser redirects searches after an unapproved extension was installed. Other browsers work normally, and the extension is not required for work. Which TWO actions BEST address the suspected cause and check for related unwanted software?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Replace the configured DNS resolver",
+          "explanation": "A resolver problem would not be the best fit for one browser changing immediately after an extension installation. It also leaves the suspect extension in place."
+        },
+        {
+          "id": "b",
+          "text": "Remove the unapproved browser extension",
+          "explanation": "This removes the recent browser-specific change associated with the redirects. Retest the browser afterward."
+        },
+        {
+          "id": "c",
+          "text": "Disable the host's software firewall",
+          "explanation": "Disabling the firewall reduces protection and does not remove a search-redirecting extension."
+        },
+        {
+          "id": "d",
+          "text": "Run an updated antimalware scan",
+          "explanation": "A scan checks for additional unwanted software or persistence related to the installation. It complements removing the suspect extension."
+        }
+      ],
+      "correct": [
+        "b",
+        "d"
+      ],
+      "explanation": "The browser-specific scope and timing focus the investigation on the extension. Remove it and scan with current protection, then retest normal searching. Do not weaken unrelated controls or change systemwide services without evidence.",
+      "resources": [
+        {
+          "title": "Core 2 objective 3.4 PC security issues",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#34-pc-security-issues"
+        },
+        {
+          "title": "Malware Investigation & Remediation",
+          "path": "practice/pbqs/a-plus-core-2/malware-investigation-remediation/README.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Google: Remove unsafe software",
+            "url": "https://support.google.com/accounts/answer/9924802?hl=en"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-019",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.2"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A workstation configuration change has passed sandbox testing. Before production approval, the change board asks how service will be restored if the change fails. Which item is missing from the request?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "An asset ownership record",
+          "explanation": "Ownership helps assign responsibility. It does not describe how to return the changed system to its previous working state."
+        },
+        {
+          "id": "b",
+          "text": "A maintenance-window schedule",
+          "explanation": "The window specifies when work occurs. It does not supply the recovery procedure if the implementation fails."
+        },
+        {
+          "id": "c",
+          "text": "A documented rollback plan",
+          "explanation": "A rollback plan defines how to reverse the change or restore the previous working configuration if success criteria are not met."
+        },
+        {
+          "id": "d",
+          "text": "An end-user training schedule",
+          "explanation": "Training can prepare users for a change. It does not restore service after a failed deployment."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "A tested change can still fail in production. A rollback plan records the reversal steps, needed backups or configuration copies, decision criteria, and responsible staff. Approval and scheduling should account for the time needed to recover.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.2 Change management",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#42-change-management"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-020",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.3"
+      ],
+      "type": "single",
+      "difficulty": "analysis",
+      "stem": "A workstation receives a full backup on Sunday and incremental backups on Monday, Tuesday, and Wednesday. Each incremental contains changes since the preceding backup. The drive fails Thursday before another backup. Which restore sequence recovers the latest backed-up state?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Sunday full, then Wednesday incremental",
+          "explanation": "Wednesday contains changes since Tuesday, so it does not include every change saved on Monday and Tuesday."
+        },
+        {
+          "id": "b",
+          "text": "Sunday full, then Tuesday and Wednesday incrementals",
+          "explanation": "Skipping Monday omits changes saved there that were not modified in the later incrementals."
+        },
+        {
+          "id": "c",
+          "text": "Wednesday incremental, then Sunday full",
+          "explanation": "An incremental is not a full baseline. Restoring the older full afterward also reverses the intended chronological recovery order."
+        },
+        {
+          "id": "d",
+          "text": "Sunday full, then Monday, Tuesday, and Wednesday incrementals",
+          "explanation": "The full baseline plus every subsequent incremental in order reconstructs the backed-up state through Wednesday."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "Incrementals form a dependency chain after the full backup. All increments since that baseline are needed in chronological order. A differential strategy would instead restore the full and the latest differential; that is not the strategy described here.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.3 Backup and recovery",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#43-backup-and-recovery"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "NIST: Contingency Planning Guide",
+            "url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-34r1.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-021",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.1"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A technician resolved a printing ticket by starting a stopped service and verifying the result with the user. Which resolution note is MOST useful to the next technician?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Print Spooler was stopped. Started the service; user printed a test page successfully. No further errors appeared during verification.",
+          "explanation": "This records the observed condition, corrective action, and verification result. Another technician can understand what changed and what was checked."
+        },
+        {
+          "id": "b",
+          "text": "User reported a printing issue. Reviewed workstation settings and performed troubleshooting. Advised the user to contact support if it happens again.",
+          "explanation": "This documents the complaint but omits the specific finding, action, and successful verification needed for a useful resolution record."
+        },
+        {
+          "id": "c",
+          "text": "Printing is operational after support work. The ticket has been resolved and the requester has been notified of the updated status.",
+          "explanation": "This records a status update but not the stopped service, repair, or evidence that the user successfully printed."
+        },
+        {
+          "id": "d",
+          "text": "Workstation checked and a service adjustment completed. The printer configuration was reviewed and normal operation is expected after the user resumes work.",
+          "explanation": "This is vague about the service and action. Expected operation is weaker than documenting the actual completed print test."
+        }
+      ],
+      "correct": [
+        "a"
+      ],
+      "explanation": "Useful resolution notes state what was wrong, what was done, and how success was verified. They should help someone continue an investigation if the problem recurs. Avoid passwords, unnecessary personal information, and vague statements such as \"fixed.\"",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.1 Documentation and support systems",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#41-documentation-and-support-systems"
+        },
+        {
+          "title": "Help Desk Ticket Triage & Resolution",
+          "path": "practice/pbqs/a-plus-core-2/helpdesk-ticket-triage/README.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-022",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.7"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A user is upset because the same application error has interrupted work twice. The technician has not yet investigated this occurrence. Which response BEST demonstrates professional communication?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "The previous technician should have fixed this; I will check what they did wrong.",
+          "explanation": "Blaming a colleague before investigating is unprofessional and can undermine confidence without establishing the actual cause."
+        },
+        {
+          "id": "b",
+          "text": "I understand this has interrupted your work. Please show me the error so I can investigate.",
+          "explanation": "This acknowledges the impact without assigning blame or promising an unverified outcome, then requests useful evidence."
+        },
+        {
+          "id": "c",
+          "text": "This is a common application issue; restarting it should keep it from happening again.",
+          "explanation": "This assumes a diagnosis and promises prevention before examining the error. A restart may be a workaround rather than a resolution."
+        },
+        {
+          "id": "d",
+          "text": "You will need to wait until the application vendor explains why this keeps happening.",
+          "explanation": "Vendor escalation may eventually be appropriate, but declining to gather evidence or investigate first is premature."
+        }
+      ],
+      "correct": [
+        "b"
+      ],
+      "explanation": "Acknowledge the impact, gather facts, and set realistic expectations. A recurring symptom does not prove that the earlier technician caused it or that one workaround will prevent recurrence. Clear, respectful questions help establish the current evidence.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.7 Communication and professionalism",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#47-communication-and-professionalism"
+        },
+        {
+          "title": "Help Desk Ticket Triage & Resolution",
+          "path": "practice/pbqs/a-plus-core-2/helpdesk-ticket-triage/README.md"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-023",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.8"
+      ],
+      "type": "single",
+      "difficulty": "foundation",
+      "stem": "A Windows support procedure tells a technician to run an approved file named Inventory.ps1. Which interpreter is intended to execute the file?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Windows Command Prompt",
+          "explanation": "Command Prompt normally uses batch files such as .bat or .cmd. A .ps1 file is a PowerShell script."
+        },
+        {
+          "id": "b",
+          "text": "Windows Script Host",
+          "explanation": "Windows Script Host commonly runs scripts such as .vbs and .js. It is not the intended interpreter for .ps1."
+        },
+        {
+          "id": "c",
+          "text": "PowerShell",
+          "explanation": "The .ps1 extension identifies a PowerShell script. Review the approved procedure and execute it in the appropriate PowerShell environment."
+        },
+        {
+          "id": "d",
+          "text": "Python",
+          "explanation": "Python scripts conventionally use .py. A .ps1 file is not a Python script merely because it automates an inventory task."
+        }
+      ],
+      "correct": [
+        "c"
+      ],
+      "explanation": "Recognizing script extensions helps select the correct interpreter. It does not establish that a file is trustworthy. In this scenario the procedure and file are already approved; follow the specified environment and required permissions.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.8 Scripting basics",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#48-scripting-basics"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          },
+          {
+            "title": "Microsoft: PowerShell scripts",
+            "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_scripts?view=powershell-7.5"
+          }
+        ]
+      }
+    },
+    {
+      "id": "apc2-024",
+      "certification": "a-plus-core-2",
+      "examVersion": "220-1202",
+      "domain": "4.0",
+      "objectives": [
+        "4.10"
+      ],
+      "type": "single",
+      "difficulty": "applied",
+      "stem": "A technician asks a generative AI tool to draft a cleanup script. The output looks plausible but has not been checked. What should the technician do BEFORE using it on production workstations?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Execute it on one live workstation and review the results before wider deployment",
+          "explanation": "A live production machine is still exposed to unchecked behavior. A small deployment does not substitute for inspecting and testing the script."
+        },
+        {
+          "id": "b",
+          "text": "Ask the same tool to confirm that the script is safe and ready for deployment",
+          "explanation": "A second assertion from the same tool is not independent verification. The output can still contain errors or unsafe assumptions."
+        },
+        {
+          "id": "c",
+          "text": "Rename the script to match an approved maintenance task before scheduling it",
+          "explanation": "A familiar filename does not validate behavior, permissions, or impact. It can obscure that the content is unreviewed."
+        },
+        {
+          "id": "d",
+          "text": "Review its commands and test its behavior in an isolated environment",
+          "explanation": "Human review and controlled testing can identify incorrect, destructive, or inappropriate actions before production use. Follow the normal change process afterward."
+        }
+      ],
+      "correct": [
+        "d"
+      ],
+      "explanation": "AI-generated code can contain convincing errors. Inspect what each command does, test with representative nonproduction data, and compare results with the intended task. Treat generation as a draft and retain the organization's approval and change controls.",
+      "resources": [
+        {
+          "title": "Core 2 objective 4.10 Artificial intelligence basics",
+          "path": "certifications/comptia/a-plus-core-2/objective-breakdown.md#410-artificial-intelligence-basics"
+        }
+      ],
+      "status": "validated",
+      "validation": {
+        "checkedOn": "2026-10-27",
+        "review": "Original item reviewed for objective alignment, answer uniqueness, plausible distractors, wording, and option-specific rationales.",
+        "sources": [
+          {
+            "title": "CompTIA 220-1202 objectives v2.0",
+            "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+          }
+        ]
+      }
+    }
+  ]
+}

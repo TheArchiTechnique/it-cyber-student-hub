@@ -36,6 +36,9 @@ const day9Quiz = 'https://create.kahoot.it/share/enter-kahoot-title/45b5f987-279
     const base = origin + prefix;
     const context = await browser.newContext();
     await context.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort());
+    // Finish the observed external navigation before returning to the Hub.
+    // Aborting it can race the following page.goto with Chrome's error document.
+    await context.route(linuxQuiz, route => route.fulfill({status:200,contentType:'text/html',body:'<!doctype html><title>External link check</title><p>Destination observed.</p>'}));
     const page = await context.newPage();
     const errors = [];
     page.on('pageerror', e => errors.push(e.message));
@@ -122,6 +125,7 @@ const day9Quiz = 'https://create.kahoot.it/share/enter-kahoot-title/45b5f987-279
         const request = page.waitForRequest(linuxQuiz);
         await quiz.click({noWaitAfter:true});
         assert.equal((await request).url(),linuxQuiz);
+        await page.waitForURL(linuxQuiz, {waitUntil:'load'});
         await go('practice/questions/');
         await follow('Back to Practice','practice/');
       }
