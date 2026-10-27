@@ -145,7 +145,7 @@ hub:hidden -->
 
 - [Malware Investigation & Remediation](../../../practice/pbqs/a-plus-core-2/malware-investigation-remediation/README.md)
 
-    Investigate Windows security incidents, identify malware indicators, contain threats, perform remediation, and verify system recovery using interactive troubleshooting tools.
+    Troubleshoot four office computers: identify infections, isolate affected systems, correct services, quarantine threats, and verify cleanup.
 
 - [Network Configuration Concepts](../../../practice/pbqs/a-plus-core-2/network-configuration-concepts/README.md)
 
