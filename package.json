@@ -13,7 +13,8 @@
     "test:linux-terminal-engine": "node tests/linux-terminal.cjs && node tests/linux-terminal-guided.cjs",
     "test:linux-terminal": "node tests/linux-terminal.cjs && node tests/linux-terminal-guided.cjs && node tests/linux-terminal-browser.cjs",
     "test:phishing-email-investigation": "node tests/phishing-email-investigation.cjs --local",
-    "test:malware-investigation-remediation": "node tests/malware-investigation-remediation.cjs --local"
+    "test:malware-investigation-remediation": "node tests/malware-investigation-remediation.cjs --local",
+    "test:helpdesk-ticket-triage": "node tests/helpdesk-ticket-triage.cjs --local"
   },
   "devDependencies": {
     "playwright": "1.62.1"
