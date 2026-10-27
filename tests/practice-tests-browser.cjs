@@ -6,6 +6,144 @@ const { chromium } = require('playwright');
 const bank = require('../docs/assets/data/practice-tests/a-plus-core-2-questions.json');
 const KEY = 'student-hub.exam.session.v1';
 
+async function whiteboardFlow(p, state, shot) {
+  const tool = name => p.getByRole('button', { name, exact: true });
+  const panel = p.locator('.exam-whiteboard'), notes = p.getByRole('textbox', { name: 'Exam notes' });
+  const snapshot = s => Object.fromEntries(['answers', 'flags', 'current', 'status', 'finalized', 'questionIds', 'choiceOrder'].map(key => [key, s[key]]));
+  const unchanged = async before => assert.deepEqual(snapshot(await state()), snapshot(before), 'Tools must not alter examination responses, flags, position, or scoring inputs');
+  const noOverlap = async () => {
+    const box = await panel.boundingBox();
+    for (const selector of ['#new-test', '#flag', '#previous', '#next', '#submit-test', '#check-answer']) {
+      const control = p.locator(selector);
+      if (!await control.isVisible()) continue;
+      const b = await control.boundingBox();
+      assert.ok(box.x + box.width <= b.x + 1 || b.x + b.width <= box.x + 1 || box.y + box.height <= b.y + 1 || b.y + b.height <= box.y + 1, `${selector} obscured by whiteboard`);
+    }
+  };
+  const technical = 'ipconfig /all\n  IPv4 Address . . : 192.0.2.25\n\tDNS: 192.0.2.53\nC:\\Users\\Student\n<img src=x onerror=alert(1)>\n';
+  const first = await state(), firstQuestion = bank.questions.find(q => q.id === first.questionIds[0]);
+  for (const id of firstQuestion.correct) await p.locator(`#answer-options input[value="${id}"]`).check();
+  await p.locator('#flag').click();
+  const before = await state();
+  assert.equal(await tool('Whiteboard').count(), 1);
+  await tool('Whiteboard').click(); await panel.waitFor({ state: 'visible' });
+  assert.equal(await notes.evaluate(el => el === document.activeElement), true);
+  await notes.fill(technical);
+  assert.equal((await state()).tools.whiteboard.text, technical);
+  assert.equal(await panel.locator('img').count(), 0, 'Pasted markup stays plain text');
+  await unchanged(before); await noOverlap();
+
+  // Native keyboard clipboard operations retain technical line breaks, tabs and spaces.
+  await notes.press('Control+A'); await notes.press('Control+C'); await notes.press('Control+X');
+  assert.equal(await notes.inputValue(), ''); await notes.press('Control+V');
+  assert.equal(await notes.inputValue(), technical);
+  const initialBounds = (await state()).tools.whiteboard.bounds;
+  const title = tool('Move Whiteboard'), titleBox = await title.boundingBox();
+  await p.mouse.move(titleBox.x + 40, titleBox.y + 20); await p.mouse.down();
+  await p.mouse.move(titleBox.x - 24, titleBox.y + 36, { steps: 8 }); await p.mouse.up();
+  assert.ok((await state()).tools.whiteboard.bounds.x < initialBounds.x, 'Pointer dragging moves the panel');
+  await title.focus(); const moved = (await state()).tools.whiteboard.bounds;
+  await p.keyboard.press('ArrowLeft'); assert.equal((await state()).tools.whiteboard.bounds.x, Math.max(0, moved.x - 16));
+  const resize = tool('Resize Whiteboard'), handle = await resize.boundingBox();
+  const oldSize = (await state()).tools.whiteboard.bounds;
+  await p.mouse.move(handle.x + 20, handle.y + 20); await p.mouse.down();
+  await p.mouse.move(handle.x - 12, handle.y + 30, { steps: 8 }); await p.mouse.up();
+  assert.ok((await state()).tools.whiteboard.bounds.width < oldSize.width, 'Pointer resizing changes panel size');
+  await resize.focus(); const resized = (await state()).tools.whiteboard.bounds;
+  await p.keyboard.press('ArrowLeft'); assert.equal((await state()).tools.whiteboard.bounds.width, Math.max(280, resized.width - 16));
+  await unchanged(before); await noOverlap();
+  const dimensions = (await state()).tools.whiteboard.bounds;
+  await tool('Minimize Whiteboard').click(); assert.equal(await notes.isVisible(), false);
+  await tool('Restore Whiteboard').click(); assert.equal(await notes.inputValue(), technical);
+  assert.deepEqual((await state()).tools.whiteboard.bounds, dimensions);
+  await tool('Close Whiteboard').click(); assert.equal(await panel.isVisible(), false);
+  assert.equal(await tool('Whiteboard').evaluate(el => el === document.activeElement), true);
+  await tool('Whiteboard').click(); assert.equal(await notes.inputValue(), technical);
+  await tool('Whiteboard').click(); assert.equal(await panel.isVisible(), false);
+  await tool('Whiteboard').click();
+
+  // Cancel and Escape leave notes intact; confirmed clear touches only tool text.
+  const clear = panel.getByRole('button', { name: 'Clear Notes', exact: true });
+  const dialog = p.locator('.whiteboard-confirmation');
+  await clear.click(); assert.equal(await dialog.getByRole('button', { name: 'Cancel', exact: true }).evaluate(el => el === document.activeElement), true);
+  for (let i = 0; i < 5; i++) { await p.keyboard.press('Tab'); assert.equal(await dialog.evaluate(el => el.contains(document.activeElement)), true); }
+  await p.keyboard.press('Escape'); assert.equal(await notes.inputValue(), technical);
+  await clear.click(); await dialog.getByRole('button', { name: 'Cancel', exact: true }).click(); assert.equal(await notes.inputValue(), technical);
+  await clear.click(); await dialog.getByRole('button', { name: 'Clear Notes', exact: true }).click();
+  assert.equal(await notes.inputValue(), ''); await unchanged(before);
+  await notes.fill(technical);
+  await tool('Minimize Whiteboard').click(); const checkpoint = await state();
+  await p.reload(); await panel.waitFor({ state: 'visible' });
+  await unchanged(checkpoint); assert.deepEqual((await state()).tools.whiteboard, checkpoint.tools.whiteboard);
+  await tool('Restore Whiteboard').click(); assert.equal(await notes.inputValue(), technical);
+  await tool('Dock Whiteboard').click(); assert.equal(await panel.getAttribute('data-docked'), 'true');
+  await p.reload(); await panel.waitFor({ state: 'visible' }); assert.equal(await panel.getAttribute('data-docked'), 'true');
+  await tool('Float Whiteboard').click(); assert.equal(await panel.getAttribute('data-docked'), 'false');
+
+  // Copy actual examination evidence, then navigate without remounting the tool.
+  const evidenceIndex = first.questionIds.findIndex(id => bank.questions.find(q => q.id === id).evidence);
+  await p.locator('#question-navigator button').nth(evidenceIndex).click();
+  const evidence = p.locator('#question-body pre'), output = await evidence.innerText();
+  await evidence.focus();
+  await evidence.evaluate(el => { const range = document.createRange(); range.selectNodeContents(el); const selection = getSelection(); selection.removeAllRanges(); selection.addRange(range); });
+  await p.keyboard.press('Control+C'); await notes.focus(); await notes.press('Control+End'); await notes.press('Control+V');
+  assert.equal(await notes.inputValue(), technical + output);
+  const navigation = p.locator(await p.locator('#next').isDisabled() ? '#previous' : '#next');
+  await navigation.focus(); await p.keyboard.press('Enter');
+  assert.equal(await notes.inputValue(), technical + output, 'Keyboard navigation works with the nonmodal whiteboard');
+  for (const type of ['single', 'multiple']) {
+    const index = first.questionIds.findIndex(id => bank.questions.find(q => q.id === id).type === type);
+    await p.locator('#question-navigator button').nth(index).click();
+    const question = bank.questions.find(q => q.id === first.questionIds[index]);
+    for (const id of question.correct) await p.locator(`#answer-options input[value="${id}"]`).check();
+    const selected = await state();
+    await notes.fill(technical + output); await unchanged(selected);
+    assert.equal(await notes.inputValue(), technical + output);
+  }
+  await p.locator('#question-navigator button').first().click();
+  const expected = await state();
+
+  // The native limit and defensive handling cap oversized pastes without resetting the attempt.
+  await notes.fill('x'.repeat(199995));
+  await p.evaluate(async () => navigator.clipboard.writeText('12345678901234567890'));
+  await notes.focus(); await notes.press('Control+End'); await notes.press('Control+V');
+  assert.equal((await notes.inputValue()).length, 200000);
+  assert.equal((await state()).tools.whiteboard.text.length, 200000);
+  assert.match(await panel.locator('.whiteboard-limit').innerText(), /limit/);
+  await notes.press('a'); assert.equal((await notes.inputValue()).length, 200000);
+  await notes.evaluate(el => { el.value = 'z'.repeat(200001); el.dispatchEvent(new Event('input', { bubbles: true })); });
+  assert.equal((await state()).tools.whiteboard.text.length, 200000);
+  await notes.fill(technical); await unchanged(expected);
+
+  // Corrupt tool geometry must recover independently of valid examination state.
+  for (const bounds of [{ x: -99999, y: 99999, width: 99999, height: 99999 }, { x: 'bad', y: null, width: -4, height: 0 }, { x: 1, y: -100, width: -1, height: 2 }]) {
+    await p.evaluate(({ key, bounds }) => { const s = JSON.parse(localStorage.getItem(key)); s.tools.whiteboard.bounds = bounds; localStorage.setItem(key, JSON.stringify(s)); }, { key: KEY, bounds });
+    await p.reload(); await panel.waitFor({ state: 'visible' });
+    const b = (await state()).tools.whiteboard.bounds;
+    const a = await p.locator('#exam-question-content').boundingBox();
+    assert.ok(b.x >= 0 && b.y >= 0 && b.x + b.width <= a.width + 1 && b.y + b.height <= a.height + 1);
+    assert.equal(await notes.inputValue(), technical); await unchanged(expected); await noOverlap();
+  }
+  for (const width of [320, 390, 768, 1440]) {
+    await p.setViewportSize({ width, height: 900 });
+    await p.waitForFunction(width => document.querySelector('.exam-whiteboard').dataset.docked === String(width <= 850), width);
+    assert.equal(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true);
+    await noOverlap();
+    for (const dark of [false, true]) {
+      if ((await p.locator('body').getAttribute('data-md-color-scheme') === 'slate') !== dark) await p.locator('#theme-toggle').click();
+      await panel.scrollIntoViewIfNeeded();
+      await shot(p, `whiteboard-${width}-${dark ? 'dark' : 'light'}`);
+      assert.equal(await notes.inputValue(), technical);
+    }
+    await p.locator('#theme-toggle').click();
+    await tool('Minimize Whiteboard').click(); await tool('Restore Whiteboard').click();
+    assert.equal(await notes.inputValue(), technical);
+  }
+  await p.setViewportSize({ width: 1440, height: 1000 });
+  await notes.focus(); await p.keyboard.press('Escape'); assert.equal(await panel.isVisible(), false);
+  await p.locator('#flag').click();
+}
+
 async function browser(base) {
   const b = await chromium.launch({ headless: true, executablePath: process.env.PBQ_CHROMIUM_PATH || undefined, args: ['--no-sandbox', '--disable-dev-shm-usage'] });
   const route = '/practice/tests/app/';
@@ -57,6 +195,8 @@ async function browser(base) {
       await click('use-available');
       await start();
       const first = await state(); assert.equal(first.questionIds.length, 24);
+      await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+      await whiteboardFlow(p, state, prefix ? async () => {} : shot);
       assert.equal(await p.locator('#feedback').isVisible(), false);
       assert.equal(await p.locator('#previous').isDisabled(), true);
       assert.equal(await p.locator('#choices legend').innerText().then(t => /Select (one|2)/.test(t)), true);
@@ -78,6 +218,8 @@ async function browser(base) {
       }
       assert.match(await p.locator('#progress-text').innerText(), /24 of 24 answered · 2 flagged/);
       assert.equal(await p.locator('#next').isDisabled(), true);
+      await p.getByRole('button', { name: 'Whiteboard', exact: true }).click();
+      await p.getByRole('textbox', { name: 'Exam notes' }).fill('Notes persist through submission and review.');
       await click('submit-test');
       assert.equal(await p.locator('#cancel-action').evaluate(el => el === document.activeElement), true);
       for (let i = 0; i < 8; i++) { await p.keyboard.press('Tab'); assert.equal(await p.locator('#confirmation').evaluate(el => el.contains(document.activeElement)), true); }
@@ -88,6 +230,11 @@ async function browser(base) {
       assert.equal(await p.locator('#results table').count(), 2);
       assert.equal(await p.locator('#feedback .rationale').count(), 4);
       assert.equal(await p.locator('#flag').isDisabled(), true);
+      assert.equal(await p.locator('.exam-whiteboard').isVisible(), true);
+      assert.equal(await p.getByRole('textbox', { name: 'Exam notes' }).inputValue(), 'Notes persist through submission and review.');
+      await p.getByRole('textbox', { name: 'Exam notes' }).fill('Review notes do not affect scores.');
+      assert.equal(await p.locator('#results .score').innerText(), '100%');
+      await p.getByRole('button', { name: 'Close Whiteboard', exact: true }).click();
       for (const resource of new Set(bank.questions.flatMap(q => q.resources.map(r => r.path)))) {
         const [file, fragment] = resource.split('#');
         const href = file.replace(/README\.md$/, '').replace(/\.md$/, '/');
@@ -104,6 +251,8 @@ async function browser(base) {
       // Immediate feedback commits explicitly, locks the answer, and survives refresh.
       await onlyObjective('1.5'); await p.locator('#feedback-timing').selectOption('immediate'); await start();
       const immediate = await state(); assert.notEqual(immediate.id, first.id); assert.equal(immediate.tools.whiteboard.text, '');
+      assert.equal(immediate.tools.whiteboard.visible, false); assert.equal(immediate.tools.whiteboard.bounds, null);
+      assert.equal(immediate.tools.whiteboard.minimized, false); assert.equal(immediate.tools.whiteboard.docked, false);
       const command = bank.questions.find(q => q.id === immediate.questionIds[0]);
       const wrong = command.choices.find(c => !command.correct.includes(c.id)).id;
       await p.locator(`#answer-options input[value="${wrong}"]`).focus(); await p.keyboard.press('Space');
@@ -168,14 +317,37 @@ async function browser(base) {
     await p.addInitScript(() => { for (const key of ['getItem', 'setItem', 'removeItem']) Storage.prototype[key] = () => { throw new DOMException('Blocked', 'SecurityError'); }; });
     await p.goto(base + route); await p.locator('#setup').waitFor({ state: 'visible' });
     await p.locator('#start-test').click(); await p.locator('#exam').waitFor({ state: 'visible' }); assert.match(await p.locator('#save-status').innerText(), /unavailable/);
+    await p.getByRole('button', { name: 'Whiteboard', exact: true }).click();
+    await p.getByRole('textbox', { name: 'Exam notes' }).fill('Unsaved notes remain usable in memory.');
+    assert.match(await p.locator('.whiteboard-save').innerText(), /could not be saved/);
+    await p.getByRole('button', { name: 'Close Whiteboard', exact: true }).click();
+    await p.getByRole('button', { name: 'Whiteboard', exact: true }).click();
+    assert.equal(await p.getByRole('textbox', { name: 'Exam notes' }).inputValue(), 'Unsaved notes remain usable in memory.');
+    await p.getByRole('button', { name: 'Close Whiteboard', exact: true }).click();
     await p.locator('#answer-options input').first().check(); await p.locator('#submit-test').click(); await p.locator('#confirm-action').click(); await p.locator('#results').waitFor({ state: 'visible' });
     await blocked.close();
+    const quota = await b.newContext(), full = await quota.newPage();
+    await full.addInitScript(() => { Storage.prototype.setItem = () => { throw new DOMException('Full', 'QuotaExceededError'); }; });
+    await full.goto(base + route); await full.locator('#start-test').click();
+    await full.getByRole('button', { name: 'Whiteboard', exact: true }).click();
+    await full.getByRole('textbox', { name: 'Exam notes' }).fill('Quota failure preserves current notes.');
+    assert.match(await full.locator('.whiteboard-save').innerText(), /unavailable or full/);
+    await quota.close();
     const nojs = await b.newContext({ javaScriptEnabled: false }), plain = await nojs.newPage();
     await plain.goto(base + route); assert.match(await plain.locator('noscript').innerText(), /JavaScript is required/); await nojs.close();
     const touch = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true }), mobile = await touch.newPage();
     await mobile.goto(base + route); await mobile.locator('#setup').waitFor({ state: 'visible' });
-    await mobile.locator('#start-test').tap(); await mobile.locator('#answer-options label').first().tap(); await mobile.locator('#flag').tap(); assert.equal(await mobile.locator('#flag').getAttribute('aria-pressed'), 'true'); await touch.close();
-    console.log('PASS browser: root and project-subpath launch/integration, domain/objective/count filters, exact scoring, all feedback settings, explicit locking, flags, modal/keyboard/touch, reload/new-test isolation, stale/corrupt/storage-denied sessions, no-JS fallback, local resource routes, and 320/390/768/1440px layouts.');
+    await mobile.locator('#start-test').tap(); await mobile.locator('#answer-options label').first().tap(); await mobile.locator('#flag').tap(); assert.equal(await mobile.locator('#flag').getAttribute('aria-pressed'), 'true');
+    await mobile.getByRole('button', { name: 'Whiteboard', exact: true }).tap();
+    await mobile.getByRole('textbox', { name: 'Exam notes' }).fill('Touch notes\n  retain spacing');
+    assert.equal(await mobile.locator('.exam-whiteboard').getAttribute('data-docked'), 'true');
+    await mobile.getByRole('button', { name: 'Minimize Whiteboard', exact: true }).tap();
+    await mobile.getByRole('button', { name: 'Restore Whiteboard', exact: true }).tap();
+    assert.equal(await mobile.getByRole('textbox', { name: 'Exam notes' }).inputValue(), 'Touch notes\n  retain spacing');
+    await mobile.getByRole('button', { name: 'Close Whiteboard', exact: true }).tap();
+    assert.equal(await mobile.locator('#flag').getAttribute('aria-pressed'), 'true');
+    await touch.close();
+    console.log('PASS browser: practice-test regression plus floating/docked whiteboard, pointer/keyboard movement and resizing, native clipboard formatting and inert markup, clear confirmation/cancellation, navigation/answer/flag/scoring independence, refresh and geometry recovery, new-attempt isolation, 200,000-character cap, denied/full storage, and light/dark 320/390/768/1440px layouts at root and project URL prefixes.');
   } finally { await b.close(); }
 }
 

@@ -7,6 +7,7 @@
   <title>Practice Tests | IT &amp; Cybersecurity Student Hub</title>
   <link rel="stylesheet" href="../../../assets/stylesheets/hub.css">
   <link rel="stylesheet" href="../../../assets/stylesheets/practice-tests.css">
+  <link rel="stylesheet" href="../../../assets/stylesheets/exam-whiteboard.css">
   <script type="module" src="../../../assets/javascripts/practice-tests/app.mjs"></script>
 </head>
 <body data-md-color-scheme="default">
@@ -77,11 +78,16 @@
           <progress id="progress" value="0" max="1" aria-label="Questions answered"></progress>
           <p id="progress-text" class="muted"></p>
           <h2 id="question-title" tabindex="-1">Question</h2>
-          <div id="question-body"></div>
-          <fieldset id="choices"><legend id="answer-instructions"></legend><div id="answer-options"></div></fieldset>
-          <p id="answer-status" role="status" aria-live="polite"></p>
+          <div class="exam-note-surface">
+            <div id="exam-tool-panels" data-exam-slot="tool-panels"></div>
+            <div id="exam-question-content">
+              <div id="question-body"></div>
+              <fieldset id="choices"><legend id="answer-instructions"></legend><div id="answer-options"></div></fieldset>
+              <p id="answer-status" role="status" aria-live="polite"></p>
+              <section id="feedback" aria-label="Answer feedback" hidden></section>
+            </div>
+          </div>
           <button type="button" id="check-answer" class="primary" hidden>Check Answer</button>
-          <section id="feedback" aria-label="Answer feedback" hidden></section>
           <div class="question-navigation"><button type="button" id="previous">Previous</button><button type="button" id="next">Next</button></div>
         </section>
         <aside class="panel navigator" aria-labelledby="navigator-title">
@@ -91,7 +97,6 @@
           <button type="button" id="submit-test" class="primary">Submit Test</button>
           <p class="muted">Unanswered questions receive no credit. Results use a practice percentage.</p>
         </aside>
-        <div id="exam-tool-panels" data-exam-slot="tool-panels"></div>
       </div>
     </section>
     <dialog id="confirmation" aria-labelledby="confirmation-title" aria-describedby="confirmation-text">

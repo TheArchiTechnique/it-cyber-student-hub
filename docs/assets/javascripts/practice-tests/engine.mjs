@@ -1,4 +1,5 @@
 // Pure session logic, shared by every examination interface.
+import { restoreWhiteboard } from './whiteboard-state.mjs';
 export const SESSION_VERSION = 1;
 export const STORAGE_KEY = 'student-hub.exam.session.v1';
 export const questionTypes = ['single', 'multiple'];
@@ -79,7 +80,7 @@ export function createSession(exam, bank, config, random = Math.random) {
     choiceOrder: Object.fromEntries(questions.map(q => [q.id, shuffle(q.choices.map(c => c.id), random)])),
     answers: Object.fromEntries(questions.map(q => [q.id, []])), flags: [], finalized: [], current: 0,
     // Tool state is session-owned and never participates in selection or scoring.
-    tools: { whiteboard: { text: '', visible: false, minimized: false, bounds: null } }
+    tools: { whiteboard: restoreWhiteboard(null) }
   };
 }
 
@@ -140,16 +141,9 @@ export function restoreSession(raw, exam, bank) {
     id: raw.id, config: clone(raw.config), createdAt: raw.createdAt,
     submittedAt: raw.status === 'submitted' ? raw.submittedAt : null, status: raw.status,
     questionIds: [...raw.questionIds], choiceOrder: {}, answers: {}, flags: [...raw.flags], finalized: [...raw.finalized], current: raw.current,
-    tools: { whiteboard: { text: '', visible: false, minimized: false, bounds: null } }
+    tools: { whiteboard: restoreWhiteboard(raw.tools?.whiteboard) }
   };
   for (const id of session.questionIds) { session.choiceOrder[id] = [...raw.choiceOrder[id]]; session.answers[id] = [...(raw.answers[id] || [])]; }
-  const notes = raw.tools?.whiteboard;
-  if (object(notes)) {
-    session.tools.whiteboard.text = typeof notes.text === 'string' ? notes.text.slice(0, 200000) : '';
-    session.tools.whiteboard.visible = notes.visible === true;
-    session.tools.whiteboard.minimized = notes.minimized === true;
-    if (object(notes.bounds) && ['x', 'y', 'width', 'height'].every(key => Number.isFinite(notes.bounds[key]))) session.tools.whiteboard.bounds = Object.fromEntries(['x', 'y', 'width', 'height'].map(key => [key, notes.bounds[key]]));
-  }
   return session;
 }
 

@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as E from '../docs/assets/javascripts/practice-tests/engine.mjs';
+import { WHITEBOARD_TEXT_LIMIT, WHITEBOARD_MIN_SIZE, restoreWhiteboard, constrainWhiteboardBounds } from '../docs/assets/javascripts/practice-tests/whiteboard-state.mjs';
 import { certifications } from '../docs/assets/javascripts/practice-tests/registry.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -99,12 +100,30 @@ assert.equal(E.finalizeAnswer(immediate, id), false);
 E.answer(immediate, bank, id, q.correct); E.finalizeAnswer(immediate, id);
 assert.equal(E.answer(immediate, bank, id, []), false, 'Revealed answers are immutable');
 E.toggleFlag(immediate, id); immediate.current = 2;
-immediate.tools.whiteboard = { text: 'ipconfig /all\n  Host Name . . : LAB\n\tDNS', visible: true, minimized: true, bounds: { x: 15, y: 40, width: 350, height: 220 } };
+immediate.tools.whiteboard = { text: 'ipconfig /all\n  Host Name . . : LAB\n\tDNS', visible: true, minimized: true, bounds: { x: 15, y: 40, width: 350, height: 320 }, docked: false };
 assert.deepEqual(E.restoreSession(copy(immediate), exam, bank), immediate);
 const scoreBefore = E.grade(immediate, exam, bank);
 immediate.tools.whiteboard.text += '\nnotes cannot award points';
 assert.deepEqual(E.grade(immediate, exam, bank), scoreBefore);
 const another = fresh(); assert.notEqual(another.id, immediate.id); assert.equal(another.tools.whiteboard.text, '');
+another.tools.whiteboard.text = 'independent attempt';
+assert.notEqual(immediate.tools.whiteboard.text, another.tools.whiteboard.text);
+const oldSchema = copy(immediate); delete oldSchema.tools.whiteboard.docked;
+assert.equal(E.restoreSession(oldSchema, exam, bank).tools.whiteboard.docked, false, 'Phase 1 sessions resume without a schema reset');
+for (const value of [null, [], 'notes', { text: 123, visible: 'true', minimized: 1, docked: 'yes', bounds: { x: 0, y: 0, width: '400', height: 300 } }]) {
+  assert.deepEqual(restoreWhiteboard(value), restoreWhiteboard(null));
+}
+assert.equal(restoreWhiteboard({ text: 'x'.repeat(WHITEBOARD_TEXT_LIMIT + 5) }).text.length, WHITEBOARD_TEXT_LIMIT);
+assert.equal(restoreWhiteboard({ bounds: { x: NaN, y: 0, width: Infinity, height: 320 } }).bounds, null);
+for (const area of [{ width: 900, height: 600 }, { width: 280, height: 300 }, { width: 240, height: 180 }]) {
+  for (const bounds of [null, { x: -500, y: 50000, width: 90000, height: 10000 }, { x: 100, y: -50, width: -1, height: 0 }, { x: 1, y: 2, width: NaN, height: Infinity }, { x: 40, y: 20, width: 320, height: 340 }]) {
+    const b = constrainWhiteboardBounds(bounds, area);
+    assert.ok(b.x >= 0 && b.y >= 0 && b.x + b.width <= area.width && b.y + b.height <= area.height);
+    assert.ok(b.width >= Math.min(WHITEBOARD_MIN_SIZE.width, area.width) && b.height >= Math.min(WHITEBOARD_MIN_SIZE.height, area.height));
+  }
+}
+const dockedState = copy(immediate); dockedState.tools.whiteboard.docked = true;
+assert.equal(E.restoreSession(dockedState, exam, bank).tools.whiteboard.docked, true);
 E.submit(immediate); assert.equal(E.answer(immediate, bank, id, []), false); assert.equal(E.toggleFlag(immediate, id), false);
 assert.equal(E.submit(immediate), false);
 assert.deepEqual(E.restoreSession(copy(immediate), exam, bank), immediate);

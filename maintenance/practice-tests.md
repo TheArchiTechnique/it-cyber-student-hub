@@ -27,37 +27,50 @@ Bump the bank version when assessed content, answer keys, rationales, or objecti
 
 Resources are docs-relative Markdown paths in the bank. The shared URL helper maps `.md` and `README.md` paths to published Pages routes without assuming a root-domain deployment. Resource links open separately so following a lesson does not abandon an attempt. Markdown landing pages retain ordinary relative links for GitHub and GitBook; GitBook does not execute the app's static HTML.
 
-## Floating Exam Whiteboard: explicit later-phase requirement
+## Phase 2: floating Exam Whiteboard
 
-Phase 1 reserves session-owned `tools.whiteboard` and examination mount points `data-exam-slot="toolbar-tools"` and `data-exam-slot="tool-panels"`. No whiteboard window, inactive button, dragging code, or resize code is implemented in Phase 1. There is no whiteboard dependency in question selection or scoring.
+Implemented in `docs/assets/javascripts/practice-tests/whiteboard.mjs`, with pure state/geometry helpers in `whiteboard-state.mjs` and scoped styling in `docs/assets/stylesheets/exam-whiteboard.css`. The component has no question, certification, answer, or scoring dependency and does not access browser storage directly.
 
-In the subsequent examination-interface phase, implement one reusable whiteboard component for Practice Tests, Certification Mode, and future PBQ examination integration. It receives the current session ID, the examination container, toolbar/panel mount points, a reference to its own tool-state object, and a callback to persist that session. It must not read or modify grading answers. Do not couple the component to Core 2 or an individual PBQ.
+Shared adapter:
 
-Required functionality:
+```js
+const whiteboard = mountWhiteboard({
+  sessionId: session.id,
+  state: session.tools.whiteboard,
+  container: document.getElementById('exam-question-content'),
+  toolbarMount: document.querySelector('[data-exam-slot="toolbar-tools"]'),
+  panelMount: document.querySelector('[data-exam-slot="tool-panels"]'),
+  persist: () => saveCurrentSession() // Return false when saving fails.
+});
+// Use when another examination action attempts to save:
+whiteboard.setSaveStatus(saved);
+// Before discarding/replacing the attempt or removing its interface:
+whiteboard.destroy();
+```
 
-- A toolbar Whiteboard button opens or hides the compact floating window.
-- A draggable title bar supports movement inside the examination interface.
-- The window/writing area is resizable; minimize preserves notes; close hides without clearing.
-- Students can type notes, calculations, troubleshooting observations, and technical information.
-- Standard keyboard copying and pasting from questions, logs, command outputs, and examination material works. Do not intercept the usual copy/paste shortcuts or disable question text selection.
-- Use a readable monospaced plain-text writing area preserving newlines, spaces, and tabs for technical output. Pasted markup must remain inert; preserving readable technical layout does not require inserting HTML.
-- Clear Notes requires confirmation before erasing content.
-- Preserve text, visibility, minimized state, and useful geometry throughout the current test and refresh. Clamp restored geometry to the current examination viewport.
-- New tests receive empty, independent notes. Do not carry notes across session IDs, modes, or certifications. Clear/discard operations affect only the intended session.
-- Keep essential submission/navigation controls reachable, including at narrow sizes and when the panel is large. Define reserved control regions or an accessible docked fallback.
-- Support mouse, keyboard, and touch where practical, including focus management, named controls, keyboard move/resize or an equivalent accessible layout, and reachable minimize/close controls.
-- Notes stay in browser-local storage, require no account or external service, and never affect scoring.
+Each attempt owns `{ text: '', visible: false, minimized: false, bounds: null, docked: false }`. The optional `docked` preference defaults to false when restoring a Phase 1 session, so existing valid attempts continue without a session version reset. Geometry uses numeric `x`, `y`, `width`, and `height`, relative to the safe content surface. Tool restoration strips unknown properties, accepts only finite coordinates, and caps notes at 200,000 UTF-16 code units. Invalid tool data resets only the affected tool fields; it does not discard valid answers or flags. Starting a new attempt resets every tool field.
 
-Reserved tool state: `{ text: '', visible: false, minimized: false, bounds: null }`. Bounds will use numeric `x`, `y`, `width`, and `height`. Restore treats notes as text, validates geometry, and limits text to 200,000 characters so corrupt storage cannot create an unbounded restoration. The later component should show its note-size limit and handle storage-quota failures. Reuse the existing session persistence path rather than a global notes key.
+The toolbar button toggles the panel. Close and Escape hide it and return focus to the toolbar button. Minimize retains text and expanded geometry. A monospaced plain-text textarea preserves newlines, tabs, spacing, paths, and logs, with native copy/cut/paste/select-all shortcuts and inert pasted markup. Notes and open/minimized/docked state save immediately through the existing session callback. Geometry saves when a pointer gesture ends, after keyboard adjustments, and when a viewport/content change requires clamping. Page hide flushes an unfinished pointer gesture. A persistent warning appears inside the tool if storage is denied or full; the in-memory attempt and notes continue working. Over-limit input is capped, partial pastes retain the available text, and a visible message explains the limit. Clear Notes uses a cancel-first native confirmation dialog and erases only note text.
 
-Whiteboard acceptance tests belong to that later phase: open/close/minimize preservation, pointer and keyboard move/resize, paste whitespace, clear/cancel, refresh recovery, viewport changes, new-test/mode isolation, storage failure, control nonoverlap, and identical scores before/after note edits.
+### Safe layout and accessibility contract
+
+Place the panel mount inside a `position: relative` safe surface, alongside the content container. In floating mode the mount overlays that surface. The container must exclude essential exam controls: in Practice Mode, the toolbar, flag button, question navigator, Check Answer, Previous/Next, and Submit Test are outside it. The panel can cover question content while taking notes, and students can move, dock, minimize, or close it. Keep these reserved areas outside the surface in future Certification Mode/PBQ adapters as well. Do not pass an entire page containing essential controls as the safe container.
+
+Desktop students can drag the title or Resize handle using pointer input. Both controls also accept arrow keys in 16px increments. The Dock button provides an in-flow alternative. At 850px and below, or whenever the safe surface/viewport cannot accommodate a 280×300px window, the tool automatically docks in the document flow. Floating geometry is constrained to the content surface and current viewport size whenever restored or resized. A ResizeObserver handles different question/evidence heights; viewport and virtual-keyboard size changes are also observed. Opening scrolls the window into view; normal page scrolling remains available. Minimized geometry preserves the expanded dimensions. Mobile docking does not overwrite the desktop preference or geometry.
+
+The notes panel is a nonmodal region: exam controls remain keyboard reachable and there is no focus trap. All controls have accessible names and explicit button types. Pointer capture and handle-specific touch behavior prevent a drag from activating answers underneath. The editor retains ordinary text selection/touch scrolling. Only the Clear Notes dialog is modal; cancel/Escape preserves notes and returns focus. The component uses the host's Hub palette and examination button/dialog conventions for light and dark themes. Future adapters must load `exam-whiteboard.css`, provide equivalent base control styling, and destroy the prior instance before mounting a different session. Mount separate, newly initialized tool-state objects for unrelated attempts, modes, certifications, and PBQs; never reuse a global notes record.
+
+### Phase 2 test coverage
+
+The pure suite covers backward-compatible state restoration, oversized/corrupt notes and geometry, geometry boundaries, independent attempts, unchanged grades, and the existing bank/session invariants. Browser coverage exercises open/close/toggle, minimize/restore, mouse and keyboard movement/resizing, native clipboard copy/cut/paste including actual examination evidence, inert markup, limit handling, clear/cancel/Escape, refresh recovery, docking, invalid saved coordinates, answer/flag/navigation isolation, submitted review, denied/full storage, and light/dark 320/390/768/1440px layouts at both root and GitHub project URL prefixes. Existing Practice Mode flows continue to validate exact scoring, single/multiple responses, feedback settings, shuffles, locks, navigation, and resources.
+
+Limitations: the whiteboard is plain text and browser-local; no drawing, rich text, cross-device synchronization, or external clipboard permission is required by the application. A denied/full browser store cannot preserve notes through a refresh. Geometry is local to the safe surface and may be reduced for a shorter question. Certification Mode and PBQ reuse are adapter contracts; their examination interfaces are deferred, not implemented in this phase.
 
 ## Remaining implementation phases
 
-1. Subsequent examination-interface phase: build and integrate the complete floating whiteboard described above. It must work in current Practice Mode and expose the shared adapter contract for later modes.
-2. Curated bank expansion in bounded batches: broaden Core 2 objective coverage and variety before presenting a full certification simulation. Add other certifications only with verified metadata and validated banks, preserving existing Hub exam versions unless explicitly updated.
-3. Certification Mode: version-specific exam configuration, published domain weights with documented integer allocation, sufficient bank coverage, persisted absolute deadline, countdown, expiry submission, flags/review, no feedback until submission, and transparent practice scoring. Do not advertise the 24-item pilot as a full-length exam. Full PBQ adapters are separate work; an unknown type must be rejected rather than silently misgraded as an MCQ.
-4. Final integration, regression review, and PR. Do not create the PR during Phase 1.
+1. Curated bank expansion in bounded batches: broaden Core 2 objective coverage and variety before presenting a full certification simulation. Add other certifications only with verified metadata and validated banks, preserving existing Hub exam versions unless explicitly updated.
+2. Certification Mode: version-specific exam configuration, published domain weights with documented integer allocation, sufficient bank coverage, persisted absolute deadline, countdown, expiry submission, flags/review, no feedback until submission, and transparent practice scoring. Do not advertise the 24-item pilot as a full-length exam. Full PBQ adapters are separate work; an unknown type must be rejected rather than silently misgraded as an MCQ.
+3. Final integration, regression review, and PR. Do not create the PR during Phase 2.
 
 ## Editorial review of the pilot
 
@@ -76,3 +89,11 @@ Editorial review corrected the MFA question to ask for two alternative second fa
 - Existing learning-resource navigation, PBQ library, and analytics regression tests passed. The navigation test's external Kahoot observation now fulfills a local fixture before returning to the Hub; an aborted external navigation previously raced Chrome's error page against the next local navigation. No application behavior was changed by that test repair.
 
 Run `npm run test:practice-tests` after `mkdocs build --strict`. `PBQ_CHROMIUM_PATH` can select an installed Chromium executable when the environment cannot use Playwright's default. CI runs the new suite on this feature branch and pull requests.
+
+## Phase 2 verification
+
+- `npm run test:practice-tests` passed: pure state/bank/geometry checks and full Practice Mode/whiteboard browser flows at root and project URL prefixes, including single and multiple responses, evidence copying, submission/review continuity, keyboard, and mobile touch controls.
+- Light and dark layouts passed at 320, 390, 768, and 1440px. Desktop/mobile screenshots were inspected; essential navigation and submission controls remain outside the floating surface.
+- Strict MkDocs build, source checks, generated navigation/listing freshness, 31 Python tests, PBQ catalog checks, and site checks passed: 19 canonical PBQs, 71 HTML pages, and 4,563 local links/assets/fragments.
+- Existing PBQ library, learning-resource navigation, help-desk ticket-triage, and analytics regression suites passed. The navigation suite passed on retry after a transient timeout; the unchanged Phase 1 baseline also passed.
+- Question-bank content, certification registry, grading rules, and the existing examination stylesheet were unchanged. Certification Mode, bank expansion, and PBQ examination adapters remain deferred. No pull request or merge is part of this phase.

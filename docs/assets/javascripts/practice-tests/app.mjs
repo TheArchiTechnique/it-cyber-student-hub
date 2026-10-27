@@ -1,4 +1,5 @@
 import { certifications } from './registry.mjs';
+import { mountWhiteboard } from './whiteboard.mjs';
 import { validateBank, eligibleQuestions, validateConfig, createSession, answer, finalizeAnswer, toggleFlag, submit, grade, loadSession, saveSession, resourceURL } from './engine.mjs';
 
 const $ = id => document.getElementById(id);
@@ -9,7 +10,7 @@ const storage = {
   setItem: (key, value) => localStorage.setItem(key, value),
   removeItem: key => localStorage.removeItem(key)
 };
-let exam, bank, session = null, pendingAction = null;
+let exam, bank, session = null, pendingAction = null, whiteboard = null;
 const domainInputs = new Map(), objectiveInputs = new Map();
 
 function node(tag, attrs = {}, ...children) {
@@ -23,9 +24,12 @@ function node(tag, attrs = {}, ...children) {
 }
 
 function persist() {
-  $('save-status').textContent = saveSession(storage, session)
+  const saved = saveSession(storage, session);
+  $('save-status').textContent = saved
     ? 'Progress is saved in this browser.'
     : 'Browser storage is unavailable or full. Keep this tab open; a refresh may lose your progress.';
+  whiteboard?.setSaveStatus(saved);
+  return saved;
 }
 
 function getConfig() {
@@ -97,6 +101,13 @@ function revealTest() {
   $('results').hidden = session.status !== 'submitted';
   if (session.status === 'submitted') renderResults();
   renderQuestion();
+  if (whiteboard?.sessionId !== session.id) {
+    whiteboard?.destroy();
+    whiteboard = mountWhiteboard({
+      sessionId: session.id, state: session.tools.whiteboard, container: $('exam-question-content'),
+      toolbarMount: $('exam-toolbar-tools'), panelMount: $('exam-tool-panels'), persist
+    });
+  }
 }
 
 function renderNavigator() {
@@ -238,6 +249,7 @@ $('submit-test').addEventListener('click', () => {
   });
 });
 $('new-test').addEventListener('click', () => confirmAction('Start a new test?', 'This discards the current test. Your next test starts with a fresh session.', 'Start New Test', () => {
+  whiteboard?.destroy(); whiteboard = null;
   session = null; persist(); $('exam').hidden = true; $('setup').hidden = false;
   $('results').replaceChildren(); $('feedback').replaceChildren(); $('notice').textContent = '';
   buildConfiguration(); $('setup-title').focus();
