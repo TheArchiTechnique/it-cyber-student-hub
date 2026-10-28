@@ -1,0 +1,219 @@
+{
+  "id": "a-plus-core-2",
+  "title": "CompTIA A+ Core 2",
+  "examVersion": "220-1202",
+  "objectivesVersion": "2.0",
+  "source": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf",
+  "verifiedOn": "2026-10-27",
+  "certificationMode": {
+    "implemented": true,
+    "questionCount": 90,
+    "maximumQuestions": 90,
+    "minutes": 90,
+    "source": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"
+  },
+  "domains": [
+    {
+      "id": "1.0",
+      "name": "Operating Systems",
+      "weight": 28
+    },
+    {
+      "id": "2.0",
+      "name": "Security",
+      "weight": 28
+    },
+    {
+      "id": "3.0",
+      "name": "Software Troubleshooting",
+      "weight": 23
+    },
+    {
+      "id": "4.0",
+      "name": "Operational Procedures",
+      "weight": 21
+    }
+  ],
+  "objectives": [
+    {
+      "id": "1.1",
+      "domain": "1.0",
+      "name": "Operating system types and purposes"
+    },
+    {
+      "id": "1.2",
+      "domain": "1.0",
+      "name": "OS installation and upgrades"
+    },
+    {
+      "id": "1.3",
+      "domain": "1.0",
+      "name": "Microsoft Windows editions"
+    },
+    {
+      "id": "1.4",
+      "domain": "1.0",
+      "name": "Windows features and tools"
+    },
+    {
+      "id": "1.5",
+      "domain": "1.0",
+      "name": "Windows command-line tools"
+    },
+    {
+      "id": "1.6",
+      "domain": "1.0",
+      "name": "Windows settings"
+    },
+    {
+      "id": "1.7",
+      "domain": "1.0",
+      "name": "Windows client networking"
+    },
+    {
+      "id": "1.8",
+      "domain": "1.0",
+      "name": "macOS features and tools"
+    },
+    {
+      "id": "1.9",
+      "domain": "1.0",
+      "name": "Linux features and tools"
+    },
+    {
+      "id": "1.10",
+      "domain": "1.0",
+      "name": "Application installation requirements"
+    },
+    {
+      "id": "1.11",
+      "domain": "1.0",
+      "name": "Cloud productivity tools"
+    },
+    {
+      "id": "2.1",
+      "domain": "2.0",
+      "name": "Security measures and purposes"
+    },
+    {
+      "id": "2.2",
+      "domain": "2.0",
+      "name": "Windows security settings"
+    },
+    {
+      "id": "2.3",
+      "domain": "2.0",
+      "name": "Wireless security and authentication"
+    },
+    {
+      "id": "2.4",
+      "domain": "2.0",
+      "name": "Malware and protective tools"
+    },
+    {
+      "id": "2.5",
+      "domain": "2.0",
+      "name": "Social engineering, threats, and vulnerabilities"
+    },
+    {
+      "id": "2.6",
+      "domain": "2.0",
+      "name": "SOHO malware removal"
+    },
+    {
+      "id": "2.7",
+      "domain": "2.0",
+      "name": "Workstation security and hardening"
+    },
+    {
+      "id": "2.8",
+      "domain": "2.0",
+      "name": "Mobile device security"
+    },
+    {
+      "id": "2.9",
+      "domain": "2.0",
+      "name": "Data destruction and disposal"
+    },
+    {
+      "id": "2.10",
+      "domain": "2.0",
+      "name": "SOHO network security"
+    },
+    {
+      "id": "2.11",
+      "domain": "2.0",
+      "name": "Browser security"
+    },
+    {
+      "id": "3.1",
+      "domain": "3.0",
+      "name": "Windows OS issues"
+    },
+    {
+      "id": "3.2",
+      "domain": "3.0",
+      "name": "Mobile OS and application issues"
+    },
+    {
+      "id": "3.3",
+      "domain": "3.0",
+      "name": "Mobile security issues"
+    },
+    {
+      "id": "3.4",
+      "domain": "3.0",
+      "name": "PC security issues"
+    },
+    {
+      "id": "4.1",
+      "domain": "4.0",
+      "name": "Documentation and support systems"
+    },
+    {
+      "id": "4.2",
+      "domain": "4.0",
+      "name": "Change management"
+    },
+    {
+      "id": "4.3",
+      "domain": "4.0",
+      "name": "Backup and recovery"
+    },
+    {
+      "id": "4.4",
+      "domain": "4.0",
+      "name": "Safety procedures"
+    },
+    {
+      "id": "4.5",
+      "domain": "4.0",
+      "name": "Environmental controls"
+    },
+    {
+      "id": "4.6",
+      "domain": "4.0",
+      "name": "Privacy, licensing, and policy"
+    },
+    {
+      "id": "4.7",
+      "domain": "4.0",
+      "name": "Communication and professionalism"
+    },
+    {
+      "id": "4.8",
+      "domain": "4.0",
+      "name": "Scripting basics"
+    },
+    {
+      "id": "4.9",
+      "domain": "4.0",
+      "name": "Remote access technologies"
+    },
+    {
+      "id": "4.10",
+      "domain": "4.0",
+      "name": "Artificial intelligence basics"
+    }
+  ]
+}

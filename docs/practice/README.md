@@ -6,6 +6,10 @@ hub:
 
 Practice commands, check your decisions, and develop problem-solving skills.
 
+- [Practice Tests](tests/README.md)
+
+    Build a focused A+ Core 2 test by domain, objective, and question count, with configurable answer feedback and explanations.
+
 - [Practice Questions](questions/README.md)
 
     Find self-paced quizzes and knowledge reviews.

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Practice Tests | IT &amp; Cybersecurity Student Hub</title>
+  <link rel="stylesheet" href="../../../assets/stylesheets/hub.css">
+  <link rel="stylesheet" href="../../../assets/stylesheets/practice-tests.css">
+  <link rel="stylesheet" href="../../../assets/stylesheets/exam-whiteboard.css">
+  <script type="module" src="../../../assets/javascripts/practice-tests/app.mjs"></script>
+</head>
+<body data-md-color-scheme="default">
+  <a class="skip-link" href="#main">Skip to practice test</a>
+  <header class="exam-header">
+    <div class="header-inner">
+      <a class="brand" href="../../../">IT &amp; Cybersecurity Student Hub</a>
+      <nav aria-label="Student Hub navigation">
+        <a href="../../../certifications/comptia/a-plus-core-2/" id="certification-link">A+ Core 2</a>
+        <a href="../">Practice Tests overview</a>
+        <button type="button" id="theme-toggle" aria-pressed="false">Dark theme</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main" class="exam-page">
+    <p id="mode-label" class="eyebrow">PRACTICE</p>
+    <h1>Practice Tests</h1>
+    <p class="intro">Choose focused practice or a timed certification simulation, then review your reasoning.</p>
+    <p id="notice" role="status" aria-live="polite">Loading practice questions…</p>
+    <p id="save-status" role="status" aria-live="polite"></p>
+    <noscript><p>JavaScript is required for the practice test. You can still read the <a href="../../../certifications/comptia/a-plus-core-2/objective-breakdown/">Core 2 objective breakdown</a>.</p></noscript>
+    <section id="setup" class="panel" aria-labelledby="setup-title" hidden>
+      <h2 id="setup-title" tabindex="-1">Configure your practice test</h2>
+      <label for="certification">Certification</label>
+      <select id="certification" name="certification"></select>
+      <div class="mode-switch" role="group" aria-label="Examination mode">
+        <button id="mode-practice" type="button" aria-pressed="true">Practice Mode</button>
+        <button id="mode-certification" type="button" aria-pressed="false">Certification Mode</button>
+      </div>
+      <p id="practice-description" class="muted">The bank has 104 questions across four Core 2 domains, with at least two questions for every objective. Select the areas you want to practice.</p>
+      <form id="configuration">
+        <fieldset class="selection-fieldset">
+          <legend>Domains and objectives</legend>
+          <p id="selection-help">Select one or more domains, then choose the available objectives within them. Open each domain to see its objectives.</p>
+          <div class="inline-controls"><button type="button" id="select-all">Select all available</button><button type="button" id="select-none">Clear selection</button></div>
+          <div id="domain-options" aria-describedby="selection-help"></div>
+        </fieldset>
+        <div class="settings-grid">
+          <fieldset>
+            <legend>Question count</legend>
+            <p id="available" role="status" aria-live="polite"></p>
+            <label for="count-preset">Number of questions</label>
+            <select id="count-preset"><option value="10">10 questions</option><option value="20">20 questions</option><option value="30">30 questions</option><option value="50">50 questions</option><option value="all">All available</option><option value="custom">Custom amount</option></select>
+            <div id="custom-count-field" hidden><label for="custom-count">Custom question count</label><input id="custom-count" type="number" inputmode="numeric" min="1" step="1" value="10"></div>
+            <button type="button" id="use-available" hidden>Use available questions</button>
+            <p class="muted">Each question appears once per test. Multiple-response questions require every correct selection for credit.</p>
+          </fieldset>
+          <fieldset>
+            <legend>Answer feedback</legend>
+            <label class="check"><input id="show-answers" type="checkbox" checked>Show Correct Answers</label>
+            <label class="check"><input id="show-explanations" type="checkbox" checked aria-describedby="feedback-help">Show Explanations</label>
+            <p id="feedback-help" class="muted">Explanations identify the correct answer, so they require Show Correct Answers. Turning answers off also turns explanations off. These settings apply during the test and in post-test review.</p>
+            <label for="feedback-timing">When to show feedback</label>
+            <select id="feedback-timing"><option value="end">After completing the test</option><option value="immediate">After checking each answer</option></select>
+            <p class="muted">With immediate feedback, use Check Answer to reveal feedback and lock that response. Until then, answers remain editable.</p>
+          </fieldset>
+        </div>
+        <p id="config-error" role="status" aria-live="polite"></p>
+        <button id="start-test" class="primary" type="submit">Start Practice Test</button>
+      </form>
+      <section id="certification-intro" aria-labelledby="certification-intro-title" hidden>
+        <h3 id="certification-intro-title">Timed MCQ-only certification simulation</h3>
+        <p>Complete a fixed, domain-weighted examination with randomized questions and answer choices. Correct answers, explanations, and study links become available after submission.</p>
+        <dl id="certification-facts" class="exam-facts"></dl>
+        <div id="certification-allocation" class="table-scroll"></div>
+        <ul class="exam-instructions">
+          <li>The timer begins when you select <strong>Start Exam</strong>. It continues while you take notes, switch tabs, or close or refresh this page.</li>
+          <li>Use Previous, Next, or the question navigator to skip questions and return to them. Flag for Review marks questions for another look. You can change responses before submission.</li>
+          <li>The shared Exam Whiteboard provides movable notes with normal copy and paste. Your notes stay with this attempt.</li>
+          <li>Submit Exam shows a response summary before final submission. When time expires, the current responses are submitted automatically without confirmation.</li>
+          <li>Each question is worth one point. Multiple-response items require the full correct set. Unanswered questions receive no credit.</li>
+        </ul>
+        <p class="muted">This independent Student Hub simulation contains multiple-choice items only. The official exam can include performance-based questions. Practice percentages are not CompTIA scaled scores or predictions of an official passing score.</p>
+        <p id="certification-availability" role="status" aria-live="polite"></p>
+        <button id="start-exam" class="primary" type="button" disabled>Start Exam</button>
+      </section>
+    </section>
+    <section id="exam" aria-label="Practice examination" hidden>
+      <div id="exam-toolbar" class="panel toolbar" role="group" aria-label="Examination toolbar">
+        <p id="exam-label"></p>
+        <div id="exam-clock" class="exam-clock" hidden>
+          <span id="time-label">Time remaining</span>
+          <span id="time-remaining" role="timer" aria-label="Time remaining" aria-live="off" tabindex="0"></span>
+        </div>
+        <button type="button" id="new-test">Start New Test</button>
+        <div id="exam-toolbar-tools" data-exam-slot="toolbar-tools"></div>
+        <p id="time-warning" class="time-warning" role="status" aria-live="polite" aria-atomic="true"></p>
+      </div>
+      <section id="results" class="panel" aria-labelledby="results-title" hidden></section>
+      <div id="exam-workspace" class="exam-workspace">
+        <section class="panel question-panel" aria-labelledby="question-title">
+          <div class="question-top"><p id="question-position"></p><button type="button" id="flag" aria-pressed="false">Flag for Review</button></div>
+          <progress id="progress" value="0" max="1" aria-label="Questions answered"></progress>
+          <p id="progress-text" class="muted"></p>
+          <h2 id="question-title" tabindex="-1">Question</h2>
+          <div class="exam-note-surface">
+            <div id="exam-tool-panels" data-exam-slot="tool-panels"></div>
+            <div id="exam-question-content">
+              <div id="question-body"></div>
+              <fieldset id="choices"><legend id="answer-instructions"></legend><div id="answer-options"></div></fieldset>
+              <p id="answer-status" role="status" aria-live="polite"></p>
+              <section id="feedback" aria-label="Answer feedback" hidden></section>
+            </div>
+          </div>
+          <button type="button" id="check-answer" class="primary" hidden>Check Answer</button>
+          <div class="question-navigation"><button type="button" id="previous">Previous</button><button type="button" id="next">Next</button></div>
+        </section>
+        <aside class="panel navigator" aria-labelledby="navigator-title">
+          <h2 id="navigator-title">Question navigator</h2>
+          <p class="muted">Number only: unanswered. ✓: answered. F: flagged.</p>
+          <div id="question-navigator" aria-label="Go to question"></div>
+          <button type="button" id="submit-test" class="primary">Submit Test</button>
+          <p class="muted">Unanswered questions receive no credit. Results use a practice percentage.</p>
+        </aside>
+      </div>
+    </section>
+    <dialog id="confirmation" aria-labelledby="confirmation-title" aria-describedby="confirmation-text">
+      <h2 id="confirmation-title"></h2><p id="confirmation-text"></p>
+      <p id="confirmation-time" hidden></p>
+      <div class="inline-controls"><button type="button" id="cancel-action">Cancel</button><button type="button" id="confirm-action" class="primary">Confirm</button></div>
+    </dialog>
+  </main>
+</body>
+</html>

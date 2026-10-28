@@ -14,7 +14,8 @@
     "test:linux-terminal": "node tests/linux-terminal.cjs && node tests/linux-terminal-guided.cjs && node tests/linux-terminal-browser.cjs",
     "test:phishing-email-investigation": "node tests/phishing-email-investigation.cjs --local",
     "test:malware-investigation-remediation": "node tests/malware-investigation-remediation.cjs --local",
-    "test:helpdesk-ticket-triage": "node tests/helpdesk-ticket-triage.cjs --local"
+    "test:helpdesk-ticket-triage": "node tests/helpdesk-ticket-triage.cjs --local",
+    "test:practice-tests": "node tests/practice-tests.mjs && node tests/certification-mode.mjs && node tests/practice-tests-browser.cjs --local && node tests/certification-mode-browser.cjs --local"
   },
   "devDependencies": {
     "playwright": "1.62.1"

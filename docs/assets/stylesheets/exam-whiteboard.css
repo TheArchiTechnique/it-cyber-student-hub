@@ -1,0 +1,24 @@
+/* Reusable examination utility; inherits the current Hub light/dark palette. */
+.exam-note-surface { position: relative; }
+.whiteboard-mount.whiteboard-floating { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.whiteboard-mount.whiteboard-docked { position: relative; margin-bottom: 18px; }
+.exam-whiteboard { position: absolute; display: flex; flex-direction: column; pointer-events: auto; box-sizing: border-box; max-width: 100%; border: 1px solid var(--hub-card-hover-border); border-radius: 10px; color: var(--md-default-fg-color); background: var(--hub-card-bg); box-shadow: 0 8px 24px #10253233; overflow: hidden; }
+.exam-whiteboard[data-docked="true"] { position: relative; width: 100%; }
+.whiteboard-header { display: flex; flex: 0 0 auto; align-items: center; gap: 4px; padding: 4px; border-bottom: 1px solid var(--hub-card-border); background: var(--hub-card-hover-bg); }
+.whiteboard-header button { min-width: 44px; flex-shrink: 0; padding: 7px; line-height: 1.3; }
+.whiteboard-header .whiteboard-move { flex: 1 1 auto; min-width: 0; text-align: left; border-color: transparent; background: transparent; font-size: 15px; touch-action: none; cursor: move; }
+.exam-whiteboard[data-docked="true"] .whiteboard-move { cursor: default; }
+.whiteboard-header button:not(.whiteboard-move) { font-size: 22px; }
+.whiteboard-body { display: flex; flex: 1 1 auto; flex-direction: column; gap: 8px; min-height: 0; padding: 12px; overflow: auto; }
+.whiteboard-body label { margin: 0 !important; font-size: 14px; }
+.whiteboard-notes { box-sizing: border-box; display: block; flex: 1 0 90px; width: 100%; min-width: 0; min-height: 90px; resize: none; padding: 10px; border: 1px solid var(--hub-card-hover-border); border-radius: 6px; background: var(--md-default-bg-color); color: var(--md-default-fg-color); font: 14px/1.6 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre; tab-size: 4; overflow: auto; }
+.whiteboard-count, .whiteboard-save, .whiteboard-limit { margin: 0; font-size: 12px; line-height: 1.4; color: var(--md-default-fg-color--light); }
+.whiteboard-controls { display: flex; flex: 0 0 auto; flex-wrap: wrap; gap: 6px; }
+.whiteboard-controls button { padding: 6px 9px; font-size: 13px; min-height: 44px; }
+.whiteboard-resize { margin-left: auto; cursor: nwse-resize; touch-action: none; }
+.whiteboard-adjusting { user-select: none; }
+.whiteboard-limit:empty { display: none; }
+.whiteboard-save[data-failed="true"], .whiteboard-limit { color: var(--md-default-fg-color); border-left: 3px solid var(--hub-home-rail); padding-left: 7px; }
+.whiteboard-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.exam-whiteboard:focus-within { border-color: var(--hub-home-rail); }
+.whiteboard-confirmation { pointer-events: auto; }

@@ -6,6 +6,8 @@ hub:
 
 Use these quizzes to review knowledge and check your understanding. Choose a topic within your certification below. For hands-on performance-based tasks, visit [PBQ Practice](../pbqs/README.md).
 
+For configurable A+ Core 2 tests with domain and objective filters, detailed explanations, and results, visit [Practice Tests](../tests/README.md).
+
 These Kahoot! reviews support independent practice: open a review and select **Play solo**. No instructor session or game PIN is needed.
 
 ## A+ Core 2
