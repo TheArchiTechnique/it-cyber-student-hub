@@ -6,7 +6,8 @@
   "source": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf",
   "verifiedOn": "2026-10-27",
   "certificationMode": {
-    "implemented": false,
+    "implemented": true,
+    "questionCount": 90,
     "maximumQuestions": 90,
     "minutes": 90,
     "source": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf"

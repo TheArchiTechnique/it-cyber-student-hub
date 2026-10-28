@@ -133,7 +133,7 @@ const another = fresh(); assert.notEqual(another.id, immediate.id); assert.equal
 another.tools.whiteboard.text = 'independent attempt';
 assert.notEqual(immediate.tools.whiteboard.text, another.tools.whiteboard.text);
 const oldSchema = copy(immediate); delete oldSchema.tools.whiteboard.docked;
-assert.equal(E.restoreSession(oldSchema, exam, bank).tools.whiteboard.docked, false, 'Phase 1 sessions resume without a schema reset');
+assert.equal(E.restoreSession(oldSchema, exam, bank).tools.whiteboard.docked, false, 'Legacy whiteboard state defaults to floating');
 for (const value of [null, [], 'notes', { text: 123, visible: 'true', minimized: 1, docked: 'yes', bounds: { x: 0, y: 0, width: '400', height: 300 } }]) {
   assert.deepEqual(restoreWhiteboard(value), restoreWhiteboard(null));
 }

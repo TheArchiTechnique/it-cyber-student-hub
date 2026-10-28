@@ -1,6 +1,7 @@
 import { certifications } from './registry.mjs';
 import { mountWhiteboard } from './whiteboard.mjs';
-import { validateBank, eligibleQuestions, validateConfig, createSession, answer, finalizeAnswer, toggleFlag, submit, grade, loadSession, saveSession, resourceURL } from './engine.mjs';
+import { createExamClock, formatTime } from './exam-clock.mjs';
+import { validateBank, eligibleQuestions, validateConfig, certificationConfig, certificationAvailability, createSession, answer, finalizeAnswer, toggleFlag, submit, expireSession, remainingTime, timeUsed, timeWarning, feedbackPolicy, grade, loadSession, saveSession, resourceURL } from './engine.mjs';
 
 const $ = id => document.getElementById(id);
 const docsBase = new URL('../../../', location.href);
@@ -11,6 +12,9 @@ const storage = {
   removeItem: key => localStorage.removeItem(key)
 };
 let exam, bank, session = null, pendingAction = null, whiteboard = null;
+let selectedMode = 'practice', timer = null, saveSucceeded = true;
+const now = createExamClock();
+const timed = () => session?.config.mode === 'certification';
 const domainInputs = new Map(), objectiveInputs = new Map();
 
 function node(tag, attrs = {}, ...children) {
@@ -25,6 +29,7 @@ function node(tag, attrs = {}, ...children) {
 
 function persist() {
   const saved = saveSession(storage, session);
+  saveSucceeded = saved;
   $('save-status').textContent = saved
     ? 'Progress is saved in this browser.'
     : 'Browser storage is unavailable or full. Keep this tab open; a refresh may lose your progress.';
@@ -93,13 +98,100 @@ function buildConfiguration() {
     $('domain-options').append(node('div', { class: 'domain-block' }, title, details));
   }
   updateConfiguration();
+  buildCertificationIntroduction();
+  selectMode(selectedMode);
+}
+
+function buildCertificationIntroduction() {
+  const available = certificationAvailability(exam, bank), policy = exam.certificationMode;
+  $('mode-certification').disabled = !policy?.implemented;
+  $('certification-facts').replaceChildren(...[
+    ['Certification', exam.title], ['Exam version', exam.examVersion],
+    ['Questions', `${policy?.questionCount ?? 'Unavailable'} MCQs`], ['Time limit', `${policy?.minutes ?? 'Unavailable'} minutes`]
+  ].map(([label, value]) => node('div', {}, node('dt', {}, label), node('dd', {}, value))));
+  $('certification-allocation').replaceChildren();
+  if (available.available) {
+    const table = node('table', {}, node('caption', {}, 'Domain allocation'),
+      node('thead', {}, node('tr', {}, ...['Domain', 'Weight', 'Questions'].map(text => node('th', { scope: 'col' }, text)))),
+      node('tbody', {}, ...available.allocation.map(d => node('tr', {}, node('th', { scope: 'row' }, d.name), node('td', {}, `${d.weight}%`), node('td', {}, String(d.count))))));
+    $('certification-allocation').append(table);
+  }
+  $('certification-availability').textContent = available.reason;
+  $('start-exam').disabled = !available.available;
+}
+
+function selectMode(mode) {
+  if (session || !['practice', 'certification'].includes(mode) || (mode === 'certification' && !exam.certificationMode?.implemented)) return;
+  selectedMode = mode;
+  $('mode-practice').setAttribute('aria-pressed', String(mode === 'practice'));
+  $('mode-certification').setAttribute('aria-pressed', String(mode === 'certification'));
+  $('setup-title').textContent = mode === 'practice' ? 'Configure your practice test' : 'Certification Mode instructions';
+  $('mode-label').textContent = mode === 'practice' ? 'PRACTICE' : 'TIMED SIMULATION';
+  $('configuration').hidden = mode !== 'practice';
+  $('practice-description').hidden = mode !== 'practice';
+  $('certification-intro').hidden = mode !== 'certification';
+}
+
+function stopTimer() { clearInterval(timer); timer = null; }
+
+function renderTimer(at = now()) {
+  $('exam-clock').hidden = !timed();
+  if (!timed()) { $('time-warning').textContent = ''; return; }
+  const active = session.status === 'active', warning = timeWarning(session, at);
+  $('time-label').textContent = active ? 'Time remaining' : 'Time used';
+  $('time-remaining').setAttribute('aria-label', active ? 'Time remaining' : 'Time used');
+  const display = formatTime(active ? remainingTime(session, at) : timeUsed(session, at));
+  if ($('time-remaining').textContent !== display) $('time-remaining').textContent = display;
+  if (warning) $('exam-clock').dataset.warning = String(warning); else delete $('exam-clock').dataset.warning;
+  const message = warning === 1 ? 'One minute or less remains.' : warning === 5 ? 'Five minutes or less remain.' : '';
+  if ($('time-warning').textContent !== message) $('time-warning').textContent = message;
+  if ($('confirmation').open && !$('confirmation-time').hidden) $('confirmation-time').textContent = `Time remaining: ${formatTime(remainingTime(session, at))}.`;
+}
+
+function finishSubmission() {
+  stopTimer(); pendingAction = null;
+  for (const dialog of document.querySelectorAll('dialog[open]')) dialog.close();
+  persist(); revealTest(); $('results-title').focus();
+}
+
+function refreshTimer() {
+  if (!session) return;
+  const at = now();
+  if (expireSession(session, at)) { finishSubmission(); return; }
+  renderTimer(at);
+}
+
+function startTimer() {
+  stopTimer(); refreshTimer();
+  if (timed() && session.status === 'active') timer = setInterval(refreshTimer, 250);
+}
+
+function allowActiveAction(at = now()) {
+  if (!session || session.status !== 'active') return false;
+  if (expireSession(session, at)) { finishSubmission(); return false; }
+  return true;
+}
+
+function startAttempt(config) {
+  if (session) return;
+  const error = validateConfig(exam, bank, config);
+  if (error) { $(config.mode === 'certification' ? 'certification-availability' : 'config-error').textContent = error; return; }
+  session = createSession(exam, bank, config, Math.random, now());
+  $('notice').textContent = ''; persist(); revealTest(); $('question-title').focus();
 }
 
 function revealTest() {
   $('setup').hidden = true; $('exam').hidden = false;
-  $('exam-label').textContent = `${exam.title} (${exam.examVersion}) · Practice`;
+  selectedMode = session.config.mode;
+  document.body.dataset.examMode = selectedMode; document.body.dataset.examStatus = session.status;
+  $('mode-label').textContent = timed() ? 'TIMED MCQ SIMULATION' : 'PRACTICE';
+  $('exam').setAttribute('aria-label', timed() ? 'Timed certification simulation' : 'Practice examination');
+  $('exam-label').textContent = `${exam.title} (${exam.examVersion}) · ${timed() ? 'Certification Mode · MCQ-only' : 'Practice'}`;
+  $('new-test').textContent = timed() ? 'Start New Exam' : 'Start New Test';
+  $('submit-test').textContent = timed() ? 'Submit Exam' : 'Submit Test';
   $('results').hidden = session.status !== 'submitted';
   if (session.status === 'submitted') renderResults();
+  else $('results').replaceChildren();
   renderQuestion();
   if (whiteboard?.sessionId !== session.id) {
     whiteboard?.destroy();
@@ -108,6 +200,7 @@ function revealTest() {
       toolbarMount: $('exam-toolbar-tools'), panelMount: $('exam-tool-panels'), persist
     });
   }
+  startTimer();
 }
 
 function renderNavigator() {
@@ -126,6 +219,7 @@ function renderNavigator() {
 }
 
 function navigate(index) {
+  if (session.status === 'active' && !allowActiveAction()) return;
   if (index < 0 || index >= session.questionIds.length) return;
   session.current = index; persist(); renderQuestion(); $('question-title').focus();
 }
@@ -142,8 +236,10 @@ function renderQuestion() {
     const choice = q.choices.find(c => c.id === id);
     const input = node('input', { type: q.type === 'single' ? 'radio' : 'checkbox', name: 'answer', value: id, id: `choice-${id}`, checked: session.answers[q.id]?.includes(id), disabled: locked });
     input.addEventListener('change', () => {
+      const at = now();
+      if (!allowActiveAction(at)) return;
       const selected = [...$('answer-options').querySelectorAll('input:checked')].map(item => item.value);
-      if (!answer(session, bank, q.id, selected)) {
+      if (!answer(session, bank, q.id, selected, at)) {
         input.checked = !input.checked;
         $('answer-status').textContent = `Choose no more than ${q.correct.length} answers.`;
         return;
@@ -155,19 +251,19 @@ function renderQuestion() {
   $('answer-options').replaceChildren(...options);
   $('previous').disabled = session.current === 0;
   $('next').disabled = session.current === session.questionIds.length - 1;
-  $('check-answer').hidden = session.status === 'submitted' || session.config.feedback !== 'immediate' || !session.config.showAnswers || locked;
+  $('check-answer').hidden = timed() || session.status === 'submitted' || session.config.feedback !== 'immediate' || !session.config.showAnswers || locked;
   updateAnswerStatus(q, locked); renderNavigator(); renderFeedback(q);
 }
 
 function updateAnswerStatus(q, locked) {
   const count = session.answers[q.id]?.length || 0;
   $('answer-status').textContent = locked ? (session.status === 'submitted' ? 'Submitted response. Answers can no longer be changed.' : 'Feedback revealed. This response is locked.')
-    : count ? `Answer saved${q.type === 'multiple' ? ` · ${count} of ${q.correct.length} selected` : ''}. You can change it until it is finalized.` : 'No answer selected.';
+    : count ? `${saveSucceeded ? 'Answer saved' : 'Answer recorded in memory'}${q.type === 'multiple' ? ` · ${count} of ${q.correct.length} selected` : ''}. You can change it until ${timed() ? 'submission' : 'it is finalized'}.` : 'No answer selected.';
   $('check-answer').disabled = count !== q.correct.length;
 }
 
 function renderFeedback(q) {
-  const visible = session.config.showAnswers && (session.status === 'submitted' || session.finalized.includes(q.id));
+  const policy = feedbackPolicy(session, q.id), visible = policy.answers;
   $('feedback').hidden = !visible; $('feedback').replaceChildren();
   if (!visible) return;
   const row = grade(session, exam, bank).rows.find(r => r.id === q.id);
@@ -177,7 +273,7 @@ function renderFeedback(q) {
   });
   $('feedback').append(node('p', {}, `Correct answer${correct.length > 1 ? 's' : ''}: ${correct.join('; ')}`));
   if (session.status === 'submitted') $('feedback').append(node('p', { class: 'muted' }, `${q.domain} ${exam.domains.find(d => d.id === q.domain).name} · Objectives: ${q.objectives.join(', ')}`));
-  if (!session.config.showExplanations) return;
+  if (!policy.explanations) return;
   $('feedback').append(node('h3', {}, 'Why this answer fits'), node('p', {}, q.explanation));
   for (const [index, id] of session.choiceOrder[q.id].entries()) {
     const choice = q.choices.find(c => c.id === id);
@@ -194,22 +290,27 @@ function scoreTable(title, rows, name) {
 
 function renderResults() {
   const score = grade(session, exam, bank);
-  $('results').replaceChildren(node('h2', { id: 'results-title', tabindex: '-1' }, 'Practice results'), node('p', { class: 'score' }, `${score.percentage}%`),
+  if (!score) return;
+  $('results').replaceChildren(node('h2', { id: 'results-title', tabindex: '-1' }, timed() ? 'Student Hub practice results' : 'Practice results'), node('p', { class: 'score' }, `${score.percentage}%`),
     node('p', {}, `${score.correct} correct · ${score.incorrect} incorrect · ${score.unanswered} unanswered · ${score.total} total`),
     node('p', { class: 'muted' }, 'Each question is worth one point. Multiple-response questions require the entire correct set; no partial credit is awarded. This is a practice percentage, not a CompTIA scaled score.'),
     scoreTable('Performance by domain', score.domains, row => `${row.id} ${row.name}`),
     scoreTable('Performance by objective', score.objectives, row => `${row.id} ${row.name}`),
     node('p', { class: 'muted' }, 'Use missed questions to guide further study. This small sample cannot establish mastery of a domain. Objectives without sampled questions are not assessed.'));
+  if (timed()) $('results').insertBefore(node('p', { id: 'exam-outcome' },
+    `${session.submissionReason === 'expired' ? 'Time expired; responses were submitted automatically.' : 'Exam submitted manually.'} Time used: ${formatTime(timeUsed(session))} of ${formatTime(session.deadline - session.startedAt)}.`), $('results').children[3]);
   const missed = score.domains.filter(d => d.correct < d.total).map(d => d.name);
   if (missed.length) $('results').append(node('p', {}, `Areas to revisit in this test: ${missed.join(', ')}.`));
   const flagged = session.questionIds.map((id, index) => session.flags.includes(id) ? index + 1 : null).filter(Boolean);
   $('results').append(node('p', {}, `Flagged for review: ${flagged.length ? flagged.join(', ') : 'none'}. All ${score.total} questions are available in the question navigator below.`));
-  if (!session.config.showAnswers) $('results').append(node('p', { class: 'muted' }, 'Correct answers and explanations are hidden by your selected settings. Review shows your submitted selections.'));
-  else if (!session.config.showExplanations) $('results').append(node('p', { class: 'muted' }, 'Correct answers are available in review. Explanations are hidden by your selected settings.'));
+  if (!timed() && !session.config.showAnswers) $('results').append(node('p', { class: 'muted' }, 'Correct answers and explanations are hidden by your selected settings. Review shows your submitted selections.'));
+  else if (!timed() && !session.config.showExplanations) $('results').append(node('p', { class: 'muted' }, 'Correct answers are available in review. Explanations are hidden by your selected settings.'));
 }
 
-function confirmAction(title, message, label, callback) {
+function confirmAction(title, message, label, callback, showTime = false) {
   $('confirmation-title').textContent = title; $('confirmation-text').textContent = message; $('confirm-action').textContent = label;
+  $('confirmation-time').hidden = !showTime;
+  if (showTime) $('confirmation-time').textContent = `Time remaining: ${formatTime(remainingTime(session, now()))}.`;
   pendingAction = callback; $('confirmation').showModal(); $('cancel-action').focus();
 }
 
@@ -232,28 +333,47 @@ $('select-none').addEventListener('click', () => { for (const input of [...domai
 for (const id of ['count-preset', 'custom-count', 'show-answers', 'show-explanations', 'feedback-timing']) $(id).addEventListener(id === 'custom-count' ? 'input' : 'change', updateConfiguration);
 $('use-available').addEventListener('click', () => { $('count-preset').value = 'all'; updateConfiguration(); });
 $('configuration').addEventListener('submit', event => {
-  event.preventDefault(); const config = getConfig(), error = validateConfig(exam, bank, config);
-  if (error) { $('config-error').textContent = error; return; }
-  session = createSession(exam, bank, config); $('notice').textContent = ''; persist(); revealTest(); $('question-title').focus();
+  event.preventDefault(); if (selectedMode === 'practice') startAttempt(getConfig());
 });
-$('flag').addEventListener('click', () => { toggleFlag(session, session.questionIds[session.current]); persist(); renderNavigator(); });
+$('mode-practice').addEventListener('click', () => selectMode('practice'));
+$('mode-certification').addEventListener('click', () => selectMode('certification'));
+$('start-exam').addEventListener('click', () => { if (selectedMode === 'certification') startAttempt(certificationConfig(exam)); });
+$('flag').addEventListener('click', () => {
+  const at = now(); if (!allowActiveAction(at)) return;
+  toggleFlag(session, session.questionIds[session.current], at); persist(); renderNavigator();
+});
 $('previous').addEventListener('click', () => navigate(session.current - 1));
 $('next').addEventListener('click', () => navigate(session.current + 1));
 $('check-answer').addEventListener('click', () => {
-  if (finalizeAnswer(session, session.questionIds[session.current])) { persist(); renderQuestion(); $('feedback').setAttribute('tabindex', '-1'); $('feedback').focus(); }
+  const at = now(); if (!allowActiveAction(at)) return;
+  if (finalizeAnswer(session, session.questionIds[session.current], at)) { persist(); renderQuestion(); $('feedback').setAttribute('tabindex', '-1'); $('feedback').focus(); }
 });
 $('submit-test').addEventListener('click', () => {
+  if (!allowActiveAction()) return;
   const unanswered = session.questionIds.filter(id => !session.answers[id]?.length).length;
-  confirmAction('Submit this test?', `${unanswered ? `${unanswered} question${unanswered === 1 ? ' is' : 's are'} unanswered and will receive no credit. ` : ''}Submission locks all responses.`, 'Submit Test', () => {
-    submit(session); persist(); revealTest(); $('results-title').focus();
-  });
+  const message = timed()
+    ? `${session.questionIds.length} total questions · ${session.questionIds.length - unanswered} answered · ${unanswered} unanswered · ${session.flags.length} flagged. Submission is final and locks all responses.`
+    : `${unanswered ? `${unanswered} question${unanswered === 1 ? ' is' : 's are'} unanswered and will receive no credit. ` : ''}Submission locks all responses.`;
+  confirmAction(timed() ? 'Submit this exam?' : 'Submit this test?', message, timed() ? 'Submit Exam' : 'Submit Test', () => {
+    if (submit(session, now())) finishSubmission();
+  }, timed());
 });
-$('new-test').addEventListener('click', () => confirmAction('Start a new test?', 'This discards the current test. Your next test starts with a fresh session.', 'Start New Test', () => {
-  whiteboard?.destroy(); whiteboard = null;
+$('new-test').addEventListener('click', () => {
+  if (session.status === 'active' && !allowActiveAction()) return;
+  confirmAction(timed() ? 'Start a new exam?' : 'Start a new test?',
+    `This discards the current ${timed() ? 'exam' : 'test'}, including its responses and notes. The next attempt starts fresh${timed() ? ' when you select Start Exam' : ''}.`, timed() ? 'Start New Exam' : 'Start New Test', () => {
+  stopTimer(); whiteboard?.destroy(); whiteboard = null;
   session = null; persist(); $('exam').hidden = true; $('setup').hidden = false;
+  delete document.body.dataset.examMode; delete document.body.dataset.examStatus;
+  $('exam-clock').hidden = true; $('time-warning').textContent = '';
   $('results').replaceChildren(); $('feedback').replaceChildren(); $('notice').textContent = '';
   buildConfiguration(); $('setup-title').focus();
-}));
+  });
+});
+document.addEventListener('visibilitychange', refreshTimer);
+window.addEventListener('focus', refreshTimer);
+window.addEventListener('pageshow', refreshTimer);
+window.addEventListener('pagehide', refreshTimer);
 
 async function loadCertification(id) {
   const item = certifications.find(cert => cert.id === id && cert.metadata && cert.bank);
@@ -272,12 +392,16 @@ async function start() {
   $('certification').replaceChildren(...available.map(cert => node('option', { value: cert.id }, `${cert.title} (${cert.examVersion})`)));
   // Only implemented banks are selectable; future registry entries have no launch UI.
   await loadCertification(available[0].id);
-  const saved = loadSession(storage, exam, bank);
+  const saved = loadSession(storage, exam, bank, now());
   session = saved.session; $('notice').textContent = saved.notice;
   if (!saved.available) $('save-status').textContent = 'Saved progress is unavailable. Keep this tab open if browser storage is blocked.';
   $('setup').hidden = Boolean(session);
-  if (session) revealTest();
-  $('certification').addEventListener('change', async () => { try { await loadCertification($('certification').value); } catch (error) { $('notice').textContent = error.message; $('start-test').disabled = true; } });
+  if (session) { persist(); revealTest(); }
+  $('certification').addEventListener('change', async () => {
+    if (session) { $('certification').value = exam.id; return; }
+    try { await loadCertification($('certification').value); }
+    catch (error) { $('notice').textContent = error.message; $('start-test').disabled = true; $('start-exam').disabled = true; }
+  });
 }
 
 start().catch(error => { $('notice').textContent = `${error.message} Reload the page to try again, or return to the Practice Tests overview.`; });

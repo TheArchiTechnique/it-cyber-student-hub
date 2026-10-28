@@ -2,7 +2,7 @@
 
 Feature branch: `feature/certification-practice-tests`. GitHub is the continuation checkpoint. Fetch, inspect the existing branch and commits, and continue this implementation in each later phase. Do not recreate the application or commit to main. Every implementation phase ends with tests, commit, push, full SHA, and STOP. Final QA and PR creation follow implementation phases.
 
-Current checkpoint: Phase 3B expands Core 2 to 104 validated questions in bank version `2026-10-27.3`, with at least two questions for each of the 36 official objective identifiers. Practice Mode and the shared whiteboard are implemented. Certification Mode and PBQ examination adapters are not implemented. Objective-level coverage does not imply complete subtopic coverage or a full certification simulation.
+Current checkpoint: Phase 4 adds timed, MCQ-only Certification Mode for A+ Core 2 (220-1202) to the existing shared application. Practice Mode, the 104-question bank (`2026-10-27.3`), and the Phase 2 whiteboard are preserved. Certification Mode uses 90 questions, 90 minutes, weighted domain quotas, a persisted deadline, and review after submission. Session schema 2 explicitly migrates valid schema-1 Practice attempts. PBQ examination adapters remain deferred; objective-level counts do not establish complete subtopic coverage.
 
 ## Phase 1 boundary
 
@@ -17,13 +17,16 @@ The 36 Core 2 objective identifiers and domain weights come from CompTIA's offic
 - `docs/assets/data/practice-tests/a-plus-core-2.json`: versioned examination/domain/objective metadata.
 - `docs/assets/data/practice-tests/a-plus-core-2-questions.json`: curated bank. No runtime AI generation or external service.
 - `docs/assets/javascripts/practice-tests/engine.mjs`: pure selection, sessions, shuffling, grading, restoration, validation, and resource URL conversion.
+- `docs/assets/javascripts/practice-tests/exam-policy.mjs`: deterministic domain allocation and randomized objective-balanced sampling.
+- `docs/assets/javascripts/practice-tests/exam-clock.mjs`: wall/monotonic clock and displayed time formatting.
 - `docs/assets/javascripts/practice-tests/app.mjs`: configuration, question rendering, navigation, feedback, and results.
 - `tests/practice-tests.mjs`: bank contract, local resources, scoring, shuffles, and persistence checks.
 - `tests/practice-tests-browser.cjs`: student flows at root and project URL prefixes, responsiveness, keyboard, storage failure, and feedback controls.
+- `tests/certification-mode.mjs` and `tests/certification-mode-browser.cjs`: fixed-policy, timing, migration, feedback-isolation, and timed student-flow checks. The Practice browser suite exports its existing whiteboard flow so both modes exercise the same component contract.
 
 Each question has a stable ID and choice IDs independent of displayed positions; certification and exam version; official domain and objective IDs; `single` or `multiple` type; stem and optional preformatted evidence; choice text/rationale; correct IDs; overall explanation; difficulty; Hub resources; editorial status; and checked source URLs/date. Render only validated records. The validator and tests reject missing rationales, invalid mappings, invalid answers, and broken local references. Review content manually as well: a schema cannot prove that the answer is technically correct or the distractors are plausible.
 
-Session storage uses `student-hub.exam.session.v1` with a unique session ID and exact bank version. It saves selected IDs, displayed ordering, answers, flags, feedback locks, current position, status, and tool state. Restore rejects malformed, stale, or incompatible sessions and recomputes scores from answer IDs. It does not trust stored score fields. Starting a new test creates new state. Browser storage failure permits the current in-memory attempt and reports the loss of refresh protection. Client-side code and storage are inspectable; hidden feedback is an instructional setting, not a secure exam boundary.
+Session storage retains the key `student-hub.exam.session.v1` to find prior attempts; stored records now use schema 2. It saves the mode/configuration, exact bank and examination versions, start time, absolute deadline (null in Practice Mode), selected IDs, displayed ordering, answers, flags, feedback locks, current position, status, submission time/reason, and whiteboard state. Restore rejects malformed, stale, or incompatible sessions and recomputes results from answer IDs rather than trusting stored scores. Valid schema-1 Practice records migrate explicitly, retaining answers, flags, ordering, and notes. Starting another attempt creates new state after confirmation. Storage failure permits the current in-memory attempt and reports the loss of refresh protection. Client-side code, storage, and clocks remain inspectable and editable; this is local practice rather than a secure proctored boundary.
 
 Bump the bank version when assessed content, answer keys, rationales, or objective mappings change. Keep stable question and choice IDs; do not silently resume an older attempt against changed content. A session-schema change also needs a version change or a deliberately tested migration.
 
@@ -150,11 +153,57 @@ Local verification passed: `npm run test:practice-tests` (engine and full browse
 
 Further curation should deepen individual subtopics, especially Windows command/disk tools, macOS/Linux administration, mobile and browser hardening, backup rotation, incident records, and AI privacy. Two questions mapped to an objective do not cover all its bullets. A 100-question custom Practice Mode attempt is now possible, but a timed, weighted certification examination and PBQ examination adapters remain separate implementation work. Existing independently authored practice and percentage-scoring notices remain visible.
 
+## Phase 4: timed Certification Mode
+
+### Configuration and selection policy
+
+The shared application offers Practice Mode and Certification Mode as separate setup flows. Practice retains its domain/objective selection, custom counts, and feedback preferences. Certification Mode shows instructions and fixed examination facts before Start Exam; it never starts the deadline while the student reads the introduction. The same question renderer, navigator, engine, results, resource conversion, storage adapter, and whiteboard serve both modes.
+
+Core 2 metadata now enables `certificationMode` with `questionCount: 90`, `maximumQuestions: 90`, and `minutes: 90`. The official 220-1202 objectives v2.0 were checked again on 2026-10-27: the real exam allows a maximum of 90 multiple-choice/performance-based questions in 90 minutes, with domain weights 28/28/23/21. The fixed 90-question MCQ count is this simulation's configuration; it does not assert that every official attempt has that count or the same item mix. The bank and its version are unchanged.
+
+| Domain | Weight | Exact quota | Integer quota |
+| --- | ---: | ---: | ---: |
+| Operating Systems | 28% | 25.2 | 25 |
+| Security | 28% | 25.2 | 25 |
+| Software Troubleshooting | 23% | 20.7 | 21 |
+| Operational Procedures | 21% | 18.9 | 19 |
+| Total | 100% | 90 | 90 |
+
+`allocateDomains` uses largest remainders: floor each exact quota, then distribute the remaining slots by descending fractional remainder. Equal remainders use metadata order. The allocation is deterministic; selection is random. Within each quota, `sampleObjectives` chooses a least-covered objective with an unused candidate, randomizes ties and candidates, removes the chosen question from the pool, and increments coverage for its mapped objectives. The combined selected questions and each answer list are shuffled independently. All current 36 objectives are represented in each 90-item attempt; no question is repeated. At this bank's capacity the troubleshooting objectives contribute 6/5/5/5 questions rather than disproportionately selecting its largest objective bucket.
+
+Before Start Exam is enabled, availability checks verify metadata, bank validation, supported question types, each domain's quota, and objective coverage. Shortage gives a specific reason and disables starting; no duplication, reduction of the requested count, or reallocation to a different domain occurs. The engine checks canonical certification configuration on creation and restore, including fixed domains, objectives, count, duration, and review policy. Practice controls cannot override those settings. The same policies are tested with a second synthetic certification/version, different domain count/weights, and a different duration. Only Core 2 is enabled in the real registry; other entries still lack selectable banks.
+
+### Deadline and submission contract
+
+Start Exam records `startedAt`/`createdAt` and `deadline = startedAt + duration`. A 250ms UI refresh displays the absolute-deadline difference, rounding displayed seconds upward. It is not an interval-decrementing counter. `createExamClock` uses the maximum of wall time, monotonic elapsed time from page initialization, and the last observed value. This prevents an in-tab backward wall-clock adjustment from granting extra time; wall time also catches up after suspension. Visibility, focus, page-show, and page-hide events reconcile the deadline. Answer, flag, and feedback-lock engine operations check expiry before changing assessment state.
+
+Refreshing, closing, or returning to the browser does not reset the saved deadline. Restore validates duration, timestamps, configuration, exact domain quotas, stable choice IDs, and response sets. An active record restored after its deadline becomes submitted/expired while preserving its existing responses and notes. The app persists that transition immediately when possible. A completed manual submission remains manual even when revisited after the deadline. Schema-1 records can migrate only as Practice Mode; they cannot acquire a certification deadline through reinterpretation.
+
+Five-minute and one-minute notices use a polite live region whose text changes only at a warning boundary; the clock itself does not announce each tick. The notices do not open a modal or move focus. The timed toolbar remains visible during scrolling, with the clock outside the whiteboard's safe surface. The timer stops after submission and shows frozen time used in review.
+
+Submit Exam confirms total, answered, unanswered, flagged, and current remaining time. Cancellation resumes the same attempt and deadline. At expiry, submission closes any pending examination or whiteboard-clear confirmation and displays results without waiting for an answer. The single status transition in `submit` is idempotent: expiry takes precedence at the boundary, records reason `expired`, and uses the logical deadline as submission time. Manual submission before the boundary records reason `manual` and the action time. Later callbacks cannot submit again or change the recorded result. Elapsed time is bounded by the examination duration.
+
+### Feedback, results, and whiteboard
+
+During active Certification Mode, `feedbackPolicy` returns no answers or explanations, `finalizeAnswer` refuses feedback locking, and `grade` returns no score. The interface clears feedback/results content and provides no per-question objective labels, rationales, correctness styling, or educational links. Answered checkmarks in navigation indicate response presence only. Canonical post-exam feedback is separate from the hidden Practice preferences; after submission all questions expose the submitted selection, correct set, overall explanation, choice-specific rationales, and Hub links.
+
+Results remain Student Hub practice percentages, with exact-set multi-response credit and zero credit for unanswered questions. They include counts, manual/expired status, time used, domain results, objective results, and flagged-question navigation. No CompTIA scaled score or official-pass prediction is produced. The existing `mountWhiteboard` implementation is reused unchanged: notes, dimensions, position, minimize/dock state, and refresh behavior remain session-owned and independent of grading. A new attempt gets a fresh deadline, shuffled selection/order, empty answers/flags, and empty notes after replacement confirmation.
+
+### Validation and limits
+
+The expanded `npm run test:practice-tests` runs both pure suites and both browser suites. Engine coverage includes 200 distinct 90-item subsets, all 104 records observed across sampling, all displayed single-answer key positions, exact quotas, all objectives, multi-response scoring, shortages, unsupported item types, locked settings, a second metadata configuration, deadline boundaries, idempotent submission, submitted-result stability, stale/corrupt sessions, explicit Practice migration, and clock rollback/suspension handling.
+
+Browser checks use controlled time advancement rather than a real 90-minute wait. They exercise the introduction, no pre-start clock, a correct 90-item completion, wrong-to-correct edits, skips/flags, hidden feedback-control attempts, countdown while taking notes, deadline/response/geometry restoration, background time jumps, warning thresholds, submission/cancellation, incomplete exact-set scoring, expiry with a pending dialog, and reopening persisted state after the deadline in a new browsing context. Both root and project URL prefixes and light/dark 320/390/768/1440px layouts are covered. The same full whiteboard interaction flow runs in Practice and Certification Mode; unavailable/full storage permits an in-memory examination and explicitly warns that recovery may fail.
+
+Local verification passed: the complete `npm run test:practice-tests` command (both engine suites and both browser suites), `mkdocs build --strict`, generated navigation/listing freshness, source checks, 31 Python tests, catalog model checks, 19 canonical PBQ validations, site checks covering 71 HTML pages and 4,569 local links/assets/fragments, and analytics. Existing PBQ-library, learning-resource-navigation, help-desk ticket-triage, and malware-investigation/remediation regressions passed; help-desk passed on retry after an attachment-image load timeout. Screenshots of the introduction, active examination, whiteboard, and results were inspected in light and dark themes. Browser tests used the installed Chromium headless shell through `PBQ_CHROMIUM_PATH`. The 104-question bank remains byte-for-byte unchanged, and the existing whiteboard implementation and registry are unchanged. Phase 4 creates no PR or merge.
+
+Limitations: this release supports only MCQs, has no account or server time authority, and uses browser-local persistence. It cannot protect against deliberate client-side edits or clock changes made while the application is closed. Storage denial/fullness can prevent restoring progress after refresh. A 90-item sample from 104 questions necessarily reuses many questions across attempts, even though selection/order change and each attempt contains no duplicates. Objective coverage is not exhaustive subtopic coverage or a calibrated prediction of exam performance.
+
 ## Remaining implementation phases
 
-1. Certification Mode: version-specific exam configuration, published domain weights with documented integer allocation, persisted absolute deadline, countdown, expiry submission, flags/review, no feedback until submission, and transparent practice scoring. Full PBQ adapters are separate work; an unknown type must be rejected rather than silently misgraded as an MCQ.
-2. Continued question curation in bounded batches as needed. Add other certifications only with verified metadata and validated banks, preserving existing Hub exam versions unless explicitly updated. Objective counts alone do not establish complete examination coverage.
-3. Final integration, regression review, and PR after the assigned implementation phases. Do not create the PR during Phase 3B.
+1. PBQ examination adapters require explicit lifecycle, response serialization, exact grading, tool/session isolation, timer/expiry handling, and safe review behavior for each supported activity. Unsupported item types remain rejected; this phase does not integrate PBQs.
+2. Additional certification banks/configuration and deeper question coverage are separate scoped work, preserving current Hub exam versions unless an update is approved.
+3. Final integration, regression review, and PR after the assigned implementation phases. No PR or merge belongs to Phase 4.
 
 ## Editorial review of the pilot
 

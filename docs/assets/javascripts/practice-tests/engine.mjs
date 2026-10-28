@@ -1,6 +1,9 @@
 // Pure session logic, shared by every examination interface.
 import { restoreWhiteboard } from './whiteboard-state.mjs';
-export const SESSION_VERSION = 1;
+import { allocateDomains, sampleObjectives } from './exam-policy.mjs';
+export { allocateDomains } from './exam-policy.mjs';
+export const SESSION_VERSION = 2;
+// Keep the key so version-1 Practice Mode attempts can be migrated explicitly.
 export const STORAGE_KEY = 'student-hub.exam.session.v1';
 export const questionTypes = ['single', 'multiple'];
 
@@ -9,6 +12,8 @@ const sameSet = (a, b) => unique(a) && a.length === b.length && a.every(id => b.
 const clone = value => JSON.parse(JSON.stringify(value));
 const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const text = value => typeof value === 'string' && value.trim().length > 0;
+const time = value => Number.isSafeInteger(value) && value >= 0;
+const isCertification = session => session?.config?.mode === 'certification';
 
 export function validateBank(exam, bank) {
   const errors = [];
@@ -45,7 +50,40 @@ export function validateBank(exam, bank) {
 
 export function eligibleQuestions(exam, bank, config) {
   const objectives = exam.objectives.filter(o => config.domains.includes(o.domain) && config.objectives.includes(o.id)).map(o => o.id);
-  return bank.questions.filter(q => q.status === 'validated' && q.certification === exam.id && q.examVersion === exam.examVersion && config.domains.includes(q.domain) && q.objectives.some(id => objectives.includes(id)));
+  return bank.questions.filter(q => q.status === 'validated' && questionTypes.includes(q.type) && q.certification === exam.id && q.examVersion === exam.examVersion && config.domains.includes(q.domain) && q.objectives.some(id => objectives.includes(id)));
+}
+
+export function certificationConfig(exam) {
+  return {
+    certification: exam.id, mode: 'certification',
+    domains: exam.domains.map(d => d.id), objectives: exam.objectives.map(o => o.id),
+    count: exam.certificationMode?.questionCount, durationMinutes: exam.certificationMode?.minutes,
+    feedback: 'end', showAnswers: true, showExplanations: true
+  };
+}
+
+export function certificationAvailability(exam, bank) {
+  const unavailable = reason => ({ available: false, reason, allocation: [] });
+  const policy = exam?.certificationMode;
+  if (!policy?.implemented) return unavailable('Certification Mode is not available for this examination version.');
+  if (!Number.isInteger(policy.questionCount) || policy.questionCount < 1
+      || !Number.isInteger(policy.maximumQuestions) || policy.questionCount > policy.maximumQuestions
+      || !Number.isFinite(policy.minutes) || policy.minutes <= 0 || !time(policy.minutes * 60000)) {
+    return unavailable('This examination has an invalid question-count or time-limit configuration.');
+  }
+  let allocation;
+  try { allocation = allocateDomains(exam.domains, policy.questionCount); }
+  catch (error) { return unavailable(error.message); }
+  if (validateBank(exam, bank).length) return unavailable('The question bank must pass validation before this simulation can start.');
+  const eligible = eligibleQuestions(exam, bank, certificationConfig(exam));
+  for (const domain of allocation) {
+    const pool = eligible.filter(q => q.domain === domain.id);
+    if (pool.length < domain.count) return unavailable(`${domain.name} requires ${domain.count} validated MCQs; only ${pool.length} are available.`);
+    if (domain.count && exam.objectives.some(o => o.domain === domain.id && !pool.some(q => q.objectives.includes(o.id)))) {
+      return unavailable(`${domain.name} needs validated MCQ coverage for every objective before this simulation can start.`);
+    }
+  }
+  return { available: true, reason: '', allocation };
 }
 
 export function shuffle(items, random = Math.random) {
@@ -58,7 +96,17 @@ export function shuffle(items, random = Math.random) {
 }
 
 export function validateConfig(exam, bank, config) {
-  if (!object(config) || config.certification !== exam.id || config.mode !== 'practice') return 'Select an available practice certification.';
+  if (!object(config) || config.certification !== exam.id || !['practice', 'certification'].includes(config.mode)) return 'Select an available examination mode and certification.';
+  if (config.mode === 'certification') {
+    const expected = certificationConfig(exam), availability = certificationAvailability(exam, bank);
+    if (!availability.available) return availability.reason;
+    if (!sameSet(config.domains, expected.domains) || !sameSet(config.objectives, expected.objectives)
+        || config.count !== expected.count || config.durationMinutes !== expected.durationMinutes
+        || config.feedback !== 'end' || config.showAnswers !== true || config.showExplanations !== true) {
+      return 'Certification Mode uses fixed examination settings and post-exam feedback.';
+    }
+    return null;
+  }
   if (!unique(config.domains) || !config.domains.length || config.domains.some(id => !exam.domains.some(d => d.id === id))) return 'Select at least one domain.';
   if (!unique(config.objectives) || !config.objectives.length || config.objectives.some(id => !exam.objectives.some(o => o.id === id && config.domains.includes(o.domain)))) return 'Select objectives within the selected domains.';
   if (typeof config.showAnswers !== 'boolean' || typeof config.showExplanations !== 'boolean' || (config.showExplanations && !config.showAnswers)) return 'Explanations require correct-answer feedback.';
@@ -68,14 +116,22 @@ export function validateConfig(exam, bank, config) {
   return null;
 }
 
-export function createSession(exam, bank, config, random = Math.random) {
+export function createSession(exam, bank, config, random = Math.random, now = Date.now()) {
   const error = validateConfig(exam, bank, config);
   if (error) throw new Error(error);
-  const questions = shuffle(eligibleQuestions(exam, bank, config), random).slice(0, config.count);
+  if (!time(now)) throw new Error('The examination start time is invalid.');
+  const eligible = eligibleQuestions(exam, bank, config);
+  const selected = config.mode === 'certification'
+    ? allocateDomains(exam.domains, config.count).flatMap(domain => sampleObjectives(
+      eligible.filter(q => q.domain === domain.id), exam.objectives.filter(o => o.domain === domain.id).map(o => o.id), domain.count, random))
+    : shuffle(eligible, random).slice(0, config.count);
+  const questions = config.mode === 'certification' ? shuffle(selected, random) : selected;
   return {
     version: SESSION_VERSION, bankVersion: bank.version, examVersion: exam.examVersion,
     id: globalThis.crypto?.randomUUID?.() || `exam-${Date.now()}-${Math.random().toString(36).slice(2)}`,
-    config: clone(config), createdAt: Date.now(), submittedAt: null, status: 'active',
+    config: clone(config), createdAt: now, startedAt: now,
+    deadline: config.mode === 'certification' ? now + config.durationMinutes * 60000 : null,
+    submittedAt: null, submissionReason: null, status: 'active',
     questionIds: questions.map(q => q.id),
     choiceOrder: Object.fromEntries(questions.map(q => [q.id, shuffle(q.choices.map(c => c.id), random)])),
     answers: Object.fromEntries(questions.map(q => [q.id, []])), flags: [], finalized: [], current: 0,
@@ -84,7 +140,8 @@ export function createSession(exam, bank, config, random = Math.random) {
   };
 }
 
-export function answer(session, bank, questionId, choiceIds) {
+export function answer(session, bank, questionId, choiceIds, now = Date.now()) {
+  expireSession(session, now);
   if (session.status !== 'active' || session.finalized.includes(questionId)) return false;
   const q = bank.questions.find(item => item.id === questionId);
   if (!q || !session.questionIds.includes(questionId) || !unique(choiceIds) || choiceIds.some(id => !q.choices.some(c => c.id === id)) || choiceIds.length > (q.type === 'single' ? 1 : q.correct.length)) return false;
@@ -92,24 +149,60 @@ export function answer(session, bank, questionId, choiceIds) {
   return true;
 }
 
-export function finalizeAnswer(session, questionId) {
+export function finalizeAnswer(session, questionId, now = Date.now()) {
+  expireSession(session, now);
+  if (isCertification(session)) return false;
   if (session.status !== 'active' || session.config.feedback !== 'immediate' || !session.config.showAnswers || !session.answers[questionId]?.length || session.finalized.includes(questionId)) return false;
   session.finalized.push(questionId);
   return true;
 }
 
-export function toggleFlag(session, questionId) {
+export function toggleFlag(session, questionId, now = Date.now()) {
+  expireSession(session, now);
   if (session.status !== 'active' || !session.questionIds.includes(questionId)) return false;
   session.flags = session.flags.includes(questionId) ? session.flags.filter(id => id !== questionId) : [...session.flags, questionId];
   return true;
 }
 
-export function submit(session) {
-  if (session.status !== 'active') return false;
-  session.status = 'submitted'; session.submittedAt = Date.now(); return true;
+export function submit(session, now = Date.now()) {
+  if (session.status !== 'active' || !time(now)) return false;
+  const expired = isCertification(session) && now >= session.deadline;
+  session.status = 'submitted';
+  session.submittedAt = expired ? session.deadline : Math.max(session.startedAt, now);
+  session.submissionReason = expired ? 'expired' : 'manual';
+  return true;
+}
+
+export function expireSession(session, now = Date.now()) {
+  return Boolean(session && isCertification(session) && session.status === 'active'
+    && time(now) && now >= session.deadline && submit(session, now));
+}
+
+export function remainingTime(session, now = Date.now()) {
+  if (!isCertification(session)) return null;
+  const end = session.status === 'submitted' ? session.submittedAt : now;
+  return Math.max(0, Math.min(session.deadline - session.startedAt, session.deadline - end));
+}
+
+export function timeUsed(session, now = Date.now()) {
+  const elapsed = Math.max(0, (session.status === 'submitted' ? session.submittedAt : now) - session.startedAt);
+  return isCertification(session) ? Math.min(elapsed, session.deadline - session.startedAt) : elapsed;
+}
+
+export function timeWarning(session, now = Date.now()) {
+  if (!isCertification(session) || session.status !== 'active') return null;
+  const remaining = remainingTime(session, now);
+  return remaining > 0 ? remaining <= 60000 ? 1 : remaining <= 300000 ? 5 : null : null;
+}
+
+export function feedbackPolicy(session, questionId) {
+  const visible = isCertification(session) ? session.status === 'submitted'
+    : session.config.showAnswers && (session.status === 'submitted' || session.finalized.includes(questionId));
+  return { answers: Boolean(visible), explanations: Boolean(visible && (isCertification(session) || session.config.showExplanations)) };
 }
 
 export function grade(session, exam, bank) {
+  if (isCertification(session) && session.status !== 'submitted') return null;
   const rows = session.questionIds.map(id => {
     const q = bank.questions.find(item => item.id === id), selected = session.answers[id] || [];
     return { id, domain: q.domain, objectives: q.objectives, answered: selected.length > 0, correct: sameSet(selected, q.correct), flagged: session.flags.includes(id) };
@@ -121,9 +214,19 @@ export function grade(session, exam, bank) {
     objectives: exam.objectives.map(o => ({ ...o, ...totals(rows.filter(r => r.objectives.includes(o.id))) })).filter(o => o.total) };
 }
 
-export function restoreSession(raw, exam, bank) {
-  if (!object(raw) || raw.version !== SESSION_VERSION || raw.bankVersion !== bank.version || raw.examVersion !== exam.examVersion || !text(raw.id) || validateConfig(exam, bank, raw.config)) return null;
-  if (!['active', 'submitted'].includes(raw.status) || !Number.isFinite(raw.createdAt) || (raw.status === 'submitted' && !Number.isFinite(raw.submittedAt))) return null;
+export function restoreSession(raw, exam, bank, now = Date.now()) {
+  if (!object(raw) || ![1, SESSION_VERSION].includes(raw.version) || raw.bankVersion !== bank.version || raw.examVersion !== exam.examVersion || !text(raw.id) || validateConfig(exam, bank, raw.config)) return null;
+  const legacy = raw.version === 1, certification = isCertification(raw);
+  if (legacy && (certification || raw.deadline != null)) return null;
+  const startedAt = legacy ? raw.createdAt : raw.startedAt;
+  const reason = legacy ? raw.status === 'submitted' ? 'manual' : null : raw.submissionReason;
+  if (!['active', 'submitted'].includes(raw.status) || !time(raw.createdAt) || !time(startedAt) || startedAt !== raw.createdAt) return null;
+  if (raw.status === 'active' && (raw.submittedAt != null || reason != null)) return null;
+  if (raw.status === 'submitted' && (!time(raw.submittedAt) || raw.submittedAt < startedAt || !['manual', 'expired'].includes(reason))) return null;
+  if (certification) {
+    if (!time(raw.deadline) || raw.deadline !== startedAt + raw.config.durationMinutes * 60000 || !time(now)) return null;
+    if (raw.status === 'submitted' && (reason === 'expired' ? raw.submittedAt !== raw.deadline : raw.submittedAt >= raw.deadline)) return null;
+  } else if (raw.deadline != null || reason === 'expired') return null;
   if (!unique(raw.questionIds) || raw.questionIds.length !== raw.config.count || !object(raw.choiceOrder) || !object(raw.answers)) return null;
   const eligible = new Set(eligibleQuestions(exam, bank, raw.config).map(q => q.id));
   for (const id of raw.questionIds) {
@@ -133,26 +236,37 @@ export function restoreSession(raw, exam, bank) {
     const selected = raw.answers[id] || [];
     if (!unique(selected) || selected.some(choice => !q.choices.some(c => c.id === choice)) || selected.length > (q.type === 'single' ? 1 : q.correct.length)) return null;
   }
+  if (certification) {
+    const questions = raw.questionIds.map(id => bank.questions.find(q => q.id === id));
+    for (const domain of allocateDomains(exam.domains, raw.config.count)) {
+      const selected = questions.filter(q => q.domain === domain.id), objectives = exam.objectives.filter(o => o.domain === domain.id);
+      if (selected.length !== domain.count) return null;
+      if (domain.count >= objectives.length && objectives.some(o => !selected.some(q => q.objectives.includes(o.id)))) return null;
+    }
+  }
   if (!unique(raw.flags) || !unique(raw.finalized) || [...raw.flags, ...raw.finalized].some(id => !raw.questionIds.includes(id)) || raw.finalized.some(id => !raw.answers[id]?.length)) return null;
-  if (raw.finalized.length && (raw.config.feedback !== 'immediate' || !raw.config.showAnswers)) return null;
+  if (raw.finalized.length && (certification || raw.config.feedback !== 'immediate' || !raw.config.showAnswers)) return null;
   if (!Number.isInteger(raw.current) || raw.current < 0 || raw.current >= raw.questionIds.length) return null;
   const session = {
     version: SESSION_VERSION, bankVersion: bank.version, examVersion: exam.examVersion,
-    id: raw.id, config: clone(raw.config), createdAt: raw.createdAt,
+    id: raw.id, config: clone(raw.config), createdAt: raw.createdAt, startedAt,
+    deadline: certification ? raw.deadline : null, submissionReason: reason,
     submittedAt: raw.status === 'submitted' ? raw.submittedAt : null, status: raw.status,
     questionIds: [...raw.questionIds], choiceOrder: {}, answers: {}, flags: [...raw.flags], finalized: [...raw.finalized], current: raw.current,
     tools: { whiteboard: restoreWhiteboard(raw.tools?.whiteboard) }
   };
   for (const id of session.questionIds) { session.choiceOrder[id] = [...raw.choiceOrder[id]]; session.answers[id] = [...(raw.answers[id] || [])]; }
+  expireSession(session, now);
   return session;
 }
 
-export function loadSession(storage, exam, bank) {
+export function loadSession(storage, exam, bank, now = Date.now()) {
   try {
     const raw = storage.getItem(STORAGE_KEY);
     if (raw === null) return { session: null, notice: '', available: true };
-    const session = restoreSession(JSON.parse(raw), exam, bank);
-    return { session, notice: session ? 'Your saved test has been restored.' : 'The saved test is incompatible with this question bank. Start a new test.', available: true };
+    const session = restoreSession(JSON.parse(raw), exam, bank, now);
+    const notice = session?.submissionReason === 'expired' ? 'Your saved exam reached its deadline and has been submitted as expired.' : 'Your saved test has been restored.';
+    return { session, notice: session ? notice : 'The saved test is incompatible with this question bank or examination settings. Start a new test.', available: true };
   } catch { return { session: null, notice: 'The saved test could not be read. You can start a new test.', available: false }; }
 }
 

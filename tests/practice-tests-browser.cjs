@@ -16,7 +16,7 @@ async function whiteboardFlow(p, state, shot) {
   const unchanged = async before => assert.deepEqual(snapshot(await state()), snapshot(before), 'Tools must not alter examination responses, flags, position, or scoring inputs');
   const noOverlap = async () => {
     const box = await panel.boundingBox();
-    for (const selector of ['#new-test', '#flag', '#previous', '#next', '#submit-test', '#check-answer']) {
+    for (const selector of ['#exam-clock', '#new-test', '#flag', '#previous', '#next', '#submit-test', '#check-answer']) {
       const control = p.locator(selector);
       if (!await control.isVisible()) continue;
       const b = await control.boundingBox();
@@ -184,7 +184,8 @@ async function browser(base) {
       await p.locator('#setup').waitFor({ state: 'visible' });
       assert.equal(await p.locator('#certification option').count(), 1);
       assert.equal(await p.getByRole('button', { name: 'Whiteboard', exact: true }).count(), 0);
-      assert.equal(await p.getByRole('button', { name: 'Certification Mode', exact: true }).count(), 0);
+      assert.equal(await p.getByRole('button', { name: 'Certification Mode', exact: true }).count(), 1);
+      assert.equal(await p.getByRole('button', { name: 'Practice Mode', exact: true }).getAttribute('aria-pressed'), 'true');
       assert.match(await p.locator('#available').innerText(), new RegExp(`${total} validated`));
       assert.equal(await p.locator('.objectives input').count(), 36);
       assert.equal(await p.locator('.objectives input:disabled').count(), 0, 'Every official objective now has selectable coverage');
@@ -224,10 +225,18 @@ async function browser(base) {
       assert.equal(hundred.questionIds.length, 100);
       assert.equal(new Set(hundred.questionIds).size, 100);
       await p.reload(); await p.locator('#exam').waitFor({ state: 'visible' });
-      assert.deepEqual(await state(), hundred, 'A 100-question attempt must restore without changing its ordering');
+      const restoredHundred = await state();
+      for (const key of ['id', 'config', 'questionIds', 'choiceOrder', 'answers', 'flags', 'current', 'status', 'startedAt', 'deadline']) {
+        assert.deepEqual(restoredHundred[key], hundred[key], 'A 100-question attempt must retain its selection, responses, and timing');
+      }
+      assert.equal(restoredHundred.tools.whiteboard.text, '');
+      assert.equal(restoredHundred.tools.whiteboard.visible, false);
+      // Hidden initial geometry can normalize as its container settles; moved/resized notes
+      // are verified separately by the shared whiteboard flow below.
       await reset();
       await start();
       const first = await state(); assert.equal(first.questionIds.length, total);
+      assert.equal(await p.locator('#exam-clock').isVisible(), false, 'Practice Mode remains untimed');
       await context.grantPermissions(['clipboard-read', 'clipboard-write']);
       await whiteboardFlow(p, state, prefix ? async () => {} : shot);
       assert.equal(await p.locator('#feedback').isVisible(), false);
@@ -396,7 +405,8 @@ async function browser(base) {
   } finally { await b.close(); }
 }
 
-if (process.argv.includes('--local')) {
+module.exports = { whiteboardFlow };
+if (require.main === module && process.argv.includes('--local')) {
   const site = path.resolve(__dirname, '../site'), mime = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml' };
   const server = http.createServer((req, res) => {
     let pathname = new URL(req.url, 'http://localhost').pathname.replace(/^\/it-cyber-student-hub(?=\/)/, '');
@@ -406,5 +416,5 @@ if (process.argv.includes('--local')) {
     fs.readFile(target, (error, data) => { if (error) { res.writeHead(404).end(); return; } res.setHeader('Content-Type', mime[path.extname(target)] || 'application/octet-stream'); res.end(data); });
   });
   server.listen(0, '127.0.0.1', () => browser(`http://127.0.0.1:${server.address().port}`).catch(error => { console.error(error); process.exitCode = 1; }).finally(() => server.close()));
-} else if (process.env.EXAM_BASE_URL) browser(process.env.EXAM_BASE_URL).catch(error => { console.error(error); process.exitCode = 1; });
-else throw new Error('Use --local after mkdocs build, or provide EXAM_BASE_URL.');
+} else if (require.main === module && process.env.EXAM_BASE_URL) browser(process.env.EXAM_BASE_URL).catch(error => { console.error(error); process.exitCode = 1; });
+else if (require.main === module) throw new Error('Use --local after mkdocs build, or provide EXAM_BASE_URL.');
