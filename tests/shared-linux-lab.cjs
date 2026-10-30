@@ -105,7 +105,7 @@ const server = http.createServer(async (request, response) => {
       }
     }
     await page.goto(base + 'labs/');
-    assert.deepEqual(await page.locator('.hub-page li a').allTextContents(), ['IT Support']);
+    assert.deepEqual(await page.locator('.hub-page li a').allTextContents(), ['IT Support', 'Networking']);
     // Representative established pages retain their original shells.
     for (const resource of ['certifications/comptia/a-plus-core-1/', 'practice/pbqs/', 'learn/networking/ports-and-protocols/']) {
       await page.goto(base + resource);

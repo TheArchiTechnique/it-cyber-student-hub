@@ -134,15 +134,12 @@ hub:hidden -->
     Work with systems and support tasks.
 
 
-<!-- hub:hidden
 - [Networking](../../../labs/networking/README.md)
 
     Configure and inspect network communication.
 
 
 
-
-hub:hidden -->
 ## Published Labs
 
 - [VirtualBox: Installing Linux Mint](../../../labs/it-support/virtualbox-linux-mint/README.md)

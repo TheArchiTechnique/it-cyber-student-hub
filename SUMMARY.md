@@ -45,6 +45,8 @@
     - [VirtualBox: Installing Linux Mint](docs/labs/it-support/virtualbox-linux-mint/README.md)
     - [Linux Mint Workstation Setup and Troubleshooting](docs/labs/it-support/linux-mint-command-line/README.md)
     - [Windows Command-Line Lab](docs/labs/it-support/windows-command-line/README.md)
+  - [Networking](docs/labs/networking/README.md)
+    - [Start Here — Install Cisco Packet Tracer](docs/labs/networking/packet-tracer-setup/README.md)
 - [Reference](docs/reference/README.md)
   - [Ports & Protocols](docs/reference/ports-and-protocols.md)
   - [Windows Command-Line Reference](docs/reference/windows-command-line.md)

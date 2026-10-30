@@ -116,7 +116,6 @@ Related activities that build supporting skills for this certification.
     Troubleshoot a weak, intermittent Wi-Fi connection in a 3,000-square-foot office. Inspect the floor plan and reposition available equipment to improve service across the workspace.
 <!-- END GENERATED PBQ LISTINGS -->
 
-<!-- hub:hidden
 ## Lab Areas
 
 - [Networking](../../../labs/networking/README.md)
@@ -125,8 +124,12 @@ Related activities that build supporting skills for this certification.
 
 
 
+## Published Labs
 
-hub:hidden -->
+- [Getting Started: Download and Install Cisco Packet Tracer](../../../labs/networking/packet-tracer-setup/README.md)
+
+    Set up the free network simulator and learn the controls used in the Network+ networking labs.
+
 ## Reference Topics
 
 - [Ports & Protocols](../../../reference/ports-and-protocols.md)

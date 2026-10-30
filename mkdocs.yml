@@ -128,7 +128,9 @@ nav:
     - "VirtualBox: Installing Linux Mint": labs/it-support/virtualbox-linux-mint/README.md
     - Linux Mint Workstation Setup and Troubleshooting: labs/it-support/linux-mint-command-line/README.md
     - Windows Command-Line Lab: labs/it-support/windows-command-line/README.md
-  - Networking: labs/networking/README.md
+  - Networking:
+    - Overview: labs/networking/README.md
+    - Start Here — Install Cisco Packet Tracer: labs/networking/packet-tracer-setup/README.md
   - Cybersecurity: labs/cybersecurity/README.md
   - Log Analysis: labs/log-analysis/README.md
   - Incident Response: labs/incident-response/README.md

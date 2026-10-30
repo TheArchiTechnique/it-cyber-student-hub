@@ -88,7 +88,7 @@ const day9Quiz = 'https://create.kahoot.it/share/enter-kahoot-title/45b5f987-279
         await follow('Full lesson','learn/networking/ports-and-protocols/');
         await follow('Back to Learn','learn/');
         await go('labs/');
-        assert.deepEqual(await content().locator('li a').allTextContents(),['IT Support']);
+        assert.deepEqual(await content().locator('li a').allTextContents(),['IT Support', 'Networking']);
         await follow('IT Support','labs/it-support/');
         assert.deepEqual(await content().locator('li a').allTextContents(),['Linux Terminal Simulator',installTitle,linuxTitle,windowsTitle]);
         assert.match(await content().locator('li').nth(2).innerText(),/Prerequisite: complete the Linux Mint installation lab first/);

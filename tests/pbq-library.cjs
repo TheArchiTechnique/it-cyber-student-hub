@@ -224,7 +224,7 @@ const server = http.createServer(async (request, response) => {
     assert.ok(page.url().endsWith('/practice/pbqs/a-plus-core-1/ip-configuration-troubleshooting/'));
     await ready();
     // Empty categories remain absent from global navigation and the search index.
-    const unavailable = ['labs/networking/', 'labs/cybersecurity/', 'labs/log-analysis/', 'labs/incident-response/',
+    const unavailable = ['labs/cybersecurity/', 'labs/log-analysis/', 'labs/incident-response/',
       'tools/', 'practice/scenarios/',
       'practice/pbqs/security-plus/', 'practice/pbqs/cysa-plus/', 'reference/powershell-commands/'];
     const search = await (await page.request.get(`${origin}${prefix}/search/search_index.json`)).json();

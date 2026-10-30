@@ -45,7 +45,7 @@ class LearningResourceNavigationTests(unittest.TestCase):
             self.assertEqual(text.count('[VirtualBox: Installing Linux Mint]'), 1)
             self.assertEqual(text.count('[Linux Mint Workstation Setup and Troubleshooting]'), 1)
             self.assertNotIn('[Windows Command-Line Lab]', text)
-            self.assertNotIn('labs/networking/README.md', a.visible)
+            self.assertNotIn('labs/cybersecurity/README.md', a.visible)
 
     def test_quizzes_cover_published_certification_links_once(self):
         pattern = r'https://create\.kahoot\.it/share/[^\s)"<>]+'
@@ -82,7 +82,8 @@ class LearningResourceNavigationTests(unittest.TestCase):
             self.assertNotIn(topic + '/README.md', learn)
             self.assertNotIn(f'learn/{topic}/README.md', self.availability.visible)
         self.assertIn('networking/README.md', learn)
-        for category in ('networking', 'cybersecurity', 'log-analysis', 'incident-response'):
+        self.assertIn('networking/README.md', self.visible('labs/README.md'))
+        for category in ('cybersecurity', 'log-analysis', 'incident-response'):
             self.assertNotIn(category + '/README.md', self.visible('labs/README.md'))
 
 
