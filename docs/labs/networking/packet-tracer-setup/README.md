@@ -253,7 +253,7 @@ On the **CLI** tab, click inside the terminal and press **Enter** if a prompt ha
 - You can locate a PC's **Desktop → IP Configuration**.
 - You can create, save, and reopen a `.pkt` file.
 
-Return to **Networking Labs** for the published activities in this series.
+[Next: Lab 1 — Basic Network Configuration](../basic-network-configuration/README.md)
 
 ## Official sources and image attribution
 

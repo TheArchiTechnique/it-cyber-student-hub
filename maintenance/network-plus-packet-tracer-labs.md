@@ -6,19 +6,19 @@ Branch: `content/network-plus-packet-tracer-labs`. Phase 1 adds the setup guide 
 
 The guide is reachable through Network+ → Published Labs and Home → Labs → Networking → Start Here. The existing Network+ Lab Areas link becomes visible automatically. `mkdocs.yml` explicitly orders the Networking overview before the setup guide. `python scripts/sync_navigation.py` regenerates availability comments and GitBook navigation. Empty Cybersecurity, Log Analysis, and Incident Response categories stay hidden.
 
-Future phases add activities on the same branch in the following order. These are planning entries, not published links; none of these lab pages or PDF migrations is part of Phase 1.
+The sequence below records the full series on this branch. Setup and Labs 1–3 are now published; Labs 4–6 remain planned. The lab migrations are separate from Phase 1's setup-guide implementation.
 
 | Order | Student-facing title | Suggested directory under `docs/labs/networking/` |
 | --- | --- | --- |
 | Start Here | Install Cisco Packet Tracer | `packet-tracer-setup/` (published in Phase 1) |
-| 1 | Lab 1 — Basic Network Configuration | `basic-network-configuration/` |
-| 2 | Lab 2 — VLAN Configuration | `vlan-configuration/` |
-| 3 | Lab 3 — Static Routing | `static-routing/` |
+| 1 | Lab 1 — Basic Network Configuration | `basic-network-configuration/` (published in Phase 2) |
+| 2 | Lab 2 — VLAN Configuration | `vlan-configuration/` (published in Phase 2) |
+| 3 | Lab 3 — Static Routing | `static-routing/` (published in Phase 2) |
 | 4 | Lab 4 — DHCP Configuration | `dhcp-configuration/` |
 | 5 | Lab 5 — Centralized DHCP and DNS Services | `centralized-dhcp-dns/` |
 | 6 | Lab 6 — ACL Traffic Control | `acl-traffic-control/` |
 
-Add each finished lab to the curated Networking cards and `mkdocs.yml` in this order. Retain the setup guide first. When Lab 1 is published, replace the setup guide's closing return sentence with a standard, prominent link to Lab 1. Do not add that link before the target is published. Lab 3's implementation is static routing; dynamic routing can be discussed conceptually without implying hands-on dynamic protocol configuration.
+Add each subsequent finished lab to the curated Networking cards and `mkdocs.yml` in this order. Retain the setup guide first. Its continuation now links to Lab 1; link forward from the final published lab only when the next target is published. Lab 3's implementation is static routing; dynamic routing is discussed conceptually without hands-on dynamic protocol configuration.
 
 ## Official information checked
 
@@ -80,3 +80,51 @@ Run the standard source, navigation, unit, catalog, and strict-build validators.
 The Packet Tracer guide browser check follows the student routes, validates local full-size screenshots and alt text, checks document overflow and image aspect ratios at desktop and narrow widths in both themes, verifies keyboard access to linked images, and checks search/navigation and the absence of unfinished lab links. Temporary QA screenshots stay outside the repository and are not a preview deliverable. These tests cover the Hub publication, not execution of Packet Tracer.
 
 Phase 1 local results: all 31 Python unit tests passed; navigation and PBQ generation checks passed; source checks covered 718 local Markdown links; the strict build passed; site checks covered 73 HTML pages and 4,891 local links/assets/fragments; all 19 canonical PBQs validated; catalog and analytics tests passed. The new guide suite and the existing learning-resource navigation, PBQ-library, and shared Linux installation guide browser suites passed. The guide was checked at 1440, 390, and 320 pixels in both themes, at root and project subpaths. Desktop, narrow-screen, and screenshot rendering were visually inspected. All nine unique official destination URLs returned HTTP 200; the public course, download, registration, and sign-in entry states were also inspected in the browser. Account completion, authenticated downloads, installation, and application execution remain unverified as described above.
+
+## Phase 2: cumulative Labs 1–3
+
+Continues Phase 1 commit `8c833e8604d5c594c274ad058c0cb18ff32eb79d` on the same branch. Published resources:
+
+- `docs/labs/networking/basic-network-configuration/README.md`
+- `docs/labs/networking/vlan-configuration/README.md`
+- `docs/labs/networking/static-routing/README.md`
+
+Each uses the existing `article.html` template and a locally stored SVG topology schematic. Schematics are exact instructional drawings, not Packet Tracer screenshots. The setup guide's text and 14 screenshots are preserved; only its closing continuation link changes to Lab 1. Networking cards, MkDocs navigation, GitBook navigation, and the Network+ Published Labs section follow Setup → Lab 1 → Lab 2 → Lab 3. There is no unfinished Lab 4 link. No shared publication logic, CSS, JavaScript, or templates change.
+
+### Source review and preserved configurations
+
+The original archive is `Lab_1-6_Basic_Network_Configuration_Student.zip`, SHA256 `31df2ae7684f12b2633d24c456936ea3b33800274406e8241b01ac1c49fe7bf8`. All text and all pages of the first three PDFs were reviewed, including their configuration examples and troubleshooting/checklists: Lab 1 (4 pages), Lab 2 (4 pages), and Lab 3 (3 pages). Labs 4 (3 pages), 5 (5 pages), and 6 (7 pages) were reviewed for continuation dependencies. Their content remains unimplemented in Phase 2. The PDFs and archive are not duplicated in the repository.
+
+| Lab | Preserved source contract | Saved project |
+| --- | --- | --- |
+| 1 | One 2911 Router0, one 2960 Switch0, PC1–PC3, four copper straight-through cables; PC Fa0 to switch Fa0/1–3; switch Gi0/1 to router G0/0; 192.168.1.1/24 gateway and .2–.4 hosts. | `Lab1_Basic_Network.pkt` |
+| 2 | Starts from Lab 1; PC4 on Fa0/4; Sales VLAN 10 on Fa0/1–2; HR VLAN 20 on Fa0/3–4; Gi0/1 trunk to G0/0; remove the old parent IP; .10 and .20 subinterfaces with .1 gateways and .2/.3 hosts in each /24. | `Lab2_VLAN_Configuration.pkt` |
+| 3 | Starts from Lab 2; second 2911 Router1; original straight-through cable from Router0 G0/1 to Router1 G0/0; 192.168.0.1 and .2 with /30 masks; two Router1 static routes through 192.168.0.1; PC1/PC3 pings to 192.168.0.2. | `Lab3_Static_Routing.pkt` |
+
+A source-to-Markdown command comparison retained all substantive original configuration-command occurrences: 4 in Lab 1, 29 in Lab 2, and 11 in Lab 3. These counts include interface selection, addressing, VLAN/access/trunk configuration, encapsulation, static routes, and configuration saves. Command spelling and targets are normalized for comparison; no configurations were replaced with generic exercises. Additional EXEC/configuration transitions support the inserted verification checkpoints.
+
+### Corrections and instructional improvements
+
+- Lab 3's title, objective, and filename now accurately describe static routing. Dynamic routing remains conceptual, and no RIP, OSPF, or EIGRP configuration is introduced.
+- Code blocks contain commands without copied IOS/PC prompt prefixes or the literal text “Press Enter.” The surrounding instructions identify the target device, required command mode, and startup-config filename confirmation. Workspace display names are distinguished from IOS hostnames.
+- Browser QA caught nested PC command fences rendering as prose under the existing Markdown engine. They were moved to ordinary top-level console blocks with explicit PC labels; the suite now checks that no literal fences remain in the rendered instructions. No global Markdown extension or template change was needed.
+- Lab 2 explicitly removes 192.168.1.1 from G0/0 before assigning subinterface IP addresses. It identifies an unassigned, up/up parent interface as normal, explains the relationship between subinterface numbers and dot1Q tags, and separates access-port verification from trunk verification. No unsupported trunk-encapsulation selection command is added to the 2960. The default trunk allowance is retained rather than introducing an unnecessary restriction that could interfere with VLAN 30 later.
+- Lab 3 retains the original straight-through transit connection. [Cisco's 2911 hardware specifications, Table 1-15](https://www.cisco.com/c/en/us/td/docs/routers/access/2900/hardware/installation/guide/Hardware_Installation_Guide/Overview.html) confirm three Gigabit Ethernet ports and Auto-MDIX; this supports the hardware explanation, not a claim of executed Packet Tracer link testing.
+- Address/subnet tables, unique-address requirements, ARP initialization, gateway behavior, switch MAC learning, parent-interface status, /30 network/host/broadcast roles, active-route reachability, return paths, and device-versus-project saves are explained next to the relevant practical steps. A short routing-table interpretation task uses an explicitly illustrative C/L/S excerpt. `show ip protocols` is retained as a diagnostic with an explicit distinction from static-route verification.
+- Student name, date/class fields, PDF headers/footers/page numbers, old fixed 9.0.0 references, and surname filename requirements are omitted from the native pages. Earlier .pkt files remain separate checkpoints using Save As for the next lab.
+
+Technical references include Cisco's [external-router inter-VLAN configuration](https://www.cisco.com/c/en/us/support/docs/lan-switching/inter-vlan-routing/14976-50.html), [router configuration Help](https://tutorials.ptnetacad.net/help/default/config_routers.htm), and the 2911 hardware specifications linked above. Their applicable concepts and commands are adapted to the original exercise's devices, interfaces, and addressing; reference topologies are not substituted for the supplied labs.
+
+### Future-lab compatibility and scope
+
+Router0's G0/0.10 and G0/0.20 gateways, Switch0's Gi0/1 trunk, PC access ports, and the /30 transit link remain ready for Lab 4's DHCP pools. Lab 5 can add Server0 on Fa0/5 and VLAN 30 without recabling the trunk; no DHCP service, relay, DNS, VLAN 30, or ACL configuration is introduced now. Router1's Services route is intentionally absent until that network is added and the source sequence requests it.
+
+The Lab 5 PDF's port note contains overlapping, contradictory Gi0/1 and Fa0/1 text. The configuration commands use **Gi0/1** for the trunk and **Fa0/5** for Server0; preserve those assignments during Phase 3. The original Lab 6 adds Router1's route to VLAN 30 before applying its ACLs. This continuation review does not rewrite or publish Labs 4–6.
+
+### Validation and execution boundary
+
+The existing Packet Tracer browser suite is extended in place for the Setup → Lab 1 → Lab 2 → Lab 3 journey, previous/next links, all four Network+ certification cards, source-clean filenames and commands, three topology assets, search, root/project hosting, and 1440/390/320-pixel light/dark layouts. The existing learning-resource unit suite now checks ordered single publication and addressing/route contracts, including host uniqueness, gateway/interface addresses, /30 host calculations, removal of the parent-interface address before subinterfaces, and exclusion of premature DHCP/dynamic-routing configuration.
+
+No supported Packet Tracer application is available in the execution environment. IOS text, models/ports, cable rationale, subnet calculations, VLAN/tagging dependencies, routing paths, and future-lab compatibility were reviewed statically. The illustrative routing excerpt and expected ping results are instructional expectations, not captured simulator results. No Packet Tracer installation, CLI execution, saved .pkt loading, or successful simulator ping is claimed. Phase 1's missing native Windows installer/authenticated-launch captures remain unresolved. There is no PR or merge in Phase 2.
+
+Phase 2 local results: all 33 Python unit tests passed, including the two new progression/addressing contracts. The final strict build passed; source validation covered 750 local Markdown links and 54 published student pages; site validation covered 76 HTML pages and 5,368 local links/assets/fragments. Generated navigation/listing checks, 19 canonical PBQ validations, catalog tests, and analytics tests passed. The expanded Packet Tracer browser suite and the existing learning-resource navigation, PBQ-library, and shared Linux installation guide browser suites passed. The expanded suite checks desktop and 390/320-pixel layouts in both themes at root and project paths, diagrams/full-size links, keyboard access, all four Network+ cards, and the cumulative previous/next journey. Finished page layouts, copyable command blocks, and all three full-size diagrams were visually inspected. All 14 Phase 1 screenshot files were compared byte-for-byte with the Phase 1 commit and remain unchanged. Temporary PDF renders, browser dependencies, and QA captures remain outside the repository.

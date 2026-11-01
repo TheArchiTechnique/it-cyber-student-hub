@@ -130,7 +130,10 @@ nav:
     - Windows Command-Line Lab: labs/it-support/windows-command-line/README.md
   - Networking:
     - Overview: labs/networking/README.md
-    - Start Here — Install Cisco Packet Tracer: labs/networking/packet-tracer-setup/README.md
+    - Start Here — Download and Install Cisco Packet Tracer: labs/networking/packet-tracer-setup/README.md
+    - Lab 1 — Basic Network Configuration: labs/networking/basic-network-configuration/README.md
+    - Lab 2 — VLAN Configuration: labs/networking/vlan-configuration/README.md
+    - Lab 3 — Static Routing: labs/networking/static-routing/README.md
   - Cybersecurity: labs/cybersecurity/README.md
   - Log Analysis: labs/log-analysis/README.md
   - Incident Response: labs/incident-response/README.md

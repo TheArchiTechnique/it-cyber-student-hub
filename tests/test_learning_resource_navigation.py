@@ -1,5 +1,6 @@
 """Learning resource discovery, publication, and curated lab progression."""
 from pathlib import Path
+from ipaddress import IPv4Interface, IPv4Network, IPv4Address
 import re
 import shutil
 import tempfile
@@ -46,6 +47,76 @@ class LearningResourceNavigationTests(unittest.TestCase):
             self.assertEqual(text.count('[Linux Mint Workstation Setup and Troubleshooting]'), 1)
             self.assertNotIn('[Windows Command-Line Lab]', text)
             self.assertNotIn('labs/cybersecurity/README.md', a.visible)
+
+    def test_packet_tracer_sequence_is_published_once_and_connected(self):
+        prefix = 'labs/networking/'
+        sequence = ['packet-tracer-setup', 'basic-network-configuration',
+                    'vlan-configuration', 'static-routing']
+        expected = [slug + '/README.md' for slug in sequence]
+        index = self.visible(prefix + 'README.md')
+        self.assertEqual([m[2] for m in LINK.finditer(index) if m[2] in expected], expected)
+        nav = self.availability.navigation(yaml.safe_load((ROOT / 'mkdocs.yml').read_text())['nav'])
+        self.assertEqual([p for p in nav_paths(nav) if p.startswith(prefix)],
+                         [prefix + 'README.md'] + [prefix + p for p in expected])
+        certification = self.visible('certifications/comptia/network-plus/README.md')
+        for i, slug in enumerate(sequence):
+            key = prefix + slug + '/README.md'
+            self.assertIn(key, self.availability.visible)
+            self.assertEqual(certification.count('../../../' + key), 1)
+            text = self.visible(key)
+            if i:
+                self.assertIn('../' + sequence[i - 1] + '/README.md', text)
+            if i < len(sequence) - 1:
+                self.assertIn('../' + sequence[i + 1] + '/README.md', text)
+        for slug in ('dhcp-configuration', 'centralized-dhcp-dns', 'acl-traffic-control'):
+            self.assertNotIn(slug + '/README.md', index)
+
+    def test_packet_tracer_addressing_and_routes_preserve_the_network_contract(self):
+        prefix = ROOT / 'docs/labs/networking'
+        slugs = ['basic-network-configuration', 'vlan-configuration', 'static-routing']
+        texts = [(prefix / slug / 'README.md').read_text() for slug in slugs]
+        configurations = ['\n'.join(re.findall(r'```console\n(.*?)\n```', text, re.S))
+                          for text in texts]
+        expected_interfaces = [
+            ['192.168.1.1/24'],
+            ['192.168.10.1/24', '192.168.20.1/24'],
+            ['192.168.0.1/30', '192.168.0.2/30'],
+        ]
+        for source, commands, expected in zip(texts, configurations, expected_interfaces):
+            addresses = [IPv4Interface(address + '/' + mask) for address, mask in
+                         re.findall(r'^ip address (\S+) (\S+)$', commands, re.M)]
+            self.assertEqual([str(address) for address in addresses], expected)
+            tables = '\n'.join(line for line in source.splitlines() if line.startswith('|'))
+            for address in addresses:
+                self.assertIn(str(address.ip), tables)
+                self.assertIn(str(address.netmask), tables)
+                self.assertNotIn(address.ip, (address.network.network_address,
+                                             address.network.broadcast_address))
+            self.assertNotRegex(commands, r'(?im)^router (?:rip|ospf|eigrp)\b|^ip (?:dhcp|helper-address)\b')
+            self.assertNotRegex(source, r'YOUR LAST NAME|Your Last Name|Class/Section|Packet Tracer 9\.0\.0')
+        for source, expected in zip(texts, [
+                ['192.168.1.2', '192.168.1.3', '192.168.1.4'],
+                ['192.168.10.2', '192.168.10.3', '192.168.20.2', '192.168.20.3'],
+                ['192.168.10.2', '192.168.10.3', '192.168.20.2', '192.168.20.3']]):
+            rows = [line for line in source.splitlines() if re.match(r'^\| PC\d FastEthernet0 \|', line)
+                    and '255.255.255.0' in line]
+            actual = [re.findall(r'\b(?:\d{1,3}\.){3}\d{1,3}\b', row)[0] for row in rows]
+            self.assertEqual(actual, expected)
+            self.assertEqual(len(set(actual)), len(actual))
+        vlan = configurations[1]
+        self.assertLess(vlan.index('no ip address'), vlan.index('interface GigabitEthernet0/0.10'))
+        self.assertIn('interface GigabitEthernet0/1\nswitchport mode trunk', vlan)
+        self.assertNotIn('switchport trunk encapsulation', vlan)
+        self.assertIn('encapsulation dot1Q 10', vlan)
+        self.assertIn('encapsulation dot1Q 20', vlan)
+        routes = re.findall(r'^ip route (\S+) (\S+) (\S+)$', configurations[2], re.M)
+        self.assertEqual([str(IPv4Network(net + '/' + mask)) for net, mask, _ in routes],
+                         ['192.168.10.0/24', '192.168.20.0/24'])
+        for _, _, next_hop in routes:
+            self.assertEqual(next_hop, '192.168.0.1')
+            self.assertIn(IPv4Address(next_hop), IPv4Network('192.168.0.0/30'))
+        self.assertEqual(list(IPv4Network('192.168.0.0/30').hosts()),
+                         [IPv4Address('192.168.0.1'), IPv4Address('192.168.0.2')])
 
     def test_quizzes_cover_published_certification_links_once(self):
         pattern = r'https://create\.kahoot\.it/share/[^\s)"<>]+'

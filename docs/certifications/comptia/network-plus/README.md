@@ -130,6 +130,18 @@ Related activities that build supporting skills for this certification.
 
     Set up the free network simulator and learn the controls used in the Network+ networking labs.
 
+- [Lab 1 — Basic Network Configuration](../../../labs/networking/basic-network-configuration/README.md)
+
+    Build a small LAN, assign static IPv4 addresses, and verify PC and gateway communication.
+
+- [Lab 2 — VLAN Configuration](../../../labs/networking/vlan-configuration/README.md)
+
+    Continue Lab 1 with Sales and HR VLANs, an 802.1Q trunk, and router-on-a-stick inter-VLAN routing.
+
+- [Lab 3 — Static Routing](../../../labs/networking/static-routing/README.md)
+
+    Add a second router and static return routes to the VLAN networks over a /30 transit link.
+
 ## Reference Topics
 
 - [Ports & Protocols](../../../reference/ports-and-protocols.md)
