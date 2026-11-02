@@ -28,6 +28,10 @@ Build your networking knowledge.
 
 
 hub:hidden -->
+- [Official Exam Objectives](https://lecbyo.files.cmp.optimizely.com/download/35a7403ab73211ef9dcda6f347fbf652)
+
+    Open CompTIA's official Network+ (N10-009, V9) exam objectives.
+
 - [Course Topics](#course-topics)
 
     Browse shared topic hubs.

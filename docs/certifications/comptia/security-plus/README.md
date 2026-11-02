@@ -26,6 +26,10 @@ Build your security foundation.
 
 
 hub:hidden -->
+- [Official Exam Objectives](https://assets.ctfassets.net/82ripq7fjls2/6TYWUym0Nudqa8nGEnegjG/0f9b974d3b1837fe85ab8e6553f4d623/CompTIA-Security-Plus-SY0-701-Exam-Objectives.pdf)
+
+    Open CompTIA's official Security+ (SY0-701, V7) exam objectives.
+
 - [Course Topics](#course-topics)
 
     Browse shared topic hubs.
