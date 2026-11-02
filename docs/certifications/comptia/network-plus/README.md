@@ -142,6 +142,18 @@ Related activities that build supporting skills for this certification.
 
     Add a second router and static return routes to the VLAN networks over a /30 transit link.
 
+- [Lab 4 — DHCP Configuration](../../../labs/networking/dhcp-configuration/README.md)
+
+    Configure Router0 to assign IPv4 settings to Sales and HR clients using separate DHCP pools.
+
+- [Lab 5 — Centralized DHCP and DNS Services](../../../labs/networking/centralized-dhcp-dns/README.md)
+
+    Move DHCP to Server0 in Services VLAN 30, relay client requests, and configure internal DNS records.
+
+- [Lab 6 — ACL Traffic Control](../../../labs/networking/acl-traffic-control/README.md)
+
+    Control routed Sales/HR traffic with named extended ACLs while preserving access to shared services.
+
 ## Reference Topics
 
 - [Ports & Protocols](../../../reference/ports-and-protocols.md)

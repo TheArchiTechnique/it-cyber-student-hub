@@ -6,7 +6,7 @@ Branch: `content/network-plus-packet-tracer-labs`. Phase 1 adds the setup guide 
 
 The guide is reachable through Network+ → Published Labs and Home → Labs → Networking → Start Here. The existing Network+ Lab Areas link becomes visible automatically. `mkdocs.yml` explicitly orders the Networking overview before the setup guide. `python scripts/sync_navigation.py` regenerates availability comments and GitBook navigation. Empty Cybersecurity, Log Analysis, and Incident Response categories stay hidden.
 
-The sequence below records the full series on this branch. Setup and Labs 1–3 are now published; Labs 4–6 remain planned. The lab migrations are separate from Phase 1's setup-guide implementation.
+The sequence below records the full series on this branch. Setup and all six labs are now published. The phase sections retain the implementation history and outstanding simulator/capture checks.
 
 | Order | Student-facing title | Suggested directory under `docs/labs/networking/` |
 | --- | --- | --- |
@@ -14,11 +14,11 @@ The sequence below records the full series on this branch. Setup and Labs 1–3 
 | 1 | Lab 1 — Basic Network Configuration | `basic-network-configuration/` (published in Phase 2) |
 | 2 | Lab 2 — VLAN Configuration | `vlan-configuration/` (published in Phase 2) |
 | 3 | Lab 3 — Static Routing | `static-routing/` (published in Phase 2) |
-| 4 | Lab 4 — DHCP Configuration | `dhcp-configuration/` |
-| 5 | Lab 5 — Centralized DHCP and DNS Services | `centralized-dhcp-dns/` |
-| 6 | Lab 6 — ACL Traffic Control | `acl-traffic-control/` |
+| 4 | Lab 4 — DHCP Configuration | `dhcp-configuration/` (published in Phase 3) |
+| 5 | Lab 5 — Centralized DHCP and DNS Services | `centralized-dhcp-dns/` (published in Phase 3) |
+| 6 | Lab 6 — ACL Traffic Control | `acl-traffic-control/` (published in Phase 3) |
 
-Add each subsequent finished lab to the curated Networking cards and `mkdocs.yml` in this order. Retain the setup guide first. Its continuation now links to Lab 1; link forward from the final published lab only when the next target is published. Lab 3's implementation is static routing; dynamic routing is discussed conceptually without hands-on dynamic protocol configuration.
+Networking cards, the Network+ Published Labs section, MkDocs, and generated GitBook navigation follow this order. Previous/next links connect the sequence; Lab 6 returns to the collection without a future placeholder. Lab 3's implementation is static routing; dynamic routing is discussed conceptually without hands-on dynamic protocol configuration.
 
 ## Official information checked
 
@@ -128,3 +128,31 @@ The existing Packet Tracer browser suite is extended in place for the Setup → 
 No supported Packet Tracer application is available in the execution environment. IOS text, models/ports, cable rationale, subnet calculations, VLAN/tagging dependencies, routing paths, and future-lab compatibility were reviewed statically. The illustrative routing excerpt and expected ping results are instructional expectations, not captured simulator results. No Packet Tracer installation, CLI execution, saved .pkt loading, or successful simulator ping is claimed. Phase 1's missing native Windows installer/authenticated-launch captures remain unresolved. There is no PR or merge in Phase 2.
 
 Phase 2 local results: all 33 Python unit tests passed, including the two new progression/addressing contracts. The final strict build passed; source validation covered 750 local Markdown links and 54 published student pages; site validation covered 76 HTML pages and 5,368 local links/assets/fragments. Generated navigation/listing checks, 19 canonical PBQ validations, catalog tests, and analytics tests passed. The expanded Packet Tracer browser suite and the existing learning-resource navigation, PBQ-library, and shared Linux installation guide browser suites passed. The expanded suite checks desktop and 390/320-pixel layouts in both themes at root and project paths, diagrams/full-size links, keyboard access, all four Network+ cards, and the cumulative previous/next journey. Finished page layouts, copyable command blocks, and all three full-size diagrams were visually inspected. All 14 Phase 1 screenshot files were compared byte-for-byte with the Phase 1 commit and remain unchanged. Temporary PDF renders, browser dependencies, and QA captures remain outside the repository.
+
+## Phase 3: cumulative Labs 4–6
+
+Continues Phase 2 commit `29106fd2e7e0441eb3fd37b719a0ad7610633939` on the same branch. Adds native article pages and linked SVG schematics in `dhcp-configuration/`, `centralized-dhcp-dns/`, and `acl-traffic-control/`. All pages of the original Lab 4 (3), Lab 5 (5), and Lab 6 (7) PDFs were reviewed as text and rendered pages. The original archive hash above was rechecked. No PDFs, fabricated screenshots, or unverified .pkt downloads are published.
+
+The setup guide, its 14 images, and Labs 1–2 remain unchanged. Lab 3 changes only its footer to link forward to Lab 4. No shared templates, styles, scripts, or publication logic change. All seven resources are connected through Networking, Network+, MkDocs, GitBook, search, and cumulative previous/next links.
+
+### Configuration continuity and source corrections
+
+- Both 2911 routers, the 2960, PC1–PC4, access ports Fa0/1–4, Gi0/1 → Router0 G0/0 trunk, unaddressed enabled parent G0/0, VLAN 10/20 gateways, /30 transit, and Router1's two original return routes are retained.
+- Lab 4 adds Router0's original exclusions (.1–.10), VLAN10/VLAN20 pools, /24 masks, .1 gateways, and 8.8.8.8 DNS option. Clients change to DHCP; no exact lease order or external DNS/Internet connectivity is promised. The full running configuration is authoritative; `include dhcp` does not display every nested pool setting.
+- Lab 5 adds only Server0 (Server-PT), its straight-through Fa0 → Switch0 Fa0/5 connection, Services VLAN 30, Router0 G0/0.30 at 192.168.30.1/24, and explicit trunk allowance 10,20,30. This corrects the PDF's overlapping Gi0/1/Fa0/1 trunk reference. PC1 remains on Fa0/1.
+- Router0 removes its two pools and retains `service dhcp`, which enables both server and relay functions. Helpers on .10 and .20 target 192.168.30.10. Old exclusions do not configure Server0's ranges; historical router bindings need not vanish immediately.
+- Server0 uses static 192.168.30.10/24, gateway 192.168.30.1, and itself for DNS. Its two 200-address pools span .11–.210 in their respective /24s. Both supply DNS 192.168.30.10. A records are server.lab.local → .30.10, dns.lab.local → .30.10, and router.lab.local → .30.1. These names are exercise-specific.
+- Cisco's [Server Help](https://tutorials.ptnetacad.net/help/default/config_servers.htm) and its authentic DHCP example were inspected on November 2, 2026: Interface, Service On/Off, Pool Name, Default Gateway, DNS Server, Start IP Address, Subnet Mask, Maximum Number of Users, Add/Save/Remove, TFTP Server, and WLC Address are present. The Help calls the default serverPool protected and its example shows Remove disabled. The lesson therefore removes an unused default only when permitted; otherwise it leaves that entry untouched and creates both named pools. Exact 9.0.1 behavior remains a runtime check.
+- Only Lab 6 adds Router1's 192.168.30.0/24 route via 192.168.0.1, before the ACLs. Router0's original VLAN10-IN/VLAN20-IN extended ACLs deny the opposite client subnet, then permit other IPv4 traffic, inbound on .10/.20 respectively. The source's wildcard description is corrected: 0.0.0.255 matches .0–.255; usable /24 hosts are .1–.254. Baseline tests, post-ACL DHCP renewal in both VLANs, both same-VLAN tests, both blocked directions, services/DNS, and Router1 tests distinguish policy enforcement from network faults. Rollback follows completion and is explicitly optional; completed projects keep ACLs active.
+
+Primary technical references: Cisco's [DHCP relay configuration](https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/ipaddr_dhcp/configuration/12-4/dhcp-12-4-book/config-dhcp-relay-agent.html) for helper behavior and `service dhcp`, and [IP ACL guidance](https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html) for wildcards, first-match processing, and interface direction. These support static review, not executed simulator claims.
+
+### Verification and Phase 4 boundary
+
+Existing unit/browser suites are extended in place for all seven resources, three new SVGs, exact filenames, DHCP allocation bounds, relay and DNS settings, route sequencing, ACL ordering/directions, and packet matching (including wildcard endpoints, DHCP broadcast/renewal, Server0, and Router1). Browser QA covers discovery, previous/next/collection links, command rendering, keyboard access, search, 1440/390/320-pixel light/dark layouts, and root/project hosting.
+
+Phase 3 local results: all **37 Python unit tests** passed. Source validation covered **783 local Markdown links** and **57 published student pages**; the strict build passed. Site validation covered **79 HTML pages** and **5,874 local links/assets/fragments**. Generated navigation/listing checks, all 19 canonical PBQ validations, catalog tests, analytics tests, and the expanded Packet Tracer plus existing learning-resource, PBQ-library, and shared Linux guide browser suites passed. Source-to-Markdown comparison retained all substantive configuration-command occurrences: **11 in Lab 4, 22 in Lab 5, 15 in Lab 6**, including optional rollback. A separate static mode check validated configuration/EXEC transitions in every copyable block. All three full-size SVGs were rendered and inspected; label bounds/overlaps were checked. Page layouts, tables, and command blocks were visually inspected. The three Phase 3 technical-reference URLs returned HTTP 200. Phase 1/2 preservation was checked against committed files; temporary source renders and QA captures stay outside the repository.
+
+Packet Tracer is unavailable in this environment. No simulator commands, leases, DNS responses, ACL counters, ping results, or .pkt saves are claimed as executed. Full `show running-config` and traffic tests are provided when the simulated IOS omits filters or detailed interface fields; `show ip interface brief` is not presented as proof of ACL attachment.
+
+Phase 4 must run the cumulative network in **Packet Tracer 9.0.1**: confirm models/ports and all CLI commands/modes/output; inspect Server0's actual DHCP/DNS controls and default-pool behavior; obtain and renew all leases; validate relay, gateway/DNS options, all A records and name/IP tests; verify Router1's new route; exercise every ACL permitted/blocked test, continued DHCP renewal and DNS, and interface attachment/counters where supported; save and reopen each .pkt checkpoint and confirm persistence. Phase 1's missing Windows installer and authenticated Cisco/download/launch captures remain deferred. No PR, merge, or automatic Phase 4 work is authorized by this phase.

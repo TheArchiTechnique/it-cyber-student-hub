@@ -234,4 +234,4 @@ Static routing is useful for small, stable networks and specific paths where man
 - PC1 and PC3 can both ping 192.168.0.2.
 - Both routers' startup configurations and **Lab3_Static_Routing.pkt** are saved.
 
-[Previous: Lab 2 — VLAN Configuration](../vlan-configuration/README.md) · [Back to Networking Labs](../README.md) · [Network+](../../../certifications/comptia/network-plus/README.md)
+[Previous: Lab 2 — VLAN Configuration](../vlan-configuration/README.md) · [Next: Lab 4 — DHCP Configuration](../dhcp-configuration/README.md) · [Back to Networking Labs](../README.md) · [Network+](../../../certifications/comptia/network-plus/README.md)

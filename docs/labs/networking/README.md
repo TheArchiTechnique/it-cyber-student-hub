@@ -25,6 +25,18 @@ Build and inspect simulated networks with Cisco Packet Tracer. Start with the in
 
     Continue Lab 2, add Router1 and a /30 transit link, and configure static return routes to the VLAN networks.
 
+- [Lab 4 — DHCP Configuration](dhcp-configuration/README.md)
+
+    Continue Lab 3, configure Router0 DHCP pools, and verify dynamic client settings in Sales and HR.
+
+- [Lab 5 — Centralized DHCP and DNS Services](centralized-dhcp-dns/README.md)
+
+    Add Server0 in Services VLAN 30, move DHCP to the server, configure relay, and resolve internal DNS names.
+
+- [Lab 6 — ACL Traffic Control](acl-traffic-control/README.md)
+
+    Add Router1's Services route and block routed Sales/HR traffic while preserving DHCP, DNS, and shared services.
+
 <!-- hub:hidden
 - [Browse Tools](../../tools/README.md)
 

@@ -134,6 +134,9 @@ nav:
     - Lab 1 — Basic Network Configuration: labs/networking/basic-network-configuration/README.md
     - Lab 2 — VLAN Configuration: labs/networking/vlan-configuration/README.md
     - Lab 3 — Static Routing: labs/networking/static-routing/README.md
+    - Lab 4 — DHCP Configuration: labs/networking/dhcp-configuration/README.md
+    - Lab 5 — Centralized DHCP and DNS Services: labs/networking/centralized-dhcp-dns/README.md
+    - Lab 6 — ACL Traffic Control: labs/networking/acl-traffic-control/README.md
   - Cybersecurity: labs/cybersecurity/README.md
   - Log Analysis: labs/log-analysis/README.md
   - Incident Response: labs/incident-response/README.md

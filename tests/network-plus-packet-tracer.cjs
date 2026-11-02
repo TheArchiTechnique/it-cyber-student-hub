@@ -12,7 +12,10 @@ const start = 'Start Here — Download and Install Cisco Packet Tracer';
 const labs = [
   { slug: 'basic-network-configuration', title: 'Lab 1 — Basic Network Configuration', file: 'Lab1_Basic_Network.pkt', previous: 'Previous: Packet Tracer setup' },
   { slug: 'vlan-configuration', title: 'Lab 2 — VLAN Configuration', file: 'Lab2_VLAN_Configuration.pkt', previous: 'Previous: Lab 1 — Basic Network Configuration' },
-  { slug: 'static-routing', title: 'Lab 3 — Static Routing', file: 'Lab3_Static_Routing.pkt', previous: 'Previous: Lab 2 — VLAN Configuration' }
+  { slug: 'static-routing', title: 'Lab 3 — Static Routing', file: 'Lab3_Static_Routing.pkt', previous: 'Previous: Lab 2 — VLAN Configuration' },
+  { slug: 'dhcp-configuration', title: 'Lab 4 — DHCP Configuration', file: 'Lab4_DHCP_Configuration.pkt', previous: 'Previous: Lab 3 — Static Routing' },
+  { slug: 'centralized-dhcp-dns', title: 'Lab 5 — Centralized DHCP and DNS Services', file: 'Lab5_Centralized_DHCP_DNS.pkt', previous: 'Previous: Lab 4 — DHCP Configuration' },
+  { slug: 'acl-traffic-control', title: 'Lab 6 — ACL Traffic Control', file: 'Lab6_ACL_Traffic_Control.pkt', previous: 'Previous: Lab 5 — Centralized DHCP and DNS Services' }
 ];
 const mime = { '.html': 'text/html', '.jpg': 'image/jpeg', '.png': 'image/png', '.css': 'text/css', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.svg': 'image/svg+xml' };
 const server = http.createServer(async (request, response) => {
@@ -63,6 +66,7 @@ const server = http.createServer(async (request, response) => {
       assert.equal(page.url(), base + route);
       await page.locator('.hub-article').getByRole('link', { name: 'Network+', exact: true }).click();
       assert.equal(page.url(), base + 'certifications/comptia/network-plus/');
+      await page.locator('.hub-page').getByRole('link', { name: title, exact: true }).waitFor();
       assert.equal(await page.locator('.hub-page').getByRole('link', { name: title, exact: true }).count(), 1);
       await page.locator('.hub-page').getByRole('link', { name: title, exact: true }).click();
       assert.equal(page.url(), base + route);
@@ -116,6 +120,7 @@ const server = http.createServer(async (request, response) => {
         const labUrl = base + 'labs/networking/' + lab.slug + '/';
         assert.equal(page.url(), labUrl);
         const article = page.locator('.hub-article');
+        await article.getByRole('heading', { name: lab.title, exact: true }).waitFor();
         assert.equal(await page.locator('h1').innerText(), lab.title);
         assert.match(await article.innerText(), new RegExp(lab.file.replaceAll('.', '\\.')));
         assert.doesNotMatch(await article.innerText(), /YOUR LAST NAME|Your Last Name|Class\/Section|Packet Tracer 9\.0\.0/);
@@ -163,12 +168,15 @@ const server = http.createServer(async (request, response) => {
         if (i < labs.length - 1) {
           await article.getByRole('link', { name: 'Next: ' + labs[i + 1].title, exact: true }).click();
         } else {
-          assert.equal(await article.getByRole('link', { name: /^Next:/ }).count(), 0, 'No unfinished Lab 4 link');
+          assert.equal(await article.getByRole('link', { name: /^Next:/ }).count(), 0, 'The completed series has no unfinished next-lab link');
+          await article.getByRole('link', { name: 'Back to Networking Labs', exact: true }).click();
+          await page.waitForURL(base + 'labs/networking/');
         }
       }
       await page.goto(base + 'certifications/comptia/network-plus/');
       for (const lab of labs) {
         const launch = page.locator('.hub-page').getByRole('link', { name: lab.title, exact: true });
+        await launch.waitFor();
         assert.equal(await launch.count(), 1, 'One certification card per lab');
         await launch.click();
         assert.equal(page.url(), base + 'labs/networking/' + lab.slug + '/');
@@ -183,16 +191,14 @@ const server = http.createServer(async (request, response) => {
       assert.ok(search.docs.some(doc => doc.location === 'labs/networking/'));
       for (const lab of labs)
         assert.ok(search.docs.some(doc => doc.location === 'labs/networking/' + lab.slug + '/' && doc.title === lab.title));
-      for (const unpublished of ['labs/cybersecurity/', 'labs/log-analysis/', 'labs/incident-response/',
-        'labs/networking/dhcp-configuration/',
-        'labs/networking/centralized-dhcp-dns/', 'labs/networking/acl-traffic-control/']) {
+      for (const unpublished of ['labs/cybersecurity/', 'labs/log-analysis/', 'labs/incident-response/']) {
         assert.equal((await page.request.get(base + unpublished)).status(), 404);
         assert.ok(search.docs.every(doc => !doc.location.startsWith(unpublished)));
         assert.equal(await page.locator(`a[href$="/${unpublished}"]`).count(), 0);
       }
     }
     assert.deepEqual(errors, []);
-    console.log('Passed: Home/Labs and Network+ discovery; setup → Labs 1–3 and previous/next links; 14 setup images and 3 topology diagrams; keyboard image/link access; 1440/390/320px light/dark layouts; commands, search, root/project paths, and unpublished Labs 4–6 exclusion. Packet Tracer itself was not run.');
+    console.log('Passed: Home/Labs and all seven Network+ resources; setup → Labs 1–6 and previous/next/collection links; 14 setup images and 6 topology diagrams; keyboard image/link access; 1440/390/320px light/dark layouts; commands, search, root/project paths, and empty-category exclusion. Packet Tracer itself was not run.');
     await context.close();
   } finally { await browser.close(); server.close(); }
 })().catch(error => { console.error(error); server.close(); process.exitCode = 1; });

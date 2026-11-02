@@ -5,6 +5,7 @@ import re
 import shutil
 import tempfile
 import unittest
+import xml.etree.ElementTree as ET
 
 import yaml
 
@@ -51,7 +52,8 @@ class LearningResourceNavigationTests(unittest.TestCase):
     def test_packet_tracer_sequence_is_published_once_and_connected(self):
         prefix = 'labs/networking/'
         sequence = ['packet-tracer-setup', 'basic-network-configuration',
-                    'vlan-configuration', 'static-routing']
+                    'vlan-configuration', 'static-routing', 'dhcp-configuration',
+                    'centralized-dhcp-dns', 'acl-traffic-control']
         expected = [slug + '/README.md' for slug in sequence]
         index = self.visible(prefix + 'README.md')
         self.assertEqual([m[2] for m in LINK.finditer(index) if m[2] in expected], expected)
@@ -68,8 +70,7 @@ class LearningResourceNavigationTests(unittest.TestCase):
                 self.assertIn('../' + sequence[i - 1] + '/README.md', text)
             if i < len(sequence) - 1:
                 self.assertIn('../' + sequence[i + 1] + '/README.md', text)
-        for slug in ('dhcp-configuration', 'centralized-dhcp-dns', 'acl-traffic-control'):
-            self.assertNotIn(slug + '/README.md', index)
+        self.assertNotIn('Next:', self.visible(prefix + sequence[-1] + '/README.md'))
 
     def test_packet_tracer_addressing_and_routes_preserve_the_network_contract(self):
         prefix = ROOT / 'docs/labs/networking'
@@ -117,6 +118,154 @@ class LearningResourceNavigationTests(unittest.TestCase):
             self.assertIn(IPv4Address(next_hop), IPv4Network('192.168.0.0/30'))
         self.assertEqual(list(IPv4Network('192.168.0.0/30').hosts()),
                          [IPv4Address('192.168.0.1'), IPv4Address('192.168.0.2')])
+
+    def packet_tracer_content(self, slug):
+        text = (ROOT / 'docs/labs/networking' / slug / 'README.md').read_text()
+        commands = '\n'.join(re.findall(r'```console\n(.*?)\n```', text, re.S))
+        return text, commands
+
+    def test_packet_tracer_router_dhcp_pools_exclude_infrastructure(self):
+        text, commands = self.packet_tracer_content('dhcp-configuration')
+        exclusions = re.findall(r'^ip dhcp excluded-address (\S+) (\S+)$', commands, re.M)
+        pools = re.findall(r'^ip dhcp pool (\S+)\n(.*?)(?=\n(?:exit|end)$)', commands, re.M | re.S)
+        self.assertEqual([name for name, _ in pools], ['VLAN10', 'VLAN20'])
+        self.assertEqual(len(exclusions), 2)
+        for vlan, (name, pool), (first, last) in zip((10, 20), pools, exclusions):
+            network, mask = re.search(r'^network (\S+) (\S+)$', pool, re.M).groups()
+            subnet = IPv4Network(network + '/' + mask)
+            gateway = IPv4Address(re.search(r'^default-router (\S+)$', pool, re.M)[1])
+            self.assertEqual(str(subnet), f'192.168.{vlan}.0/24')
+            self.assertEqual(str(gateway), f'192.168.{vlan}.1')
+            self.assertIn('dns-server 8.8.8.8', pool)
+            reserved = range(int(IPv4Address(first)), int(IPv4Address(last)) + 1)
+            self.assertEqual(len(reserved), 10)
+            self.assertIn(int(gateway), reserved)
+            first_available = next(ip for ip in subnet.hosts() if int(ip) not in reserved)
+            self.assertEqual(str(first_available), f'192.168.{vlan}.11')
+            self.assertIn(str(first_available), text)
+        self.assertNotRegex(commands, r'(?m)^ip helper-address|^ip route')
+        self.assertIn('does not provide a path to the Internet', text)
+
+    def test_packet_tracer_server_pools_relay_dns_and_route_handoff(self):
+        text, commands = self.packet_tracer_content('centralized-dhcp-dns')
+        _, lab4_commands = self.packet_tracer_content('dhcp-configuration')
+        _, lab6_commands = self.packet_tracer_content('acl-traffic-control')
+        self.assertEqual(re.findall(r'^no ip dhcp pool (\S+)$', commands, re.M), ['VLAN10', 'VLAN20'])
+        self.assertNotRegex(commands, r'(?m)^ip dhcp pool |^no service dhcp$|^ip route ')
+        self.assertIn('\nservice dhcp\n', commands)
+        self.assertIn('interface FastEthernet0/5\nswitchport mode access\nswitchport access vlan 30', commands)
+        self.assertIn('interface GigabitEthernet0/1\nswitchport mode trunk\nswitchport trunk allowed vlan 10,20,30', commands)
+        stanzas = dict(re.findall(r'^interface (\S+)\n(.*?)(?=\n(?:exit|end)$)', commands, re.M | re.S))
+        for vlan in (10, 20):
+            self.assertEqual(stanzas[f'GigabitEthernet0/0.{vlan}'], 'ip helper-address 192.168.30.10')
+        self.assertEqual(stanzas['GigabitEthernet0/0.30'],
+                         'encapsulation dot1Q 30\nip address 192.168.30.1 255.255.255.0\nno shutdown')
+        fields = {}
+        for field, sales, hr in re.findall(r'^\| ([^|]+) \| ([^|]+) \| ([^|]+) \|$', text, re.M):
+            fields[field] = (sales, hr)
+        self.assertEqual(fields['Pool Name'], ('VLAN10', 'VLAN20'))
+        self.assertEqual(fields['DNS Server'], ('192.168.30.10', '192.168.30.10'))
+        for i, vlan in enumerate((10, 20)):
+            subnet = IPv4Network(f"192.168.{vlan}.0/{fields['Subnet Mask'][i]}")
+            first = IPv4Address(fields['Start IP Address'][i])
+            count = int(fields['Maximum Number of Users'][i])
+            last = IPv4Address(int(first) + count - 1)
+            self.assertEqual(count, 200)
+            self.assertEqual(str(first), f'192.168.{vlan}.11')
+            self.assertEqual(str(last), f'192.168.{vlan}.210')
+            self.assertIn(last, subnet)
+            self.assertEqual(fields['Default Gateway'][i], f'192.168.{vlan}.1')
+            self.assertLess(IPv4Address(fields['Default Gateway'][i]), first)
+        records = re.findall(r'^\| (\S+\.lab\.local) \| A \| (\S+) \|$', text, re.M)
+        self.assertEqual(records, [('server.lab.local', '192.168.30.10'),
+                                   ('dns.lab.local', '192.168.30.10'),
+                                   ('router.lab.local', '192.168.30.1')])
+        for field, value in [('IP Address', '192.168.30.10'), ('Subnet Mask', '255.255.255.0'),
+                             ('Default Gateway', '192.168.30.1'), ('DNS Server', '192.168.30.10')]:
+            self.assertIn(f'| {field} | {value} |', text)
+        self.assertNotIn('ip route 192.168.30.0', lab4_commands)
+        self.assertNotIn('ip route 192.168.30.0', commands)
+        routes = re.findall(r'^ip route (\S+) (\S+) (\S+)$', lab6_commands, re.M)
+        self.assertEqual(routes, [('192.168.30.0', '255.255.255.0', '192.168.0.1')])
+        self.assertIn(IPv4Address(routes[0][2]), IPv4Network('192.168.0.0/30'))
+
+    def test_packet_tracer_acl_policy_preserves_services_and_dhcp(self):
+        text, _ = self.packet_tracer_content('acl-traffic-control')
+        active, rollback = text.split('## Optional rollback', 1)
+        commands = '\n'.join(re.findall(r'```console\n(.*?)\n```', active, re.S))
+        definitions = dict(re.findall(r'^ip access-list extended (\S+)\n(.*?)\nexit$', commands, re.M | re.S))
+        self.assertEqual(set(definitions), {'VLAN10-IN', 'VLAN20-IN'})
+        attachments = re.findall(r'^interface (\S+)\nip access-group (\S+) (\S+)$', commands, re.M)
+        self.assertEqual(attachments, [('GigabitEthernet0/0.10', 'VLAN10-IN', 'in'),
+                                       ('GigabitEthernet0/0.20', 'VLAN20-IN', 'in')])
+
+        def wildcard_match(address, pattern, wildcard):
+            significant = 0xffffffff ^ int(IPv4Address(wildcard))
+            return (int(IPv4Address(address)) & significant) == (int(IPv4Address(pattern)) & significant)
+
+        def permitted(name, source, destination):
+            for rule in definitions[name].splitlines():
+                action, protocol, *matches = rule.split()
+                self.assertEqual(protocol, 'ip')  # The policy covers ICMP, TCP, and UDP alike.
+                if matches == ['any', 'any'] or (
+                        len(matches) == 4 and wildcard_match(source, *matches[:2])
+                        and wildcard_match(destination, *matches[2:])):
+                    return action == 'permit'
+            return False  # Implicit deny if no ACE matched.
+
+        for vlan, other in ((10, 20), (20, 10)):
+            name = f'VLAN{vlan}-IN'
+            rules = definitions[name].splitlines()
+            self.assertEqual(len(rules), 2)
+            self.assertEqual(rules[0], f'deny ip 192.168.{vlan}.0 0.0.0.255 192.168.{other}.0 0.0.0.255')
+            self.assertEqual(rules[1], 'permit ip any any')
+            for source_host in (0, 11, 210, 255):
+                for dest_host in (0, 11, 210, 255):
+                    self.assertFalse(permitted(name, f'192.168.{vlan}.{source_host}',
+                                               f'192.168.{other}.{dest_host}'))
+            for target in ('192.168.30.10', '192.168.30.1', '192.168.0.2'):
+                self.assertTrue(permitted(name, f'192.168.{vlan}.11', target))
+            self.assertTrue(permitted(name, '0.0.0.0', '255.255.255.255'))
+            self.assertTrue(permitted(name, f'192.168.{vlan}.11', '192.168.30.10'))  # Lease renewal.
+            self.assertIn(f'no ip access-group {name} in', rollback)
+            self.assertIn(f'no ip access-list extended {name}', rollback)
+        # Same-VLAN peers switch locally; service/Router1 replies enter interfaces without these ACLs.
+        attachment_interfaces = {interface for interface, _, _ in attachments}
+        self.assertNotIn('GigabitEthernet0/0.30', attachment_interfaces)
+        self.assertNotIn('GigabitEthernet0/1', attachment_interfaces)
+        for first, second in [('192.168.10.11', '192.168.10.12'), ('192.168.20.11', '192.168.20.12')]:
+            self.assertEqual(IPv4Interface(first + '/24').network, IPv4Interface(second + '/24').network)
+        self.assertLess(commands.index('ip route 192.168.30.0'), commands.index('ip access-list extended'))
+        self.assertNotIn('no ip access-group', active)
+
+    def test_packet_tracer_new_topologies_and_checkpoint_files(self):
+        ns = {'svg': 'http://www.w3.org/2000/svg'}
+        for number, slug, filename in [
+                (4, 'dhcp-configuration', 'Lab4_DHCP_Configuration.pkt'),
+                (5, 'centralized-dhcp-dns', 'Lab5_Centralized_DHCP_DNS.pkt'),
+                (6, 'acl-traffic-control', 'Lab6_ACL_Traffic_Control.pkt')]:
+            text, commands = self.packet_tracer_content(slug)
+            self.assertIn('template: article.html', text)
+            self.assertIn(f'create **{filename}**', text)
+            self.assertIn('### Completion checklist', text)
+            self.assertNotRegex(text, r'YOUR LAST NAME|Class/Section|Packet Tracer 9\.0\.0')
+            self.assertNotRegex(commands, r'(?m)^(?:Router\d*|Switch\d*|PC\d*)[>#]|^router (?:rip|ospf|eigrp)\b')
+            self.assertEqual(text.count('](images/topology.svg)'), 2)
+            drawing = ET.parse(ROOT / 'docs/labs/networking' / slug / 'images/topology.svg').getroot()
+            self.assertGreaterEqual(int(drawing.attrib['width']), 1120)
+            self.assertGreaterEqual(int(drawing.attrib['height']), 660)
+            labels = [node.text for node in drawing.findall('.//svg:text', ns)]
+            for label in ['Router0 (Cisco 2911)', 'Router1 (Cisco 2911)', 'Switch0 (Cisco 2960)',
+                          'G0/1: 192.168.0.1/30', 'G0/0: 192.168.0.2/30',
+                          'G0/0.10: 192.168.10.1/24', 'G0/0.20: 192.168.20.1/24', 'Switch0 Gi0/1']:
+                self.assertIn(label, labels)
+            if number > 4:
+                self.assertIn('G0/0.30: 192.168.30.1/24', labels)
+                self.assertIn('192.168.30.10/24', labels)
+                self.assertIn('Fa0/5', labels)
+            if number == 6:
+                self.assertIn('VLAN10-IN: inbound on G0/0.10', labels)
+                self.assertIn('VLAN20-IN: inbound on G0/0.20', labels)
 
     def test_quizzes_cover_published_certification_links_once(self):
         pattern = r'https://create\.kahoot\.it/share/[^\s)"<>]+'
