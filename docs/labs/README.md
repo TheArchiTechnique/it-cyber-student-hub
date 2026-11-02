@@ -4,19 +4,16 @@ hub:
 ---
 # Labs
 
-Apply what you know on a real workstation or virtual machine. Choose an activity area for setup instructions, practical tasks, and checks that help you verify your results. Read each lab description for its prerequisites.
+Apply what you know on a real workstation, virtual machine, or simulated network. Choose an activity area for setup instructions, practical tasks, and checks that help you verify your results. Read each lab description for its prerequisites.
 
 - [IT Support](it-support/README.md)
 
     Install Linux Mint in VirtualBox, investigate the Linux workstation, or practice Windows CMD support tasks.
 
-<!-- hub:hidden
 - [Networking](networking/README.md)
 
     Configure and inspect network communication.
 
-
-hub:hidden -->
 <!-- hub:hidden
 - [Cybersecurity](cybersecurity/README.md)
 

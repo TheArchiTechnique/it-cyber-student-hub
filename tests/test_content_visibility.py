@@ -50,7 +50,7 @@ class VisibilityTests(unittest.TestCase):
 
     def test_current_publication_and_preserved_resources(self):
         a = Availability()
-        for hidden in ('labs/networking/README.md', 'labs/cybersecurity/README.md',
+        for hidden in ('labs/cybersecurity/README.md',
                        'labs/log-analysis/README.md', 'labs/incident-response/README.md',
                        'tools/README.md',
                        'reference/powershell-commands.md', 'learn/hardware/README.md',
@@ -60,7 +60,9 @@ class VisibilityTests(unittest.TestCase):
         for visible in ('learn/networking/ports-and-protocols.md', 'reference/ports-and-protocols.md',
                         'practice/questions/README.md', 'practice/pbqs/network-plus/README.md',
                         'practice/pbqs/a-plus-core-2/README.md',
-                        'labs/README.md', 'labs/it-support/README.md',
+                        'labs/README.md', 'labs/networking/README.md',
+                        'labs/networking/packet-tracer-setup/README.md',
+                        'labs/it-support/README.md',
                         'labs/it-support/virtualbox-linux-mint/README.md',
                         'reference/linux-commands.md'):
             self.assertIn(visible, a.visible)
