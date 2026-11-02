@@ -219,7 +219,7 @@ No RIP, OSPF, or EIGRP process is configured in this lab. Use **`show ip route`*
 ## 6. Save and finish
 
 1. If troubleshooting changed either router's configuration, save it again with `copy running-config startup-config` at `Router#`. Press **Enter** at the filename prompt. Switch0's saved Lab 2 configuration remains unchanged.
-2. Select **File → Save** and confirm the project is **Lab3_Static_Routing.pkt**. Keep it as the starting point for the next activity when that activity is published.
+2. Select **File → Save** and confirm the project is **Lab3_Static_Routing.pkt**. Keep it as Lab 4's starting file.
 
 ### Static and dynamic routing
 

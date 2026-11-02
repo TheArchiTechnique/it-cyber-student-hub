@@ -168,6 +168,8 @@ Same-VLAN traffic is switched locally, so PC1↔PC2 and PC3↔PC4 do not encount
 
 The two blocked pings are expected policy results **only when the baseline and the permitted paths have been independently verified**. Failed pings alone cannot distinguish filtering from bad addressing, cabling, or routing.
 
+A ping requires an echo request and a returning echo reply. One of these ACLs could therefore break pings initiated from either VLAN by dropping the request or its reply. Failed pings in both directions do not prove that both ACLs are attached correctly; inspect each attachment and, where supported, its deny counter. These ACLs check individual packets without tracking sessions.
+
 ### Inspect Router0's configuration
 
 At its privileged `Router#` prompt:

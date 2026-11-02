@@ -202,21 +202,23 @@ Open **Desktop → Command Prompt**:
 ipconfig
 ping 192.168.30.10
 nslookup server.lab.local
+nslookup dns.lab.local
 ping server.lab.local
 ```
 
 Then enter `ping` followed by **PC3's current DHCP-assigned IPv4 address**, as reported by PC3's `ipconfig`.
 
-**Expected:** The address ping succeeds, the lookup returns **192.168.30.10**, the named ping succeeds, and PC1 can still reach PC3. Repeat an initial ping if ARP has not completed; persistent timeouts need investigation.
+**Expected:** The address ping succeeds, both lookups return **192.168.30.10**, the named ping succeeds, and PC1 can still reach PC3. Repeat an initial ping if ARP has not completed; persistent timeouts need investigation.
 
 ### PC3
 
 ```console
 nslookup router.lab.local
 ping 192.168.30.1
+ping router.lab.local
 ```
 
-**Expected:** The name resolves to **192.168.30.1**, and the Services gateway replies.
+**Expected:** The name resolves to **192.168.30.1**, and the Services gateway replies to both the address and named pings. Together, the PC1 and PC3 lookups check all three A records.
 
 ### Router0
 

@@ -124,6 +124,70 @@ class LearningResourceNavigationTests(unittest.TestCase):
         commands = '\n'.join(re.findall(r'```console\n(.*?)\n```', text, re.S))
         return text, commands
 
+    def test_packet_tracer_commands_stay_in_their_required_modes(self):
+        # Static checks of the documented command sequence; no simulator is run.
+        # Scope covers every console block, including diagnostics and optional rollback.
+        global_commands = r'(?:ip route |ip dhcp excluded-address |no ip dhcp pool |service dhcp$|no ip access-list extended )'
+        interface_commands = r'(?:ip address |no ip address$|no shutdown$|switchport |ip helper-address |(?:no )?ip access-group )'
+        count = 0
+        for slug in ['basic-network-configuration', 'vlan-configuration', 'static-routing',
+                     'dhcp-configuration', 'centralized-dhcp-dns', 'acl-traffic-control']:
+            text, _ = self.packet_tracer_content(slug)
+            for block in re.findall(r'```console\n(.*?)\n```', text, re.S):
+                lines = block.splitlines()
+                if all(re.match(r'^[CLS]\s+192\.168\.', line) for line in lines):
+                    continue  # Explicitly illustrative routing-table output.
+                host = lines[0].startswith(('ipconfig', 'ping ', 'nslookup '))
+                mode = 'host' if host else ('user' if lines[0] == 'enable' else 'exec')
+                for line in lines:
+                    with self.subTest(lab=slug, command=line, mode=mode):
+                        if mode == 'host':
+                            self.assertRegex(line, r'^(?:ipconfig|ping \S+|nslookup \S+)$')
+                        elif line == 'enable':
+                            self.assertEqual(mode, 'user')
+                            mode = 'exec'
+                        elif line == 'configure terminal':
+                            self.assertEqual(mode, 'exec')
+                            mode = 'global'
+                        elif line == 'end':
+                            self.assertIn(mode, ('global', 'interface', 'subinterface', 'vlan', 'pool', 'acl'))
+                            mode = 'exec'
+                        elif line == 'exit':
+                            self.assertIn(mode, ('global', 'interface', 'subinterface', 'vlan', 'pool', 'acl'))
+                            mode = 'exec' if mode == 'global' else 'global'
+                        elif line.startswith('interface '):
+                            self.assertEqual(mode, 'global')
+                            self.assertRegex(line, r'^interface (?:GigabitEthernet0/[01](?:\.(?:10|20|30))?|FastEthernet0/[1-5])$')
+                            mode = 'subinterface' if '.' in line else 'interface'
+                        elif re.match(r'^vlan \d+$', line):
+                            self.assertEqual(mode, 'global')
+                            mode = 'vlan'
+                        elif line.startswith('ip dhcp pool '):
+                            self.assertEqual(mode, 'global')
+                            mode = 'pool'
+                        elif line.startswith('ip access-list extended '):
+                            self.assertEqual(mode, 'global')
+                            mode = 'acl'
+                        elif re.match(global_commands, line):
+                            self.assertEqual(mode, 'global')
+                        elif line.startswith('encapsulation dot1Q '):
+                            self.assertEqual(mode, 'subinterface')
+                        elif re.match(interface_commands, line):
+                            self.assertIn(mode, ('interface', 'subinterface'))
+                        elif line.startswith(('network ', 'default-router ', 'dns-server ')):
+                            self.assertEqual(mode, 'pool')
+                        elif line.startswith('name '):
+                            self.assertEqual(mode, 'vlan')
+                        elif line.startswith(('deny ip ', 'permit ip ')):
+                            self.assertEqual(mode, 'acl')
+                        elif line.startswith(('show ', 'ping ')) or line == 'copy running-config startup-config':
+                            self.assertEqual(mode, 'exec')
+                        else:
+                            self.fail(f'Unreviewed command in {slug}: {line}')
+                        count += 1
+                self.assertIn(mode, ('exec', 'host'), f'Unfinished configuration block in {slug}')
+        self.assertGreater(count, 150)
+
     def test_packet_tracer_router_dhcp_pools_exclude_infrastructure(self):
         text, commands = self.packet_tracer_content('dhcp-configuration')
         exclusions = re.findall(r'^ip dhcp excluded-address (\S+) (\S+)$', commands, re.M)
