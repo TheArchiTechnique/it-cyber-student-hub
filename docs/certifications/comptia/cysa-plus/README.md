@@ -27,6 +27,10 @@ Develop your security analysis skills.
 
 
 hub:hidden -->
+- [Official Exam Objectives](https://lecbyo.files.cmp.optimizely.com/download/68b1eae88e5011f08868a275d699e612)
+
+    Open CompTIA's official CySA+ (CS0-004, V4) exam objectives.
+
 - [Course Topics](#course-topics)
 
     Browse shared topic hubs.
