@@ -1,13 +1,12 @@
 ---
 hub:
   kind: resource
-  status: draft
 ---
 # Network+ Objective Breakdown
 
 A student-friendly study reference for CompTIA Network+ (N10-009, V9). This page follows the objective numbering and explains how network technologies work, when to use them, and what their behavior tells you during troubleshooting.
 
-Use this with the [official CompTIA N10-009 objectives](https://lecbyo.files.cmp.optimizely.com/download/35a7403ab73211ef9dcda6f347fbf652), document version 6.0, which remain the authoritative exam scope. The explanations and examples here use original educational language. This edition covers **Domains 1 and 2**; consult the official document for the full examination scope.
+Use this with the [official CompTIA N10-009 objectives](https://lecbyo.files.cmp.optimizely.com/download/35a7403ab73211ef9dcda6f347fbf652), document version 6.0, which remain the authoritative exam scope. The explanations and examples here use original educational language and cover **all 25 numbered objectives across the five domains**, including networking concepts, implementation, operations, security, and troubleshooting.
 
 ## Exam domains
 
@@ -684,6 +683,523 @@ Treat repeated heat or power faults as infrastructure evidence. Rebooting an aff
 
 Related practice: [SOHO Physical Installation](../../../practice/pbqs/a-plus-core-1/soho-physical-installation/README.md) for equipment/cable recognition and [Lab 1: Basic Network Configuration](../../../labs/networking/basic-network-configuration/README.md) for physical link and gateway checks.
 
+## 3.0 Network Operations
+
+### 3.1 Organizational processes and procedures
+
+Network documentation records what exists, how it connects, and how it should operate. During an outage, accurate records reduce guesswork about which interface, circuit, address range, or recent change is involved. A diagram that no longer matches production can send an investigation down the wrong path.
+
+| Record | Information it provides | Practical use |
+| --- | --- | --- |
+| Physical diagram / Layer 1 diagram | Devices, locations, media, interfaces, and physical connections | Trace a failed uplink from an IDF switch to the correct MDF termination. |
+| Logical diagram | Relationships such as VLANs, subnets, routes, and security boundaries | Determine which gateway and firewall a client must cross to reach a server. It need not reflect physical placement. |
+| Layer 2 network diagram | VLAN membership, trunks, link aggregation, and spanning-tree relationships | Identify where a VLAN should cross switches and which redundant path should forward. |
+| Layer 3 network diagram | IP prefixes, routing adjacencies, next hops, and routed boundaries | Check forward and return paths between sites. |
+| Rack diagram | Equipment positions, rack units, power connections, and cable-management space | Locate a device and plan installation or replacement without displacing another system. |
+| Cable map / diagram | Cable identifiers, wall outlets, patch-panel ports, switch ports, and test results | Match a desk outlet to its switch interface and verify the intended VLAN. |
+| Wireless survey / heat map | Measured or predicted signal, coverage, interference, and capacity-related information | Compare complaints with actual coverage; a predicted map needs field validation after installation. |
+| Asset inventory | Hardware model/serial/location, software/firmware versions, licensing, warranty, and support ownership | Find affected devices when a vulnerability or end-of-support notice applies. A device count alone is insufficient. |
+| IP address management (IPAM) | Allocated prefixes, static assignments, DHCP ranges, reservations, and related DNS information | Avoid overlaps and identify who owns an address. Verify records against actual use; a recorded reservation does not prove that the device is online. |
+| Service-level agreement (SLA) | Agreed service expectations, availability targets, responsibilities, and response/restoration terms | Decide when to escalate a carrier fault and what evidence to preserve. A response-time promise is different from a restoration-time promise. |
+
+**Policies** state requirements, such as restricting administrative access to approved management networks. **Procedures** give repeatable steps to meet them. Operational records should also identify owners, escalation contacts, maintenance windows, and recovery instructions. Protect configurations and inventories because they can expose credentials or network structure.
+
+#### Life-cycle, change, and configuration management
+
+**Life-cycle management** follows equipment/software from acquisition and deployment through maintenance, replacement, and decommissioning. **End-of-life (EOL)** and **end-of-support (EOS)** have vendor-specific definitions: a product can stop being sold before technical support or security fixes end. Check the published milestones rather than treating both labels as one universal date.
+
+Software management includes OS updates, firmware, security patches, and bug fixes. Confirm the model/version, compatibility, dependencies, available space, configuration backup, and rollback method before an upgrade. Test essential services afterward. Decommissioning includes removing routes, accounts, monitoring entries, DNS/IPAM assignments, and sensitive stored configuration as appropriate; unplugging a device alone does not complete its retirement.
+
+**Change management** records the requested change, reason, affected systems, impact, approvals required by the organization, implementation plan, verification, and rollback. Link a service request or incident to the change record so another administrator can reconstruct what happened. If users lose access after an allowed-VLAN change, compare that change and its before/after evidence before modifying unrelated routing.
+
+| Configuration type | Meaning | Important distinction |
+| --- | --- | --- |
+| Production configuration | Settings actually used by the live system | Current operation may include changes not yet reflected in an older saved file. |
+| Backup configuration | A recoverable copy from a known time | Record device/version and protect access. Confirm the copy can be restored on the intended platform. |
+| Baseline / golden configuration | An approved reference for expected settings | Used to compare deployments and detect drift. It is a standard to adapt deliberately, not necessarily a complete replacement for every device's unique settings. |
+
+On Cisco IOS, running and startup configurations are different: a working running-configuration change may not survive a reboot until saved. A backup is another copy for recovery. Configuration management keeps these roles clear and tracks authorized differences from the baseline.
+
+### 3.2 Network monitoring technologies
+
+Choose a monitoring method for the evidence required. Interface utilization, a list of conversations, a packet trace, and a device log answer different questions. Monitoring must also account for collection location, sampling, polling intervals, timestamps, and missing data.
+
+| Method | Information it provides | Limitation / appropriate use |
+| --- | --- | --- |
+| SNMP polling | Device values such as interface counters, status, CPU, or temperature | Provides supported management values rather than every packet. Polling intervals can hide short spikes. |
+| SNMP traps / informs | Device-originated event notifications, such as a link-state change | Traps have no application-level acknowledgment; informs add acknowledgment/retry behavior. Notification delivery still depends on the network and collector. |
+| Flow data, such as NetFlow/IPFIX | Conversation metadata: endpoints, ports/protocol, times, packet/byte counts | Useful for finding top talkers and traffic patterns. Typical flow records do not contain full packet payloads; sampling can omit short conversations. |
+| Packet capture / protocol analysis | Packets visible at the capture point, including headers and any captured payload | Helps inspect DHCP exchanges, retransmissions, or DNS responses. Encryption, capture filters, truncation, loss, and location limit what can be observed. |
+| Syslog collector | Central copies of device/application event messages | Correlates events across systems. Logging level, correct time, reliable delivery, and retention determine what evidence is available. |
+| SIEM integration | Aggregates and correlates security-relevant logs and other telemetry | Can connect a login event, rule change, and traffic alert. It cannot reliably reconstruct events never collected or automatically make every alert a confirmed incident. |
+| API-based monitoring | Structured queries to controllers, cloud systems, and management platforms | Exposes information available through that API. Permissions, rate limits, schema changes, and collection failures affect coverage. |
+| Port mirroring | Copies selected switch ingress/egress traffic to a monitoring port | Feeds a capture/analyzer without turning it into the live forwarding endpoint. Oversubscribed mirror destinations can lose copies; the selection determines visibility. |
+
+**Simple Network Management Protocol (SNMP)** uses a manager and device agents. A **management information base (MIB)** describes managed objects identified by **object identifiers (OIDs)**. The manager can retrieve an interface's byte counter and compare successive values to estimate its traffic rate; the counter is not itself a recording of the transferred files.
+
+**SNMPv2c** uses community strings, commonly with separate read/write permissions. They do not provide encryption and should not be treated as strong confidential authentication. **SNMPv3** supports security levels including authentication and privacy: `noAuthNoPriv`, `authNoPriv`, and `authPriv`. Merely choosing version 3 does not prove encryption is enabled; select and verify the intended security level and credentials.
+
+#### Baselines, alerts, and monitoring goals
+
+A **performance baseline** records normal utilization, latency, loss, error rates, and other relevant metrics across representative periods. A scheduled backup can produce high nightly traffic without being an attack. Compare a suspected **anomaly** with expected workload and recent changes, then use thresholds and notifications that support timely action without overwhelming staff with noise.
+
+- **Network discovery:** Finds responsive devices and exposed management/service information. Ad hoc discovery supports an immediate investigation; scheduled discovery helps reveal changes over time. Missing results can reflect filtering or a sleeping/offline device, not proof that an address is unused.
+- **Availability monitoring:** Checks whether a device or service responds. ICMP response establishes a different level of availability from a successful application transaction.
+- **Performance monitoring / traffic analysis:** Tracks delay, loss, utilization, and traffic patterns to locate capacity problems. Average utilization can conceal brief queue saturation.
+- **Configuration monitoring:** Detects differences from prior settings or an approved baseline. A difference needs review against authorized changes before being labeled malicious.
+
+For an example, if calls degrade at 8:00 p.m., use interface metrics to locate congestion, flow data to identify a competing transfer, and a targeted capture to investigate packet timing or retransmissions. Search centralized logs for link or policy changes at the same time. No single data source establishes every part of the cause.
+
+### 3.3 Disaster recovery concepts
+
+**Disaster recovery (DR)** restores required services after a serious interruption. High availability reduces some interruptions; recoverable backups, recovery infrastructure, procedures, and testing address failures that availability features cannot prevent.
+
+| Metric | Question it answers | Example |
+| --- | --- | --- |
+| Recovery point objective (RPO) | How much data loss, measured in time, is acceptable? | An RPO of 15 minutes requires a recovery point recent enough to limit acceptable loss to that interval. Four-hour backups alone cannot meet it. |
+| Recovery time objective (RTO) | How long may the service remain unavailable before required recovery? | An RTO of one hour includes the work needed to restore and validate the required service, not just turn on replacement hardware. |
+| Mean time to repair (MTTR) | What is the average repair duration across the measured failures? | Repairs taking 30, 60, and 90 minutes have an MTTR of 60 minutes. Organizations must define what their measurement includes. |
+| Mean time between failures (MTBF) | What is the average operating time between failures for a repairable system? | 300 hours of measured operating time across three failures gives an estimated MTBF of 100 operating hours. It does not predict the exact next failure. |
+
+RPO and RTO are requirements used to choose a recovery design. MTTR and MTBF are reliability/maintenance measurements, not interchangeable promises. A design may restore quickly but recover old data, meeting RTO while missing RPO.
+
+| Recovery site | Starting condition | Recovery implication |
+| --- | --- | --- |
+| Cold | Space and basic facilities are available, with substantial equipment/data preparation still needed | Usually lower ongoing cost and more recovery work. |
+| Warm | Some systems/infrastructure are ready, but updates, data restoration, or configuration remain | Balances readiness and cost; verify exactly what is prepared. |
+| Hot | Systems and connectivity are prepared for rapid service restoration, with an appropriate data-copy strategy | Greater ongoing cost and coordination. Data freshness and actual failover procedure still determine achievable RPO/RTO. |
+
+**Active-active** systems serve work concurrently; surviving systems need capacity and state handling to absorb a failure. **Active-passive** keeps another system ready to take over a role. Neither approach inherently protects against corrupted data being replicated, a shared power failure, or an untested recovery dependency.
+
+A **tabletop exercise** discusses a scenario, responsibilities, decisions, and escalation without performing the full live restoration. A **validation test** actually checks recovery capabilities, such as restoring configuration/data into a controlled environment and verifying DNS, authentication, routing, and the application. Compare measured results with RPO/RTO. Successful backup creation alone is not a successful recovery test.
+
+### 3.4 IPv4 and IPv6 network services
+
+Address assignment, name resolution, and time synchronization are separate services. DHCP can supply a DNS server address, but DNS performs the lookup. An accurate clock supports authentication and certificate checks but does not repair an incorrect IP route.
+
+#### DHCP addressing and relay
+
+| Setting | Purpose | Common error |
+| --- | --- | --- |
+| Scope / pool | Defines the subnet and addresses a DHCP service can assign | An exhausted or wrong-subnet pool cannot provide the intended lease. Products use these terms somewhat differently. |
+| Exclusion | Prevents selected addresses from being dynamically allocated | Leaving statically addressed gateways/servers inside an unrestricted dynamic range can create conflicts. |
+| Reservation | Associates a predictable assignment with a client identifier, often its MAC address | The client still requests its settings from DHCP. Reservation identity and exclusion interaction depend on the implementation. |
+| Lease time | Limits how long an assignment remains valid without renewal | Short leases increase renewal activity; long leases can retain addresses for infrequent clients and slow configuration turnover. |
+| Options | Supply settings such as subnet mask, default gateway, DNS servers, and domain suffix | A correct address with an incorrect DNS/gateway option still produces connectivity failures. |
+| Relay / IP helper | Carries requests between a client subnet and a server in another subnet | Place relay functionality on the appropriate client-facing routed interface; the server also needs a return path. |
+
+The common initial IPv4 exchange is **Discover, Offer, Request, Acknowledge (DORA)**. The client discovers service, a server offers settings, the client requests an offered assignment, and a DHCPACK confirms the lease. This is a simplified initial-assignment flow; renewals do not require a new full discovery exchange every time.
+
+By default, DHCPv4 renewal begins around **T1 = 50%** of the lease, normally contacting the leasing server. Rebinding begins around **T2 = 87.5%** if renewal has not succeeded, allowing other servers to respond. Servers can specify different timers. A client can continue using an existing valid lease while renewal attempts fail; it must stop using the leased address when that lease expires. An initial failure may lead to APIPA on a Windows client, but a missed renewal does not instantly replace a still-valid lease.
+
+Routers do not normally forward the initial broadcast across subnets. A relay identifies the originating subnet in the forwarded request so the server can select the matching pool. In the Hub's [Lab 5: Centralized DHCP and DNS Services](../../../labs/networking/centralized-dhcp-dns/README.md), Server0 is **192.168.30.10/24**, gateway **192.168.30.1**. Client-facing VLAN 10 and 20 subinterfaces relay requests to that server.
+
+| Lab 5 setting | Sales | HR |
+| --- | --- | --- |
+| Client subnet | 192.168.10.0/24 | 192.168.20.0/24 |
+| Client gateway | 192.168.10.1 | 192.168.20.1 |
+| Server0 allocation range | 192.168.10.11–192.168.10.210 | 192.168.20.11–192.168.20.210 |
+| DNS server | 192.168.30.10 | 192.168.30.10 |
+
+Each range contains **200 addresses**, including both endpoints. Router0's former local exclusions do not control Server0's pools; Server0's starting address and pool size do. This example follows the published lab rather than suggesting another DHCP design. [Lab 4: DHCP Configuration](../../../labs/networking/dhcp-configuration/README.md) teaches the earlier router-hosted pools.
+
+#### SLAAC and IPv6 configuration
+
+**Stateless address autoconfiguration (SLAAC)** lets a host construct IPv6 addresses using suitable prefixes advertised by routers. On a typical `/64` LAN, the host combines the advertised prefix with an interface identifier and checks for duplication. Interface identifiers can use privacy/stable-generation methods; they are not necessarily the device's exposed MAC address.
+
+**Router Advertisements (RAs)** also identify default-router information. DHCPv6 can supply stateful addresses or other settings, and supported RAs can carry DNS information. **DHCPv6 does not supply the IPv6 default gateway in the same way as DHCPv4**; hosts learn default routers through Neighbor Discovery/RAs. Check the prefix, router lifetime, address state, and DNS source separately. A link-local address alone does not establish routed global connectivity.
+
+#### DNS hierarchy, records, and resolution
+
+The **Domain Name System (DNS)** is distributed across a hierarchy: root, top-level domain, and delegated authoritative zones. A client typically asks a **recursive resolver** to obtain an answer. The resolver can answer from cache or follow referrals to authoritative servers; the workstation does not have to query each level itself.
+
+An **authoritative response** comes from a server responsible for the relevant zone data. A **non-authoritative response** commonly comes from a recursive resolver's obtained/cached information; that label alone does not mean the answer is false. A **primary** maintains a writable source of zone data, while a **secondary** obtains a copy through zone transfer. Both can answer authoritatively for the zone. Primary/secondary and authoritative/non-authoritative describe different relationships.
+
+| Record | Purpose | Example / distinction |
+| --- | --- | --- |
+| A | Maps a name to an IPv4 address | `portal.example.net` → `192.0.2.20`. |
+| AAAA | Maps a name to an IPv6 address | `portal.example.net` → `2001:db8:20::20`. |
+| CNAME | Aliases one DNS name to another name | `www.example.net` → `portal.example.net`; the target is a name, not a literal IP address. |
+| MX | Identifies a domain's mail-exchanger hostname and preference | `example.net` can name `mail.example.net`; lower preference numbers are tried first. The mail hostname needs usable address records. |
+| TXT | Stores text used by applications/policies | Domain verification and SPF are common uses; the consuming application determines the text's meaning. |
+| NS | Identifies an authoritative nameserver for a zone/delegation | Names the DNS server hostname rather than the website's address. |
+| PTR | Associates a reverse DNS name with a hostname | A reverse lookup for `192.0.2.20` can return `portal.example.net`; an A record does not automatically create its PTR counterpart. |
+
+The names and documentation addresses in this table illustrate record relationships. A **forward zone** normally supports name-to-address information. A **reverse zone** uses `in-addr.arpa` for IPv4 or `ip6.arpa` for IPv6 address-to-name information. Caching uses record **TTL** values; changing an authoritative record does not instantly replace every cached copy.
+
+A **hosts file** provides local static name/address mappings for applications using the OS resolver. Windows uses `%SystemRoot%\System32\drivers\etc\hosts`; Linux commonly uses `/etc/hosts`. DNS tools such as `nslookup` and `dig` query DNS rather than proving what every application's resolver or hosts-file configuration will use.
+
+| Protection | What it protects | What it does not establish |
+| --- | --- | --- |
+| DNSSEC | Uses signatures and a chain of trust to validate signed DNS data's origin/integrity | Does not encrypt ordinary DNS queries or prove that the destination's content is safe. Unsigned zones do not acquire signatures because a client supports DNSSEC. |
+| DNS over HTTPS (DoH) | Protects DNS exchanges with a selected resolver through HTTPS, commonly port 443 | Does not encrypt every later network hop or replace DNSSEC validation. An application may select a resolver independently of OS settings. |
+| DNS over TLS (DoT) | Protects DNS exchanges with a selected resolver through TLS, conventionally TCP 853 | Does not automatically authenticate the website the user later visits or hide queries from the chosen resolver. |
+
+In Lab 5, comparing a ping to `192.168.30.10` with a lookup of `server.lab.local` separates an IP/ICMP test from a DNS test. The `.lab.local` names are specific to that simulation; use an appropriate controlled namespace in a real deployment. A DNS timeout, `NXDOMAIN`, and a valid answer containing the wrong address are different findings. Working ICMP alone also does not prove that the DNS service port is reachable.
+
+#### Time synchronization
+
+| Technology | Purpose | Distinction |
+| --- | --- | --- |
+| Network Time Protocol (NTP) | Synchronizes clocks over a network, conventionally UDP 123 | Suitable for general server/client timekeeping. Sources, reachability, clock offset, and authentication configuration matter. |
+| Precision Time Protocol (PTP) | Provides precise synchronization for supported managed environments, including industrial or timing-sensitive networks | IEEE 1588 designs commonly use hardware timestamping and suitable network equipment. It is not simply a universal replacement for NTP on every device. |
+| Network Time Security (NTS) | Adds cryptographic authentication/integrity protection to supported NTP client-server exchanges | NTS key establishment uses TLS, conventionally TCP 4460; protected NTP exchanges normally continue on UDP 123. It does not put the complete NTP exchange inside a TLS stream. |
+
+Bad clock settings can make certificates appear expired/not yet valid, invalidate time-based credentials, and place related logs in the wrong order. Check the actual time source, synchronization state, and offset; changing only a display time zone does not repair an unsynchronized clock.
+
+### 3.5 Network access and management methods
+
+| Method | Appropriate use | Operational consideration |
+| --- | --- | --- |
+| Site-to-site VPN | Connects networks at two or more locations through gateways | Correct subnets, routes, permitted traffic, and return paths are required at both sites. Overlapping private ranges complicate communication. |
+| Client-to-site VPN | Gives a remote endpoint access through an organization's VPN service | Authenticate the user/device and restrict authorized resources. A connected client still needs correct routes and name resolution. |
+| Clientless access | Provides selected applications through a browser-based gateway without a full conventional VPN client | Useful for limited application access; it does not necessarily provide arbitrary IP connectivity or support every client protocol. |
+| Split tunnel | Sends selected destinations through the VPN while other traffic follows another path | Can reduce gateway load, but local/internet traffic may bypass centralized inspection and use different DNS/routing policy. |
+| Full tunnel | Routes the intended client traffic through the VPN gateway | Centralizes handling but uses gateway/WAN capacity. Verify policy for IPv4, IPv6, and any exceptions rather than assuming the label captures every packet. |
+
+#### Management connections and paths
+
+- **SSH:** Encrypted command-line administration, normally TCP 22. Check server identity/host keys and authorize the administrative role; a reachable SSH listener is not permission to make every change.
+- **GUI management:** A web or application interface for administration. Prefer appropriate HTTPS/certificate validation and limited management exposure. A graphical interface can be reached through either in-band or out-of-band infrastructure.
+- **API management:** Programmatic access used by monitoring and automation. Limit tokens/roles, protect credentials, and verify results; an accepted API request does not always mean an asynchronous operation is finished.
+- **Console access:** Local serial/USB console or a remote console server can reach device management when IP settings or routing are broken. Interface parameters and authentication depend on the platform. A console is a management path, not the same thing as opening an SSH terminal.
+- **Jump host / jump box:** An intermediate managed system through which administrators reach protected devices. It centralizes access controls and logging but also needs hardening and limited permissions.
+
+**In-band management** uses the production network to reach a device. It is convenient but may fail with the same routing, switching, or congestion problem being investigated. **Out-of-band management** uses a separate management path, such as a console server reached through an independent network. Its power, upstream connection, and authentication dependencies determine how independent it really is. A management VLAN on the same failed switch is not automatically a fully independent recovery path.
+
+## 4.0 Network Security
+
+### 4.1 Basic network security concepts
+
+Security controls protect communication and resources while supporting their intended use. **Confidentiality** limits unauthorized disclosure, **integrity** protects against unauthorized modification, and **availability** keeps required services accessible. Encrypting a connection supports confidentiality but does not, by itself, keep an overloaded server available.
+
+| Term | Meaning | Example |
+| --- | --- | --- |
+| Threat | A potential cause of harm | An attacker, equipment failure, or damaging environmental event. |
+| Vulnerability | A weakness that could be exploited or triggered | Default administrative credentials or an unpatched exposed service. |
+| Exploit | A method or mechanism that takes advantage of a vulnerability | Using a known software flaw to obtain unauthorized access. |
+| Risk | The potential for harm, considered through factors such as likelihood and impact | An exposed management interface creates a different risk from the same interface restricted to an isolated management network. |
+
+#### Identity, authentication, and authorization
+
+**Identity and access management (IAM)** governs account creation, access assignment, authentication, review, and removal. The **AAA** functions are **authentication** (who is requesting access), **authorization** (what that identity may do), and **accounting** (records of access/use). A successful login does not mean the account should receive unrestricted administrative permission.
+
+**Multifactor authentication (MFA)** combines different factor categories: something known, possessed, or inherent to the user. Two passwords are still one category. **Time-based authentication**, such as a time-based one-time password, relies on a limited validity window and suitable clock synchronization. Whether it forms MFA depends on the other factor(s) used.
+
+**Least privilege** grants only the resources/actions needed for a task. **Role-based access control (RBAC)** assigns permissions through roles such as monitoring operator or network administrator. **Single sign-on (SSO)** lets an authenticated identity access multiple supported services without separate interactive sign-ins to each; it does not remove the services' authorization decisions.
+
+| Technology | Primary role | Useful distinction |
+| --- | --- | --- |
+| RADIUS | Centralized AAA commonly used for network access, including enterprise Wi-Fi and VPN services | Conventional deployments use UDP 1812 for authentication and 1813 for accounting. The access device exchanges AAA messages with the server; it is different from a directory lookup itself. |
+| LDAP | Queries and manages directory information | Directory data can support identity workflows, but LDAP alone is not equivalent to an SSO system. Protect sensitive directory communication with an appropriate secure configuration. |
+| SAML | Exchanges signed identity assertions between an identity provider and a service provider | Common in browser-based federation/SSO. The service validates issuer/trust, intended audience, and validity conditions before accepting the assertion. |
+| TACACS+ | Centralized AAA commonly used for network-device administration | Uses TCP 49 and separates authentication, authorization, and accounting functions. Protect the management path and shared secrets; do not assume the protocol provides blanket encryption of every field. |
+
+**Geofencing** uses a location boundary as a policy input, such as restricting a supported connection to approved regions. Location signals can be inaccurate or manipulated, so geofencing supplements identity and device controls rather than proving who a user is. **Zero trust** similarly avoids automatic trust based only on network location; objective 1.8 explains its access-policy role.
+
+#### Encryption, certificates, and trust
+
+**Data in transit** moves between systems; TLS and IPsec are common protections. **Data at rest** resides on storage, including configuration backups and captured logs; disk/file encryption and access controls protect it. Encryption terminates at defined endpoints, where authorized software may handle plaintext. It does not automatically protect data after an endpoint decrypts it.
+
+A **digital certificate** binds an identity or name to a public key under a signature. **Public key infrastructure (PKI)** provides issuance, trust relationships, validation, renewal, and revocation. For an HTTPS management interface, check the trusted issuer/chain, matching server name, validity period, and applicable status/policy. A certificate can be correctly signed yet refer to a different hostname.
+
+A **self-signed certificate** is signed using its own associated private key rather than a separately trusted issuer. It can support encryption and be deliberately trusted through controlled distribution, but unknown clients do not automatically trust its identity claim. Disabling validation to hide an alert removes an important identity check. The certificate/public key and the **private key** have different handling requirements; protect access to the private key.
+
+#### Physical controls, deception, and segmentation
+
+Locks restrict access to rooms, racks, ports, and devices. Cameras support observation and investigation, but recording an event is different from stopping an unauthorized connection. Apply physical controls to provider handoffs and cable terminations as well as visible servers.
+
+A **honeypot** is a decoy intended to attract or reveal suspicious interaction. A **honeynet** is a network of decoy systems. They provide detection/research opportunities and need isolation and monitoring; they are not replacements for production access controls.
+
+**Network segmentation** divides communication into controlled areas. VLANs create Layer 2 separation, while routed policy/firewalls restrict permitted traffic between areas. A different VLAN number without appropriate inter-VLAN policy does not guarantee the intended access restriction.
+
+| Environment / group | Why segment it? | Example policy consideration |
+| --- | --- | --- |
+| Internet of Things (IoT) | Devices such as cameras and building sensors may have limited management/security features | Permit needed controllers/services while restricting unrelated user and management access. |
+| Industrial IoT (IIoT), operational technology (OT), industrial control systems (ICS), and SCADA | OT interacts with physical processes; ICS controls industrial operations, and SCADA provides supervisory monitoring/control | Separate control functions from ordinary office/guest traffic and use approved maintenance paths. Reliability and equipment compatibility matter alongside confidentiality. |
+| Guest devices | Visitors need selected services without internal trust | Provide internet access through policy that restricts internal destinations and appropriate peer access. |
+| Bring your own device (BYOD) | Personally owned devices may not satisfy the same controls as managed endpoints | Apply identity, posture, and resource-access policy instead of assuming personal ownership establishes suitability. |
+
+Network access control (NAC), security zones, and trust boundaries help enforce these policies; objective 4.3 compares their specific controls.
+
+#### Audits and compliance
+
+An **audit** checks controls and evidence against defined requirements. **Data locality** concerns where data is stored or processed, including backups, logs, and cloud replicas. Track these locations and the requirements applicable to the organization rather than assuming one local server accounts for every copy.
+
+**PCI DSS** defines security requirements for protecting payment account data in its applicable environments. **GDPR** is the EU's general personal-data protection regulation. Network access controls, encryption, logging, and segmentation can support relevant requirements, but implementing one VLAN or firewall does not by itself establish compliance. Match technical evidence to the actual scope and requirements.
+
+### 4.2 Network attacks and their impact
+
+Identify an attack by its mechanism and evidence, then select a relevant control. An outage alone does not prove a DoS attack, and a changed address mapping alone does not prove malicious activity; compare the observation with legitimate changes and other telemetry.
+
+| Attack | Mechanism | Observable consequence / distinction |
+| --- | --- | --- |
+| Denial of service (DoS) | Exhausts a service, link, or device resource, or triggers a failure | Unavailability, high resource use, queues, or abnormal request volume. A single source can cause DoS; a legitimate demand surge can look similar. |
+| Distributed denial of service (DDoS) | Uses many participating sources to disrupt a target | Many-source traffic can saturate upstream capacity before the local firewall can help. Distributed sources distinguish it from a simple single-source attack. |
+| VLAN hopping | Attempts to cross an intended VLAN boundary through switching misconfiguration or tagging behavior | Unexpected cross-VLAN access can result from unintended trunk negotiation or certain native-VLAN/double-tagging conditions. Not every VLAN setup is vulnerable to every technique. |
+| MAC flooding | Supplies many source MAC identities to overwhelm a switch's learning resources | Can produce abnormal MAC churn and increased unknown-unicast flooding, depending on platform behavior. It does not inherently make every VLAN's traffic visible. |
+| ARP spoofing / ARP poisoning | Sends false IPv4 address-to-MAC claims; poisoning describes corrupted neighbor-cache state | A victim may send gateway traffic to an attacker's MAC address, causing interception or disruption. ARP is local-link IPv4 resolution, not DNS name resolution. |
+| DNS spoofing / DNS poisoning | Supplies false DNS information or corrupts cached answers | A legitimate-looking name resolves to an unintended address. Poisoned data can persist in a cache; spoofing can target a particular response without successfully poisoning every resolver. |
+| Rogue DHCP service | An unauthorized server supplies address settings | Clients may receive a wrong gateway/DNS server or unusable range even though they obtained a lease. Compare lease-source information with the approved servers. |
+| Rogue device / AP | An unauthorized device joins the network or exposes wireless access | Can bypass intended controls or create an unapproved entry point. An AP need not copy a trusted SSID to be rogue. |
+| Evil twin | A malicious AP impersonates a trusted wireless network | Clients can associate with the wrong BSSID and disclose credentials/traffic through a fraudulent access path. A familiar SSID alone does not authenticate the AP. |
+| On-path attack | An intermediary gains a position to observe or alter communications | ARP manipulation, rogue gateways, or fraudulent wireless access can supply the position. Encryption with proper peer validation limits useful interception; an on-path position does not automatically decrypt TLS. |
+| Malware | Malicious software disrupts, steals, encrypts, or creates unauthorized access | Can generate command-and-control traffic, scanning, data transfers, or service failures. Network symptoms need endpoint/log evidence to identify the cause. |
+
+Credential attacks can also enable network access: **brute force** tries many candidates against a target; **password spraying** tries a small set of common passwords across many accounts; **credential stuffing** reuses leaked username/password pairs. Their login patterns differ. Rate controls, suitable MFA, secure authentication, and monitoring address different parts of the problem.
+
+#### Social engineering and physical access
+
+- **Phishing:** Uses a deceptive message/site to obtain credentials or induce an action, such as approving an unexpected MFA request or running software. The message can imitate an internal network-support request.
+- **Dumpster diving:** Retrieves discarded information or equipment, such as printed network records or unprotected configuration storage.
+- **Shoulder surfing:** Observes a screen, keyboard, or authentication activity to obtain information.
+- **Tailgating:** Follows an authorized person into a restricted space, potentially gaining access to switches, consoles, or outlets without valid authorization.
+
+These attacks target people and processes as well as devices. A technically correct firewall policy cannot stop someone from disclosing a reusable credential through a fraudulent support interaction.
+
+### 4.3 Network security features and defenses
+
+**Device hardening** reduces unnecessary exposure: disable unused ports and services, replace default credentials, apply supported updates, and restrict management to authorized paths. Use encrypted administration with validated peer identity, suitable AAA/MFA, and logging. Preserve required recovery access so a faulty policy does not remove every way to repair the device.
+
+| Control | Appropriate purpose | Limitation / distinction |
+| --- | --- | --- |
+| Access control list (ACL) | Permits/denies traffic using supported fields such as addresses, protocols, and ports | Rule order, direction, interface, and an implicit deny can change the result. A packet ACL is not inherently application-aware or stateful. |
+| Stateful firewall / traffic inspection | Enforces policy while tracking supported connections; some products inspect application behavior | An established connection is not automatically a safe application transaction. Encryption and inspection placement affect visibility. |
+| URL filtering | Restricts access by web destination or URL information available to the control | Available detail depends on protocol and inspection method. A basic IP ACL cannot read an encrypted URL path merely because it allows port 443. |
+| Content filtering | Applies rules to supported content/categories or detected material | Needs access to the relevant data and appropriate classification; it differs from blocking an IP address alone. |
+| Network access control (NAC) | Applies identity/device-policy decisions when granting network access | Can assign a permitted role/VLAN or restricted remediation access. Its effectiveness depends on policy and enforcement coverage. |
+| IEEE 802.1X | Controls network-port access through EAP authentication with a supplicant, authenticator, and authentication service | Used on wired and enterprise wireless networks. A switch/AP commonly relays authentication to RADIUS; VLAN membership alone does not authenticate the endpoint. |
+| Port security | Limits or constrains source MAC addresses on supported switch ports | Helps address unexpected devices or MAC flooding, but a MAC address is not strong user identity and can be copied. Choose violation handling deliberately. |
+| MAC filtering | Allows/denies listed device MAC addresses | Administrative selection without cryptographic proof of identity. It cannot replace proper wireless or wired authentication. |
+| Wireless security | WPA2/WPA3, appropriate enterprise authentication, certificate validation, and guest isolation | A shared network name or captive portal alone does not provide authenticated, encrypted access. Objective 2.3 explains the modes. |
+| Physical network controls | Locks, controlled access, cable protection, and monitoring | Protect against unauthorized attachment or console access that logical perimeter rules might not cover. |
+
+#### ACL reasoning and security zones
+
+For a conventional ordered ACL, a packet is checked against rules until the **first match** determines its action. Standard Cisco IPv4 ACLs match source addresses; extended ACLs can distinguish source, destination, protocol, and supported transport ports. A rule allowing DNS must consider both required TCP/UDP behavior rather than using a port number without transport context.
+
+A **wildcard mask** uses zero bits for positions that must match and one bits for positions to ignore. For example, `192.168.10.0 0.0.0.255` matches the IPv4 `/24` source block; `0.0.0.255` is a wildcard, not the subnet mask `255.255.255.0`. **Inbound/outbound** refers to the interface's packet direction: check where the packet enters or leaves the device before deciding where a rule belongs. A reversed source/destination or early broad permit can defeat the intended restriction.
+
+**Trusted** and **untrusted** zones describe policy boundaries, not proof that every system in a trusted zone is safe. A **screened subnet**, often called a DMZ, holds selected exposed services between more restricted internal systems and outside access. Permit the required service flows explicitly; public access to a web service does not imply permission to manage it or reach its database directly.
+
+Practice rule order, direction, and service access in [Lab 6: ACL Traffic Control](../../../labs/networking/acl-traffic-control/README.md). Use the lab's stated policy and addresses; these explanations are not replacement configuration for that exercise.
+
+#### Match defenses to the evidence
+
+| Finding | Relevant defensive choice | Why / practical limit |
+| --- | --- | --- |
+| Unauthorized trunk or cross-VLAN path | Explicit endpoint access-port roles, intended trunk/allowed/native VLAN configuration, and routed policy | Addresses the boundary rather than assuming a different VLAN label alone prevents access. |
+| Unexpected DHCP offers / altered ARP mappings | Supported DHCP snooping and Dynamic ARP Inspection (DAI), with correctly configured trusted paths/bindings | DHCP snooping can restrict server messages; DAI validates ARP using supported binding/policy information. Incorrect trust/static-host handling can block legitimate traffic. |
+| Repeated unknown devices or MAC churn | 802.1X/NAC and appropriate port-security limits | Identity-based admission and MAC constraints serve different purposes; neither substitutes for investigation. |
+| False DNS answers | Protect DNS administration/resolvers, investigate caches, and validate signed data with DNSSEC where applicable | DoH/DoT protect the resolver transport; they do not make a malicious resolver's answer authoritative. |
+| Impersonated Wi-Fi | Validate enterprise authentication server identity, use suitable authentication, and investigate rogue-AP telemetry | Recognizing the SSID is insufficient. A known/authorized BSSID list is supporting evidence, not cryptographic identity by itself. |
+| Volumetric DDoS | Upstream/provider mitigation and appropriate traffic controls | A local rule cannot recover bandwidth already saturated before traffic reaches the site. |
+
+**Key management** covers generation, protected storage, access, distribution, renewal/rotation, revocation, and recovery as applicable. A leaked VPN shared secret, expired certificate, and lost private key require different responses. Monitor expiration and access to sensitive keys, and retain only the recovery material authorized by the design.
+
+Use inspection, logs, and alerts to detect evidence; use admission, segmentation, filtering, and hardening to enforce the intended access. A detection alert alone does not implement a blocking rule, and enabling a control without checking permitted traffic can create an availability fault.
+
+## 5.0 Network Troubleshooting
+
+### 5.1 Troubleshooting methodology
+
+Troubleshooting turns observations into a tested explanation and a verified repair. Collect evidence before changing settings; a symptom such as no internet access can result from a cable, VLAN, address, route, DNS, filter, or application problem.
+
+| Step | What to do | Evidence / decision |
+| --- | --- | --- |
+| 1. Identify the problem | Ask users what fails, who is affected, when it began, and what changed. Gather symptoms and reproduce the fault when possible. Treat separate problems individually. | Record actual errors, affected scope, current settings, and a working comparison. A user's description is a starting point, not a confirmed cause. |
+| 2. Establish a theory of probable cause | Question obvious possibilities and choose an explanation consistent with the evidence. Use top-down, bottom-up, or divide-and-conquer OSI reasoning. | No link suggests a different starting point from a successful IP connection with failed name lookup. |
+| 3. Test the theory | Perform a focused test that could support or reject the explanation. | If the evidence contradicts the theory, form another or escalate. Do not treat an untested guess as a diagnosis. |
+| 4. Establish a plan of action | Choose the repair, assess affected users/dependencies, and identify verification and rollback steps. | Check change requirements and whether a restart or configuration edit could interrupt other services. |
+| 5. Implement or escalate | Apply the authorized repair, or supply evidence to the appropriate owner when the fix exceeds your access/scope. | Record the actual change so its effect can be assessed. Escalation should preserve findings rather than restart the investigation from nothing. |
+| 6. Verify full functionality | Retest the original failure and related services; add appropriate preventive measures. | A lease renewal alone is insufficient if users also need DNS, inter-VLAN access, and the application. |
+| 7. Document throughout | Record findings, tests, actions, results, and lessons learned as work progresses. | Update configuration records, cable maps, or procedures when the verified repair changes them. |
+
+In a **bottom-up** approach, test the physical/link conditions before moving toward the application. **Top-down** begins with the application and works toward lower layers. **Divide and conquer** tests an intermediate point, such as IP reachability, then investigates the relevant side of that boundary. These are investigation strategies, not reasons to skip evidence that already narrows the fault.
+
+For example, a workstation obtains APIPA after a switch-port move. Gather its address settings, link state, approved VLAN assignment, switch configuration, and a working peer's settings. If the port is in the wrong VLAN, compare that finding with the approved mapping before changing it. Restore the authorized assignment, obtain a valid lease, and verify gateway, DNS, and application access. Document the corrected port record. Rebooting every router first would not test that specific theory.
+
+### 5.2 Cabling and physical interface issues
+
+Check the complete path: endpoint adapter, patch cord, outlet, permanent cable, panel, switch port, and any transceivers. A lit LED proves less than successful traffic under the intended rate/load. Interpret colors and states using the device's documentation rather than assuming every vendor uses the same indicators.
+
+#### Media, termination, and signal problems
+
+| Issue | Recognizable evidence | Appropriate verification |
+| --- | --- | --- |
+| Wrong cable / media | Failure to link or failure at the required distance/rate | Compare the medium, connector, fiber type, Ethernet specification, and endpoint requirements. Single-mode (SMF) or multimode (MMF) fiber must match the intended optics and form a supported link. |
+| Incorrect copper category | A channel cannot sustain its intended application | Identify all channel components and test to the required standard. Replacing only a patch cord does not upgrade lower-rated permanent cabling. |
+| Shielded twisted pair (STP) vs. unshielded twisted pair (UTP) | Interference-related errors or a channel that does not meet the intended installation specification | Check cable designation and required shield continuity/bonding. Shielding must be properly installed; it is not a substitute for sound routing and termination. Here STP means cable shielding, not Spanning Tree Protocol. |
+| Crosstalk | Signal coupling between pairs/cables degrades reception | Use an appropriate cable qualification/certification test; excessive untwisting or poor pair termination can contribute. It differs from an external EMI source. |
+| External interference | Errors correlate with motors, electrical equipment, or another interference source | Inspect cable routing, shielding requirements, and error trends; compare with a known-good route or medium. |
+| Attenuation / excessive distance | Signal power falls below usable levels as it crosses the path | Check channel length, losses, rated reach, and the applicable cable/optic specification. A passive patch panel does not regenerate the signal. |
+| Improper termination / connector fault | Opens, shorts, reversals, split pairs, intermittent contact, or increasing errors | Use a wire-map/tester and inspect connectors. Basic continuity alone may not reveal poor high-frequency performance. |
+| Fiber contamination, bends, or damage | Optical loss, intermittent link, or receiver-power alarms | Inspect/clean with suitable tools, check bend radius, and measure the link using appropriate fiber tools. A visible-light check alone does not certify the optical budget. |
+| TX/RX transposed | Compatible duplex optics fail to establish a link | Verify that each transmitter reaches the opposite receiver and that polarity follows the system design. Do not assume every single-fiber bidirectional optic uses a duplex pair. |
+| Transceiver mismatch / signal strength | Unsupported module, no link, unstable link, or received power outside supported thresholds | Match protocol, form factor, rate, wavelength, SMF/MMF, reach, and vendor support. Check digital optical diagnostics when the platform/module supplies them. |
+
+The objective list includes Category 5/6/7/8 recognition. **Cat 5e** is common for compliant 1 Gb/s, 100 m channels; legacy Cat 5 installations need appropriate qualification. **Cat 6/6A** have different 10 Gb/s reach capabilities, described in objective 1.5. **Category 7** is an ISO/IEC shielded cabling category associated with Class F channels and specified connecting hardware; an unverified retail Cat 7 label does not establish channel compliance. **Category 8** supports short 25GBASE-T/40GBASE-T data-center channels up to **30 m**, rather than a universal 100 m high-speed run.
+
+#### Interface counters and port states
+
+| Observation | What it can indicate | Next check |
+| --- | --- | --- |
+| Increasing CRC errors | Received frames fail the frame check | Check cable/connector/optic condition, interference, and compatible speed/duplex settings. CRC identifies corruption, not one unique cause. |
+| Runts | Frames shorter than the expected Ethernet minimum, commonly 64 bytes including FCS | Check physical errors, legacy collision/duplex conditions, and platform counter definitions. |
+| Giants | Frames exceed the interface's accepted frame-size limit | Compare intended MTU/jumbo/VLAN settings and the platform's accounting. A legitimate larger frame can be rejected by an inconsistent limit. |
+| Drops | Packets/frames were discarded | Correlate queue load, buffer exhaustion, policy, and error counters. Drops alone do not prove a bad cable. |
+| Administratively down | The interface was disabled by configuration | Check the intended state and approved change history before enabling it. |
+| Error disabled | The platform shut down a port after detecting a protective condition | Inspect the logged cause, such as port-security, loop protection, or power faults. Correct the cause before resetting the condition. |
+| Suspended | A port is excluded from a forwarding/bundle role by the platform | Inspect link-aggregation negotiation and compatible member settings, along with the reported reason. It is not automatically a physical break. |
+
+Compare **counter changes over a measured interval** rather than assuming a historical error total describes the current incident. Speed/duplex mismatches can cause poor performance or failure; correctly operating full-duplex links should not show normal collision behavior. Do not force a setting at one endpoint without checking the other.
+
+For **Power over Ethernet (PoE)**, verify the power source, supported standard, per-port capability, and total power budget. A budget can be exhausted even when each device is individually compatible. An AP may operate with reduced capabilities if its negotiated power is insufficient. A missing power indication, unsupported transceiver, and administratively disabled port require different repairs.
+
+Related practice: [Network Setup & Cabling](../../../practice/pbqs/a-plus-core-1/network-setup-and-cabling/README.md), [SOHO Physical Installation](../../../practice/pbqs/a-plus-core-1/soho-physical-installation/README.md), and [Lab 1: Basic Network Configuration](../../../labs/networking/basic-network-configuration/README.md).
+
+### 5.3 Network services troubleshooting
+
+Start with the affected client's actual settings and compare a known-working path. One successful test narrows the question; it rarely verifies every service. Separate address assignment, local switching, routing, filtering, DNS, time, and application behavior.
+
+| Finding | Likely area to investigate | Evidence that distinguishes it |
+| --- | --- | --- |
+| Wrong IP address or address from an unexpected range | Manual configuration, wrong VLAN, wrong pool, or rogue DHCP | Inspect address/mask, DHCP server/lease information, switch access VLAN, and approved IPAM records. A valid-looking private address can still belong to the wrong subnet. |
+| Duplicate IPv4 address / intermittent access | Overlapping static/dynamic assignments or another conflicting host | Compare address ownership, DHCP bindings/reservations, and ARP/MAC observations over time. IPv6 Duplicate Address Detection can instead leave an address tentative/duplicate; it is not ARP. |
+| Incorrect subnet mask/prefix | Wrong local-versus-remote decision | Apply the actual mask to the source/destination. A host might ARP for a destination that should go to a router, or send local traffic unnecessarily to a gateway. |
+| Incorrect default gateway | Off-subnet traffic follows an unusable next hop | Same-subnet access can work while remote access fails. Check that the gateway is reachable on the intended link/subnet and that the host's route table uses it. |
+| No new DHCP assignments / pool exhaustion | Server availability, exhausted scope, relay, filtering, or client VLAN | Check free leases, reservations/exclusions, DORA traffic, server service, and helper placement. Existing leased clients may work while new arrivals fail. |
+| DNS failure or wrong answer | Resolver configuration, DNS service/transport, cache, zone data, or application-specific resolution | Compare an explicit DNS query with IP/service connectivity. `NXDOMAIN` reports a nonexistent queried name; timeout means no timely answer. An incorrect A/AAAA answer is another condition. |
+| Missing route / wrong route selection | Router or host routing table | Apply longest-prefix matching, then examine the installed route's next hop and the remote return path. A default route is used only when no more specific installed route matches. |
+| Incorrect VLAN / trunk behavior | Layer 2 membership or VLAN transport | Check access VLAN, local VLAN existence, allowed/native settings, and forwarding state. A physically active trunk can still omit one VLAN. |
+| ACL or firewall blocks a flow | Rule action/order, source/destination, transport, interface, direction, or connection state | Compare the exact failed flow with rules, counters, and logs. Permitting ICMP or one port does not permit every service or its separate data/media channel. |
+| IPv6 link-local works but remote IPv6 fails | Prefix, router advertisements, default route, access policy, or upstream path | Inspect a usable global/ULA address as intended, RA/default-router information, and IPv6 routes. Working IPv4 is a separate finding. |
+| Clock-sensitive authentication/certificate errors | Time source, clock offset, certificate name/trust/validity, or identity service | Compare actual synchronized time with validity windows; an application can fail while network forwarding remains correct. |
+| Target IP responds but one service does not | Service process/listener, local firewall, binding, TLS, or application policy | Check the intended TCP/UDP endpoint and application response. A listener bound only to loopback will not accept ordinary remote connections. |
+
+#### Switching loops and spanning-tree interpretation
+
+A Layer 2 loop can produce broadcast storms, MAC-table flapping, duplicate frames, high utilization, and widespread loss. Check the actual topology and STP state rather than unplugging random links. **Root bridge selection** uses bridge identifiers, including configured priority and a MAC-based component; the lowest applicable bridge identifier wins. An unintended root can produce inefficient forwarding paths even when the network remains loop-free.
+
+**Port roles** describe a port's place in the spanning tree, such as root, designated, or an alternate path in rapid spanning tree. **Port states** determine whether it forwards frames or learns MAC addresses. Original STP includes blocking, listening, learning, forwarding, and disabled states; rapid spanning tree uses discarding, learning, and forwarding. A non-forwarding alternate port can be correct. Verify the intended root, roles, and convergence before overriding protection.
+
+For a DNS-versus-gateway example, a Sales client in the Hub labs should use its own VLAN gateway, `192.168.10.1`. If it can reach Server0 at `192.168.30.10` by IP but querying `server.lab.local` times out, investigate DNS settings/service/transport. If it cannot reach its own gateway, investigate local link/VLAN/addressing first. ICMP filtering remains a possible reason for a failed ping, so corroborate it with other observations.
+
+Practice the comparisons in [IP Configuration Troubleshooting](../../../practice/pbqs/a-plus-core-1/ip-configuration-troubleshooting/README.md), [Lab 2: VLAN Configuration](../../../labs/networking/vlan-configuration/README.md), [Lab 3: Static Routing](../../../labs/networking/static-routing/README.md), and [Lab 5: Centralized DHCP and DNS Services](../../../labs/networking/centralized-dhcp-dns/README.md).
+
+### 5.4 Network performance troubleshooting
+
+Measure performance at the time and location of the complaint. Compare the end-to-end result with interface counters, traffic load, wireless conditions, and the baseline. A high advertised link rate does not establish a healthy application path.
+
+| Metric / condition | Meaning | Diagnostic implication |
+| --- | --- | --- |
+| Bandwidth / throughput capacity | The path or service's available carrying capacity | The narrowest relevant link or constrained resource limits useful performance; a 1 Gb/s access link does not overcome a 100 Mb/s WAN bottleneck. |
+| Throughput | The amount of data actually transferred per unit of time | Protocol overhead, loss/retransmissions, competing traffic, endpoint processing, and application behavior can reduce it below the link rate. |
+| Congestion / contention | Demand competes for limited forwarding capacity or shared airtime | Queues grow, delay increases, and packets can drop. Average utilization may hide bursts. On Wi-Fi, neighboring clients/APs sharing airtime contend even without a wired link at 100%. |
+| Bottlenecking | One constrained part limits the whole path | Compare each segment/resource rather than replacing the fastest component. A firewall/VPN processing limit can bottleneck otherwise fast links. |
+| Latency | Time required for traffic to travel; ping commonly reports round-trip time | High delay affects interaction. A round-trip measurement is not a one-way measurement and does not alone identify which hop is responsible. |
+| Packet loss | Some expected packets do not arrive | Can arise from congestion, errors, interference, policy, or endpoint issues. TCP may retransmit, reducing useful throughput. |
+| Jitter | Variation in packet delay | Variable arrival timing can impair voice/video even when average throughput is adequate. Compare delay variation and loss during the affected calls. |
+
+A speed test estimates throughput between particular endpoints under particular conditions. It may be constrained by the remote server, test method, Wi-Fi, background traffic, or client capacity. Compare wired and wireless measurements, direction, time, and endpoint; one result does not prove the ISP is the fault.
+
+#### Wireless symptoms
+
+| Symptom / condition | What to inspect | Distinguishing point |
+| --- | --- | --- |
+| Channel overlap / interference | Channel widths, nearby WLANs, airtime use, and relevant RF sources | Adjacent-channel overlap differs from co-channel contention. Increasing channel width can reduce useful reuse in a dense environment. |
+| Signal degradation/loss | Distance, obstacles, antenna orientation, client/AP power relationship, noise, and retries | Strong AP transmit power does not ensure that the AP hears the client's weaker return signal. |
+| Insufficient coverage | Survey measurements at actual user locations | An uncovered area differs from a well-covered area with insufficient capacity. Adding power is not a universal repair. |
+| Client disassociation | Client/AP logs, reason information, authentication, power, signal, and controller events | A disconnected client can result from RF loss or deliberate/session-related removal; association failure is different from a connected client with failed DHCP. |
+| Roaming misconfiguration | SSID/security consistency, authentication behavior, VLAN/subnet design, coverage overlap, and client decisions | A client stuck on a distant AP or repeatedly reauthenticating may interrupt sessions. Identical SSID text alone does not guarantee seamless roaming. |
+
+Broadcast storms from switching loops, incorrect link aggregation, CRC errors, speed/duplex mismatch, routing loops, MTU inconsistency, or a recent policy change can also degrade performance. Use their specific evidence from objectives 5.2 and 5.3. Distinguish **queue drops during load** from **CRC errors on the link**, and compare small-packet success with large-transfer behavior when MTU is suspected.
+
+For example, clear voice at idle but poor voice during a backup points toward shared capacity/queueing. Check utilization, loss, jitter, flow data, and the actual bottleneck before adjusting QoS. A sudden error increase after moving a patch cable points toward physical evidence instead. Related practice: [Two-Site VoIP Troubleshooting](../../../practice/pbqs/a-plus-core-1/two-site-voip-cli/README.md) and [Wireless Coverage](../../../practice/pbqs/a-plus-core-1/wireless-coverage/README.md).
+
+### 5.5 Troubleshooting tools and protocols
+
+Choose a tool for a specific question, read its actual output, and compare it with the expected design. Commands below are real OS/device examples; installed tools, permissions, interface names, and supported options vary. Packet Tracer simulates a subset, so follow each Hub lab's documented controls when using that simulator. Diagnostic probes and captures should match the approved investigation scope.
+
+#### Windows Command Prompt
+
+| Command example | What to read | What it does not prove |
+| --- | --- | --- |
+| `ipconfig /all` | Adapter addresses, masks, gateways, DHCP information, DNS servers, and lease information where applicable | A listed configuration does not establish that the next hop or service is responding. Identify the affected adapter rather than another VPN/virtual interface. |
+| `ping -n 4 192.168.10.1` | Four ICMP Echo tests, response times, and loss summary | Replies do not verify DNS or a TCP application. A timeout can reflect filtering or rate limiting. Substitute the actual gateway outside the lab. |
+| `ping -6 ::1` | IPv6 loopback response | Tests the local stack, not a remote IPv6 route, cable, or gateway. |
+| `tracert -d 192.168.30.10` | Responding hops as TTL/Hop Limit increases; `-d` avoids reverse-name lookups | Asterisks mean a probe did not receive the expected timely reply. An intermediate silent hop is not automatically a failed forwarding hop. |
+| `nslookup server.lab.local 192.168.30.10` | Queries the specified DNS server; inspect answer/status and the responding server | Does not test whether every application uses that resolver or the hosts file. An unknown reverse name for the DNS server is different from a failed requested lookup. |
+| `arp -a` | Cached IPv4 neighbor-to-MAC mappings associated with local interfaces | Does not list every remote internet host or show IPv6 neighbors. For a remote subnet, the local frame normally uses the gateway's MAC. |
+| `netstat -ano` | Connections/listeners, numeric endpoints, TCP state, and process IDs | A local listener is not proof of remote access through every firewall. UDP endpoints do not have TCP connection states. |
+| `route print` | IPv4/IPv6 routes, interfaces, next hops, and relevant metrics | An installed route can point to a failed path. Evaluate destination prefix and interface before assuming the default wins. |
+| `ipconfig /displaydns` | Windows client resolver-cache entries | Cached information may differ from a new query to an authoritative server or an application's independent cache. |
+
+`ipconfig /renew` requests renewal for DHCP-configured adapters. `ipconfig /release` discards the relevant leased configuration and can interrupt access; it is a configuration-changing action rather than a read-only test. `ipconfig /flushdns` clears dynamic client resolver-cache entries, but it cannot repair an incorrect DNS server, unreachable service, or bad authoritative record.
+
+The `-n` option above counts requests on Windows ping. On Linux ping, `-n` suppresses name resolution; use `-c` for a count. Do not transfer flags between operating systems based only on a shared command name.
+
+#### Linux command line
+
+| Command example | What to read | Important distinction |
+| --- | --- | --- |
+| `ip address show` | Addresses, prefixes, interface association, and address state | Several addresses can belong to one interface. A tentative/duplicate IPv6 address is different from a usable one. |
+| `ip link show` | Interface administrative/link information and MAC address | An administratively enabled interface is not necessarily carrying a healthy end-to-end path. |
+| `ip route show` / `ip -6 route show` | IPv4/IPv6 routes and next hops | Check each family separately. IPv6 can fail while IPv4 works. |
+| `ip neigh show` / `ip -6 neigh show` | Neighbor-cache entries and states | Covers local-link IPv4 ARP or IPv6 Neighbor Discovery information, not an inventory of every remote destination. |
+| `ping -c 4 192.168.10.1` | Four ICMP tests and round-trip/loss statistics | Network policy and response limits can affect replies. Substitute the appropriate gateway for the actual environment. |
+| `traceroute -n 192.168.30.10` | Responding hops without reverse-name lookup | Common Linux implementations use UDP probes by default, while Windows tracert uses ICMP Echo. Filtering and selected probe method can produce different results. |
+| `dig @192.168.30.10 server.lab.local A` | DNS status, answer records, flags, and responding server | `NOERROR` can still have no record of the requested type. A valid AAAA/A difference can explain differing IPv6/IPv4 behavior. |
+| `ss -tulpn` | Listening TCP/UDP sockets, numeric endpoints, and available process information | Process details may require privilege. A service bound to `127.0.0.1` or `::1` is limited to loopback. |
+| `ifconfig` / `arp -a` / `route -n` | Legacy interface, IPv4 neighbor-cache, and numeric route information | These net-tools utilities may require installation; modern Linux commonly uses the `ip` suite. Linux `route -n` is different from Windows `route print`. |
+| `netstat -tuln` | Legacy listening TCP/UDP endpoints with numeric addresses/ports | Often supplied by net-tools; `ss` is a common modern alternative. Windows netstat flags should not be assumed to have identical Linux meaning. |
+
+Use `nslookup` on supported Windows/Linux installations for direct DNS queries; use `dig` for its detailed DNS-oriented output where installed. Windows does not include `dig` as a standard Command Prompt utility. For more context, see the [Windows Command-Line Reference](../../../reference/windows-command-line.md) and [Linux Command-Line Reference](../../../reference/linux-commands.md).
+
+#### Captures, discovery, and measurement
+
+A **protocol analyzer**, such as Wireshark, decodes captured traffic. It can show whether a DHCP offer was observed, which DNS answer arrived, or whether TCP retransmissions appear at the capture point. It does not automatically reveal encrypted application plaintext or packets outside that point's visibility.
+
+For a Linux **tcpdump** example, first identify a capture interface with `tcpdump -D`. After substituting the correct interface name, this captures up to 20 packets matching a conventional DNS-port filter:
+
+```bash
+sudo tcpdump -i eth0 -nn -c 20 'port 53'
+```
+
+`-i` chooses the interface, `-nn` keeps host/port values numeric, and `-c 20` stops after 20 matching captured packets; use **Ctrl+C** if there is not enough matching traffic. The capture filter `port 53` selects relevant TCP/UDP port traffic, not all DoH/DoT queries. Wireshark **display filters** such as `dns` or `ip.addr == 192.168.30.10` select from captured packets using a different grammar. Applying a display filter does not prove other packets were never captured.
+
+**Nmap** supports host discovery and service-port investigation. For example, `nmap -sT -p 443 192.168.30.10` performs a TCP connect scan of one selected port on one approved host; it does not assume the lab server actually runs HTTPS. **Open** indicates a responding listener for the tested port, **closed** indicates a responding endpoint without that listener, and **filtered** indicates that probes did not establish either condition because filtering/response behavior obstructed the test. An open port does not prove the expected application is healthy or correctly authenticated.
+
+**LLDP** and **Cisco Discovery Protocol (CDP)** advertise supported directly connected neighbor/device information at the link layer. Use them to correlate a switch port with a neighbor and compare the cable map. A missing neighbor can reflect a disabled protocol or filtering rather than a disconnected cable. Supported Cisco commands include `show lldp neighbors detail` and `show cdp neighbors detail`; output/features depend on the model and software.
+
+A **speed tester** measures traffic performance between selected endpoints. Record test direction, timing, link type, and competing load. It measures a particular path under those conditions, not every application or an unlimited capacity guarantee.
+
+#### Hardware tools
+
+| Tool | Best suited to | Limit |
+| --- | --- | --- |
+| Toner and probe | Tracing an identified copper cable through outlets/panels using a compatible tone source/probe | Does not certify Ethernet category or throughput. Choose a tool suitable for the circuit and its active/power condition. |
+| Cable tester | Checking wire map, continuity, opens, shorts, reversals, or split pairs according to the tool | Basic testers, qualifiers, and certifiers have different capabilities; a simple continuity pass is not a category-certification result. |
+| Network tap (TAP) | Supplying copies of traffic from a chosen link to an analyzer | Design, medium, direction, capacity, and installation determine visibility. It differs from configuring a switch's mirror destination. |
+| Wi-Fi analyzer | Examining WLAN channels, SSIDs/BSSIDs, signal observations, and supported utilization information | Does not necessarily identify every non-Wi-Fi interference source or measure every client's experience. |
+| Visual fault locator (VFL) | Using visible light to help locate certain fiber breaks, bends, or continuity/polarity problems | Does not replace optical loss/power measurement or certify the intended high-speed link. |
+
+#### Basic network-device command families
+
+CompTIA lists generic command families; exact syntax differs between vendors and releases. The right column uses common **Cisco IOS privileged EXEC** examples. It does not imply that every device supports every feature or that the generic wording is a literal universal command.
+
+| Objective-style wording | Cisco IOS example | What to inspect |
+| --- | --- | --- |
+| `show mac-address-table` | `show mac address-table` | Learned MAC/VLAN/port associations. Compare with the expected endpoint path; an empty entry can age out and is not proof of a broken port. |
+| `show route` | `show ip route` | Installed IPv4 prefixes, source, next hop, and distance/metric information. |
+| `show interface` | `show interfaces GigabitEthernet0/1` | Interface/protocol state, speed/duplex information, counters, and rates available on that platform. |
+| `show config` | `show running-config` | Current configuration. Compare with `show startup-config` for saved boot settings rather than assuming they match. |
+| `show arp` | `show ip arp` | IPv4 neighbor mappings, associated interfaces, and available age/state information. |
+| `show vlan` | `show vlan brief` | VLAN existence and access-port membership. Use `show interfaces trunk` to inspect trunk transport. |
+| `show power` | `show power inline` | PoE allocation/status on a supported PoE-capable switch. The non-PoE lab switch does not acquire this capability from a command. |
+
+For switching diagnosis, supported commands such as `show spanning-tree vlan 10` and `show interfaces status` provide additional role/state or port-status evidence. The [Packet Tracer labs](../../../labs/networking/README.md) specify the model, interfaces, commands, and expected checks for each exercise. Compare your results with those checks and investigate differences before changing settings.
+
 ## Technical sources
 
 - [CompTIA Network+ N10-009 objectives, document version 6.0](https://lecbyo.files.cmp.optimizely.com/download/35a7403ab73211ef9dcda6f347fbf652): objective scope, numbering, and domain weights.
@@ -697,5 +1213,15 @@ Related practice: [SOHO Physical Installation](../../../practice/pbqs/a-plus-cor
 - [Cisco: Understand Administrative Distance](https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/15986-admin-distance.html): route-source preference, metrics, and longest-prefix forwarding.
 - [AWS: VPC infrastructure security](https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html) and [Oracle: Security Rules](https://docs.oracle.com/en-us/iaas/Content/Network/Concepts/securityrules.htm): provider-specific network rule scope and state tracking.
 - [Cisco: Wireless RF Reference Guide](https://www.cisco.com/c/en/us/td/docs/wireless/controller/9800/technical-reference/wireless-rf-reference-guide.html) and [802.11h, TPC, and DFS](https://www.cisco.com/c/en/us/support/docs/wireless-mobility/80211/200069-Overview-on-802-11h-Transmit-Power-Cont.html): wireless bands, coverage, and regulatory mechanisms.
+- [RFC 2131: DHCPv4](https://www.rfc-editor.org/rfc/rfc2131.html) and [RFC 4862: SLAAC](https://www.rfc-editor.org/rfc/rfc4862.html): address-assignment and lease/autoconfiguration behavior.
+- [RFC 1034: DNS concepts](https://www.rfc-editor.org/rfc/rfc1034.html), [RFC 4033: DNSSEC](https://www.rfc-editor.org/rfc/rfc4033.html), [RFC 7858: DoT](https://www.rfc-editor.org/rfc/rfc7858.html), and [RFC 8484: DoH](https://www.rfc-editor.org/rfc/rfc8484.html): DNS hierarchy and distinct security mechanisms.
+- [RFC 3414: SNMP user-based security](https://www.rfc-editor.org/rfc/rfc3414.html) and [RFC 3416: SNMP operations](https://www.rfc-editor.org/rfc/rfc3416.html): management security and notifications.
+- [RFC 8915: Network Time Security](https://www.rfc-editor.org/rfc/rfc8915.html): NTS key establishment and protected NTP exchanges.
+- [NIST SP 800-207: Zero Trust Architecture](https://csrc.nist.gov/pubs/sp/800/207/final), [PCI DSS](https://www.pcisecuritystandards.org/standards/pci-dss/), and the [European Commission's data-protection framework](https://commission.europa.eu/law/law-topic/data-protection/legal-framework-eu-data-protection_en): security architecture and compliance context.
+- [Microsoft Windows commands](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/windows-commands): platform-specific syntax and behavior for the Windows examples.
+- [Linux ip](https://man7.org/linux/man-pages/man8/ip.8.html), [ss](https://man7.org/linux/man-pages/man8/ss.8.html), and [tcpdump](https://man7.org/linux/man-pages/man1/tcpdump.1.html) manuals: Linux interface, socket, and capture examples.
+- [Wireshark display filters](https://www.wireshark.org/docs/wsug_html_chunked/ChWorkBuildDisplayFilterSection.html) and the [Nmap reference guide](https://nmap.org/book/man.html): capture interpretation and discovery/port-state behavior.
+- [Cisco IP ACL guidance](https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html), [LLDP configuration](https://www.cisco.com/c/en/us/td/docs/switches/lan/c9000/lyr2-fwd/cdp-lldp-mac-udld/cdp-lldp-mac-udld-configuration-guide/c-configure-lldp.html), and [interface command reference](https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/interface/command/ir-cr-book/ir-s4.html): filtering and device diagnostics.
+- [Fluke Networks: Category 8 cable testing](https://www.flukenetworks.com/expertise/learn-about/category-8-cable-testing): short-channel copper applications and test capabilities.
 
 [Back to Network+](README.md) · [Student Hub](../../../../README.md)

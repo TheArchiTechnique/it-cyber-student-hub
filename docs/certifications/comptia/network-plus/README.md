@@ -32,6 +32,10 @@ hub:hidden -->
 
     Open CompTIA's official Network+ (N10-009, V9) exam objectives.
 
+- [Student Objective Breakdown](objective-breakdown.md)
+
+    Review all 25 N10-009 objectives with definitions, comparisons, worked examples, troubleshooting guidance, and related Hub resources.
+
 - [Course Topics](#course-topics)
 
     Browse shared topic hubs.
