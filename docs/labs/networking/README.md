@@ -37,6 +37,10 @@ Build and inspect simulated networks with Cisco Packet Tracer. Start with the in
 
     Add Router1's Services route and block routed Sales/HR traffic while preserving DHCP, DNS, and shared services.
 
+- [OSI & TCP/IP Models — PDU Encapsulation and Decapsulation](osi-pdu-tracing/README.md)
+
+    Independent lab: trace ARP, ICMP, TCP, and HTTP across two subnets in Simulation Mode; compare encapsulation, switching, routing, and decapsulation. No earlier labs required.
+
 <!-- hub:hidden
 - [Browse Tools](../../tools/README.md)
 

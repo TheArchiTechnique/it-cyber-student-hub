@@ -1,0 +1,83 @@
+# Network+ OSI and TCP/IP PDU tracing lab
+
+Feature branch: `content/network-plus-osi-pdu-tracing-lab`.
+
+Canonical student page: `docs/labs/networking/osi-pdu-tracing/README.md`. The local SVG is an original topology schematic. The lab reuses `article.html`, existing responsive image/table behavior, curated Networking and Network+ cards, and the availability/navigation generator. It adds no shared UI, framework, or dependency. The six cumulative Packet Tracer labs and their previous/next links remain unchanged.
+
+## Verification boundary
+
+Target local version: **Cisco Packet Tracer 9.0.1**. Cisco's current [Resource Hub](https://www.netacad.com/resources/lab-downloads) and [Packet Tracer collection](https://www.netacad.com/catalogs/learn/cisco-packet-tracer) identify that release. Cisco's online Help documents the selected devices and simulation features, but is not evidence of execution in a particular patch release.
+
+**Static technical validation and automated Hub checks do not establish successful Packet Tracer execution.** Packet Tracer was not installed, authenticated, or launched in Work mode. No genuine starter `.pkt` was available or generated. Students build the five-device topology from complete instructions and save their own project. Simulator behavior, timing, exact 9.0.1 controls, and save/reopen remain pending the local checklist below.
+
+## Static technical review
+
+| Area | Reviewed configuration or behavior |
+| --- | --- |
+| Devices and interfaces | Cisco 2911 G0/0 and G0/1; two 2960-24TT switches using F0/1 and G0/1; PC-PT and Server-PT F0. Model availability is documented in Cisco Help; the router's interface numbering is documented in Cisco's configuration guide. |
+| Cabling | Four straight-through Ethernet links, each using a unique endpoint port. No serial interface, additional module, switch-to-switch link, or trunk is needed. |
+| IPv4 | PC-A 192.168.10.10/24 and gateway 192.168.10.1; Server-A 192.168.20.10/24 and gateway 192.168.20.1. No network/broadcast address is assigned. The router interfaces are the gateways; the two /24 networks do not overlap. |
+| IOS and routes | Privileged EXEC → global configuration → interface configuration; `ip address`, `no shutdown`, `exit`, `end`, and startup-config save. Connected routes provide both directions without static/dynamic routing or NAT. Interface status and route-table expectations are specified. |
+| ARP | PC-A resolves its local gateway, not the remote server. Router-A separately resolves Server-A on the other LAN. Broadcasts stay within their respective LANs; ARP is carried directly by Ethernet rather than IPv4. Existing caches can suppress later ARP. |
+| Capture recovery | Reset Simulation clears event history rather than ARP caches or user-created tests. Individual Simple PDUs are removed through their row's delete cell. The documented Power Cycle Devices operation clears temporary tables; the procedure saves the router startup configuration from privileged EXEC mode first, then checks/restores endpoint settings and HTTP before a new capture. |
+| ICMP | A Simple PDU queues a one-shot echo exchange. ICMP is carried by IPv4 without TCP/UDP headers or ports. Address-resolution delays can affect the first attempt. Request and reply have opposite endpoint IP pairs. |
+| Switching and routing | Switches learn source MACs and forward by destination MAC; unknown unicast can flood. Router-A ends the incoming frame and constructs a frame for the outgoing LAN. Both MAC addresses change at that router; endpoint IP addresses remain unchanged in this no-NAT topology. |
+| IPv4 TTL | Compare the same request's available inbound/outbound TTL fields at Router-A, not the request against its reply. Normal forwarding through this single router reduces TTL by one and requires an IPv4 header-checksum update. Layer 2 switching does not reduce IP TTL. The checksum rule describes IPv4 forwarding; numeric checksum comparison is not a required simulator observation. |
+| HTTP/TCP | Server-A HTTP On; direct `http://192.168.20.10` avoids DNS. Filters show ARP, TCP, and HTTP. Students inspect endpoint connection establishment, the actual client port, server TCP port 80, request/response data, and reversed response port direction. No fixed client port, event count, or hardcoded initial TTL is assumed. |
+| PDU interpretation | Availability of inbound/outbound tabs depends on receiving/sending for the event. Buffered/transmit events can show fewer layers; resolution may split receive/send processing. Students match one ICMP request when comparing routed headers. HTTP application generation can precede lower-layer encapsulation; matching TCP events can provide the remaining headers. TCP setup evidence may be labeled flags or OSI connection-state explanations. |
+| Models and terminology | Seven OSI layers map to four TCP/IP layers. TCP segment, UDP datagram, IP packet, Ethernet frame, and bits are distinguished. This lab generates no UDP; TCP setup is not taught as an OSI Layer 5 protocol. Plain HTTP does not demonstrate encryption. |
+| Worksheet | Six request observation points, ARP on both LANs, available router TTL fields, reply identification, TCP setup, HTTP headers, and port directions. Students record actual values before explanations, use “not shown” for unavailable fields, and record displayed discrepancies separately. Review questions have no accompanying answer key. |
+
+### Primary sources checked
+
+Reviewed November 2, 2026:
+
+- [CompTIA N10-009 objectives, version 6.0](https://lecbyo.files.cmp.optimizely.com/download/35a7403ab73211ef9dcda6f347fbf652): objectives 1.1, 1.2, 1.4, and 1.7 support the stated scope. The core activity is objective 1.1.
+- [Cisco router configuration guide](https://www.cisco.com/c/en/us/td/docs/routers/access/1900/software/configuration/guide/Software_Configuration/routconf.html): onboard 2911 GE interface numbering and interface-address/enable configuration.
+- Packet Tracer Help: [routers](https://tutorials.ptnetacad.net/help/default/devicesAndModules_routers.htm), [switches](https://tutorials.ptnetacad.net/help/default/devicesAndModules_switches.htm), [PC configuration](https://tutorials.ptnetacad.net/help/default/config_PCs.htm), and [server configuration](https://tutorials.ptnetacad.net/help/default/config_servers.htm).
+- Packet Tracer Help: [Simulation Mode](https://tutorials.ptnetacad.net/help/default/mode_simulation.htm), [PDU Information](https://tutorials.ptnetacad.net/help/default/mode_simulation_PDUinfo.htm), [Realtime Mode](https://tutorials.ptnetacad.net/help/default/mode_realtime.htm), and [device tables and reset behavior](https://tutorials.ptnetacad.net/help/default/myFirstPTLab.htm).
+- Protocol specifications: [ARP, RFC 826](https://www.rfc-editor.org/rfc/rfc826), [ICMP, RFC 792](https://www.rfc-editor.org/rfc/rfc792), [IPv4, RFC 791](https://www.rfc-editor.org/rfc/rfc791), and [TCP, RFC 9293](https://www.rfc-editor.org/rfc/rfc9293.html).
+- Phase 2 cross-checks: [IPv4 router requirements, RFC 1812](https://www.rfc-editor.org/rfc/rfc1812.html), particularly sections 4.2.2.5 and 5.3.1; [Cisco Packet Tracer FAQ](https://tutorials.ptnetacad.net/help/default/faqTroubleShoot.htm), including the ARP/filter and reset-table explanations.
+
+## Local Packet Tracer 9.0.1 verification checklist
+
+All rows are **pending manual execution**. Run them in order on a new local project. Record actual results separately; the Expected result column describes the validation target.
+
+Record the installed version and any differences in control placement, available header fields, or flag labels. Successful completion requires an ICMP round trip, a loaded HTTP page, and recorded observations using the available PDU/OSI views. Mark unavailable fields as **not shown** and explain the expected protocol behavior; record a displayed contradiction as a discrepancy requiring review, rather than marking that comparison passed.
+
+| Check | Commands or actions | Expected result |
+| --- | --- | --- |
+| 1. Build from instructions | Place and name all five devices; select each listed port and cable; configure both endpoints. | All models and named interfaces are available, four links are correctly connected, and addressing matches the table. No earlier lab is needed. |
+| 2. Configure and save Router-A | Enter the supplied command block, accept the startup-config filename, then run `show ip interface brief` and `show ip route`. | No syntax errors; G0/0 192.168.10.1 and G0/1 192.168.20.1 are up/up; both /24 connected routes appear. G0/2 can remain down. |
+| 3. Prepare a fresh capture | HTTP On; save `OSI_PDU_Tracing.pkt` before ping/browser use. If caches are warm, remove individual PDU test rows and follow the privileged-EXEC save/power-cycle steps in Part 2. Check/restore settings before selecting Simulation and ARP/ICMP filters. | Links recover after initialization; router addresses, endpoint IP/gateway settings, and HTTP match the setup before the next capture. No prior ping is required to start observing. |
+| 4. Resolve both local hops | Add a Simple PDU from PC-A to Server-A; use Capture/Forward and inspect the ARP events. | PC-A resolves 192.168.10.1 on the first LAN; Router-A resolves 192.168.20.10 on the second. Each ARP frame contains ARP, not an enclosing IPv4 header. Broadcasts do not cross the router. |
+| 5. Trace ICMP and prove reachability | Advance through the full request/reply; retry after ARP if the initial one-shot fails. Inspect PC-A, both switches, Router-A, and Server-A. | A subsequent completed test succeeds, with a request reaching the server and a reply returning to PC-A. No TCP/UDP header or ports appear in the ICMP packet. Available PDU tabs match each event's direction. |
+| 6. Compare the same request | At Router-A compare inbound/outbound Ethernet and IPv4 fields, using matching ICMP identifier/sequence where shown. Use matching receive/send events if tabs are split; inspect switch events too. | First LAN: PC-A MAC → router G0/0 MAC. Second LAN: router G0/1 MAC → Server-A MAC. IP remains 192.168.10.10 → 192.168.20.10; normally outbound TTL is inbound minus one. Switches do not rewrite those endpoint MACs or decrement TTL. Record unavailable TTL fields as not shown; numeric checksum comparison is not required. Investigate displayed discrepancies by rechecking packet/event identity. |
+| 7. Check repeat/reset behavior | Finish the exchange and repeat with warm caches. Compare Reset Simulation with the saved-configuration Power Cycle Devices procedure. | Warm-cache traffic may have no new ARP. Reset Simulation preserves caches/user-created test processes; power cycling clears temporary tables and preserves the saved router configuration. |
+| 8. Trace a fresh HTTP connection | Delete individual old Simple PDUs; finish pending traffic in Realtime. Enable ARP/TCP/HTTP filters, then request `http://192.168.20.10` in PC-A's browser. Use the Part 4 fresh-connection procedure if needed. | Endpoint flags or OSI connection-state explanations provide evidence of the SYN, SYN/ACK, ACK exchange. Record the actual client port; server port is 80. HTTP request/response processing is inspectable and the page loads after stepping. No DNS query is required. |
+| 9. Check encapsulation and worksheet | Inspect HTTP events and matching TCP send/receive events at both endpoints; complete every observation row and review question using the recorded trace. | Available HTTP/TCP/IP/Ethernet fields and receiving-side explanations support the tasks, possibly across separate events. No seven-layer requirement is imposed on ICMP/ARP. Worksheet entries separate observations, unavailable fields, expected behavior, and displayed discrepancies. |
+| 10. Save and reopen | Save router startup configuration and the project. Close/reopen the project locally; repeat the ICMP and HTTP checks. | Topology, endpoint settings, router configuration, and HTTP service remain usable. Do not require old Event List entries to persist; keep the observation notes separately. |
+
+## Automated Hub validation
+
+Run the existing navigation/PBQ generation checks, source validator, Python unit tests, catalog checks, strict MkDocs build, built-site checks, analytics check, and `node tests/network-plus-packet-tracer.cjs`. The latter now follows both independent-lab entry points, back links, search, keyboard image access, root/project URL prefixes, and 1440/390/320px light/dark layouts while retaining coverage for the original six-lab sequence. Its browser assertions concern the Hub, not the simulator.
+
+Phase 1 intentionally defers manual Packet Tracer execution and creation of the pull request. No unrelated content expansion is included.
+
+Phase 1 local results: generation checks passed; the source validator checked **836 local Markdown links** and **59 published student pages**; all **38 Python unit tests** passed; the catalog test and validator passed for all **19 canonical PBQs**; the strict build passed; built-site validation checked **81 HTML pages** and **6,417 local links/assets/fragments**; the analytics check passed. The Packet Tracer publication browser suite and the existing learning-resource navigation browser suite passed. Coverage includes the eight Network+ networking resources, the original six-lab progression, the independent lab's two discovery routes and returns, search, keyboard image access, root/project paths, and 1440/390/320px light/dark layouts. Rendered desktop/mobile content and the original SVG were visually reviewed. A static address/command-mode review confirmed nonoverlapping /24 networks, valid local gateways, enabled router interfaces, and both connected return paths. The setup guide and all six existing lab directories are unchanged from the starting `main` commit `64594ae23ed1512353de458f3c557f4a4d5f3c43`.
+
+## Phase 2 technical QA and integration
+
+Continues Phase 1 commit `a7f018c635c2e770afb13177d4bd6898e33ddcb3` on the same feature branch. The independent review confirmed the device/port and addressing plan, valid IOS command order, both connected return paths, four-layer mapping, protocol-specific encapsulation, ARP next-hop resolution, switching/routing distinction, frame replacement, no-NAT address preservation, and TTL/checksum requirements.
+
+Targeted corrections:
+
+- Put recording prompts before the ARP, switch-forwarding, router-header, and HTTP/TCP interpretations, with an early link to the existing worksheet.
+- Clarify how to open the PDU list and delete individual test entries. Number the cache-reset procedure, save startup configuration in privileged EXEC mode, and verify/restore settings before generating new traffic.
+- Allow HTTP application and lower-layer details to be inspected across matching events, and TCP setup to be evidenced by labeled flags or OSI connection-state explanations. Distinguish required IPv4 checksum behavior from numerical fields the simulator exposes.
+- Replace the ambiguous “TCP or UDP segment” wording in the ICMP explanation with the precise absence of TCP/UDP headers and ports; retain TCP segment versus UDP datagram terminology.
+- Align worksheet, completion criteria, and manual checks with unavailable fields and actual displayed discrepancies. Keep all manual tests pending.
+
+No shared implementation, navigation architecture, topology, or original six-lab content changes are required. Final pull-request review is the next repository step after this phase; manual Packet Tracer 9.0.1 execution remains pending and must not be inferred from automated Hub checks.
+
+Phase 2 validation: source/navigation/PBQ-generation checks passed (**837 local Markdown links**, **59 published student pages**); all **12 learning-resource/navigation unit tests** passed; the strict MkDocs build and built-site checks passed (**81 HTML pages**, **6,418 local links/assets/fragments**); the **19-PBQ catalog** remained valid. The existing Network+ Packet Tracer publication browser suite passed for all eight networking resources, including independent-lab entry/return links, search, keyboard image access, root/project URL prefixes, and 1440/390/320px light/dark layouts. A separate static check reconfirmed IOS modes, active-interface configuration, address/gateway consistency, and connected return paths. Changes are limited to the student page and this maintenance record; the setup guide, topology, shared code, navigation files, and all six original labs are unchanged. Broader unrelated browser and unit suites were not repeated for these text/procedure corrections. No Packet Tracer manual result was marked passed, and no pull request was created.

@@ -162,6 +162,10 @@ Related activities that build supporting skills for this certification.
 
     Control routed Sales/HR traffic with named extended ACLs while preserving access to shared services.
 
+- [OSI & TCP/IP Models — PDU Encapsulation and Decapsulation](../../../labs/networking/osi-pdu-tracing/README.md)
+
+    Independent N10-009 lab: build a small two-subnet topology and follow ARP, ICMP, TCP, and HTTP PDUs through endpoints, switches, and a router. No earlier labs required.
+
 ## Reference Topics
 
 - [Ports & Protocols](../../../reference/ports-and-protocols.md)
