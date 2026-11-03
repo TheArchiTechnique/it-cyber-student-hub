@@ -36,6 +36,10 @@ hub:hidden -->
 
     Review all 25 N10-009 objectives with definitions, comparisons, worked examples, troubleshooting guidance, and related Hub resources.
 
+- [Practice Quizzes](#practice-quizzes)
+
+    Launch self-paced Network+ knowledge reviews.
+
 - [Course Topics](#course-topics)
 
     Browse shared topic hubs.
@@ -76,6 +80,12 @@ hub:hidden -->
 - [Networking](../../../learn/networking/README.md)
 
     Understand how devices connect and communicate.
+
+## Practice Quizzes
+
+- [OSI Model & Network PDU Basics - Kahoot!](https://create.kahoot.it/share/osi-model-network-pdu-basics/2a222cfe-b29f-47ed-af86-358a954d8356)
+
+    Review the OSI layers, protocol data units, and encapsulation/decapsulation. Select **Play solo** on Kahoot! for independent practice.
 
 <!-- BEGIN GENERATED PBQ LISTINGS -->
 
