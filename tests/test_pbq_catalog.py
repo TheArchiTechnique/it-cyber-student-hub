@@ -119,11 +119,12 @@ class CatalogTests(unittest.TestCase):
                 content = render_listings(self.catalog, cert, metadata[field], field == 'overviewPath')
                 content = published_markdown(content)
                 with self.subTest(cert=cert, field=field):
-                    self.assertEqual(content.count('- ['), {'a-plus-core-1': 12, 'network-plus': 8, 'a-plus-core-2': 7}.get(cert, 0))
+                    self.assertEqual(content.count('- ['), {'a-plus-core-1': 12, 'network-plus': 9, 'a-plus-core-2': 7}.get(cert, 0))
                     if cert == 'network-plus':
-                        self.assertNotIn('Direct Certification Practice', content)
+                        self.assertIn('Direct Certification Practice', content)
                         self.assertIn('Foundational Practice', content)
-                        self.assertNotIn('- [', content.split('Foundational Practice')[0])
+                        self.assertIn('Network Cabling & Physical Installation PBQ', content.split('Foundational Practice')[0])
+                        self.assertNotIn('Network Cabling & Physical Installation PBQ', content.split('Foundational Practice')[1])
                     elif cert == 'a-plus-core-2':
                         self.assertIn('Direct Certification Practice', content)
                         self.assertIn('Network Configuration Concepts', content)
@@ -193,8 +194,8 @@ class CatalogTests(unittest.TestCase):
         path = root / 'mkdocs.yml'
         text = path.read_text()
         line = '      - Wireless Coverage: practice/pbqs/a-plus-core-1/wireless-coverage/README.md\n'
-        text = text.replace(line, '').replace('    - Network+: practice/pbqs/network-plus/README.md',
-            '    - Network+:\n      - Overview: practice/pbqs/network-plus/README.md\n' + line.rstrip())
+        text = text.replace(line, '').replace('      - Overview: practice/pbqs/network-plus/README.md',
+            '      - Overview: practice/pbqs/network-plus/README.md\n' + line.rstrip())
         path.write_text(text)
         self.assertIn('mkdocs.yml PBQs/', '\n'.join(repository_errors(self.catalog, root)))
 

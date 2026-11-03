@@ -28,7 +28,8 @@ assert.equal(selectPBQs(fixture).length, all.length - 2);
 assert.equal(selectPBQs(fixture, { status: 'draft' }).length, 1);
 assert.equal(selectPBQs(fixture, { status: null }).length, all.length);
 // Relevance must match the requested certification, not a different association.
-assert.equal(selectPBQs(catalog, { certification: 'network-plus', relevance: 'direct' }).length, 0);
+assert.deepEqual(selectPBQs(catalog, { certification: 'network-plus', relevance: 'direct' }).map(a => a.id), ['network-plus-physical-cabling-installation']);
+assert.ok(network.every(a => a.id !== 'network-plus-physical-cabling-installation'), 'Direct practice does not leak into foundational results');
 // Search uses titles/descriptions, trims edges, and intersects every other filter.
 assert.deepEqual(selectPBQs(catalog, { keyword: '   ' }), all);
 assert.deepEqual(selectPBQs(catalog, { keyword: '  mOtHeRbOaRd AsSeMbLy  ' }).map(a => a.id), ['motherboard-assembly']);

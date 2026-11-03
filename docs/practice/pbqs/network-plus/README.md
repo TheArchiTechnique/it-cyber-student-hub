@@ -8,11 +8,11 @@ Performance-based practice for this certification.
 
 <!-- BEGIN GENERATED PBQ LISTINGS -->
 
-<!-- hub:placeholder
 ## Direct Certification Practice
 
-No direct certification PBQs published yet.
-hub:placeholder -->
+- [Network Cabling & Physical Installation PBQ](physical-cabling-installation/README.md)
+
+    Plan distribution rooms, identify rack components, and select backbone, horizontal, patch, and direct-attach cabling for a three-story commercial building.
 
 ## Foundational Practice
 

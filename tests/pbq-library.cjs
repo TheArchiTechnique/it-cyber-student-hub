@@ -99,7 +99,8 @@ const server = http.createServer(async (request, response) => {
       await count(8);
       assert.ok((await cards.allTextContents()).every(text => text.includes('Network+: Foundational practice')));
       await control('relevance').selectOption('direct');
-      await count(0);
+      await count(1);
+      assert.equal(await cards.first().getAttribute('data-pbq-id'), 'network-plus-physical-cabling-installation');
       await control('relevance').selectOption('');
       await control('certification').selectOption('a-plus-core-2');
       const core2 = catalog.activities.filter(a => a.status === 'published' && a.certificationAssociations.some(c => c.certification === 'a-plus-core-2'));
@@ -257,7 +258,7 @@ const server = http.createServer(async (request, response) => {
     const touchPage = await mobile.newPage();
     await touchPage.goto(`${origin}${prefix}/practice/pbqs/`);
     await touchPage.locator('#pbq-certification').selectOption('network-plus');
-    assert.equal(await touchPage.locator('[data-pbq-id]').count(), 8);
+    assert.equal(await touchPage.locator('[data-pbq-id]').count(), 9);
     await touchPage.getByRole('button', { name: 'Clear Filters' }).tap();
     assert.equal(await touchPage.locator('[data-pbq-id]').count(), publishedCount);
     await mobile.close();

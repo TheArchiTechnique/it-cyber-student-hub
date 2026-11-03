@@ -67,9 +67,9 @@ class VisibilityTests(unittest.TestCase):
                         'reference/linux-commands.md'):
             self.assertIn(visible, a.visible)
         published = [item for item in a.catalog['activities'] if item['status'] == 'published']
-        self.assertEqual(len(published), 19)
+        self.assertEqual(len(published), 20)
         self.assertEqual(len(a.associations['practice/pbqs/a-plus-core-2/README.md']), 7)
-        self.assertEqual(len(a.associations['practice/pbqs/network-plus/README.md']), 8)
+        self.assertEqual(len(a.associations['practice/pbqs/network-plus/README.md']), 9)
         for item in published:
             self.assertIn(item['activityPath'] + 'README.md', a.visible)
         for key in ('practice/questions/README.md', 'certifications/comptia/a-plus-core-2/README.md'):
