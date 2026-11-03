@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="610" viewBox="0 0 1080 610" role="img" aria-labelledby="title description" font-family="Arial, sans-serif">
+  <title id="title">Independent OSI and TCP/IP PDU tracing topology</title>
+  <desc id="description">PC-A FastEthernet0 connects to Switch-A FastEthernet0/1. Switch-A GigabitEthernet0/1 connects to Router-A GigabitEthernet0/0 on 192.168.10.0/24. Router-A GigabitEthernet0/1 connects to Switch-B GigabitEthernet0/1 on 192.168.20.0/24. Switch-B FastEthernet0/1 connects to Server-A FastEthernet0. Every connection is copper straight-through.</desc>
+  <rect width="1080" height="610" fill="#fff"/>
+  <g fill="#17364c">
+    <text x="25" y="35" font-size="24" font-weight="bold">Independent PDU tracing network</text>
+    <text x="25" y="62" font-size="17">Two separate Ethernet LANs, joined by one router</text>
+  </g>
+  <g fill="#f4f8fb" stroke="#7a9eaf" stroke-width="2">
+    <rect x="20" y="85" width="655" height="195" rx="14"/>
+    <rect x="20" y="335" width="655" height="195" rx="14"/>
+  </g>
+  <g fill="#17364c" font-size="20" font-weight="bold">
+    <text x="42" y="116">PC LAN: 192.168.10.0/24</text>
+    <text x="42" y="366">Server LAN: 192.168.20.0/24</text>
+  </g>
+  <g fill="none" stroke="#36728b" stroke-width="3">
+    <path d="M285 192 H375"/>
+    <path d="M620 192 H900 V225"/>
+    <path d="M900 380 V442 H620"/>
+    <path d="M375 442 H285"/>
+  </g>
+  <g fill="#fff" stroke="#36728b" stroke-width="2">
+    <rect x="50" y="145" width="235" height="94" rx="10"/>
+    <rect x="375" y="145" width="245" height="94" rx="10"/>
+    <rect x="750" y="225" width="305" height="155" rx="12"/>
+    <rect x="375" y="395" width="245" height="94" rx="10"/>
+    <rect x="50" y="395" width="235" height="94" rx="10"/>
+  </g>
+  <g fill="#17364c" text-anchor="middle">
+    <g font-size="22" font-weight="bold">
+      <text x="167" y="176">PC-A</text>
+      <text x="497" y="176">Switch-A</text>
+      <text x="902" y="260">Router-A (2911)</text>
+      <text x="497" y="426">Switch-B</text>
+      <text x="167" y="426">Server-A</text>
+    </g>
+    <g font-size="18">
+      <text x="167" y="203">192.168.10.10/24</text>
+      <text x="167" y="227">PC-PT: F0</text>
+      <text x="497" y="203">2960-24TT</text>
+      <text x="497" y="227">F0/1 left; G0/1 right</text>
+      <text x="902" y="294">G0/0: 192.168.10.1/24</text>
+      <text x="902" y="326">G0/1: 192.168.20.1/24</text>
+      <text x="902" y="358">Routes between the LANs</text>
+      <text x="497" y="453">2960-24TT</text>
+      <text x="497" y="477">F0/1 left; G0/1 right</text>
+      <text x="167" y="453">192.168.20.10/24</text>
+      <text x="167" y="477">Server-PT: F0; HTTP On</text>
+      <text x="785" y="175">Router G0/0</text>
+      <text x="785" y="468">Router G0/1</text>
+    </g>
+  </g>
+  <g fill="#17364c" font-size="17">
+    <text x="25" y="563">PC-A gateway: 192.168.10.1. Server-A gateway: 192.168.20.1. All masks: 255.255.255.0.</text>
+    <text x="25" y="591">Four copper straight-through cables. G = GigabitEthernet; F = FastEthernet. No switch configuration required.</text>
+  </g>
+</svg>

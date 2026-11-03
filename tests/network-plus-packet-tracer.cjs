@@ -9,6 +9,8 @@ const site = path.resolve(__dirname, '../site');
 const route = 'labs/networking/packet-tracer-setup/';
 const title = 'Getting Started: Download and Install Cisco Packet Tracer';
 const start = 'Start Here — Download and Install Cisco Packet Tracer';
+const independentTitle = 'OSI & TCP/IP Models — PDU Encapsulation and Decapsulation';
+const independentRoute = 'labs/networking/osi-pdu-tracing/';
 const labs = [
   { slug: 'basic-network-configuration', title: 'Lab 1 — Basic Network Configuration', file: 'Lab1_Basic_Network.pkt', previous: 'Previous: Packet Tracer setup' },
   { slug: 'vlan-configuration', title: 'Lab 2 — VLAN Configuration', file: 'Lab2_VLAN_Configuration.pkt', previous: 'Previous: Lab 1 — Basic Network Configuration' },
@@ -61,7 +63,7 @@ const server = http.createServer(async (request, response) => {
       await page.waitForURL(base + 'labs/networking/');
       await page.locator('.hub-page').getByRole('link', { name: start, exact: true }).waitFor();
       const cards = page.locator('.hub-page li a');
-      assert.deepEqual(await cards.allTextContents(), [start, ...labs.map(lab => lab.title), 'Open Practice']);
+      assert.deepEqual(await cards.allTextContents(), [start, ...labs.map(lab => lab.title), independentTitle, 'Open Practice']);
       await page.locator('.hub-page').getByRole('link', { name: start, exact: true }).click();
       assert.equal(page.url(), base + route);
       await page.locator('.hub-article').getByRole('link', { name: 'Network+', exact: true }).click();
@@ -182,6 +184,46 @@ const server = http.createServer(async (request, response) => {
         assert.equal(page.url(), base + 'labs/networking/' + lab.slug + '/');
         await page.goBack();
       }
+      // The standalone lab is discoverable independently of the cumulative series.
+      const standaloneLaunch = page.locator('.hub-page').getByRole('link', { name: independentTitle, exact: true });
+      assert.equal(await standaloneLaunch.count(), 1, 'One certification entry for the independent lab');
+      await standaloneLaunch.click();
+      await page.waitForURL(base + independentRoute);
+      const standalone = page.locator('.hub-article');
+      assert.equal(await standalone.locator('h1').innerText(), independentTitle);
+      assert.equal(await page.locator('.hub-landing').count(), 0, 'Lab uses the shared article layout');
+      const standaloneImage = standalone.locator('img');
+      assert.equal(await standaloneImage.count(), 1);
+      await standaloneImage.evaluate(image => image.decode());
+      assert.ok((await standaloneImage.getAttribute('alt')).length > 30);
+      const standaloneImageLink = standalone.locator('a').filter({ has: page.locator('img') });
+      const standaloneImageUrl = new URL(await standaloneImageLink.getAttribute('href'), page.url()).href;
+      assert.equal(standaloneImageUrl, await standaloneImage.getAttribute('src').then(src => new URL(src, page.url()).href));
+      for (const width of [1440, 390, 320]) {
+        await page.setViewportSize({ width, height: 960 });
+        for (const theme of ['default', 'slate']) {
+          await setTheme(theme);
+          assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'Standalone lab fits the viewport');
+          assert.equal(await standaloneImage.evaluate(image => image.naturalWidth > 0 && image.getBoundingClientRect().right <= innerWidth + 1), true);
+          assert.doesNotMatch(await standalone.innerText(), /```/, 'Standalone code examples render correctly');
+          if (process.env.PACKET_TRACER_QA_DIR && prefix !== '/') {
+            await page.screenshot({ path: path.join(process.env.PACKET_TRACER_QA_DIR, `osi-pdu-tracing-${width}-${theme}.png`), fullPage: true, animations: 'disabled' });
+          }
+        }
+      }
+      await standaloneImageLink.focus();
+      await Promise.all([page.waitForURL(standaloneImageUrl), standaloneImageLink.press('Enter')]);
+      assert.equal((await page.request.get(page.url())).status(), 200);
+      await page.goBack();
+      await standalone.getByRole('link', { name: 'Back to Networking Labs', exact: true }).click();
+      await page.waitForURL(base + 'labs/networking/');
+      const standaloneCard = page.locator('.hub-page').getByRole('link', { name: independentTitle, exact: true });
+      assert.equal(await standaloneCard.count(), 1, 'One networking entry for the independent lab');
+      await standaloneCard.click();
+      await page.waitForURL(base + independentRoute);
+      assert.equal(await standalone.getByRole('link', { name: /^Next:|^Previous:/ }).count(), 0, 'Standalone lab is outside the cumulative sequence');
+      await standalone.getByRole('link', { name: 'Network+', exact: true }).click();
+      await page.waitForURL(base + 'certifications/comptia/network-plus/');
       await page.goto(base + route);
       await page.locator('.hub-article').getByRole('link', { name: 'Back to Networking Labs', exact: true }).click();
       assert.equal(page.url(), base + 'labs/networking/');
@@ -189,6 +231,11 @@ const server = http.createServer(async (request, response) => {
       const search = await (await page.request.get(base + 'search/search_index.json')).json();
       assert.ok(search.docs.some(doc => doc.location === route && doc.title === title));
       assert.ok(search.docs.some(doc => doc.location === 'labs/networking/'));
+      const independentSearchEntry = search.docs.find(doc => doc.location === independentRoute);
+      assert.ok(independentSearchEntry, 'Independent lab appears in search');
+      const independentSearchTitle = await page.evaluate(encoded =>
+        new DOMParser().parseFromString(encoded, 'text/html').body.textContent, independentSearchEntry.title);
+      assert.equal(independentSearchTitle, independentTitle, 'Search title decodes to the student-facing title');
       for (const lab of labs)
         assert.ok(search.docs.some(doc => doc.location === 'labs/networking/' + lab.slug + '/' && doc.title === lab.title));
       for (const unpublished of ['labs/cybersecurity/', 'labs/log-analysis/', 'labs/incident-response/']) {
@@ -198,7 +245,7 @@ const server = http.createServer(async (request, response) => {
       }
     }
     assert.deepEqual(errors, []);
-    console.log('Passed: Home/Labs and all seven Network+ resources; setup → Labs 1–6 and previous/next/collection links; 14 setup images and 6 topology diagrams; keyboard image/link access; 1440/390/320px light/dark layouts; commands, search, root/project paths, and empty-category exclusion. Packet Tracer itself was not run.');
+    console.log('Passed: Home/Labs and all eight Network+ resources; setup → Labs 1–6 and independent OSI/PDU tracing; previous/next/collection links; 14 setup images and 7 topology diagrams; keyboard image/link access; 1440/390/320px light/dark layouts; commands, search, root/project paths, and empty-category exclusion. Packet Tracer itself was not run.');
     await context.close();
   } finally { await browser.close(); server.close(); }
 })().catch(error => { console.error(error); server.close(); process.exitCode = 1; });
