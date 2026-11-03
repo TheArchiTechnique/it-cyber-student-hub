@@ -4,7 +4,7 @@
   const e = A.esc;
   const I = M.inspection, choices = {role:M.roomRoles,component:M.components,media:M.media,...I.kinds};
   let state = M.fresh(), selected = null, storageOK = true, restoredInstallation = false;
-  try { const raw = JSON.parse(localStorage.getItem(M.KEY)); restoredInstallation = raw?.version === 1 && Object.keys(raw.answers || {}).length > 0; state = M.sanitize(raw); } catch { /* A new attempt also recovers unreadable saved data. */ }
+  try { const raw = JSON.parse(localStorage.getItem(M.KEY)); state = M.sanitize(raw); restoredInstallation = raw?.version === 1 && Object.keys(state.answers).length > 0; } catch { /* A new attempt also recovers unreadable saved data. */ }
   const say = message => { $('#status').textContent = message; };
   function save() {
     try { localStorage.setItem(M.KEY, JSON.stringify(state)); storageOK = true; }
@@ -21,8 +21,7 @@
     $(selector).innerHTML = Object.entries(items).map(([id, name]) => `<button class="pick" draggable="true" data-kind="${kind}" data-item="${e(id)}" aria-pressed="false">${kind === 'media' ? A.cable(id) : kind === 'component' && id !== 'ups' ? A.unit(id) : ''}<span>${e(name)}</span></button>`).join('');
   }
   function credit(p) {
-    const changes = p.changes.startsWith('Cropped') ? 'Detail crop.' : p.changes.startsWith('Resized') ? 'Resized.' : '';
-    return `Photo: ${e(p.author)} · ${p.licenseURL ? `<a href="${e(p.licenseURL)}" target="_blank" rel="noopener">${e(p.license)}</a>` : e(p.license)} · <a href="${e(p.source)}" target="_blank" rel="noopener">Source</a>. ${changes}`;
+    return `Photo: ${e(p.author)} · ${p.licenseURL ? `<a href="${e(p.licenseURL)}" target="_blank" rel="noopener">${e(p.license)}</a>` : e(p.license)} · <a href="${e(p.source)}" target="_blank" rel="noopener">Source</a>. ${e(p.changes)}.`;
   }
   function photograph(id, title) {
     const p = I.photos[id];
@@ -118,7 +117,11 @@
     }
     for (const label of $$('[data-unit-label]')) label.textContent = M.components[state.answers[label.dataset.unitLabel]] || 'Unidentified';
     for (const label of $$('[data-cable-label]')) label.textContent = M.media[state.answers[label.dataset.cableLabel]] || 'Place selected cable here';
-    for (const label of $$('[data-inspection-label]')) { const task = M.byId[label.dataset.inspectionLabel]; label.textContent = task.options[state.answers[task.id]] || 'Assign identification'; }
+    for (const label of $$('[data-inspection-label]')) {
+      const task = M.byId[label.dataset.inspectionLabel], answer = task.options[state.answers[task.id]];
+      label.textContent = answer || 'Assign identification';
+      label.closest('button').setAttribute('aria-label', task.name + ': ' + (answer || 'no identification selected') + '. Place a selected label.');
+    }
     for (const pick of $$('.pick')) {
       pick.setAttribute('aria-pressed', String(Boolean(selected && selected.kind === pick.dataset.kind && selected.value === pick.dataset.item)));
       pick.disabled = state.submitted;
@@ -163,6 +166,7 @@
     }).join('') + '<button id="retry" class="primary retry">Continue editing</button>';
     $('#results').hidden = false;
     if (focus) { $('#results').scrollIntoView({block:'start'}); $('#results').focus(); }
+    return result;
   }
   tray('#role-tray', 'role', M.roomRoles);
   tray('#component-tray', 'component', M.components);
@@ -236,7 +240,7 @@
     } catch { say('Select an item from the installation inventory.'); }
   });
   document.addEventListener('dragend', () => { selected = null; $$('.drop-over').forEach(n => n.classList.remove('drop-over')); render(); });
-  $('#submit').addEventListener('click', () => { state.submitted = true; selected = null; render(); feedback(true); say('Installation submitted. Results and explanations are available below.'); });
+  $('#submit').addEventListener('click', () => { state.submitted = true; selected = null; render(); const result = feedback(true); say('Installation submitted. ' + result.score + ' of ' + result.total + ' decisions correct. Results and explanations are available below.'); });
   $('#reset').addEventListener('click', () => $('#confirm').showModal());
   $('#keep').addEventListener('click', () => $('#confirm').close());
   $('#close-photo').addEventListener('click', () => $('#photo-inspector').close());

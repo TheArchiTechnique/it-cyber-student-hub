@@ -1,5 +1,5 @@
 // Model checks: npm run test:network-plus-physical-cabling
-// Actual browser checks after mkdocs build --strict: append -- --browser
+// Actual browser checks after mkdocs build --strict: append -- --browser [--firefox]
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');
@@ -67,6 +67,12 @@ assert.equal(migrated.submitted,false,'Expanded work order reopens a legacy revi
 assert.equal(M.grade(migrated).score,21);
 assert.equal(M.sanitize({...attempt(solution),submitted:'true'}).submitted,false);
 assert.equal(M.sanitize({...attempt(solution),submitted:true}).submitted,true);
+for (const raw of [false,42,'saved',[],{}, {version:2,answers:null}, {version:2,answers:[]}, {version:2,answers:'mdf'}]) {
+  assert.deepEqual(M.sanitize(raw),M.fresh(),'Malformed shapes recover without interpreting answers');
+}
+assert.deepEqual(M.sanitize({version:2,answers:{...solution,b1:'invalid',extra:'mdf'}}).answers,
+  Object.fromEntries(Object.entries(solution).filter(([id])=>id!=='b1')),'Only valid known answers survive');
+assert.doesNotMatch(M.byId.module.prompt+' '+M.byId.module.evidence,/\bQ?SFP\b/i,'Module evidence must not name its scored family');
 assert.deepEqual(M.inspection.wiring.A,['White/green','Green','White/orange','Blue','White/blue','Orange','White/brown','Brown']);
 assert.deepEqual(M.inspection.wiring.B,['White/orange','Orange','White/green','Blue','White/blue','Green','White/brown','Brown']);
 require('../docs/practice/pbqs/network-plus/physical-cabling-installation/app/art.js');
@@ -88,10 +94,15 @@ for(const photo of photographs) {
  assert.ok(stat.size>4000 && stat.size<350000,'Bounded, optimized real photograph');
  assert.ok(photo.width>=350 && photo.height>=240);
 }
+for (const task of M.inspection.tasks.filter(t=>t.photo)) {
+  const answerName = {utp:/\bUTP\b/i,stp:/\bSTP\b/i,coax:/\bcoax/i,dac:/\b(twinax|DAC)\b/i,rj45:/\bRJ45\b/i,f:/\bF-type\b/i,lc:/\bLC\b/i,mpo:/\bMPO\b/i,qsfp:/\bQSFP\b/i}[task.photo];
+  assert.doesNotMatch(M.inspection.photos[task.photo].alt,answerName,'Scored specimen alt describes features without naming the answer');
+}
 console.log('PASS model: preserved 21-decision grading, 16 additions, all options, independent partial credit, legacy migration, pin orders/orientation, and licensed local photographs.');
 
 async function browserTests() {
-  const {chromium} = require('playwright');
+  const engine = process.argv.includes('--firefox') ? 'firefox' : 'chromium';
+  const browserType = require('playwright')[engine];
   const site = path.resolve(__dirname,'../site');
   const prefix = '/it-cyber-student-hub';
   const mime = {'.html':'text/html','.css':'text/css','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.svg':'image/svg+xml','.jpg':'image/jpeg','.webp':'image/webp'};
@@ -109,7 +120,7 @@ async function browserTests() {
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
   let browser;
   try {
-    browser = await chromium.launch({executablePath:process.env.PBQ_CHROMIUM_PATH || undefined,args:['--no-sandbox','--disable-dev-shm-usage']});
+    browser = await browserType.launch(engine === 'chromium' ? {executablePath:process.env.PBQ_CHROMIUM_PATH || undefined,args:['--no-sandbox','--disable-dev-shm-usage']} : {});
     const origin = 'http://127.0.0.1:' + server.address().port;
     const errors = [];
     const context = await browser.newContext({viewport:{width:1440,height:1100},reducedMotion:'reduce'});
@@ -119,6 +130,45 @@ async function browserTests() {
     const appPath = 'practice/pbqs/network-plus/physical-cabling-installation/app/';
     const stored = ()=>page.evaluate(key=>JSON.parse(localStorage.getItem(key)),M.KEY);
     const select = (id,value)=>page.locator(`[data-answer="${id}"]`).selectOption(value);
+    async function keyboardSelect(locator,value) {
+      const index = await locator.locator('option').evaluateAll((nodes,value)=>nodes.findIndex(n=>n.value===value),value);
+      assert.ok(index>=0);
+      await locator.focus();
+      await page.keyboard.press('Home');
+      for(let i=0;i<index;i++) await page.keyboard.press('ArrowDown');
+      await page.keyboard.press('Tab');
+      assert.equal(await locator.inputValue(),value,'Native keyboard selection');
+    }
+    async function complete(answers,keyboard=false) {
+      for(const room of M.rooms) {
+        if(keyboard) await keyboardSelect(page.locator('#room-picker'),room.id);
+        else await page.locator('#room-picker').selectOption(room.id);
+        for(let i=0;i<3;i++) {
+          const id=room.id+'-'+i;
+          if(keyboard) await keyboardSelect(page.locator(`[data-answer="${id}"]`),answers[id]);
+          else await select(id,answers[id]);
+        }
+      }
+      for(const [id,value] of Object.entries(answers).filter(([id])=>!/^r\d+-\d$/.test(id))) {
+        if(keyboard) await keyboardSelect(page.locator(`[data-answer="${id}"]`),value);
+        else await select(id,value);
+      }
+    }
+    async function verifyScore(expected,answers) {
+      assert.equal(await page.locator('.score').innerText(),expected+' / 37');
+      assert.equal(await page.locator('.feedback.good').count(),expected);
+      assert.equal(await page.locator('.feedback').count(),37);
+      let subtotal=0,decisions=0;
+      for(const group of await page.locator('.group-result').all()) {
+        const match=(await group.locator(':scope > h3').innerText()).match(/(\d+) \/ (\d+)$/);
+        subtotal+=Number(match[1]); decisions+=Number(match[2]);
+        assert.equal(await group.locator('.feedback.good').count(),Number(match[1]));
+        assert.equal(await group.locator('.feedback').count(),Number(match[2]));
+      }
+      assert.equal(subtotal,expected); assert.equal(decisions,37);
+      assert.deepEqual((await stored()).answers,answers,'Grading preserves every submitted selection');
+      assert.match(await page.locator('#status').innerText(),new RegExp(expected+' of 37 decisions correct'));
+    }
     async function reset() {
       await page.locator('#reset').click();
       assert.equal(await page.locator('#confirm').evaluate(d=>d.open),true);
@@ -135,6 +185,9 @@ async function browserTests() {
       assert.equal(await page.locator('#results').isHidden(),true);
       assert.equal(await page.locator('.feedback').count(),0,'No answer feedback before submission');
       assert.equal(await page.locator('select[data-answer]').evaluateAll(ns=>ns.every(n=>n.value==='')),true,'No preselected answers');
+      for(const task of M.inspection.tasks.filter(t=>M.inspection.kinds[t.kind])) {
+        assert.ok((await page.locator(`#job-${task.id} .answer-target`).getAttribute('aria-label')).includes(task.name),'Matching targets expose task context');
+      }
       // Empty and incorrect attempts must still have explainable feedback.
       await page.locator('#submit').click();
       assert.equal(await page.locator('.score').innerText(),'0 / 37');
@@ -142,6 +195,18 @@ async function browserTests() {
       assert.equal(await page.locator('.feedback').filter({hasText:'Unanswered'}).count(),37);
       await page.locator('#retry').click();
       assert.equal(await page.locator('.feedback').count(),0,'Retry clears stale explanations');
+      await complete(wrong);
+      await page.locator('#submit').click();
+      await verifyScore(0,wrong);
+      assert.equal(await page.locator('.feedback.bad').filter({hasText:'Incorrect'}).count(),37,'Every incorrect choice is explained');
+      await reset();
+      await select('b1','om3'); await select('b2','om3');
+      await page.reload();
+      assert.equal(await page.locator('#progress').innerText(),'2 / 37 answered');
+      await page.locator('#submit').click();
+      await verifyScore(1,{b1:'om3',b2:'om3'});
+      assert.equal(await page.locator('.feedback.bad').filter({hasText:'Unanswered'}).count(),35);
+      await reset();
       // Use native keyboard activation for a room label.
       await page.locator('[data-kind=role][data-item=mdf]').focus();
       await page.keyboard.press('Space');
@@ -181,12 +246,24 @@ async function browserTests() {
       // New recognition tasks support native drag, keyboard placement, dropdowns, and inspection.
       await page.locator('#recognition-media-tray [data-item=utp]').dragTo(page.locator('#job-m-u .answer-target'));
       assert.equal((await stored()).answers['m-u'],'utp');
+      await page.locator('#recognition-media-tray [data-item=coax]').dragTo(page.locator('#job-m-u .answer-target'));
+      assert.equal((await stored()).answers['m-u'],'coax','A drop replaces only the target answer');
+      await page.locator('#recognition-media-tray [data-item=utp]').dragTo(page.locator('#job-m-u .answer-target'));
+      await page.locator('#recognition-media-tray [data-item=utp]').dragTo(page.locator('#job-m-s .answer-target'));
+      assert.equal((await stored()).answers['m-u'],'utp','Reusing an inventory item retains the earlier placement');
+      assert.equal((await stored()).answers['m-s'],'utp');
+      assert.equal(await page.locator('#recognition-media-tray .pick').count(),6,'Dragging never consumes inventory');
+      await page.locator('#connector-tray [data-item=lc]').dragTo(page.locator('#job-m-u .answer-target'));
+      assert.equal((await stored()).answers['m-u'],'utp','Wrong-family drops cannot replace an answer');
       await page.locator('#job-m-u .inspect-photo').click();
       assert.equal(await page.locator('#photo-inspector').evaluate(n=>n.open),true);
+      assert.equal(await page.locator('#close-photo').evaluate(n=>n===document.activeElement),true,'Photo dialog receives focus');
       assert.equal(await page.locator('#photo-title').innerText(),M.byId['m-u'].name,'Inspection title stays neutral');
       await page.locator('#photo-large').evaluate(n=>n.decode());
       await page.keyboard.press('Escape');
       assert.equal(await page.locator('#photo-inspector').evaluate(n=>n.open),false);
+      assert.equal(await page.locator('#job-m-u .inspect-photo').evaluate(n=>n===document.activeElement),true,'Escape restores the photograph opener');
+      assert.match(await page.locator('#job-m-u').ariaSnapshot(),/img "Four exposed color-coded pairs/,'Nonvisual image features remain in the accessibility tree');
       await page.locator('#recognition-media-tray [data-item=stp]').focus();
       await page.keyboard.press('Space');
       await page.locator('#job-m-s .answer-target').focus();
@@ -207,10 +284,13 @@ async function browserTests() {
       await page.reload();
       assert.equal(Object.keys((await stored()).answers).length,37);
       await page.locator('#submit').click();
-      assert.equal(await page.locator('.score').innerText(),'37 / 37');
+      await verifyScore(37,solution);
       assert.equal(await page.locator('.feedback.good').count(),37);
       assert.equal(await page.locator('[data-answer]').evaluateAll(ns=>ns.every(n=>n.disabled)),true);
       assert.equal(await page.locator('#results').evaluate(n=>n===document.activeElement),true);
+      const locked=await stored();
+      await page.locator('[data-answer=b1]').dispatchEvent('change');
+      assert.deepEqual(await stored(),locked,'Review controls cannot change stored answers');
       await page.reload();
       assert.equal(await page.locator('.score').innerText(),'37 / 37','Review survives refresh');
       await page.locator('#retry').click();
@@ -225,9 +305,20 @@ async function browserTests() {
       await select('h2-rating','cmp');
       await page.locator('#submit').click();
       assert.equal(await page.locator('.score').innerText(),'37 / 37','Valid alternative gets full credit');
+      await reset();
+      await complete(solution,true);
+      await page.locator('#submit').focus();
+      await page.keyboard.press('Enter');
+      await verifyScore(37,solution);
       // Lesson navigation, actual photos, and keyboard tab behavior.
       await page.locator('#activity-tab').focus();
       await page.keyboard.press('ArrowRight');
+      assert.equal(await page.locator('#lesson').isVisible(),true);
+      await page.keyboard.press('Home');
+      assert.equal(await page.locator('#activity-tab').evaluate(n=>n===document.activeElement),true);
+      assert.equal(await page.locator('#activity').isVisible(),true);
+      await page.keyboard.press('End');
+      assert.equal(await page.locator('#lesson-tab').evaluate(n=>n===document.activeElement),true);
       assert.equal(await page.locator('#lesson').isVisible(),true);
       await page.locator('.lesson-topic').evaluateAll(nodes=>nodes.forEach(n=>n.open=true));
       await page.locator('#lesson img').evaluateAll(images=>images.forEach(i=>i.loading='eager'));
@@ -238,11 +329,17 @@ async function browserTests() {
       for(const [id,photo] of Object.entries(M.inspection.photos)) {
         const image=page.locator(`#lesson img[src="${photo.file}"]`).first();
         assert.equal(await image.evaluate(n=>n.naturalWidth),photo.width,id+' local photograph loads at expected resolution');
+        assert.ok((await image.locator('xpath=ancestor::figure').innerText()).includes(photo.changes),'Full modification notice accompanies '+id);
+        await image.locator('..').click();
+        await page.locator('#photo-large').evaluate(n=>n.decode());
+        assert.equal(await page.locator('#photo-large').evaluate(n=>n.naturalWidth),photo.width,id+' inspection uses the complete local image');
+        assert.ok((await page.locator('#photo-credit').innerText()).includes(photo.changes));
+        await page.keyboard.press('Escape');
       }
       for (const href of await page.locator('#lesson a').evaluateAll(ns=>ns.map(n=>n.href).filter(s=>new URL(s).origin===location.origin))) {
         const r=await page.request.get(href); assert.equal(r.status(),200,'Local lesson reference '+href);
       }
-      for (const width of [1440,820,390,320]) {
+      for (const width of [1440,1280,768,375,320]) {
         await page.setViewportSize({width,height:1000});
         assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,'Lesson fits '+width);
         await page.locator('#activity-tab').click();
@@ -253,6 +350,11 @@ async function browserTests() {
       await page.setViewportSize({width:1440,height:1100});
       await page.locator('#activity-tab').click();
       const before = await stored();
+      await page.locator('#reset').click();
+      assert.equal(await page.locator('#keep').evaluate(n=>n===document.activeElement),true,'Reset initially focuses the safe action');
+      await page.keyboard.press('Escape');
+      assert.deepEqual(await stored(),before,'Escape cancels reset without changing the attempt');
+      assert.equal(await page.locator('#reset').evaluate(n=>n===document.activeElement),true);
       await page.locator('#reset').click();
       await page.locator('#keep').click();
       assert.deepEqual(await stored(),before,'Keep working cancels reset');
@@ -271,6 +373,36 @@ async function browserTests() {
       assert.equal(await page.locator('#results').isHidden(),true);
       assert.match(await page.locator('#status').innerText(),/saved installation answers have been kept/);
       assert.equal(await page.locator('[data-answer=m-u]').inputValue(),'');
+      for(const raw of [{version:2,answers:{b1:'om3',b2:'bad',extra:'mdf'},room:'missing'}, {version:2,answers:null,submitted:true}, {version:1,answers:{r101:'invalid',unknown:'mdf'},submitted:true}, {version:99,answers:solution,submitted:true}]) {
+        await page.evaluate(([key,raw])=>localStorage.setItem(key,JSON.stringify(raw)),[M.KEY,raw]);
+        await page.reload();
+        const expected=M.sanitize(raw);
+        assert.deepEqual(await stored(),expected,'Malformed v2 values are filtered safely');
+        if(expected.submitted) assert.equal(await page.locator('.score').innerText(),'0 / 37');
+        else assert.equal(await page.locator('#results').isHidden(),true);
+        if(!Object.keys(expected.answers).length) assert.doesNotMatch(await page.locator('#status').innerText(),/answers have been kept/,'No migration notice claims invalid answers were retained');
+      }
+      // Confirm the existing certification/listing entries lead to one overview.
+      for(const route of ['certifications/comptia/network-plus/','practice/pbqs/network-plus/']) {
+        await page.goto(base+route);
+        const link=page.locator('.hub-page a').filter({hasText:'Network Cabling & Physical Installation PBQ'});
+        assert.equal(await link.count(),1,'One direct activity entry in '+route);
+        await link.click();
+        await page.waitForURL(base+'practice/pbqs/network-plus/physical-cabling-installation/');
+        const launch=page.getByRole('link',{name:'Launch Network Cabling & Physical Installation PBQ',exact:true});
+        assert.equal(await launch.getAttribute('href'),'https://thearchitechnique.github.io/it-cyber-student-hub/'+appPath,'Overview preserves the canonical GitHub Pages launch used by Hub/GitBook content');
+      }
+      await page.goto(base+'practice/pbqs/');
+      await page.locator('[data-pbq-id]').first().waitFor();
+      await page.locator('#pbq-keyword').fill('termination tests');
+      assert.equal(await page.locator('[data-pbq-id]').count(),1,'Current metadata is discoverable');
+      assert.equal(await page.locator('[data-pbq-id]').getAttribute('data-pbq-id'),'network-plus-physical-cabling-installation');
+      await page.locator('[data-pbq-id] .pbq-library-launch').click();
+      await page.waitForURL(base+appPath);
+      await page.locator('[data-pbq-nav=certification]').click();
+      await page.waitForURL(base+'practice/pbqs/network-plus/');
+      const search=await (await page.request.get(base+'search/search_index.json')).json();
+      assert.equal(search.docs.filter(d=>d.location==='practice/pbqs/network-plus/physical-cabling-installation/').length,1,'The overview is indexed once');
       // Existing standalone PBQs still use their own controls and saved state.
       for (const slug of ['soho-physical-installation','wireless-coverage']) {
         assert.equal((await page.goto(base+'practice/pbqs/a-plus-core-1/'+slug+'/app/')).status(),200);
@@ -281,7 +413,7 @@ async function browserTests() {
         assert.equal(await page.locator('#activity').isVisible(),true);
       }
     }
-    const touchContext = await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true});
+    const touchContext = await browser.newContext({viewport:{width:375,height:844},hasTouch:true,isMobile:engine==='chromium'});
     const touch = await touchContext.newPage();
     touch.on('pageerror',err=>errors.push(err.message));
     await touch.goto(origin+prefix+'/'+appPath);
@@ -310,7 +442,7 @@ async function browserTests() {
     await blockedContext.close();
     assert.deepEqual(errors,[],'No browser runtime errors');
     await context.close();
-    console.log('PASS Chromium: complete 37-decision work order, original building/racks, new native matching, photo inspection, keyboard/touch, partial scoring, legacy migration, persistence/reset, lesson images/pin diagrams, responsive layouts, and Hub links.');
+    console.log(`PASS ${engine} ${browser.version()}: complete 37-decision work orders by keyboard and matching; all-wrong, partial, mixed, and alternate scoring; section totals; reusable/replacement/wrong-family drops; dialog focus; legacy/v2/malformed/blocked storage; touch; images/diagrams; 320–1440 px layouts; and Hub links.`);
   } finally {if(browser)await browser.close();await new Promise(resolve=>server.close(resolve));}
 }
 if (process.argv.includes('--browser')) browserTests().catch(error=>{console.error(error);process.exitCode=1;});
