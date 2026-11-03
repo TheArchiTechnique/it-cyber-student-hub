@@ -1,61 +1,97 @@
 # Network+ physical cabling and installation
 
-## Phase 1 checkpoint
+## Checkpoints and scope
 
 Branch: `content/network-plus-physical-cabling-pbq`.
 
 Canonical activity: `docs/practice/pbqs/network-plus/physical-cabling-installation/`.
 
-One dependency-free standalone app follows the existing SOHO Physical Installation and Wireless Coverage shell: Activity/Lesson tabs, inventory, building workspace, native dropdown alternatives, post-submission results, confirmation dialog, and local progress. The existing build hook supplies Student Hub exit navigation and analytics. No shared application code or styles are changed.
+Phase 1 checkpoint: `49eaea42437005b8ccb2e7f0c7b5d79b4921a50f`. Its three-story building renderer, room roles, rack units, cable jobs, answer options, and 21 individual scoring rules are preserved. The existing Activity/Lesson shell, exit navigation, catalog identity, reset/retry, and saved-progress workflow remain the foundation. No shared application code, styles, routing, or dependencies change in Phase 2.
 
-The catalog registers this implementation once under Network+. Existing generators supply certification listings, navigation, and GitBook Summary. Phase 1 is a complete building-installation activity, not a claim that every media-recognition or troubleshooting exercise is implemented.
+Phase 2 adds receiving inspection, termination acceptance, tool jobs, three additional fault tickets, and the corresponding lesson content. It adds 16 assessed decisions to the original 21, for 37 total. The termination acceptance ticket is Fault A; it is counted once, not repeated in the follow-up fault section.
 
 ## Objective-to-interaction map
 
-Scope authority: [CompTIA N10-009 objectives, version 6.0](https://lecbyo.files.cmp.optimizely.com/download/35a7403ab73211ef9dcda6f347fbf652), verified 2026-11-03; compare the Hub’s current Network+ objective breakdown. Objective descriptions below are summaries.
+Scope authority: [CompTIA N10-009 objectives, version 6.0](https://lecbyo.files.cmp.optimizely.com/download/35a7403ab73211ef9dcda6f347fbf652), rechecked 2026-11-03, alongside the Hub's Network+ objective breakdown. These descriptions summarize the relevant concepts.
 
-| Objective | Phase 1 implementation | Deferred interaction/content |
-| --- | --- | --- |
-| 1.5: Media and transceivers | SR/MMF versus LR/SMF; port compatibility; Cat6/Cat6A application constraints; twinax DAC; plenum context | Photographic copper/fiber and connector identification, SFP versus QSFP, coaxial applications |
-| 2.4: Installation factors | Three room roles; nine rack-component identifications; passive copper and fiber panels; rack organization and environment | Broader media identification, no advanced rack construction |
-| 3.1: Documentation | Physical building diagram, labeled routes, room survey, cable schedule and lesson cable-map example | Additional recognition tasks if useful |
-| 5.2: Physical issues | Selection evidence for unsuitable cable, UTP/STP, optics mismatch, excessive Cat6 10G reach | Termination faults, crosstalk, attenuation and evidence-based troubleshooting |
-| 5.5: Tools | No scored tool exercise in Phase 1 | Cable tester, toner, visual fault locator |
+| Objective | Implemented work |
+| --- | --- |
+| 1.5: Media and transceivers | Original backbone/media choices; photographed UTP, STP, coax, DAC; connector recognition; all eight requested connector families in the photographic lesson; SMF/MMF and SFP/QSFP comparisons |
+| 2.4: Installation factors | Original MDF/IDF, racks, copper/fiber panels, patching, and environmental requirements; delivery records distinguish physical families from installation approval |
+| 3.1: Documentation | Original building and rack diagrams, room survey and cable schedule; follow-up outlet and maintenance records |
+| 5.2: Physical interface issues | Split-pair diagnosis, interference evidence, incompatible replacement optic, and excessive attenuation/length, with supported corrections |
+| 5.5: Tools | Match a wire-map tester, toner/probe, and visual fault locator to realistic jobs; interpret simulated observations and tool limitations |
 
-Riser jackets are supporting context, not an explicitly named N10-009 list item. T568A/B diagrams and termination concepts belong to Phase 2. Optical multiplexing and BiDi are outside this activity’s required scope.
+T568A/B diagrams and riser context support termination and installation understanding. They are not presented as standalone explicitly listed objectives. Optical multiplexing, BiDi, advanced optical calculations, vendor connector engineering, and detailed building-code assessment are outside the required activity.
 
-## Deterministic scoring
+## Work orders and scoring
 
-Twenty-one equally weighted decisions: 3 room labels, 9 rack units, 2 backbone media selections, 3 horizontal media selections, 1 independent jacket rating, and 3 patch/direct-attach choices. Every point depends only on that answer and the fixed job requirements. H1 accepts both Cat6 UTP and Cat6A UTP; equivalent valid alternatives must receive credit. A wrong MDF label does not alter the optical requirements or invalidate a correctly identified switch.
+| Assessed section | Decisions | Evidence and interaction |
+| --- | ---: | --- |
+| Original installation | 21 | Existing room labels, nine rack units, backbone/horizontal media, independent H2 jacket rating, patching and DAC |
+| Media recognition | 4 | Photographic construction/assembly inspection with reusable labels or dropdowns |
+| Connector recognition | 4 | Photographed RJ45, F-type, LC, and MPO receiving records; all eight connector labels are available, and all eight have lesson photos |
+| Module family | 1 | Actual QSFP+ photograph plus a model record; classify the family separately from the connector/application |
+| Copper termination / Fault A | 1 | Simulated pin-for-pin continuity and a failed pair-integrity test; identify split pairs and the appropriate T568B repair |
+| Tool jobs | 3 | Trace an outlet, interpret an open-conductor wire map, and interpret visible light escaping from damaged fiber |
+| Follow-up Faults B–D | 3 | Evidence-supported interference repair, replacement-optic compatibility repair, and correction of a too-long copper channel |
+| Total | 37 | One point per decision, independently evaluated |
 
-Rack units are supplied hardware to identify, not arbitrary positions to construct. Bay letters are neutral labels. Inventory items are reusable, so dragging or replacing an answer cannot consume or lose another item. Incorrect item types are rejected without affecting any answer. Grading only occurs on submission. The attempt is read-only during review; Continue editing hides the previous feedback and retains selections. Reset clears answers and results after confirmation. The storage key is unique to this PBQ, uses schema version 1, and validates all restored answer IDs and choices. Storage failure leaves the activity usable.
+Each disposition combines diagnosis and repair into one work-order decision. Every option is checked against its own fixed evidence. Original H1 continues to accept either Cat6 UTP or Cat6A UTP. Original room mistakes cannot invalidate correct cable choices; new mistakes cannot change original scores. No correct answer is preselected. Results appear on submission, with per-decision selections, acceptable answers, explanations, and group totals. Review is read-only until Continue editing. Reset requires confirmation and clears this PBQ's complete attempt only.
 
-The building is an original SVG schematic generated by `art.js`, including desks, work-area outlets, racks, doors, corridors, provider entrance, vertical pathway, separate backbone routes, and a marked air-return pathway. Dashes indicate an unanswered route, not a signal fault. Drawn lines are physical pathways; component identification does not change routes. Lengths reflect installed paths rather than proportional drawing distances. B1/B2 distances include the optical patch leads; horizontal distances distinguish permanent link and complete channel.
+New photographic matching supports native drag/drop, select-then-place, keyboard activation, and native dropdowns. Images open in a focus-trapped native dialog with credits; the activity uses neutral specimen/work-order titles and descriptive alt text. Tool illustrations are reference choices, not preassigned answers. Generic simulated records state the available measurements without impersonating vendor output or implying that a basic LED tester certifies Ethernet performance.
 
-## Technical references
+## Persistence compatibility
 
-- [Cisco 10GBASE SFP+ modules](https://www.cisco.com/c/en/us/products/collateral/interfaces-modules/transceiver-modules/data_sheet_c78-455693.html): SR on OM3 up to 300 m, LR on appropriate SMF, duplex LC, supported short passive twinax assemblies. Actual switch support must still be checked; the work order states compatible ports and modules.
-- [Fluke Networks: Channel and permanent link](https://www.flukenetworks.com/blog/cabling-chronicles/channel-permanent-link-patch-cords-mptl-e2e-oh-my): the fixed installation versus complete copper channel and the conventional 90 m / 100 m limits.
-- [Belden: Communications cable ratings](https://de.belden.com/blog/communications-cable-ratings): environmental-air versus vertical pathway ratings. The work order supplies the applicable CMP requirement rather than pretending a ceiling automatically requires plenum cable.
-- [HPE Aruba: Transmission distance](https://arubanetworking.hpe.com/techdocs/Switches/xcvrs/xcvr_guide/Content/GUID-FC7DD7AC-012F-41B5-A02F-A3ADBBB23E86.html): Cat6A for the full 100 m 10GBASE-T application. The scenario uses native RJ45 ports, not a short-reach copper SFP+ module.
+The existing storage key `student-hub.network-plus.physical-cabling.v1` remains the stable identity. Stored data now uses schema version 2. A version 1 attempt retains every recognized original answer and its selected room. Previously submitted version 1 attempts reopen so the new work orders can be completed; a visible message explains that the installation answers were kept. Unknown legacy fields are not interpreted as new answers. Version 2 preserves all 37 answers and the review state across refreshes. Invalid choices are filtered; malformed or blocked storage leaves a usable activity.
 
-## Local photographic assets and rights
+## Technical checks and references
 
-All photographs are stored unmodified under the app’s `assets/` directory. Captions preserve authorship, source, license links, and modification status; full-size local copies open from the lesson. Original SVG illustrations are separate educational schematics and are not photographs of specific hardware.
+- [Cisco 10GBASE SFP+ modules](https://www.cisco.com/c/en/us/products/collateral/interfaces-modules/transceiver-modules/data_sheet_c78-455693.html): original SR/MMF and LR/SMF compatibility and short supported DAC assemblies.
+- [Cisco 40GBASE QSFP modules](https://www.cisco.com/c/en/us/products/collateral/interfaces-modules/transceiver-modules/data_sheet_c78-660083.html): form factor versus specific optical application, including the specified QSFP+ SR4/MPO example. The photographed 24-fiber MPO is assessed only by connector family; it is not approved as a lead for the separate SR4 module record.
+- [Siemon modular-plug pin reference](https://files.siemon.com/en/instruction/210_s210-s110-patch-plug_ii.pdf) and [field-plug termination reference](https://files.siemon.com/int-download-installation-instructions/wa_cat-6-utp-field-plug-termination_ii.pdf): T568A/B conductor assignments. Original diagrams explicitly use the contact-side view, mating nose upward, cable below, latch underneath, with pin 1 left and pin 8 right. A textual eight-pin table accompanies the colors.
+- [Fluke Networks split-pair evidence](https://www.flukenetworks.com/knowledge-base/microscanner2/twisted-pair-test-results-microscanner2) and [pair-integrity explanation](https://www.flukenetworks.com/support/knowledge-base/linkiq/split-pair-identification): pin-for-pin continuity can coexist with split pairs and excessive crosstalk.
+- [Fluke Networks VFL capabilities](https://www.flukenetworks.com/datacom-cabling/fiber-testing/VisiFault-Visual-Fault-Locator): visible continuity and some accessible faults, distinct from optical power or loss certification.
+- [Fluke Networks channel/permanent-link reference](https://www.flukenetworks.com/blog/cabling-chronicles/channel-permanent-link-patch-cords-mptl-e2e-oh-my): ordinary 90 m permanent-link / 100 m complete-channel limits. The new attenuation ticket supplies a performance-capable tester and an approved shorter route.
+- [Belden cable ratings](https://de.belden.com/blog/communications-cable-ratings): unchanged environment-dependent jacket reasoning. Category, shielding, and fire/smoke rating remain distinct.
 
-| File | Subject and source | Author | License |
+## Photographs, optimization, and rights
+
+`photos.js` is the single runtime credit/alt-text manifest for the 16 new local photographs. Activity, lesson, and inspection dialog reuse the same image files. Source, author, license link, and changes are accessible in captions and the dialog. Public-domain declarations are linked to their source pages. WebP copies preserve photographed hardware details; no connector details are synthesized. The RJ45 image is a close crop retaining the plug and contacts, without an overlaid answer name.
+
+| Asset | Source / photographer | License | Changes |
 | --- | --- | --- | --- |
-| `rack.jpg` | [Rackmount Ethernet switches and patch panels](https://commons.wikimedia.org/wiki/File:19-inch_rackmount_Ethernet_switches_and_patch_panels.jpg), 1280 × 960 | Dsimic | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
-| `fiber.jpg` | [AMS-IX optical patch panel](https://commons.wikimedia.org/wiki/File:AMS-IX_optical_patch_panel.jpg), 3888 × 2592 | Fabienne Serriere | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) |
+| `01.webp` (utp) | [Photograph](https://commons.wikimedia.org/wiki/File:UTP_cable.jpg) · Baran Ivo | Public domain | Encoded as WebP; uncropped |
+| `02.webp` (stp) | [Photograph](https://commons.wikimedia.org/wiki/File:Cross_section_of_a_shielded_Cat6_patch_cable.jpg) · TubeTimeUS | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | Resized and encoded as WebP; uncropped |
+| `03.webp` (coax) | [Photograph](https://commons.wikimedia.org/wiki/File:Cross_section_of_an_LMR-195_coaxial_cable.jpg) · TubeTimeUS | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | Resized and encoded as WebP; uncropped |
+| `04.webp` (dac) | [Photograph](https://commons.wikimedia.org/wiki/File:Twinax-CAB-10GSFP-P8M.jpg) · Labsy | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | Encoded as WebP; uncropped |
+| `05.webp` (rj11) | [Photograph](https://commons.wikimedia.org/wiki/File:6P2C_RJ-11.jpg) · Aeroid | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | Resized and encoded as WebP; uncropped |
+| `06.webp` (rj45) | [Photograph](https://commons.wikimedia.org/wiki/File:Patch_cable_with_RJ45_connector.jpg) · www.heimnetzwerke.net | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) | Cropped to connector area; encoded as WebP |
+| `07.webp` (f) | [Photograph](https://commons.wikimedia.org/wiki/File:F-Stecker_und_Kabel.jpg) · Peter Trieb | Public domain | Encoded as WebP; uncropped |
+| `08.webp` (bnc) | [Photograph](https://commons.wikimedia.org/wiki/File:BNC_connector_(male).jpg) · Krzysztof Burghardt | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) | Resized and encoded as WebP; uncropped |
+| `09.webp` (lc) | [Photograph](https://commons.wikimedia.org/wiki/File:LC-optical-fiber-connector-hdr-0a.jpg) · Adamantios | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) | Resized and encoded as WebP; uncropped |
+| `10.webp` (sc) | [Photograph](https://commons.wikimedia.org/wiki/File:SC-optical-fiber-connector-hdr-0a.jpg) · Adamantios | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) | Resized and encoded as WebP; uncropped |
+| `11.webp` (st) | [Photograph](https://commons.wikimedia.org/wiki/File:ST-optical-fiber-connector-hdr-0a.jpg) · Adamantios | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) | Resized and encoded as WebP; uncropped |
+| `12.webp` (mpo) | [Photograph](https://commons.wikimedia.org/wiki/File:MPO_Stecker_HR.jpg) · Reichle & De-Massari | [CC BY-SA 3.0 de](https://creativecommons.org/licenses/by-sa/3.0/de/deed.en) | Resized and encoded as WebP; uncropped |
+| `13.webp` (sfp) | [Photograph](https://commons.wikimedia.org/wiki/File:SFP-side.jpg) · Adamantios | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) | Resized and encoded as WebP; uncropped |
+| `14.webp` (qsfp) | [Photograph](https://commons.wikimedia.org/wiki/File:QSFP-40G-SR4_Transceiver.jpg) · Jesseschulman; background/levels edit by Nosachevd | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) | Encoded as WebP; uncropped |
+| `15.webp` (tester) | [Photograph](https://commons.wikimedia.org/wiki/File:Network_cable_tester.jpg) · George Shuklin | Public domain | Encoded as WebP; uncropped |
+| `16.webp` (toner) | [Photograph](https://commons.wikimedia.org/wiki/File:FLUKE_networks_IntelliTone_Pro_200.JPG) · Dmitry G | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) | Resized and encoded as WebP; uncropped |
 
-The photographs were visually inspected: the copper image shows passive numbered panels, removable cords, and powered switches; the fiber image shows fiber distribution adapters and patching. The lesson does not label its pictured connectors as the LC adapters drawn in the activity.
+The original `rack.jpg` remains an unmodified [Dsimic photograph](https://commons.wikimedia.org/wiki/File:19-inch_rackmount_Ethernet_switches_and_patch_panels.jpg), [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). The existing `fiber.jpg` is [Fabienne Serriere's AMS-IX photograph](https://commons.wikimedia.org/wiki/File:AMS-IX_optical_patch_panel.jpg), [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/); its content is preserved while resizing to 1600 × 1067 and compressing for the web. Its caption records that change. New hardware photos total approximately 1.3 MB; the old fiber image drops from about 4.2 MB to 0.29 MB.
+
+All new photos were visually inspected. A misleading combined UTP/shielded sample and a retail-shelf coax photo were rejected. The RJ11 photo is a true 6P2C example; the RJ45 close-up exposes eight contacts. The coax cross section is an RF specimen, not a claim of approval for a 75-ohm broadband handoff. The original VFL SVG is explicitly an illustration; tester and toner/probe examples use actual photographs. Cable-test observations are generic simulations with stated capabilities.
 
 ## Verification
 
-Run `npm run test:network-plus-physical-cabling` for model checks. Add `-- --browser` after the strict site build for the actual Chromium interaction pass. `PBQ_CHROMIUM_PATH` may select an installed Chromium executable.
+- `npm run test:network-plus-physical-cabling`: original 21-decision scoring across every option, all 16 additions, full/partial/incorrect attempts, accepted alternatives, independent scoring, deterministic/non-mutating grading, version 1 migration, version 2 persistence validation, conductor order, oriented diagram pin positions, and licensed/optimized local asset inventory.
+- After `mkdocs build --strict`, `npm run test:network-plus-physical-cabling -- --browser`: real Chromium drag/drop, keyboard/click/touch matching, all original room/rack/cable tasks, all new decisions, image inspection, full/partial score and feedback, retry/reset, refresh, legacy attempts, blocked storage, both tabs, all photographs and local links, T568 diagrams, and 320–1440 px layouts under root/project hosting.
+- Applicable repository checks: generated PBQ listings/navigation, Markdown sources, Python validation suite, catalog queries, strict MkDocs build, built catalog/site links, and analytics. No new testing framework or runtime dependency is introduced.
 
-Model checks cover every answer choice, both valid H1 options, empty/wrong/partial attempts, independent scoring, deterministic repeat grading, non-mutation, and invalid stored answers. Browser checks cover the built app under root/project paths, native drag/drop, keyboard and click placement, all rooms, submission, retry, reset, refresh, tab behavior, malformed storage, unavailable storage, images, local links, responsive layouts, and representative existing PBQs. Catalog and site checks cover discovery and generated navigation.
+The local browser pass uses Chromium. Other browser engines and assistive-technology sessions are reserved for the independent QA review; browser checks do not claim that the simulated field records were executed on physical equipment.
+
+Phase 2 verification completed 2026-11-03: the checks listed above passed locally, including all 38 Python tests and the full 37-decision Chromium interaction suite. Desktop/mobile screenshots were inspected for cable photos, the connector gallery, and both termination diagrams. An explicit comparison with the Phase 1 checkpoint confirmed identical original decision definitions, both building renderings, and all three rack-unit renderers.
 
 ## Continuation
 
-Phase 2 completes the detailed media, connector, T568A/B, tool, and troubleshooting lessons and activities on this same branch, then combines scoring where appropriate. Do not add empty student tabs. Phase 3 performs the full technical, accessibility, image, scoring, and Hub integration review. Phase 4 reviews the final branch against main and opens a PR. Do not merge as part of these phases.
+Phase 2 completes media/connector recognition, termination, tools, troubleshooting, and their lessons within the same PBQ. Phase 3 is the independent student-journey, technical, accessibility, image, scoring, and integration review; fix actual defects on this branch and checkpoint them. Phase 4 compares the complete branch with main and creates a PR. Stop after each assigned phase; do not merge automatically.

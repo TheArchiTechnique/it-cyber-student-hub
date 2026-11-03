@@ -95,7 +95,7 @@ hub:hidden -->
 
 - [Network Cabling & Physical Installation PBQ](../../../practice/pbqs/network-plus/physical-cabling-installation/README.md)
 
-    Plan distribution rooms, identify rack components, and select backbone, horizontal, patch, and direct-attach cabling for a three-story commercial building.
+    Install a building network, identify media and connectors, interpret termination tests, select tools, and resolve physical connectivity faults.
 
 ### Foundational Practice
 

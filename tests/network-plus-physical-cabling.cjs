@@ -5,56 +5,96 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 const http = require('node:http');
 const M = require('../docs/practice/pbqs/network-plus/physical-cabling-installation/app/model.js');
-const solution = {
+const installationSolution = {
   r101:'mdf', 'r101-0':'fiber', 'r101-1':'copper', 'r101-2':'switch',
   r201:'idf', 'r201-0':'copper', 'r201-1':'switch', 'r201-2':'fiber',
   r301:'idf', 'r301-0':'fiber', 'r301-1':'switch', 'r301-2':'copper',
   b1:'om3', b2:'os2', h1:'cat6', h2:'shielded', h3:'cat6a',
   'h2-rating':'cmp', p1:'copperPatch', p2:'fiberPatch', d1:'dac'
 };
-const wrong = {
+const installationWrong = {
   r101:'idf', 'r101-0':'ups', 'r101-1':'ups', 'r101-2':'ups',
   r201:'mdf', 'r201-0':'ups', 'r201-1':'ups', 'r201-2':'ups',
   r301:'mdf', 'r301-0':'ups', 'r301-1':'ups', 'r301-2':'ups',
   b1:'os2', b2:'om3', h1:'coax', h2:'cat6', h3:'cat6',
   'h2-rating':'cmr', p1:'cat6', p2:'om3', d1:'copperPatch'
 };
+const inspectionSolution = {'m-u':'utp','m-s':'stp','m-c':'coax','m-d':'twinax','j-w':'rj45','j-s':'f','j-b':'lc','j-p':'mpo',module:'qsfp',term:'split','t-trace':'toner','t-wire':'tester','t-fiber':'vfl','f-emi':'shield','f-optic':'sr','f-loss':'shorten'};
+const inspectionWrong = {'m-u':'stp','m-s':'utp','m-c':'twinax','m-d':'mmf','j-w':'rj11','j-s':'bnc','j-b':'sc','j-p':'lc',module:'sfp',term:'crossed','t-trace':'tester','t-wire':'toner','t-fiber':'tester','f-emi':'length','f-optic':'connector','f-loss':'shield'};
+const solution = {...installationSolution,...inspectionSolution}, wrong = {...installationWrong,...inspectionWrong};
 const attempt = answers => ({...M.fresh(),answers:{...answers}});
-assert.equal(M.tasks.length,21);
+assert.equal(M.installationTasks.length,21);
+assert.equal(M.inspection.tasks.length,16);
+assert.equal(M.tasks.length,37);
+assert.equal(new Set(M.tasks.map(t=>t.id)).size,37,'Every decision is scored once');
 assert.equal(M.grade(M.fresh()).score,0);
-assert.equal(M.grade(attempt(solution)).score,21);
+assert.equal(M.grade(attempt(solution)).score,37);
 assert.equal(M.grade(attempt(wrong)).score,0);
-assert.equal(M.grade(attempt({...solution,h1:'cat6a'})).score,21,'Cat6A must receive equivalent credit for the 1G UTP job');
+assert.equal(M.grade(attempt({...solution,h1:'cat6a'})).score,37,'Equivalent H1 alternative survives expansion');
+// Exercise the original grading contract independently of the new decisions.
+for (const t of M.installationTasks) {
+  for (const choice of Object.keys(t.options)) {
+    const expected = choice === installationSolution[t.id] || (t.id === 'h1' && choice === 'cat6a');
+    assert.equal(M.grade({version:1,answers:{...installationSolution,[t.id]:choice}}).score,expected ? 21 : 20,`${t.id}: original grading contract`);
+  }
+}
 for (const t of M.tasks) {
   for (const choice of Object.keys(t.options)) {
     const expected = choice === solution[t.id] || (t.id === 'h1' && choice === 'cat6a');
-    assert.equal(M.grade(attempt({...solution,[t.id]:choice})).score,expected ? 21 : 20,`${t.id}: ${choice} must match the independently specified job`);
+    assert.equal(M.grade(attempt({...solution,[t.id]:choice})).score,expected ? 37 : 36,`${t.id}: ${choice} matches the independent job fixture`);
   }
 }
-assert.equal(M.grade(attempt({b1:'om3',h2:'shielded','h2-rating':'cmr'})).score,2,'Jacket and media must be scored independently');
+assert.equal(M.grade(attempt({b1:'om3',h2:'shielded','h2-rating':'cmr'})).score,2,'Jacket and media remain independent');
 for (const id of Object.keys(solution)) {
   const state = attempt({...solution,[id]:wrong[id]});
   const original = JSON.stringify(state), result = M.grade(state);
-  assert.equal(result.score,20,id + ': one error loses exactly one point');
+  assert.equal(result.score,36,id + ': one error loses one point');
   assert.equal(result.decisions.filter(d=>!d.correct).length,1);
   assert.equal(result.decisions.find(d=>!d.correct).id,id);
-  assert.deepEqual(M.grade(state),result,'Repeated grading is deterministic');
-  assert.equal(JSON.stringify(state),original,'Grading does not mutate student answers');
+  assert.deepEqual(M.grade(state),result,'Deterministic grading');
+  assert.equal(JSON.stringify(state),original,'Grading cannot mutate answers');
 }
-assert.equal(M.grade(attempt({...solution,b1:'os2',b2:'om3'})).score,19,'Short LR backbone still needs SMF, SR still needs MMF');
-assert.equal(M.grade(attempt({...solution,r101:'idf'})).decisions.find(d=>d.id==='b1').correct,true,'Room errors cannot invalidate media credit');
+assert.equal(M.grade(attempt({...solution,b1:'os2',b2:'om3'})).score,35);
+assert.equal(M.grade(attempt({...solution,r101:'idf'})).decisions.find(d=>d.id==='b1').correct,true);
 assert.deepEqual(M.sanitize(null),M.fresh());
 assert.deepEqual(M.sanitize({version:99,answers:solution}),M.fresh());
 assert.deepEqual(M.sanitize({version:1,answers:{r101:'__proto__',b1:{toString:'om3'},bad:'mdf'},room:'not-a-room'}),M.fresh());
+const migrated = M.sanitize({version:1,answers:{...installationSolution,'m-u':'utp'},room:'r201',submitted:true});
+assert.equal(migrated.version,2);
+assert.deepEqual(migrated.answers,installationSolution,'Preserve all original answers without interpreting unknown old fields');
+assert.equal(migrated.room,'r201');
+assert.equal(migrated.submitted,false,'Expanded work order reopens a legacy review');
+assert.equal(M.grade(migrated).score,21);
 assert.equal(M.sanitize({...attempt(solution),submitted:'true'}).submitted,false);
 assert.equal(M.sanitize({...attempt(solution),submitted:true}).submitted,true);
-console.log('PASS model: 21 independent decisions, accepted alternatives, empty/wrong/partial attempts, media compatibility, deterministic grading, and storage validation.');
+assert.deepEqual(M.inspection.wiring.A,['White/green','Green','White/orange','Blue','White/blue','Orange','White/brown','Brown']);
+assert.deepEqual(M.inspection.wiring.B,['White/orange','Orange','White/green','Blue','White/blue','Green','White/brown','Brown']);
+require('../docs/practice/pbqs/network-plus/physical-cabling-installation/app/art.js');
+for(const standard of ['A','B']) {
+ const diagram=globalThis.CablingArt.wiring(standard);
+ const pins=[...diagram.matchAll(/data-pin="(\d)" x="(\d+)"/g)];
+ assert.deepEqual(pins.map(p=>Number(p[1])),[1,2,3,4,5,6,7,8]);
+ assert.ok(pins.every((p,i)=>i===0 || Number(p[2])>Number(pins[i-1][2])),'Pins increase left to right');
+ assert.match(diagram,/nose up, latch underneath/);
+}
+const photographs=Object.values(M.inspection.photos);
+assert.equal(photographs.length,16);
+assert.equal(new Set(photographs.map(p=>p.file)).size,16,'One local file per photo');
+const sync=require('node:fs');
+for(const photo of photographs) {
+ assert.match(photo.source,/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/);
+ assert.ok(photo.author && photo.license && photo.changes && photo.alt);
+ const stat=sync.statSync(path.join(__dirname,'../docs/practice/pbqs/network-plus/physical-cabling-installation/app',photo.file));
+ assert.ok(stat.size>4000 && stat.size<350000,'Bounded, optimized real photograph');
+ assert.ok(photo.width>=350 && photo.height>=240);
+}
+console.log('PASS model: preserved 21-decision grading, 16 additions, all options, independent partial credit, legacy migration, pin orders/orientation, and licensed local photographs.');
 
 async function browserTests() {
   const {chromium} = require('playwright');
   const site = path.resolve(__dirname,'../site');
   const prefix = '/it-cyber-student-hub';
-  const mime = {'.html':'text/html','.css':'text/css','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.svg':'image/svg+xml','.jpg':'image/jpeg'};
+  const mime = {'.html':'text/html','.css':'text/css','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.svg':'image/svg+xml','.jpg':'image/jpeg','.webp':'image/webp'};
   const server = http.createServer(async (req,res) => {
     try {
       let route = decodeURIComponent(new URL(req.url,'http://localhost').pathname);
@@ -97,9 +137,9 @@ async function browserTests() {
       assert.equal(await page.locator('select[data-answer]').evaluateAll(ns=>ns.every(n=>n.value==='')),true,'No preselected answers');
       // Empty and incorrect attempts must still have explainable feedback.
       await page.locator('#submit').click();
-      assert.equal(await page.locator('.score').innerText(),'0 / 21');
-      assert.equal(await page.locator('.feedback').count(),21);
-      assert.equal(await page.locator('.feedback').filter({hasText:'Unanswered'}).count(),21);
+      assert.equal(await page.locator('.score').innerText(),'0 / 37');
+      assert.equal(await page.locator('.feedback').count(),37);
+      assert.equal(await page.locator('.feedback').filter({hasText:'Unanswered'}).count(),37);
       await page.locator('#retry').click();
       assert.equal(await page.locator('.feedback').count(),0,'Retry clears stale explanations');
       // Use native keyboard activation for a room label.
@@ -121,7 +161,7 @@ async function browserTests() {
       await page.locator('[data-room=r101]').click();
       assert.equal((await stored()).answers.r101,'mdf');
       await page.keyboard.press('Escape');
-      assert.equal(await page.locator('[data-item=coax]').getAttribute('aria-pressed'),'false');
+      assert.equal(await page.locator('[data-kind=media][data-item=coax]').getAttribute('aria-pressed'),'false');
       await page.locator('[data-kind=media][data-item=om3]').dragTo(page.locator('#route-targets [data-target=b1]'));
       assert.equal((await stored()).answers.b1,'om3');
       await page.locator('[data-kind=media][data-item=os2]').click();
@@ -133,36 +173,72 @@ async function browserTests() {
         for (let i=0;i<3;i++) await select(room+'-'+i,solution[room+'-'+i]);
       }
       for (const id of ['h1','h2','h3','h2-rating','p1','p2','d1']) await select(id,solution[id]);
-      assert.equal(await page.locator('#progress').innerText(),'21 / 21 answered');
+      assert.equal(await page.locator('#progress').innerText(),'21 / 37 answered');
       assert.equal(await page.locator('.feedback').count(),0);
       await page.reload();
       assert.equal(Object.keys((await stored()).answers).length,21);
       assert.equal(await page.locator('#room-picker').inputValue(),'r301');
+      // New recognition tasks support native drag, keyboard placement, dropdowns, and inspection.
+      await page.locator('#recognition-media-tray [data-item=utp]').dragTo(page.locator('#job-m-u .answer-target'));
+      assert.equal((await stored()).answers['m-u'],'utp');
+      await page.locator('#job-m-u .inspect-photo').click();
+      assert.equal(await page.locator('#photo-inspector').evaluate(n=>n.open),true);
+      assert.equal(await page.locator('#photo-title').innerText(),M.byId['m-u'].name,'Inspection title stays neutral');
+      await page.locator('#photo-large').evaluate(n=>n.decode());
+      await page.keyboard.press('Escape');
+      assert.equal(await page.locator('#photo-inspector').evaluate(n=>n.open),false);
+      await page.locator('#recognition-media-tray [data-item=stp]').focus();
+      await page.keyboard.press('Space');
+      await page.locator('#job-m-s .answer-target').focus();
+      await page.keyboard.press('Enter');
+      assert.equal((await stored()).answers['m-s'],'stp');
+      await page.locator('#connector-tray [data-item=rj45]').click();
+      await page.locator('#job-m-u .answer-target').click();
+      assert.equal((await stored()).answers['m-u'],'utp','Wrong label family cannot erase an answer');
+      await page.keyboard.press('Escape');
+      await page.locator('#tool-tray [data-item=toner]').dragTo(page.locator('#job-t-trace .answer-target'));
+      assert.equal((await stored()).answers['t-trace'],'toner');
+      for(const [id,value] of Object.entries(inspectionSolution)) if(!['m-u','m-s','t-trace'].includes(id)) await select(id,value);
+      assert.equal(await page.locator('#submission-progress').innerText(),'37 / 37 answered · 0 unanswered');
+      const beforeLesson=await stored();
+      await page.locator('#lesson-tab').click();
+      await page.locator('#activity-tab').click();
+      assert.deepEqual(await stored(),beforeLesson,'Switching tabs preserves all decisions');
+      await page.reload();
+      assert.equal(Object.keys((await stored()).answers).length,37);
       await page.locator('#submit').click();
-      assert.equal(await page.locator('.score').innerText(),'21 / 21');
-      assert.equal(await page.locator('.feedback.good').count(),21);
+      assert.equal(await page.locator('.score').innerText(),'37 / 37');
+      assert.equal(await page.locator('.feedback.good').count(),37);
       assert.equal(await page.locator('[data-answer]').evaluateAll(ns=>ns.every(n=>n.disabled)),true);
       assert.equal(await page.locator('#results').evaluate(n=>n===document.activeElement),true);
       await page.reload();
-      assert.equal(await page.locator('.score').innerText(),'21 / 21','Review survives refresh');
+      assert.equal(await page.locator('.score').innerText(),'37 / 37','Review survives refresh');
       await page.locator('#retry').click();
       await select('h1','cat6a');
       await select('r101','idf');
       await select('h2-rating','cmr');
       await page.locator('#submit').click();
-      assert.equal(await page.locator('.score').innerText(),'19 / 21','Room and rating errors are independent');
+      assert.equal(await page.locator('.score').innerText(),'35 / 37','Room and rating errors are independent');
       assert.equal(await page.locator('.feedback.bad').count(),2);
       await page.locator('#retry').click();
       await select('r101','mdf');
       await select('h2-rating','cmp');
       await page.locator('#submit').click();
-      assert.equal(await page.locator('.score').innerText(),'21 / 21','Valid alternative gets full credit');
+      assert.equal(await page.locator('.score').innerText(),'37 / 37','Valid alternative gets full credit');
       // Lesson navigation, actual photos, and keyboard tab behavior.
       await page.locator('#activity-tab').focus();
       await page.keyboard.press('ArrowRight');
       assert.equal(await page.locator('#lesson').isVisible(),true);
+      await page.locator('.lesson-topic').evaluateAll(nodes=>nodes.forEach(n=>n.open=true));
+      await page.locator('#lesson img').evaluateAll(images=>images.forEach(i=>i.loading='eager'));
       await page.locator('#lesson img').evaluateAll(images=>Promise.all(images.map(i=>i.decode())));
-      assert.equal(await page.locator('#lesson img').evaluateAll(ns=>ns.every(n=>n.naturalWidth>1000)),true);
+      assert.equal(await page.locator('#lesson img').evaluateAll(ns=>ns.every(n=>n.naturalWidth>=350)),true);
+      assert.equal(await page.locator('#termination-diagrams [data-pin]').count(),16);
+      assert.equal(await page.locator('#lesson-connector-gallery .reference-card').count(),8);
+      for(const [id,photo] of Object.entries(M.inspection.photos)) {
+        const image=page.locator(`#lesson img[src="${photo.file}"]`).first();
+        assert.equal(await image.evaluate(n=>n.naturalWidth),photo.width,id+' local photograph loads at expected resolution');
+      }
       for (const href of await page.locator('#lesson a').evaluateAll(ns=>ns.map(n=>n.href).filter(s=>new URL(s).origin===location.origin))) {
         const r=await page.request.get(href); assert.equal(r.status(),200,'Local lesson reference '+href);
       }
@@ -188,6 +264,13 @@ async function browserTests() {
       await page.evaluate(key=>localStorage.setItem(key,'{broken'),M.KEY);
       await page.reload();
       assert.deepEqual((await stored()).answers,{},'Malformed storage recovers');
+      await page.evaluate(([key,answers])=>localStorage.setItem(key,JSON.stringify({version:1,answers,room:'r201',submitted:true})),[M.KEY,installationSolution]);
+      await page.reload();
+      assert.deepEqual((await stored()).answers,installationSolution,'Legacy browser attempt keeps all original answers');
+      assert.equal((await stored()).version,2);
+      assert.equal(await page.locator('#results').isHidden(),true);
+      assert.match(await page.locator('#status').innerText(),/saved installation answers have been kept/);
+      assert.equal(await page.locator('[data-answer=m-u]').inputValue(),'');
       // Existing standalone PBQs still use their own controls and saved state.
       for (const slug of ['soho-physical-installation','wireless-coverage']) {
         assert.equal((await page.goto(base+'practice/pbqs/a-plus-core-1/'+slug+'/app/')).status(),200);
@@ -208,6 +291,12 @@ async function browserTests() {
     await touch.locator('[data-kind=media][data-item=cat6]').tap();
     await touch.locator('#job-h1 [data-target=h1]').tap();
     assert.equal(await touch.locator('[data-answer=h1]').inputValue(),'cat6');
+    await touch.locator('#connector-tray [data-item=lc]').tap();
+    await touch.locator('#job-j-b .answer-target').tap();
+    assert.equal(await touch.locator('[data-answer=j-b]').inputValue(),'lc');
+    await touch.locator('#job-j-b .inspect-photo').tap();
+    assert.equal(await touch.locator('#photo-inspector').evaluate(n=>n.open),true);
+    await touch.locator('#close-photo').tap();
     await touchContext.close();
     const blockedContext = await browser.newContext();
     await blockedContext.addInitScript(()=>{Storage.prototype.getItem=function(){throw new Error('Storage blocked');};Storage.prototype.setItem=function(){throw new Error('Storage blocked');};});
@@ -217,11 +306,11 @@ async function browserTests() {
     assert.match(await blocked.locator('#save-status').innerText(),/cannot be saved/);
     await blocked.locator('[data-answer=r101]').selectOption('mdf');
     await blocked.locator('#submit').click();
-    assert.equal(await blocked.locator('.score').innerText(),'1 / 21');
+    assert.equal(await blocked.locator('.score').innerText(),'1 / 37');
     await blockedContext.close();
     assert.deepEqual(errors,[],'No browser runtime errors');
     await context.close();
-    console.log('PASS Chromium: root/project routes, real drag/drop, keyboard/click/touch alternatives, all rooms, grading, refresh, retry/reset, lesson/images/links, storage failure, 320–1440px layouts, and existing PBQ navigation.');
+    console.log('PASS Chromium: complete 37-decision work order, original building/racks, new native matching, photo inspection, keyboard/touch, partial scoring, legacy migration, persistence/reset, lesson images/pin diagrams, responsive layouts, and Hub links.');
   } finally {if(browser)await browser.close();await new Promise(resolve=>server.close(resolve));}
 }
 if (process.argv.includes('--browser')) browserTests().catch(error=>{console.error(error);process.exitCode=1;});

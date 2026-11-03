@@ -55,17 +55,20 @@
   routes.forEach(r => add(r.id, r.name, r.group, media, r.accept, r.why));
   add('h2-rating', 'H2 · Jacket rating', 'Horizontal', ratings, ['cmp'], 'CMP is required by the stated air-return installation conditions. CMR is intended for riser applications and CM for general-purpose spaces; neither satisfies the stated plenum requirement. A cable can be both shielded and plenum-rated: shielding and fire/smoke rating describe different properties. Requirements depend on the environment and applicable code, not simply being above a ceiling.');
   patches.forEach(r => add(r.id, r.name, 'Patching and direct attach', media, r.accept, r.why));
+  const installationTasks = tasks.slice();
+  const inspection = typeof module !== 'undefined' ? require('./inspection.js') : root.CablingInspection;
+  tasks.push(...inspection.tasks);
   const byId = Object.fromEntries(tasks.map(t => [t.id, t]));
-  function fresh() { return { version: 1, answers: {}, room: 'r101', submitted: false }; }
+  function fresh() { return { version: 2, answers: {}, room: 'r101', submitted: false }; }
   function sanitize(raw) {
     const state = fresh();
-    if (!raw || raw.version !== 1) return state;
+    if (!raw || ![1,2].includes(raw.version)) return state;
     if (rooms.some(r => r.id === raw.room)) state.room = raw.room;
-    for (const t of tasks) {
+    for (const t of raw.version === 1 ? installationTasks : tasks) {
       const answer = raw.answers?.[t.id];
       if (typeof answer === 'string' && Object.hasOwn(t.options, answer)) state.answers[t.id] = answer;
     }
-    state.submitted = raw.submitted === true;
+    state.submitted = raw.version === 2 && raw.submitted === true;
     return state;
   }
   function grade(state) {
@@ -73,7 +76,7 @@
     const decisions = tasks.map(t => ({ ...t, selected: answers[t.id] || '', correct: t.accept.includes(answers[t.id]) }));
     return { score: decisions.filter(d => d.correct).length, total: tasks.length, decisions };
   }
-  const api = { KEY, roomRoles, components, media, ratings, rooms, routes, patches, tasks, byId, fresh, sanitize, grade };
+  const api = { KEY, roomRoles, components, media, ratings, rooms, routes, patches, installationTasks, inspection, tasks, byId, fresh, sanitize, grade };
   if (typeof module !== 'undefined') module.exports = api;
   root.CablingModel = api;
 })(typeof window === 'undefined' ? globalThis : window);

@@ -47,5 +47,19 @@
     body += `<circle cx="22" cy="36" r="5" fill="${color}"/><circle cx="91" cy="48" r="5" fill="${color}"/>`;
     return svg('0 0 120 72', 'Schematic cable illustration; use the label and work order for its specification.', body);
   }
-  root.CablingArt = { esc, building, unit, cable };
+  function wiring(standard) {
+    const colors = root.CablingInspection.wiring[standard];
+    let body = `<defs>${['green','orange','blue','brown'].map(c => `<pattern id="stripe-${standard}-${c}" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="10" fill="white"/><path d="M-3 3 3-3M0 10 10 0M7 13 13 7" stroke="${{green:'#16834d',orange:'#d17b13',blue:'#206ac2',brown:'#88532d'}[c]}" stroke-width="4"/></pattern>`).join('')}</defs><rect width="520" height="300" rx="8" fill="#f0f5f7"/><g font-family="system-ui,sans-serif" fill="#203e53"><text x="22" y="30" font-size="22" font-weight="700">T568${standard}</text><text x="260" y="57" font-size="14" text-anchor="middle">Mating nose ↑</text><rect x="36" y="72" width="448" height="170" rx="8" fill="#dce8ed" stroke="#7993a3" stroke-width="2"/>`;
+    colors.forEach((name,i) => {
+      const x = 57+i*51, color = name.split('/').at(-1).toLowerCase(), striped = name.startsWith('White/');
+      const fill = striped ? `url(#stripe-${standard}-${color})` : {green:'#16834d',orange:'#d17b13',blue:'#206ac2',brown:'#88532d'}[color];
+      body += `<rect x="${x}" y="89" width="31" height="56" fill="#d8b14b" stroke="#897133"/><rect data-pin="${i+1}" x="${x}" y="136" width="31" height="92" fill="${fill}" stroke="#536d7f"/><text x="${x+15.5}" y="263" text-anchor="middle" font-size="18">${i+1}</text>`;
+    });
+    body += '<text x="260" y="290" text-anchor="middle" font-size="14">Cable enters from below · latch underneath</text></g>';
+    return svg('0 0 520 300', `T568${standard}, contact-side view, nose up, latch underneath. Pins 1 through 8, left to right: ${colors.join(', ')}.`, body);
+  }
+  function vfl() {
+    return svg('0 0 520 225','Original schematic of a visible-light fiber fault locator and visible light leaking at a damaged section of fiber.', '<rect width="520" height="225" rx="8" fill="#eff4f7"/><g font-family="system-ui,sans-serif" fill="#29495e"><rect x="25" y="74" width="170" height="49" rx="9" fill="#426579"/><rect x="164" y="86" width="48" height="25" rx="3" fill="#a8bdc8"/><circle cx="65" cy="98" r="10" fill="#d4e3e8"/><text x="110" y="60" text-anchor="middle" font-size="17">Visible-light source</text><path d="M211 99H320Q347 99 349 133L351 156Q354 185 405 185H476" fill="none" stroke="#9f7754" stroke-width="9"/><path d="M211 99H320Q347 99 349 133L351 156Q354 185 405 185H476" fill="none" stroke="#cc3829" stroke-width="3"/><path d="M345 139l-19-12m23 12 15-18m-13 22 22 7" stroke="#cf3a26" stroke-width="4"/><text x="282" y="82" font-size="16">Fiber</text><text x="365" y="122" font-size="15">Accessible fault</text><text x="26" y="207" font-size="13">Illustration · visible continuity is not an optical loss measurement</text></g>');
+  }
+  root.CablingArt = { esc, building, unit, cable, wiring, vfl };
 })(typeof window === 'undefined' ? globalThis : window);
