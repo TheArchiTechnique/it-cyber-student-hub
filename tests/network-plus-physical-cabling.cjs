@@ -414,6 +414,7 @@ async function browserTests() {
       }
     }
     const touchContext = await browser.newContext({viewport:{width:375,height:844},hasTouch:true,isMobile:engine==='chromium'});
+    await touchContext.route('**/*',route=>new URL(route.request().url()).origin===origin?route.continue():route.abort());
     const touch = await touchContext.newPage();
     touch.on('pageerror',err=>errors.push(err.message));
     await touch.goto(origin+prefix+'/'+appPath);
@@ -431,6 +432,7 @@ async function browserTests() {
     await touch.locator('#close-photo').tap();
     await touchContext.close();
     const blockedContext = await browser.newContext();
+    await blockedContext.route('**/*',route=>new URL(route.request().url()).origin===origin?route.continue():route.abort());
     await blockedContext.addInitScript(()=>{Storage.prototype.getItem=function(){throw new Error('Storage blocked');};Storage.prototype.setItem=function(){throw new Error('Storage blocked');};});
     const blocked = await blockedContext.newPage();
     blocked.on('pageerror',err=>errors.push(err.message));

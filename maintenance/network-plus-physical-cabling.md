@@ -155,6 +155,14 @@ Python scripts above were executed with the repository's `.venv/bin/python`. Bro
 
 WebKit/Safari, physical mobile devices, and live screen-reader/assistive-technology sessions were not tested. Touch coverage uses browser emulation. No physical cable/tool measurements were conducted; all field reports remain explicitly simulated. Hosted GitBook rendering and a production deployment of this unmerged branch were not exercised. These are verification limits, not known application blockers. No new runtime dependencies, separate QA package, or shared architecture changes were introduced.
 
+## Phase 4 release review — 2026-11-03
+
+The fetched `main` remains `9e3d0316cd943a911b9dfea670862ff89457ac95`, the feature's original base. All three phase checkpoints are present; there are no intervening main changes or merge conflicts to reconcile. The full branch diff contains this PBQ, its 18 photographic assets, the single catalog registration, generated Network+ navigation, related tests/CI registration, and this maintenance record. Original Phase 1 task/building/rack definitions remain identical. The completed lesson and all 37 decisions are present, with no duplicate pages or temporary debugging files committed.
+
+Focused release checks passed: the model suite, strict MkDocs build, generated PBQ listings/navigation checks, source links, catalog queries, built catalog/site validation, and the Chromium browser suite with discovery/launch/return journeys at root and project hosting. Phase 3's Firefox, technical-content, image/license, responsive, and accessibility findings remain the verification reference; its documented limitations remain unchanged.
+
+The latest push's [GitHub Actions run](https://github.com/TheArchiTechnique/it-cyber-student-hub/actions/runs/41726948534) exposed one test-isolation issue: the unavailable-storage browser case collected an uncaught `Storage blocked` exception. The main browser context already blocked off-origin requests, but the separate touch and unavailable-storage contexts did not. An external-script stub reproduced that exception while the PBQ itself continued to display its storage notice and grade a one-answer attempt correctly. Applying the same off-origin request rule to both contexts removes this external interference without suppressing application errors or changing the storage-fault simulation. No student-facing code or shared architecture changed in Phase 4. The corrected Chromium suite and the before/after external-script probe pass locally; subsequent CI results are visible on the feature branch and PR.
+
 ## Continuation
 
-Phase 3 QA is complete with the limits above. Phase 4 will perform the final branch comparison and pull-request review workflow. No PR was created, no merge was performed, and Phase 4 has not started.
+The completed feature is prepared for its pull request into `main`. Review and merge remain subject to user approval. Do not merge or delete the feature branch automatically.
