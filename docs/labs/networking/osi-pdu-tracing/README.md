@@ -116,6 +116,7 @@ This lab provides complete build instructions rather than a downloadable starter
 3. Open **Edit Filters**. Clear the selected protocols with **Show All/None**, then enable only **ARP** and **ICMP**. Close the filter window. Hidden protocols still operate; filtering controls what you see.
 4. Locate **Capture/Forward** and **Auto Capture/Play**. Use Capture/Forward to advance by one simulation step. Auto Capture/Play runs automatically; select it again to pause. Several events can occur during one step.
 5. After generating traffic in Part 2, select the colored event square in the **Info/Type** area, or the envelope on the topology, to open **PDU Information at Device**. Check the device name and protocol so you inspect the intended event.
+6. Open the **User Created PDU List** (also called the **PDU List Window**) with its toggle control if it is hidden. After adding a Simple PDU, use its row to check the test status. To remove one test, double-click **(delete)** in that row's last column.
 
 | PDU Information view | How to use it |
 | --- | --- |
@@ -129,6 +130,8 @@ Some events only transmit a buffered frame; others show more of the stack. A sin
 
 ## Part 2: trace an ICMP exchange
 
+Copy the [Student observation worksheet](#student-observation-worksheet) into your notes now. Fill it as you work through Parts 2–4, recording each observation before reading the explanation that follows the procedure. If a tab or field is unavailable, record **not shown** and consult the event's OSI processing explanation.
+
 ### 1. Generate the traffic
 
 1. In Simulation Mode, select **Add Simple PDU**, the closed-envelope tool.
@@ -136,25 +139,30 @@ Some events only transmit a buffered frame; others show more of the stack. A sin
 3. Select **Capture/Forward** repeatedly. Open the ARP and ICMP events as they appear. Close each PDU window before advancing.
 4. If the first attempt fails while ARP entries are being learned, finish that exchange, then create another Simple PDU from PC-A to Server-A. A first-attempt timeout alone does not prove the configuration is wrong.
 
-**If no ARP appears:** a previous exchange may already have populated the caches. Finish the current traffic and remove its test entries in the **User Created PDU List** using the delete control for those entries. Return to Realtime, confirm the router configuration was saved with `copy running-config startup-config`, and save the project. Use **Power Cycle Devices** to restart the devices and clear their temporary tables. Wait for links to recover, check both router interfaces are up/up, then return to Simulation, enable ARP/ICMP filters, and create a fresh Simple PDU. Recheck endpoint addressing and HTTP after the restart. Reset Simulation alone will not produce a fresh ARP exchange.
+**If no ARP appears, repeat with fresh caches:** a previous exchange may already have populated the tables. Reset Simulation alone does not clear them.
+
+1. Record your current observations, finish the traffic, and remove its test rows from the **User Created PDU List** using each row's **(delete)** cell.
+2. Return to **Realtime**. In Router-A's CLI, enter `enable` if the prompt ends with `>`, then run `copy running-config startup-config` at `Router-A#`. Accept the filename with **Enter** and wait for the save to finish. Save the Packet Tracer project too.
+3. Select **Power Cycle Devices** to restart the devices and clear temporary tables. Wait for link initialization. Recheck both router interfaces are up/up, the endpoint addresses and gateways match the setup table, and HTTP is On. Restore any changed setting before continuing.
+4. Return to **Simulation**, enable ARP/ICMP filters, and create a fresh Simple PDU from PC-A to Server-A.
 
 ### 2. Inspect address resolution
 
-Follow an ARP request and its reply on each LAN when resolution is needed. Examine the **Ethernet II** and **ARP** sections in PDU Details. Record the target IPv4 address being resolved and the MAC address learned.
+Follow an ARP request and its reply on each LAN when resolution is needed. Examine the **Ethernet II** and **ARP** sections in PDU Details.
 
-- PC-A recognizes that Server-A is on another subnet. It needs the MAC address of **192.168.10.1**, its local gateway, rather than Server-A's remote MAC address.
-- Router-A needs Server-A's MAC address on its directly connected **192.168.20.0/24** LAN. It performs a separate resolution there when that entry is missing.
-- The switch forwards an ARP broadcast within its LAN. Router-A does not forward that broadcast into the other LAN. ARP replies normally return as unicast frames.
+1. Record the target IPv4 address in PC-A's ARP request and the MAC address learned from the reply. Which device owns that address?
+2. Inspect the resolution on Server-A's LAN. Record which device sends the request, the target IPv4 address, and the reply's MAC address.
+3. Follow the ARP requests through the switches. Record their Ethernet destination addresses and where each broadcast stops. Check whether an IPv4 header encloses the ARP message.
 
-ARP carries its own message directly inside an Ethernet frame; it is **not inside an IPv4 packet**. The IPv4 addresses shown in an ARP message are fields used for address resolution, not an enclosing IP header.
+**After recording the exchanges:** PC-A resolves its local gateway because Server-A is on another subnet. Router-A separately resolves the server on the outgoing LAN when that entry is missing. Switches forward the requests within their LANs; the router does not forward those broadcasts. Replies normally return as unicast frames. ARP travels directly inside Ethernet, **not inside an IPv4 packet**; its IPv4 address fields support address resolution.
 
 ### 3. Follow the request and reply
 
-1. Find an **ICMP echo request** at PC-A. In **Outbound PDU Details**, record the Ethernet source/destination MAC addresses and IPv4 source/destination addresses. Inspect the ICMP section. This traffic contains no TCP or UDP header and has no TCP/UDP ports.
-2. Follow that request through **Switch-A**. Inspect its OSI processing. It learns source MAC addresses and uses the destination MAC to forward the frame; an unknown unicast can be flooded to other eligible ports until learned. It does not select an IP route or replace the frame's endpoint MAC addresses.
+1. Find an **ICMP echo request** at PC-A. In **Outbound PDU Details**, record the Ethernet source/destination MAC addresses, IPv4 source/destination addresses, and protocol header sections present. Inspect the ICMP section.
+2. Follow that request through **Switch-A**. Inspect its OSI processing and record which address information it uses to forward the traffic. Compare the received and transmitted address fields where shown.
 3. At **Router-A**, inspect the arriving request and the forwarded request. Compare Inbound and Outbound PDU Details where both are available. If resolution or buffering creates separate events, use the matching request's receive and send events. Match IPv4 addresses and the ICMP identifier/sequence fields where shown.
 4. Follow the request through **Switch-B** to **Server-A**. Inspect the server's inbound OSI processing and the ICMP echo request.
-5. Continue until Server-A's **echo reply** returns through Switch-B, Router-A, and Switch-A to PC-A. The server creates a new reply with the endpoint IPv4 addresses reversed. Do not confuse its headers with the original request.
+5. Continue until Server-A's **echo reply** returns through Switch-B, Router-A, and Switch-A to PC-A. Record the reply's source and destination IPv4 addresses. Use the ICMP type and identifier/sequence fields where shown to distinguish it from the original request.
 
 **Checkpoint:** After resolution, the request reaches Server-A and a reply reaches PC-A. The User Created PDU List reports a successful completed test. Use that round trip as the reachability check; no earlier ping is required.
 
@@ -162,7 +170,9 @@ If repeated attempts fail, check the four cables, both endpoint masks and gatewa
 
 ## Part 3: observe encapsulation and decapsulation
 
-Return to the recorded request events and compare the actual header sections. **Encapsulation** adds protocol control information around a higher-layer PDU; **decapsulation** processes and removes that information as the receiver passes the contents upward.
+First compare the recorded request at PC-A, the switches, Router-A, and Server-A. Record the router's inbound/outbound MAC, IP, and available TTL fields in your worksheet before reading the interpretation below. Compare the **same request**, not a request against its reply.
+
+**Encapsulation** adds protocol control information around a higher-layer PDU; **decapsulation** processes and removes that information as the receiver passes the contents upward.
 
 | Traffic | Outgoing encapsulation in this lab |
 | --- | --- |
@@ -175,13 +185,13 @@ Return to the recorded request events and compare the actual header sections. **
 Use the request's OSI view to explain each transition:
 
 1. **PC-A:** IP supplies addressing for delivery toward Server-A; Ethernet supplies addressing for the next local hop. Locate each pair of addresses in its own header.
-2. **Switch-A and Switch-B:** distinguish Layer 2 frame forwarding from Layer 1 transmission. The switches do not decapsulate this transit traffic for delivery to an application.
-3. **Router-A:** the incoming Ethernet encapsulation ends here. The router examines the destination IPv4 address, selects the connected outgoing network, and places the packet inside a new Ethernet frame. Compare the request's inbound and outbound **TTL** fields: routing reduces TTL by one in this topology, and the IPv4 header checksum is updated. The IP packet is therefore not completely unchanged.
+2. **Switch-A and Switch-B:** distinguish Layer 2 frame forwarding from Layer 1 transmission. A switch learns source MACs and forwards by destination MAC; an unknown unicast can be flooded to other eligible ports until learned. It does not select an IP route or deliver this transit traffic to an application.
+3. **Router-A:** the incoming Ethernet encapsulation ends here. The router examines the destination IPv4 address, selects the connected outgoing network, and places the packet inside a new Ethernet frame. Normal forwarding reduces **TTL** by one for this single routed hop. IPv4 requires the header checksum to be updated when TTL changes; the IP packet is therefore not completely unchanged. Record the fields Packet Tracer exposes; a numeric checksum comparison is not required.
 4. **Server-A:** the receiving stack processes Ethernet and IPv4 and delivers the ICMP message to ICMP processing. In Part 4, TCP and HTTP supply the additional transport and application processing. The echo reply is a separate outgoing PDU.
 
 For the **same forwarded request**, both Ethernet source and destination MAC addresses change at Router-A. Its outgoing source is its G0/1 MAC; its outgoing destination is Server-A's MAC. The IPv4 source and destination stay with PC-A and Server-A because this topology uses no NAT. A switch hop does not decrement the IP TTL.
 
-The ping utility initiates the diagnostic, but ICMP belongs with **Layer 3 / the Internet layer**. It does not add a TCP or UDP segment. OSI layers describe responsibilities; neither a ping nor an ARP message must visibly exercise all seven layers.
+The ping utility initiates the diagnostic, but ICMP belongs with **Layer 3 / the Internet layer**. An ICMP message has no TCP/UDP header or port numbers. OSI layers describe responsibilities; neither a ping nor an ARP message must visibly exercise all seven layers.
 
 ## Part 4: follow HTTP application traffic
 
@@ -189,12 +199,12 @@ The ping utility initiates the diagnostic, but ICMP belongs with **Layer 3 / the
 2. Confirm **Server-A → Services → HTTP → On**. Close any previously opened PC-A browser. Return to **Simulation**.
 3. In **Edit Filters**, clear the selections, then enable **ARP**, **TCP**, and **HTTP**. Keeping ARP visible avoids hiding address-resolution delays. DNS is unnecessary because you will use an IP address.
 4. Open **PC-A → Desktop → Web Browser**, enter **http://192.168.20.10**, and select **Go**. Return to the simulation controls while leaving the request pending.
-5. Use **Capture/Forward**. Inspect TCP events at the endpoints to identify connection establishment: a client **SYN**, a server **SYN/ACK**, and a client **ACK**. These flags synchronize and acknowledge the connection; no detailed flag analysis is required. Record the actual client source port and server destination port. Do not assume a fixed client port or event count.
-6. Inspect an **HTTP request** event at PC-A. In PDU Details, find the HTTP content within TCP, then IPv4, then Ethernet. Use the OSI view to connect the application processing to Layer 7 and TCP processing to Layer 4.
+5. Use **Capture/Forward**. Inspect the endpoint TCP events that establish the connection. Record the flags where labeled, or the OSI explanation of the connection state, together with the actual client source port and server destination port. Do not assume a fixed client port or event count.
+6. Inspect an **HTTP request** event at PC-A. Record the HTTP content and the header sections shown. If it represents application generation before lower-layer encapsulation, advance to the matching TCP send/receive events to inspect TCP, IPv4, and Ethernet. Use the OSI view to connect the application processing to Layer 7 and TCP processing to Layer 4; all sections need not appear in one event.
 7. Follow that request through both switches and Router-A to Server-A. Compare headers as in Part 3. Routing does not change the TCP port pair in this topology.
-8. Follow the **HTTP response** back to PC-A. The server uses source TCP port **80** and the client's selected port as the destination. Continue stepping, or use Auto Capture/Play and pause, until the server page appears in PC-A's browser.
+8. Follow the **HTTP response** back to PC-A. Record its source/destination TCP ports and compare them with the request. Inspect the receiving-side OSI processing. Continue stepping, or use Auto Capture/Play and pause, until the server page appears in PC-A's browser.
 
-TCP connection setup packets can have no HTTP data. Packet Tracer can also show application generation separately from later frame transmission. Use the event's processing explanation and headers together, rather than expecting every TCP event to contain an HTTP request.
+**After recording the exchange:** a fresh TCP connection normally starts with client **SYN**, server **SYN/ACK**, and client **ACK** messages. Use the flags or OSI connection-state explanation as evidence; detailed flag decoding is not required. TCP setup can have no HTTP data. Requests target server TCP port **80**; responses use that as their source port and the client's selected port as their destination. Match the HTTP and TCP events using endpoint addresses, ports, direction, and event order.
 
 **Checkpoint:** You identified TCP setup, an HTTP request and response, and a displayed server page. For a fresh connection if only reused-session traffic appears, finish the old exchange and use the saved-configuration power-cycle procedure in Part 2, then repeat this part. Recheck HTTP is On. If ping works but the page does not load, check the exact `http://` URL, the HTTP service, the filters, and whether you have advanced the simulation far enough.
 
@@ -218,7 +228,7 @@ Relate each row to a recorded event. A grayed-out layer is not proof that a netw
 
 ## Student observation worksheet
 
-Copy these tables into your own notes and fill them using **your simulation's values**. Use one successful ICMP request for the first table. In Source/destination information, label the MAC and IP pairs separately. Write **not shown** when an event does not expose a field; do not invent a value. Preserve your notes before resetting the Event List.
+Use these tables throughout Parts 2–4 and fill them using **your simulation's values**. Use one successful ICMP request for the first table. In Source/destination information, label the MAC and IP pairs separately. Write **not shown** when an event does not expose a field; do not invent a value. If a displayed value differs from the expected behavior, record that discrepancy for review. Preserve your notes before resetting the Event List.
 
 | Observation point | Protocol | Relevant OSI layer(s) | Source/destination information | What happened? |
 | --- | --- | --- | --- | --- |
@@ -235,11 +245,13 @@ Copy these tables into your own notes and fill them using **your simulation's va
 | ARP on Server-A's LAN: target IP, reply MAC, and devices involved | |
 | Same request at Router-A: inbound TTL and outbound TTL | |
 | Echo reply: source and destination IP; how you identified a reply | |
-| TCP setup: endpoint events and flags you observed | |
+| TCP setup: endpoint events and flags or OSI connection-state explanations observed | |
 | HTTP request: client source port, server destination port, and header sections | |
 | HTTP response: source/destination ports and evidence of receiving-side processing | |
 
 ## Review questions
+
+Use your recorded evidence. If a field was not shown, identify it and explain the expected behavior using the lab's conceptual explanations.
 
 1. What information is added during encapsulation? Use the HTTP trace as an example.
 2. How do a TCP segment, IP packet, and Ethernet frame differ? Where would the HTTP data fit?
@@ -257,8 +269,8 @@ Copy these tables into your own notes and fill them using **your simulation's va
 - [ ] Verified both router interfaces and connected networks.
 - [ ] Captured address resolution on both LANs and an ICMP request/reply round trip.
 - [ ] Inspected PDU information at the PC, both switches, router, and server.
-- [ ] Compared the same request before and after routing, including MAC, IP, and TTL fields.
-- [ ] Observed TCP setup and an HTTP request/response; loaded the server page.
+- [ ] Compared the same request's MAC/IP information and available TTL fields; documented fields not shown or unexpected values.
+- [ ] Identified TCP setup using flags or OSI connection-state explanations, traced an HTTP request/response, and loaded the server page.
 - [ ] Completed the worksheet and explained the OSI/TCP/IP mapping using trace evidence.
 - [ ] Saved `OSI_PDU_Tracing.pkt` and kept the worksheet and review responses with your lab work.
 
