@@ -64,4 +64,12 @@ These Kahoot! reviews support independent practice: open a review and select **P
 
     Review Wi-Fi and router security, authentication, UPS and power concepts, hardware safety, and storage-media sanitization.
 
-[Back to Practice](../README.md) · [A+ Core 2](../../certifications/comptia/a-plus-core-2/README.md) · [Student Hub](../../../README.md)
+## Network+
+
+### OSI model and PDU fundamentals
+
+- [OSI Model & Network PDU Basics - Kahoot!](https://create.kahoot.it/share/osi-model-network-pdu-basics/2a222cfe-b29f-47ed-af86-358a954d8356)
+
+    Review the OSI layers, protocol data units, and encapsulation/decapsulation. Select **Play solo** for independent practice.
+
+[Back to Practice](../README.md) · [A+ Core 2](../../certifications/comptia/a-plus-core-2/README.md) · [Network+](../../certifications/comptia/network-plus/README.md) · [Student Hub](../../../README.md)
