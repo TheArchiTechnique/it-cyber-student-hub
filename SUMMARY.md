@@ -40,6 +40,7 @@
       - [Windows Help Desk: Troubleshooting Multiple PCs](docs/practice/pbqs/a-plus-core-2/windows-troubleshooting/README.md)
       - [Windows Startup Recovery](docs/practice/pbqs/a-plus-core-2/windows-startup-recovery/README.md)
     - [Network+](docs/practice/pbqs/network-plus/README.md)
+      - [Network Cabling & Physical Installation PBQ](docs/practice/pbqs/network-plus/physical-cabling-installation/README.md)
   - [Practice Tests](docs/practice/tests/README.md)
 - [Labs](docs/labs/README.md)
   - [IT Support](docs/labs/it-support/README.md)

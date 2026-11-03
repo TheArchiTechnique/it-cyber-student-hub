@@ -8,11 +8,11 @@ Performance-based practice for this certification.
 
 <!-- BEGIN GENERATED PBQ LISTINGS -->
 
-<!-- hub:placeholder
 ## Direct Certification Practice
 
-No direct certification PBQs published yet.
-hub:placeholder -->
+- [Network Cabling & Physical Installation PBQ](physical-cabling-installation/README.md)
+
+    Install a building network, identify media and connectors, interpret termination tests, select tools, and resolve physical connectivity faults.
 
 ## Foundational Practice
 

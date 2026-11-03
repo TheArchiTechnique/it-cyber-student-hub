@@ -547,6 +547,28 @@
         "malware-response"
       ],
       "status": "published"
+    },
+    {
+      "id": "network-plus-physical-cabling-installation",
+      "title": "Network Cabling & Physical Installation PBQ",
+      "description": "Install a building network, identify media and connectors, interpret termination tests, select tools, and resolve physical connectivity faults.",
+      "activityPath": "practice/pbqs/network-plus/physical-cabling-installation/",
+      "launchPath": "practice/pbqs/network-plus/physical-cabling-installation/app/",
+      "primaryCertification": "network-plus",
+      "certificationAssociations": [
+        {
+          "certification": "network-plus",
+          "relevance": "direct",
+          "reason": "Practices N10-009 media selection, MDF/IDF distribution, passive panels, rack equipment, physical diagrams, and installation requirements."
+        }
+      ],
+      "topics": [
+        "network-devices",
+        "cabling-and-connectors",
+        "network-tools",
+        "network-troubleshooting"
+      ],
+      "status": "published"
     }
   ]
 }

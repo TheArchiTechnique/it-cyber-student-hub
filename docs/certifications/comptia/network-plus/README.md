@@ -91,11 +91,11 @@ hub:hidden -->
 
 ## Published PBQ Practice
 
-<!-- hub:placeholder
 ### Direct Certification Practice
 
-No direct certification PBQs published yet.
-hub:placeholder -->
+- [Network Cabling & Physical Installation PBQ](../../../practice/pbqs/network-plus/physical-cabling-installation/README.md)
+
+    Install a building network, identify media and connectors, interpret termination tests, select tools, and resolve physical connectivity faults.
 
 ### Foundational Practice
 
