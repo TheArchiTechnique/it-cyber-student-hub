@@ -180,9 +180,14 @@ const server = http.createServer(async (request, response) => {
         const launch = page.locator('.hub-page').getByRole('link', { name: lab.title, exact: true });
         await launch.waitFor();
         assert.equal(await launch.count(), 1, 'One certification card per lab');
-        await launch.click();
-        assert.equal(page.url(), base + 'labs/networking/' + lab.slug + '/');
+        const labUrl = base + 'labs/networking/' + lab.slug + '/';
+        // Finish the document navigation before querying Chromium's history.
+        await Promise.all([page.waitForURL(labUrl, { waitUntil: 'load' }), launch.click()]);
+        await page.locator('.hub-article').getByRole('heading', { name: lab.title, exact: true }).waitFor();
+        assert.equal(page.url(), labUrl);
         await page.goBack();
+        await page.waitForURL(base + 'certifications/comptia/network-plus/');
+        await page.locator('.hub-page').getByRole('heading', { name: 'Network+', exact: true }).waitFor();
       }
       // The standalone lab is discoverable independently of the cumulative series.
       const standaloneLaunch = page.locator('.hub-page').getByRole('link', { name: independentTitle, exact: true });

@@ -87,6 +87,14 @@ hub:hidden -->
 
     Review the OSI layers, protocol data units, and encapsulation/decapsulation. Select **Play solo** on Kahoot! for independent practice.
 
+- [Ethernet Cabling and Fiber Optics - Kahoot!](https://create.kahoot.it/share/ethernet-cabling-and-fiber-optics/4d6b8274-8881-44d8-8233-74c55be1cad6)
+
+    Review Ethernet cabling and fiber-optic fundamentals. Select **Play solo** on Kahoot! for independent practice.
+
+- [Ethernet & Switching Fundamentals - Kahoot!](https://create.kahoot.it/details/3b44b33b-24c6-43e7-847f-ddf3ac7cf019)
+
+    Review NICs, MAC addressing, switch MAC learning and frame forwarding, introductory VLANs, and basic network device commands. Select **Play solo** on Kahoot! for independent practice.
+
 <!-- BEGIN GENERATED PBQ LISTINGS -->
 
 ## Published PBQ Practice
