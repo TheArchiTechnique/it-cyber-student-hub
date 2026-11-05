@@ -27,6 +27,7 @@ const day7Quiz = 'https://create.kahoot.it/share/windows-security-and-access-con
 const day8Quiz = 'https://create.kahoot.it/details/2d759456-7668-494e-8d8d-aab1931ebfef';
 const day9Quiz = 'https://create.kahoot.it/share/enter-kahoot-title/45b5f987-2795-4566-9a2f-b710ceb09a94';
 const networkQuiz = 'https://create.kahoot.it/share/osi-model-network-pdu-basics/2a222cfe-b29f-47ed-af86-358a954d8356';
+const cablingQuiz = 'https://create.kahoot.it/share/ethernet-cabling-and-fiber-optics/4d6b8274-8881-44d8-8233-74c55be1cad6';
 
 (async () => {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
@@ -109,12 +110,14 @@ const networkQuiz = 'https://create.kahoot.it/share/osi-model-network-pdu-basics
         await follow('Command Reference','reference/windows-command-line/');
         await follow('Back to Reference','reference/');
         await go('practice/questions/');
-        // Count share and details URLs: nine Core 2 reviews plus the Network+ review.
-        assert.equal(await content().locator('a[href^="https://create.kahoot.it/"]').count(),10);
+        // Count share and details URLs: nine Core 2 reviews plus two Network+ reviews.
+        assert.equal(await content().locator('a[href^="https://create.kahoot.it/"]').count(),11);
         const mac = content().getByRole('link',{name:'macOS Essentials & Troubleshooting - Kahoot!',exact:true});
         assert.equal(await mac.getAttribute('href'),macQuiz);
         const network = content().getByRole('link',{name:'OSI Model & Network PDU Basics - Kahoot!',exact:true});
         assert.equal(await network.getAttribute('href'),networkQuiz);
+        const cabling = content().getByRole('link',{name:'Ethernet Cabling and Fiber Optics - Kahoot!',exact:true});
+        assert.equal(await cabling.getAttribute('href'),cablingQuiz);
         for (const [name, href] of [
           ['Windows Security and Access Control Basics - Kahoot!',day7Quiz],
           ['Cybersecurity Essentials: Threats and Defenses - Kahoot!',day8Quiz],
@@ -134,7 +137,7 @@ const networkQuiz = 'https://create.kahoot.it/share/osi-model-network-pdu-basics
       }
     }
     assert.deepEqual(errors,[]);
-    console.log('Passed: resource cards, prerequisites, grouped references, 10 quizzes, student journeys and returns, keyboard focus, desktop/mobile, and both themes.');
+    console.log('Passed: resource cards, prerequisites, grouped references, 11 quizzes, student journeys and returns, keyboard focus, desktop/mobile, and both themes.');
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));
