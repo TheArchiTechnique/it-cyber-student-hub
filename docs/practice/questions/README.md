@@ -72,4 +72,10 @@ These Kahoot! reviews support independent practice: open a review and select **P
 
     Review the OSI layers, protocol data units, and encapsulation/decapsulation. Select **Play solo** for independent practice.
 
+### Ethernet cabling and fiber optics
+
+- [Ethernet Cabling and Fiber Optics - Kahoot!](https://create.kahoot.it/share/ethernet-cabling-and-fiber-optics/4d6b8274-8881-44d8-8233-74c55be1cad6)
+
+    Review Ethernet cabling and fiber-optic fundamentals. Select **Play solo** for independent practice.
+
 [Back to Practice](../README.md) · [A+ Core 2](../../certifications/comptia/a-plus-core-2/README.md) · [Network+](../../certifications/comptia/network-plus/README.md) · [Student Hub](../../../README.md)
