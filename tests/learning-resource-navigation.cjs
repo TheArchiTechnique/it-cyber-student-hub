@@ -4,6 +4,8 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 const http = require('node:http');
 const { chromium } = require('playwright');
+const kahoots = require('./fixtures/kahoots.json');
+const quizUrls = Object.values(kahoots).flat();
 const site = path.resolve(__dirname, '../site');
 const prefix = '/it-cyber-student-hub/';
 const mime = {'.html':'text/html','.css':'text/css','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.svg':'image/svg+xml','.png':'image/png'};
@@ -28,6 +30,12 @@ const day8Quiz = 'https://create.kahoot.it/details/2d759456-7668-494e-8d8d-aab19
 const day9Quiz = 'https://create.kahoot.it/share/enter-kahoot-title/45b5f987-2795-4566-9a2f-b710ceb09a94';
 const networkQuiz = 'https://create.kahoot.it/share/osi-model-network-pdu-basics/2a222cfe-b29f-47ed-af86-358a954d8356';
 const cablingQuiz = 'https://create.kahoot.it/share/ethernet-cabling-and-fiber-optics/4d6b8274-8881-44d8-8233-74c55be1cad6';
+const switchingQuiz = 'https://create.kahoot.it/details/3b44b33b-24c6-43e7-847f-ddf3ac7cf019';
+const networkQuizzes = [
+  ['OSI Model & Network PDU Basics - Kahoot!', networkQuiz],
+  ['Ethernet Cabling and Fiber Optics - Kahoot!', cablingQuiz],
+  ['Ethernet & Switching Fundamentals - Kahoot!', switchingQuiz]
+];
 
 (async () => {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
@@ -110,14 +118,17 @@ const cablingQuiz = 'https://create.kahoot.it/share/ethernet-cabling-and-fiber-o
         await follow('Command Reference','reference/windows-command-line/');
         await follow('Back to Reference','reference/');
         await go('practice/questions/');
-        // Count share and details URLs: nine Core 2 reviews plus two Network+ reviews.
-        assert.equal(await content().locator('a[href^="https://create.kahoot.it/"]').count(),11);
+        // Check every exact share/details URL in order, including missing or duplicate entries.
+        assert.deepEqual(await content().locator('a[href^="https://create.kahoot.it/"]')
+          .evaluateAll(links => links.map(link => link.href)), quizUrls);
         const mac = content().getByRole('link',{name:'macOS Essentials & Troubleshooting - Kahoot!',exact:true});
         assert.equal(await mac.getAttribute('href'),macQuiz);
-        const network = content().getByRole('link',{name:'OSI Model & Network PDU Basics - Kahoot!',exact:true});
-        assert.equal(await network.getAttribute('href'),networkQuiz);
-        const cabling = content().getByRole('link',{name:'Ethernet Cabling and Fiber Optics - Kahoot!',exact:true});
-        assert.equal(await cabling.getAttribute('href'),cablingQuiz);
+        for (const [name, href] of networkQuizzes) {
+          const link = content().getByRole('link',{name,exact:true});
+          assert.equal(await link.count(),1);
+          assert.equal(await link.getAttribute('href'),href);
+          assert.match(await link.locator('xpath=ancestor::li[1]').innerText(),/Select Play solo.*independent practice/);
+        }
         for (const [name, href] of [
           ['Windows Security and Access Control Basics - Kahoot!',day7Quiz],
           ['Cybersecurity Essentials: Threats and Defenses - Kahoot!',day8Quiz],
@@ -133,11 +144,21 @@ const cablingQuiz = 'https://create.kahoot.it/share/ethernet-cabling-and-fiber-o
         assert.equal((await request).url(),linuxQuiz);
         await page.waitForURL(linuxQuiz, {waitUntil:'load'});
         await go('practice/questions/');
+        await follow('Network+','certifications/comptia/network-plus/');
+        assert.deepEqual(await content().locator('a[href^="https://create.kahoot.it/"]')
+          .evaluateAll(links => links.map(link => link.href)), kahoots['network-plus']);
+        for (const [name, href] of networkQuizzes) {
+          const link = content().getByRole('link',{name,exact:true});
+          assert.equal(await link.count(),1);
+          assert.equal(await link.getAttribute('href'),href);
+          assert.match(await link.locator('xpath=ancestor::li[1]').innerText(),/Select Play solo.*independent practice/);
+        }
+        await go('practice/questions/');
         await follow('Back to Practice','practice/');
       }
     }
     assert.deepEqual(errors,[]);
-    console.log('Passed: resource cards, prerequisites, grouped references, 11 quizzes, student journeys and returns, keyboard focus, desktop/mobile, and both themes.');
+    console.log(`Passed: resource cards, prerequisites, grouped references, ${quizUrls.length} exact quiz URLs, Network+ Days 1–3 in both listings, student journeys and returns, keyboard focus, desktop/mobile, and both themes.`);
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));

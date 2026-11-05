@@ -1,6 +1,7 @@
 """Learning resource discovery, publication, and curated lab progression."""
 from pathlib import Path
 from ipaddress import IPv4Interface, IPv4Network, IPv4Address
+import json
 import re
 import shutil
 import tempfile
@@ -333,13 +334,41 @@ class LearningResourceNavigationTests(unittest.TestCase):
                 self.assertIn('VLAN20-IN: inbound on G0/0.20', labels)
 
     def test_quizzes_cover_published_certification_links_once(self):
-        pattern = r'https://create\.kahoot\.it/share/[^\s)"<>]+'
+        pattern = r'https://create\.kahoot\.it/(?:share|details)/[^\s)"<>]+'
+        expected = json.loads((ROOT / 'tests/fixtures/kahoots.json').read_text())
         quiz_urls = re.findall(pattern, self.visible('practice/questions/README.md'))
+        self.assertEqual(quiz_urls, [url for urls in expected.values() for url in urls])
         self.assertEqual(len(quiz_urls), len(set(quiz_urls)))
+        for certification, urls in expected.items():
+            key = f'certifications/comptia/{certification}/README.md'
+            with self.subTest(certification=certification):
+                actual = re.findall(pattern, self.visible(key))
+                self.assertEqual(actual, urls)
+                self.assertEqual(len(actual), len(set(actual)))
         for key in self.availability.visible:
             if key.startswith('certifications/'):
                 self.assertTrue(set(re.findall(pattern, self.visible(key))) <= set(quiz_urls), key)
         self.assertTrue(any('/linux-basics-commands-and-system-tools/' in u for u in quiz_urls))
+
+    def test_network_plus_quiz_titles_summaries_and_solo_guidance(self):
+        expected_urls = json.loads((ROOT / 'tests/fixtures/kahoots.json').read_text())['network-plus']
+        titles = ['OSI Model & Network PDU Basics - Kahoot!',
+                  'Ethernet Cabling and Fiber Optics - Kahoot!',
+                  'Ethernet & Switching Fundamentals - Kahoot!']
+        pattern = r'^- \[([^\]]+)\]\((https://create\.kahoot\.it/(?:share|details)/[^\s)]+)\)\n\n[ \t]+([^\n]+)'
+        for key, section in [('practice/questions/README.md', '## Network+'),
+                             ('certifications/comptia/network-plus/README.md', '## Practice Quizzes')]:
+            with self.subTest(page=key):
+                text = self.visible(key).split(section + '\n', 1)[1].split('\n## ', 1)[0]
+                entries = re.findall(pattern, text, re.M)
+                self.assertEqual([title for title, _, _ in entries], titles)
+                self.assertEqual([url for _, url, _ in entries], expected_urls)
+                for _, _, summary in entries:
+                    self.assertIn('Select **Play solo**', summary)
+                    self.assertIn('independent practice', summary)
+                self.assertIn('Ethernet cabling and fiber-optic', entries[1][2])
+                for topic in ('NICs', 'MAC addressing', 'MAC learning', 'frame forwarding', 'VLANs', 'commands'):
+                    self.assertIn(topic, entries[2][2])
 
     def test_reference_groups_and_contextual_connections(self):
         text = self.visible('reference/README.md')

@@ -78,4 +78,10 @@ These Kahoot! reviews support independent practice: open a review and select **P
 
     Review Ethernet cabling and fiber-optic fundamentals. Select **Play solo** for independent practice.
 
+### Network interfaces, MAC addresses, and switching
+
+- [Ethernet & Switching Fundamentals - Kahoot!](https://create.kahoot.it/details/3b44b33b-24c6-43e7-847f-ddf3ac7cf019)
+
+    Review NICs, MAC addressing, switch MAC learning and frame forwarding, introductory VLANs, and basic network device commands. Select **Play solo** for independent practice.
+
 [Back to Practice](../README.md) · [A+ Core 2](../../certifications/comptia/a-plus-core-2/README.md) · [Network+](../../certifications/comptia/network-plus/README.md) · [Student Hub](../../../README.md)
