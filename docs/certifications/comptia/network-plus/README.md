@@ -87,6 +87,10 @@ hub:hidden -->
 
     Review the OSI layers, protocol data units, and encapsulation/decapsulation. Select **Play solo** on Kahoot! for independent practice.
 
+- [Ethernet Cabling and Fiber Optics - Kahoot!](https://create.kahoot.it/share/ethernet-cabling-and-fiber-optics/4d6b8274-8881-44d8-8233-74c55be1cad6)
+
+    Review Ethernet cabling and fiber-optic fundamentals. Select **Play solo** on Kahoot! for independent practice.
+
 <!-- BEGIN GENERATED PBQ LISTINGS -->
 
 ## Published PBQ Practice
