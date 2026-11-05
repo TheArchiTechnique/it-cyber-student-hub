@@ -210,7 +210,8 @@ const server = http.createServer(async (request, response) => {
         'https://create.kahoot.it/share/windows-security-and-access-control-basics/5148cf77-ef81-49e0-85cf-8a49271e7949',
         'https://create.kahoot.it/details/2d759456-7668-494e-8d8d-aab1931ebfef',
         'https://create.kahoot.it/share/enter-kahoot-title/45b5f987-2795-4566-9a2f-b710ceb09a94',
-        'https://create.kahoot.it/share/osi-model-network-pdu-basics/2a222cfe-b29f-47ed-af86-358a954d8356'
+        'https://create.kahoot.it/share/osi-model-network-pdu-basics/2a222cfe-b29f-47ed-af86-358a954d8356',
+        'https://create.kahoot.it/share/ethernet-cabling-and-fiber-optics/4d6b8274-8881-44d8-8233-74c55be1cad6'
       ]);
       await ready();
     }
