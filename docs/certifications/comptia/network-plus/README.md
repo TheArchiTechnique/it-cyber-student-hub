@@ -95,6 +95,14 @@ hub:hidden -->
 
     Review NICs, MAC addressing, switch MAC learning and frame forwarding, introductory VLANs, and basic network device commands. Select **Play solo** on Kahoot! for independent practice.
 
+- [IPv4 Networking, Addresses, Subnets, and Traffic - Kahoot!](https://create.kahoot.it/share/ipv4-networking-addresses-subnets-traffic/bbb4a50a-ddb7-4324-a0af-3faa1b5538c4)
+
+    Review IPv4 networking, addresses, subnets, and traffic types. Select **Play solo** on Kahoot! for independent practice.
+
+- [Routing Protocols, Packet Forwarding, NAT/PAT, Edge Routers, and Firewalls - Kahoot!](https://create.kahoot.it/details/af85b4de-8410-450e-8182-97ba621590c5)
+
+    Review routing protocols, packet forwarding, NAT/PAT, edge routers, and firewall inspection. Select **Play solo** on Kahoot! for independent practice.
+
 <!-- BEGIN GENERATED PBQ LISTINGS -->
 
 ## Published PBQ Practice

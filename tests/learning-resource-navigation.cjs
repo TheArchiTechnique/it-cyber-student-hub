@@ -31,10 +31,14 @@ const day9Quiz = 'https://create.kahoot.it/share/enter-kahoot-title/45b5f987-279
 const networkQuiz = 'https://create.kahoot.it/share/osi-model-network-pdu-basics/2a222cfe-b29f-47ed-af86-358a954d8356';
 const cablingQuiz = 'https://create.kahoot.it/share/ethernet-cabling-and-fiber-optics/4d6b8274-8881-44d8-8233-74c55be1cad6';
 const switchingQuiz = 'https://create.kahoot.it/details/3b44b33b-24c6-43e7-847f-ddf3ac7cf019';
+const ipv4Quiz = 'https://create.kahoot.it/share/ipv4-networking-addresses-subnets-traffic/bbb4a50a-ddb7-4324-a0af-3faa1b5538c4';
+const routingQuiz = 'https://create.kahoot.it/details/af85b4de-8410-450e-8182-97ba621590c5';
 const networkQuizzes = [
   ['OSI Model & Network PDU Basics - Kahoot!', networkQuiz],
   ['Ethernet Cabling and Fiber Optics - Kahoot!', cablingQuiz],
-  ['Ethernet & Switching Fundamentals - Kahoot!', switchingQuiz]
+  ['Ethernet & Switching Fundamentals - Kahoot!', switchingQuiz],
+  ['IPv4 Networking, Addresses, Subnets, and Traffic - Kahoot!', ipv4Quiz],
+  ['Routing Protocols, Packet Forwarding, NAT/PAT, Edge Routers, and Firewalls - Kahoot!', routingQuiz]
 ];
 
 (async () => {
@@ -158,7 +162,7 @@ const networkQuizzes = [
       }
     }
     assert.deepEqual(errors,[]);
-    console.log(`Passed: resource cards, prerequisites, grouped references, ${quizUrls.length} exact quiz URLs, Network+ Days 1–3 in both listings, student journeys and returns, keyboard focus, desktop/mobile, and both themes.`);
+    console.log(`Passed: resource cards, prerequisites, grouped references, ${quizUrls.length} exact quiz URLs, Network+ Days 1–5 in both listings, student journeys and returns, keyboard focus, desktop/mobile, and both themes.`);
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));
