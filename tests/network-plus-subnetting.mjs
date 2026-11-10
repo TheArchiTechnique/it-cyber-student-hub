@@ -5,6 +5,8 @@ import http from 'node:http';
 import {fileURLToPath} from 'node:url';
 import {createRequire} from 'node:module';
 import * as M from '../docs/labs/networking/subnetting/app/engine.mjs';
+import * as P from '../docs/labs/networking/subnetting/app/practice.mjs';
+import {randomBytes} from 'node:crypto';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const KEY = 'student-hub-network-plus-subnetting-v1';
@@ -104,6 +106,8 @@ const source=await fs.readFile(path.join(root,'docs/labs/networking/subnetting/a
 assert.ok(source.includes('192.168.10.130/26') && source.includes('172.16.5.200/23'));
 assert.equal((source.match(/id="lesson-(binary|mask|ip|and|broadcast|range|capacity|example)"/g)||[]).length,8);
 console.log('PASS: IPv4 engine, all octet conversions, every prefix /0–/32, independent expected blocks, all 160 bit-error locations, mask validation, counts, special cases, saved-state validation.');
+
+practiceModelChecks();
 
 if (process.argv.includes('--browser')) await browserChecks();
 
@@ -285,6 +289,284 @@ async function browserChecks() {
     assert.equal(await staticPage.locator('#lesson').isVisible(),true);
     assert.equal(await staticPage.locator('#reference').isVisible(),true);
     await noJS.close();
+    await practiceBrowserChecks(browser,origin,base,url);
     console.log('PASS: built project-subpath app, guided and independent modes, binary typing/paste/toggle, exact error feedback, gated solutions, 13 complete subnet fixtures, reference values, persistence, reset/cancel/retry/new example, malformed/blocked storage, keyboard tabs, /31 and /32, 1440/768/390/320px alignment and overflow, no-JS reading.');
   } finally {await browser?.close();await new Promise(resolve=>server.close(resolve));}
+}
+
+function practiceModelChecks() {
+  const types=new Set(),prefixes=new Set(),positions=new Set(),relations=new Set();
+  let inspected=0,crossing=0,non192=0;
+  const seeds=[...Array.from({length:64},(_,i)=>`property-${i}`),...Array.from({length:16},()=>randomBytes(8).toString('hex'))];
+  for (const seed of seeds) for (const count of P.COUNTS) for (const coverage of Object.keys(P.COVERAGE)) {
+    const questions=P.generateQuestions({seed,count,coverage});
+    assert.equal(questions.length,count);
+    assert.equal(new Set(questions.map(q=>q.prompt)).size,count,'No duplicate questions within a session');
+    assert.equal(new Set(questions.map(q=>q.uniqueKey)).size,count,'Equivalent prompts cannot repeat the same calculation');
+    assert.equal(new Set(questions.map(q=>q.id)).size,count);
+    assert.ok(questions.some(q=>q.format==='entry')&&questions.some(q=>q.format!=='entry'),'Every session mixes entry and choices');
+    const distribution=P.COVERAGE[coverage].categories.map(category=>questions.filter(q=>q.category===category).length);
+    assert.ok(Math.max(...distribution)-Math.min(...distribution)<=1,'Category counts differ by at most one');
+    assert.ok(questions.every(q=>P.COVERAGE[coverage].categories.includes(q.category)));
+    assert.deepEqual(P.generateQuestions({seed,count,coverage}),questions,'A refresh regenerates the identical questions and ordering');
+    for (const q of questions) {
+      types.add(q.type);prefixes.add(q.data.prefix);inspected++;
+      if (!q.data.ip.startsWith('192.168.')) non192++;
+      const r=M.calculate(q.data.ip,q.data.prefix);
+      let expected={network:r.network,mask:r.mask,cidr:`/${r.prefix}`,broadcast:r.broadcast,first:r.first,last:r.last,
+        validHost:r.ip,total:String(r.total),usable:String(r.usable),hostBits:String(r.hostBits),
+        next:M.fromNumber(M.toNumber(r.network)+r.total),containing:`${r.network}/${r.prefix}`,
+        range:`${r.network} through ${r.broadcast}`,binaryMask:r.binary.mask.join('.'),binaryAnd:r.binary.network.join('.'),wildcard:r.wildcard}[q.type];
+      if (q.type==='comparison') {
+        const other=M.calculate(q.data.otherIP,r.prefix);
+        expected=r.network===other.network?'Same':'Different';relations.add(expected);
+        if (q.data.ip.split('.')[2]!==q.data.otherIP.split('.')[2]) crossing++;
+        assert.notEqual(q.data.ip,q.data.otherIP);
+      }
+      if (q.type==='selection') {
+        const selected=M.parsePrefix(q.correctAnswer),chosen=M.calculate('10.0.0.1',selected);
+        assert.ok(chosen.usable>=q.data.required);
+        if (selected<30) assert.ok(M.calculate('10.0.0.1',selected+1).usable<q.data.required,'Next smaller conventional block fails the requirement');
+        expected=`/${P.minimumPrefix(q.data.required)}`;assert.equal(q.worksheet,null);
+      }
+      if (q.type==='prefixChange') expected=String(M.calculate(q.data.ip,q.data.newPrefix).total);
+      if (q.type==='bitRole') expected=r.binary.mask.join('')[q.data.bit-1]==='1'?'Network bit; mask bit is 1':'Host bit; mask bit is 0';
+      assert.equal(q.correctAnswer,expected,`${q.type} agrees with the existing engine`);
+      assert.ok(q.explanation.length>80,'Explanations include the calculation process');
+      assert.ok(P.gradeAnswer(q,q.correctAnswer).correct);
+      if (q.format==='entry') assert.deepEqual(q.choices,[]);
+      else {
+        assert.equal(q.choices.length,4);assert.equal(new Set(q.choices).size,4);
+        assert.equal(q.choices.filter(choice=>P.gradeAnswer(q,choice).correct).length,1,'Exactly one correct choice');
+        positions.add(q.choices.indexOf(q.correctAnswer));
+        if (q.answerKind==='address') q.choices.forEach(choice=>M.parseIPv4(choice));
+        if (q.answerKind==='prefix') q.choices.forEach(choice=>M.parsePrefix(choice));
+        if (q.type==='binaryMask'||q.type==='binaryAnd') q.choices.forEach(choice=>assert.match(choice,/^[01]{8}(\.[01]{8}){3}$/));
+      }
+      if (q.type==='cidr'||q.type==='bitRole') assert.equal(q.worksheet,null,'Worksheet cannot disclose the requested value');
+      if (q.type==='validHost') assert.equal(q.worksheet.ip,r.network,'Worksheet contains the given block rather than a correct host choice');
+    }
+  }
+  assert.equal(types.size,20);assert.deepEqual([...positions].sort(),[0,1,2,3]);
+  assert.deepEqual([...relations].sort(),['Different','Same']);
+  for(const prefix of [16,20,22,23,24,25,26,27,28,29,30]) assert.ok(prefixes.has(prefix));
+  assert.ok(crossing>100&&non192>1000);
+  const thresholdFixtures=[[1,30],[2,30],[3,29],[6,29],[7,28],[14,28],[15,27],[30,27],[31,26],[62,26],[63,25],[120,25],[126,25],[127,24],[128,24],[254,24],[255,23],[256,23],[510,23],[511,22],[1022,22],[1023,21],[2047,20],[65534,16]];
+  thresholdFixtures.forEach(([hosts,prefix])=>assert.equal(P.minimumPrefix(hosts),prefix));
+  for (const hosts of [-1,0,1.5,4294967295,'120']) assert.throws(()=>P.minimumPrefix(hosts));
+  const next=P.buildQuestion('next',{ip:'172.16.255.20',prefix:23},'entry');
+  assert.equal(next.correctAnswer,'172.17.0.0','Next subnet carries across a third-octet boundary');
+  for (const prefix of [31,32]) assert.throws(()=>P.buildQuestion('broadcast',{ip:'192.0.2.10',prefix},'entry'));
+  const address=P.buildQuestion('network',{ip:'192.168.10.130',prefix:26},'entry');
+  assert.ok(P.gradeAnswer(address,' 192 . 168 . 010 . 128 ').correct);
+  for (const value of ['1.2.3','1.2.3.256','1.2.-1.2','1.2.3.4/26','<script>']) assert.equal(P.gradeAnswer(address,value).valid,false);
+  const capacity=P.buildQuestion('total',{ip:'172.16.5.200',prefix:22},'entry');
+  assert.ok(P.gradeAnswer(capacity,' 1,024 ').correct);assert.ok(P.gradeAnswer(capacity,'001024').correct);
+  for (const value of ['-1','1.5','1e3','1,02','4294967297']) assert.equal(P.gradeAnswer(capacity,value).valid,false);
+  const mask=P.buildQuestion('mask',{ip:'192.168.10.130',prefix:26},'entry');
+  for (const value of ['/26','26','255.255.255.192']) assert.ok(P.gradeAnswer(mask,value).correct);
+  for (const value of ['/33','255.0.255.0','26x']) assert.equal(P.gradeAnswer(mask,value).valid,false);
+  const relation=P.buildQuestion('comparison',{ip:'172.16.4.1',prefix:23,otherIP:'172.16.5.254'},'entry');
+  assert.ok(P.gradeAnswer(relation,' SAME subnet ').correct);assert.equal(P.gradeAnswer(relation,'Maybe').valid,false);
+  let session=P.createSession({seed:'score-test',count:5,coverage:'all'});
+  const questions=P.generateQuestions(session);
+  assert.equal(JSON.stringify(session).includes('correctAnswer'),false,'Persist seeds and student work, not an answer key');
+  for (let i=0;i<5;i++) {
+    const q=questions[i],answer=i<3?q.correctAnswer:wrongPracticeAnswer(q);
+    session=P.submitAnswer(session,answer).session;
+    assert.throws(()=>P.submitAnswer(session,q.correctAnswer),'An answer is scored once');
+    session=P.nextQuestion(session);
+  }
+  const score=P.summarize(session);
+  assert.deepEqual([score.total,score.correct,score.incorrect,score.percentage],[5,3,2,60]);
+  assert.equal(Object.values(score.categories).reduce((sum,value)=>sum+value.total,0),5);
+  assert.deepEqual(P.sanitizeSession(JSON.parse(JSON.stringify(session))),session);
+  assert.deepEqual(P.summarize(P.sanitizeSession({...session,score:100,questions:[{correctAnswer:'forged'}]})),score,'Saved scores or question objects are never trusted');
+  for (const raw of [null,{},[],{...session,version:99},{...session,generatorVersion:99},{...session,count:999},{...session,coverage:'__proto__'},{...session,seed:'<script>'}]) assert.equal(P.sanitizeSession(raw),null);
+  const partial=P.sanitizeSession({...session,cursor:999,answers:[session.answers[0],null,...session.answers.slice(2)]});
+  assert.equal(partial.cursor,1);assert.deepEqual(partial.answers.slice(1),[null,null,null,null]);
+  assert.notEqual(P.newSeed(),P.newSeed());
+  assert.notDeepEqual(P.generateQuestions({...session,seed:'different-seed'}).map(q=>q.prompt),questions.map(q=>q.prompt));
+  console.log(`PASS: ${inspected.toLocaleString()} generated questions; all 20 types and 8 categories, seeded/fresh-random properties, every common prefix, balanced coverage, distinct distractors and all answer positions, thresholds, equivalent entry formats, scoring and session recovery.`);
+}
+
+function wrongPracticeAnswer(q) {
+  if (q.format!=='entry') return q.choices.find(choice=>choice!==q.correctAnswer);
+  if (q.answerKind==='address') return '0.0.0.0';
+  if (q.answerKind==='number') return String(Number(q.correctAnswer)+1);
+  if (q.answerKind==='prefix') return `/${M.parsePrefix(q.correctAnswer)===30?29:M.parsePrefix(q.correctAnswer)+1}`;
+  if (q.answerKind==='relation') return q.correctAnswer==='Same'?'Different':'Same';
+  throw new Error('Missing test answer for '+q.type);
+}
+
+async function practiceBrowserChecks(browser,origin,base,url) {
+  const context=await browser.newContext();
+  await context.route('**/*',route=>new URL(route.request().url()).origin===origin?route.continue():route.abort());
+  const page=await context.newPage(),errors=[];
+  const practiceKey='student-hub-network-plus-subnetting-practice-v1',scratchKey='student-hub-network-plus-subnetting-scratch-v1';
+  page.on('pageerror',error=>errors.push(error.message));
+  const readSession=()=>page.evaluate(key=>JSON.parse(localStorage.getItem(key)),practiceKey);
+  const currentQuestion=async()=>{const session=await readSession();return P.generateQuestions(session)[session.cursor];};
+  const fillAnswer=async(q,answer)=>{
+    if (q.format==='mcq') await page.locator('#practice-answer-controls input[type=radio]').nth(q.choices.indexOf(answer)).check();
+    else if (q.format==='select') await page.locator('#practice-answer').selectOption(answer);
+    else await page.locator('#practice-answer').fill(answer);
+  };
+  const finishQuestion=async(q,answer)=>{
+    await fillAnswer(q,answer);await page.locator('#practice-submit').click();
+    assert.equal(await page.locator('#practice-submit').isDisabled(),true);
+    assert.equal(await page.locator('#practice-feedback').isVisible(),true);
+    assert.ok((await page.locator('#practice-feedback').innerText()).includes(q.correctAnswer));
+    await page.locator('#practice-next').click();
+  };
+  const startUI=async(count,coverage)=>{
+    await page.locator('#practice-count').selectOption(String(count));await page.locator('#practice-coverage').selectOption(coverage);
+    await page.locator('#practice-start').click();
+    if (await page.locator('#practice-restart-dialog').isVisible()) await page.locator('#practice-confirm-restart').click();
+    const session=await readSession();assert.equal(session.count,count);assert.equal(session.coverage,coverage);
+    assert.equal(session.answers.filter(answer=>answer!==null).length,0);
+    return session;
+  };
+  try {
+    await page.goto(url+'#practice');await page.locator('#practice-start').waitFor();
+    assert.equal(await page.locator('#practice-current').isVisible(),false);
+    assert.deepEqual(await page.locator('#practice-count option').evaluateAll(nodes=>nodes.map(node=>Number(node.value))),P.COUNTS);
+    assert.deepEqual(await page.locator('#practice-coverage option').allTextContents(),Object.values(P.COVERAGE).map(item=>item.label));
+    await startUI(5,'selection');
+    let prepared;
+    for(let i=0;i<1000;i++) {
+      prepared=P.createSession({seed:`browser-${i}`,count:10,coverage:'all'});
+      const q=P.generateQuestions(prepared)[0];
+      if(q.format==='entry'&&q.answerKind==='address'&&q.worksheet) break;
+    }
+    const first=P.generateQuestions(prepared)[0];assert.equal(first.answerKind,'address');assert.equal(first.format,'entry');
+    const originalWork={...M.freshWork(),ip:'10.42.99.20',prefix:16};originalWork.binary.ip[0]='00001111';originalWork.answers.network='10.42.0.0';
+    await page.evaluate(({practiceKey,scratchKey,worksheetKey,session,work})=>{
+      localStorage.setItem(practiceKey,JSON.stringify(session));localStorage.setItem(worksheetKey,JSON.stringify(work));localStorage.removeItem(scratchKey);
+    },{practiceKey,scratchKey,worksheetKey:KEY,session:prepared,work:originalWork});
+    await page.reload();await page.locator('#practice-prompt').waitFor();
+    assert.equal(await page.locator('#practice-prompt').innerText(),first.prompt);
+    const originalSaved=await page.evaluate(key=>localStorage.getItem(key),KEY);
+    assert.equal(await page.locator('#practice-feedback').isVisible(),false);
+    assert.equal(await page.locator('#practice-feedback').textContent(),'');
+    assert.equal(await page.locator('#practice-answer').inputValue(),'');
+    assert.equal(await page.locator('#practice-current [data-correct]').count(),0);
+    await page.locator('#practice-answer').fill('1.2.3.999');await page.locator('#practice-submit').click();
+    assert.match(await page.locator('#practice-error').innerText(),/0 to 255/);
+    assert.equal((await readSession()).answers[0],null,'Malformed entries do not consume a question');
+    await page.locator('#practice-worksheet').click();
+    assert.equal(await page.locator('#workspace').isVisible(),true);
+    assert.equal(await page.locator('.binary-input').evaluateAll(nodes=>nodes.every(node=>!node.value)),true);
+    assert.equal(await page.locator('#final-answers input').evaluateAll(nodes=>nodes.every(node=>!node.value)),true);
+    assert.equal(await page.locator('#check').isDisabled(),true);assert.equal(await page.locator('#show-solution').isDisabled(),true);
+    await page.locator('#ip-0').fill('00000001');await page.reload();
+    await page.locator('#practice-worksheet-note').waitFor();
+    assert.equal(await page.locator('#ip-0').inputValue(),'00000001');assert.equal(await page.locator('#check').isDisabled(),true);
+    assert.equal(await page.evaluate(key=>localStorage.getItem(key),KEY),originalSaved,'Question scratch never overwrites saved worksheet');
+    await page.locator('#practice-worksheet-note [data-open=practice]').click();
+    assert.equal(await page.locator('#practice-answer').inputValue(),'1.2.3.999','Draft entry survives tab changes and refresh');
+    await fillAnswer(first,first.correctAnswer);await page.locator('#practice-submit').click();
+    assert.equal(await page.locator('#practice-submit').isDisabled(),true);
+    await page.locator('#practice-worksheet').click();
+    assert.equal(await page.locator('#check').isEnabled(),true,'Worksheet checks unlock only after submission');
+    await page.locator('#check').click();assert.equal(await page.locator('#show-solution').isEnabled(),true);
+    await page.locator('#restore-worksheet').click();
+    assert.equal(await page.locator('#given-ip').inputValue(),originalWork.ip);
+    assert.equal(await page.locator('#ip-0').inputValue(),'00001111');
+    assert.equal(await page.evaluate(key=>localStorage.getItem(key),KEY),originalSaved);
+    await page.locator('#practice-tab').click();await page.locator('#practice-next').click();
+    const questions=P.generateQuestions(prepared);
+    for(let index=1;index<10;index++) {
+      const q=questions[index];assert.equal(await page.locator('#practice-prompt').innerText(),q.prompt);
+      assert.equal(await page.locator('#practice-feedback').isVisible(),false);
+      const answer=[1,4].includes(index)?wrongPracticeAnswer(q):q.correctAnswer;
+      await fillAnswer(q,answer);
+      if(index===3) {
+        await page.reload();await page.locator('#practice-prompt').waitFor();
+        assert.equal(await page.locator('#practice-prompt').innerText(),q.prompt);
+        assert.equal((await readSession()).drafts[index],answer);
+      }
+      await page.locator('#practice-submit').click();
+      assert.ok((await page.locator('#practice-feedback').innerText()).includes(q.explanation));
+      assert.equal(await page.locator('#practice-answer-controls :enabled').count(),0,'Submitted inputs stay locked');
+      await page.locator('#practice-next').click();
+    }
+    assert.equal(await page.locator('#practice-results').isVisible(),true);
+    assert.match(await page.locator('#practice-score').innerText(),/8 correct · 2 incorrect · 10 questions · 80%/);
+    assert.equal(await page.locator('#practice-category-results tr').count(),8);
+    assert.equal(await page.locator('.practice-review-question').count(),10);
+    assert.equal(await page.locator('.practice-review-question[open]').count(),2);
+    for(let index=0;index<10;index++) {
+      const review=page.locator(`[data-review-index="${index}"]`);
+      if(!await review.getAttribute('open').then(value=>value!==null)) await review.locator('summary').click();
+      assert.ok((await review.innerText()).includes(questions[index].correctAnswer));
+      assert.ok((await review.innerText()).includes(questions[index].explanation));
+    }
+    await page.reload();await page.locator('#practice-results').waitFor();
+    assert.match(await page.locator('#practice-score').innerText(),/80%/);
+    const previousSeed=(await readSession()).seed;
+    await page.locator('#practice-new-results').click();await page.locator('#practice-cancel-restart').click();
+    assert.equal((await readSession()).seed,previousSeed);
+    const restarted=await startUI(20,'binary');assert.notEqual(restarted.seed,previousSeed);
+    assert.ok(P.generateQuestions(restarted).every(q=>q.category==='H'));
+    let q=await currentQuestion();await fillAnswer(q,q.correctAnswer);
+    await page.locator('#practice-restart').click();await page.keyboard.press('Escape');
+    assert.equal((await readSession()).seed,restarted.seed);
+    await page.locator('#practice-restart').click();await page.locator('#practice-confirm-restart').click();
+    assert.notEqual((await readSession()).seed,restarted.seed);
+    for(const [count,coverage] of [[5,'network'],[10,'hosts'],[15,'selection'],[20,'binary']]) {
+      const session=await startUI(count,coverage),generated=P.generateQuestions(session);
+      assert.ok(generated.every(q=>P.COVERAGE[coverage].categories.includes(q.category)));
+      assert.equal(await page.locator('#practice-question-title').innerText(),`Question 1 of ${count}`);
+    }
+    let responsive;
+    for(let i=0;i<100;i++) {
+      responsive=P.createSession({seed:`responsive-${i}`,count:5,coverage:'binary'});
+      if(['binaryMask','binaryAnd'].includes(P.generateQuestions(responsive)[0].type)) break;
+    }
+    await page.evaluate(({key,session})=>localStorage.setItem(key,JSON.stringify(session)),{key:practiceKey,session:responsive});await page.reload();
+    await page.locator('#practice-prompt').waitFor();
+    for(const width of [1440,768,390,320]) {
+      await page.setViewportSize({width,height:960});
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`Binary practice choices fit ${width}px`);
+      assert.equal(await page.locator('#practice-answer-controls input[type=radio]').count(),4);
+    }
+    for(const q of P.generateQuestions(responsive)) await finishQuestion(q,wrongPracticeAnswer(q));
+    for(const width of [1440,768,390,320]) {
+      await page.setViewportSize({width,height:960});
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`Expanded results fit ${width}px`);
+    }
+    await page.locator('#practice-tab').focus();await page.keyboard.press('ArrowRight');
+    assert.equal(await page.locator('#reference-tab').getAttribute('aria-selected'),'true');
+    await page.keyboard.press('ArrowLeft');assert.equal(await page.locator('#practice-tab').getAttribute('aria-selected'),'true');
+    // Follow every intended discovery route through the single published overview.
+    for(const route of ['certifications/comptia/network-plus/','labs/networking/','learn/networking/','practice/questions/']) {
+      await page.goto(base+route);
+      const link=page.locator('.hub-page').getByRole('link',{name:'IPv4 Subnetting Learning Lab',exact:true});
+      assert.equal(await link.count(),1,'One listing per page');await link.click();
+      assert.equal(page.url(),base+'labs/networking/subnetting/');
+      const launch=page.locator('.hub-article').getByRole('link',{name:'Launch IPv4 Subnetting Learning Lab',exact:true});
+      assert.equal(await launch.getAttribute('href'),'https://thearchitechnique.github.io/it-cyber-student-hub/labs/networking/subnetting/app/');
+      assert.equal(await page.locator('.hub-article').count(),1);
+    }
+    const search=JSON.parse(await fs.readFile(path.join(root,'site/search/search_index.json'),'utf8'));
+    assert.ok(search.docs.some(doc=>doc.location==='labs/networking/subnetting/'&&doc.title==='IPv4 Subnetting Learning Lab'));
+    assert.equal((await fs.readFile(path.join(root,'SUMMARY.md'),'utf8')).split('(docs/labs/networking/subnetting/README.md)').length-1,1);
+    await page.goto(url+'#practice');
+    await page.evaluate(key=>localStorage.setItem(key,'{bad json'),practiceKey);await page.reload();
+    assert.equal(await page.locator('#practice-current').isVisible(),false);
+    assert.match(await page.locator('#practice-save-note').innerText(),/could not be restored/);
+    assert.equal(await page.evaluate(key=>localStorage.getItem(key),KEY),originalSaved);
+    await page.addInitScript(()=>{Storage.prototype.getItem=()=>{throw new Error('blocked');};Storage.prototype.setItem=()=>{throw new Error('blocked');};});
+    await page.reload();await startUIWithoutStorage();
+    async function startUIWithoutStorage() {
+      await page.locator('#practice-count').selectOption('5');await page.locator('#practice-coverage').selectOption('binary');await page.locator('#practice-start').click();
+      assert.equal(await page.locator('#practice-current').isVisible(),true);
+      assert.match(await page.locator('#practice-save-note').innerText(),/unavailable/);
+      await page.locator('#lesson-tab').click();await page.locator('#practice-tab').click();
+      assert.match(await page.locator('#practice-question-title').innerText(),/Question 1 of 5/);
+    }
+    assert.deepEqual(errors,[]);
+    console.log('PASS: Practice counts/coverage, mixed input controls, draft/submitted/results persistence, scoring and complete review, fresh/restarted sessions, malformed/blocked storage, scratch isolation and answer locks, keyboard tabs, 320–1440px choices/results, publication/search and four discovery routes.');
+  } finally {await context.close();}
 }

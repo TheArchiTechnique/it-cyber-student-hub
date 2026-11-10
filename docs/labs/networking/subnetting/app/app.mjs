@@ -1,6 +1,9 @@
 import {PLACE_VALUES, STEPS, calculate, checkStep, freshWork, sanitizeWork, parseIPv4, parsePrefix} from './engine.mjs';
+import {mountPractice} from './practice-ui.mjs';
 
 const KEY = 'student-hub-network-plus-subnetting-v1';
+const SCRATCH_KEY = 'student-hub-network-plus-subnetting-scratch-v1';
+const SECTIONS = ['lesson', 'workspace', 'practice', 'reference'];
 const $ = id => document.getElementById(id);
 const ROWS = {ip: 'IP address', mask: 'Subnet mask', network: 'AND result / Network ID', wildcard: 'Wildcard mask', broadcast: 'OR result / upper boundary'};
 const ANSWERS = {mask: 'Subnet mask', network: 'Network address (Network ID)', broadcast: 'Broadcast address', first: 'First usable address', last: 'Last usable address', total: 'Total addresses', usable: 'Usable hosts'};
@@ -26,6 +29,7 @@ try { work = sanitizeWork(JSON.parse(localStorage.getItem(KEY))); } catch { work
 let selected = null;
 let reports = [];
 let pending = null;
+let scratchId = null, regularWork = null, practice = null;
 
 function element(tag, text, className) {
   const node = document.createElement(tag);
@@ -35,16 +39,55 @@ function element(tag, text, className) {
 }
 
 function save() {
-  try { localStorage.setItem(KEY, JSON.stringify(work)); }
+  try {
+    if (scratchId) localStorage.setItem(SCRATCH_KEY, JSON.stringify({version:1, questionId:scratchId, work}));
+    else localStorage.setItem(KEY, JSON.stringify(work));
+  }
   catch { storageUnavailable = true; }
   $('save-note').textContent = storageUnavailable
     ? 'Browser saving is unavailable. Your work remains available while this page is open.'
-    : 'Your workspace is saved in this browser.';
+    : scratchId ? 'This practice calculation is saved separately. Your regular worksheet is preserved.' : 'Your workspace is saved in this browser.';
 }
 
+function practiceLocked() { return Boolean(scratchId && !practice?.contextFor(scratchId)?.submitted); }
+function renderPracticeWorksheet() {
+  $('practice-worksheet-note').hidden = !scratchId;
+  if (scratchId) {
+    const context = practice?.contextFor(scratchId);
+    $('practice-worksheet-status').textContent = `Practice question ${context?.number || ''}. ` + (practiceLocked()
+      ? 'Work the calculation manually. Checking and solutions unlock after you submit this answer in Practice. Your regular worksheet is preserved.'
+      : 'This answer has been submitted. You can now check steps or compare solutions. Your regular worksheet is preserved.');
+  }
+  $('check').disabled = practiceLocked();
+  if (practiceLocked()) $('show-solution').disabled = true;
+  $('new-example').disabled = Boolean(scratchId);
+  $('given-prefix').disabled = Boolean(scratchId);
+}
+function restoreWorksheet() {
+  if (!scratchId) return;
+  work = regularWork; regularWork = null; scratchId = null;
+  try { localStorage.removeItem(SCRATCH_KEY); } catch { storageUnavailable = true; }
+  clearReview(); populateInputs(); save();
+}
+function syncPracticeWorksheet() {
+  if (scratchId && !practice?.contextFor(scratchId)) restoreWorksheet();
+  else render();
+}
+function openPracticeWorksheet(context) {
+  if (!context) return;
+  if (scratchId !== context.id) {
+    if (!scratchId) regularWork = work;
+    scratchId = context.id;
+    work = {...freshWork(), ip:context.ip, prefix:context.prefix, mode:'independent'};
+    clearReview(); populateInputs(); save();
+  }
+  renderPracticeWorksheet(); switchSection('workspace', true);
+}
+$('restore-worksheet').addEventListener('click', restoreWorksheet);
+
 function switchSection(section, focus = false, anchor = null) {
-  if (!['lesson', 'workspace', 'reference'].includes(section)) return;
-  for (const name of ['lesson', 'workspace', 'reference']) {
+  if (!SECTIONS.includes(section)) return;
+  for (const name of SECTIONS) {
     $(name).hidden = name !== section;
     $(`${name}-tab`).setAttribute('aria-selected', String(name === section));
     $(`${name}-tab`).tabIndex = name === section ? 0 : -1;
@@ -60,9 +103,9 @@ document.querySelectorAll('[role=tab]').forEach(tab => {
   tab.addEventListener('keydown', event => {
     if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
     event.preventDefault();
-    const names = ['lesson', 'workspace', 'reference'];
+    const names = SECTIONS;
     const index = names.indexOf(tab.getAttribute('aria-controls'));
-    const next = event.key === 'Home' ? 0 : event.key === 'End' ? 2 : (index + (event.key === 'ArrowRight' ? 1 : 2)) % 3;
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? names.length-1 : (index + (event.key === 'ArrowRight' ? 1 : names.length-1)) % names.length;
     switchSection(names[next], true);
   });
 });
@@ -130,10 +173,11 @@ function buildInputs() {
 }
 
 function populateInputs() {
-  $('given-ip').value = work.ip; $('given-prefix').value = `/${work.prefix}`; $('mode').value = work.mode;
+  const givenMask = scratchId && practice?.contextFor(scratchId)?.givenMask;
+  $('given-ip').value = work.ip; $('given-prefix').value = givenMask || `/${work.prefix}`; $('mode').value = work.mode;
   for (const row of Object.keys(ROWS)) for (let i = 0; i < 4; i++) $(`${row}-${i}`).value = work.binary[row][i];
   for (const key of Object.keys(ANSWERS)) $(`answer-${key}`).value = work.answers[key];
-  $('current-example').textContent = `Current calculation: ${work.ip}/${work.prefix}`;
+  $('current-example').textContent = givenMask ? `Current calculation: ${work.ip} with mask ${givenMask}` : `Current calculation: ${work.ip}/${work.prefix}`;
   const kind = calculate(work.ip, work.prefix).kind;
   $('special-note').hidden = kind === 'conventional';
   $('special-note').textContent = kind === 'point-to-point'
@@ -160,7 +204,7 @@ function render() {
     button.classList.toggle('complete', completed.includes(i));
   });
   $('show-solution').disabled = independent ? work.attempted.length !== 8 : !work.attempted.includes(work.step);
-  renderMarks(); renderPad();
+  renderMarks(); renderPad(); renderPracticeWorksheet();
 }
 
 function renderMarks() {
@@ -246,6 +290,7 @@ function showMessage(message) {
 }
 
 $('check').addEventListener('click', () => {
+  if (practiceLocked()) return;
   const indexes = work.mode === 'independent' ? STEPS.map((_, i) => i) : [work.step];
   work.attempted = [...new Set([...work.attempted, ...indexes])];
   reports = indexes.map(index => ({index, report: checkStep(work, index)}));
@@ -304,7 +349,7 @@ function addProcess(section, index, result) {
 }
 
 $('show-solution').addEventListener('click', () => {
-  if ($('show-solution').disabled) return;
+  if ($('show-solution').disabled || practiceLocked()) return;
   const section = $('solution'); section.replaceChildren();
   const heading = element('h2', 'Solution process'); heading.id = 'solution-title'; section.append(heading);
   section.append(element('p', 'Compare the process with your own work. Your answer fields have not been filled or changed.'));
@@ -351,11 +396,19 @@ $('given-form').addEventListener('submit', event => {
 });
 
 buildInputs(); populateInputs(); save();
+practice = mountPractice({switchSection, openWorksheet:openPracticeWorksheet, onSessionChange:syncPracticeWorksheet});
+try {
+  const saved = JSON.parse(localStorage.getItem(SCRATCH_KEY));
+  if (saved?.version === 1 && practice.contextFor(saved.questionId)) {
+    regularWork = work; scratchId = saved.questionId; work = sanitizeWork(saved.work);
+    clearReview(); populateInputs(); save();
+  }
+} catch { /* A malformed scratch sheet never replaces the regular worksheet. */ }
 const hash = location.hash.slice(1);
 if (hash.startsWith('lesson-')) switchSection('lesson', false, hash.slice(7));
-else switchSection(['lesson', 'workspace', 'reference'].includes(hash) ? hash : 'lesson');
+else switchSection(SECTIONS.includes(hash) ? hash : 'lesson');
 window.addEventListener('hashchange', () => {
   const name = location.hash.slice(1);
   if (name.startsWith('lesson-')) switchSection('lesson', false, name.slice(7));
-  else if (['lesson', 'workspace', 'reference'].includes(name)) switchSection(name);
+  else if (SECTIONS.includes(name)) switchSection(name);
 });

@@ -13,6 +13,7 @@
   <nav class="tabs" role="tablist" aria-label="Lab sections">
     <button id="lesson-tab" role="tab" aria-controls="lesson" aria-selected="true">Lesson</button>
     <button id="workspace-tab" role="tab" aria-controls="workspace" aria-selected="false" tabindex="-1">Workspace</button>
+    <button id="practice-tab" role="tab" aria-controls="practice" aria-selected="false" tabindex="-1">Practice</button>
     <button id="reference-tab" role="tab" aria-controls="reference" aria-selected="false" tabindex="-1">Quick Reference</button>
   </nav>
   <section id="lesson" role="tabpanel" aria-labelledby="lesson-tab">
@@ -149,6 +150,7 @@ AND OR wild 10101100.00010000.00000101.11111111</pre>
     </article>
   </section>
   <section id="workspace" role="tabpanel" aria-labelledby="workspace-tab" hidden>
+    <div id="practice-worksheet-note" class="panel" hidden><h2>Practice calculation sheet</h2><p id="practice-worksheet-status"></p><div class="actions"><button data-open="practice">Return to practice</button><button id="restore-worksheet">Return to my worksheet</button></div></div>
     <section class="panel" aria-labelledby="given-title">
       <h2 id="given-title">Given information</h2>
       <p>Enter your own values or cycle through the supplied examples. Your answer fields start empty.</p>
@@ -183,6 +185,38 @@ AND OR wild 10101100.00010000.00000101.11111111</pre>
       <div class="actions"><button id="check" class="primary">Check Step</button><button id="show-solution" disabled>Show Solution</button><button id="next-step">Next step</button></div>
       <div id="feedback" class="feedback" role="status" aria-live="polite" aria-atomic="true" hidden></div>
       <section id="solution" class="solution" aria-labelledby="solution-title" hidden></section>
+    </section>
+  </section>
+  <section id="practice" role="tabpanel" aria-labelledby="practice-tab" hidden>
+    <section class="panel" aria-labelledby="practice-title">
+      <h2 id="practice-title">Randomized subnetting practice</h2>
+      <p>Choose a short session, work each problem, and submit an answer. Each question counts equally. Feedback and calculation explanations appear after submission; submitted answers stay locked for an accurate results review.</p>
+      <form id="practice-config" class="practice-options">
+        <label for="practice-count">Question count<select id="practice-count"><option value="5">5 questions</option><option value="10" selected>10 questions</option><option value="15">15 questions</option><option value="20">20 questions</option></select></label>
+        <label for="practice-coverage">Question coverage<select id="practice-coverage"><option value="all">All Categories</option><option value="network">Network and Broadcast</option><option value="hosts">Host Ranges and Capacity</option><option value="selection">Subnet Selection and Boundaries</option><option value="binary">Binary Calculations</option></select></label>
+        <button id="practice-start" class="primary" type="submit">Start new session</button>
+      </form>
+      <p id="practice-save-note" class="save-note" role="status"></p>
+      <p class="muted">All Categories balances the eight categories as evenly as the question count permits. Fresh sessions generate new problems. Your regular binary worksheet is saved separately.</p>
+    </section>
+    <section id="practice-current" class="panel" aria-labelledby="practice-question-title" hidden>
+      <h2 id="practice-question-title"></h2><p id="practice-category" class="muted"></p>
+      <progress id="practice-progress" value="0" max="10" aria-label="Submitted practice questions"></progress><p id="practice-progress-text" class="muted" role="status"></p>
+      <h3 id="practice-prompt" tabindex="-1"></h3>
+      <form id="practice-answer-form" novalidate>
+        <div id="practice-answer-controls"></div><p id="practice-answer-help" class="muted"></p><p id="practice-error" role="status" aria-live="polite"></p>
+        <button id="practice-submit" class="primary" type="submit">Submit answer</button>
+      </form>
+      <div id="practice-feedback" class="feedback" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+      <div class="actions practice-actions"><button id="practice-next" hidden>Next question</button><button id="practice-worksheet">Open binary worksheet for this question</button><button id="practice-lesson">Review the related lesson</button><button data-open="reference">Quick reference</button></div>
+      <p id="practice-worksheet-help" class="muted"></p>
+      <button id="practice-restart" class="restart-session">Restart with new questions</button>
+    </section>
+    <section id="practice-results" class="panel" aria-labelledby="practice-results-title" hidden>
+      <h2 id="practice-results-title" tabindex="-1">Practice results</h2><p id="practice-score"></p><p id="practice-focus"></p>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Performance by subnetting category"><table><thead><tr><th scope="col">Category</th><th scope="col">Correct</th><th scope="col">Incorrect</th><th scope="col">Questions</th></tr></thead><tbody id="practice-category-results"></tbody></table></div>
+      <h3>Review your answers</h3><div id="practice-review"></div>
+      <div class="actions"><button id="practice-new-results" class="primary">New session with these options</button><button data-open="lesson">Return to lesson</button><button data-open="workspace">Return to binary workspace</button></div>
     </section>
   </section>
   <section id="reference" role="tabpanel" aria-labelledby="reference-tab" hidden>
@@ -231,5 +265,6 @@ AND OR wild 10101100.00010000.00000101.11111111</pre>
   <details class="muted"><summary>Technical references</summary><p>Aligned to <a href="https://lecbyo.files.cmp.optimizely.com/download/35a7403ab73211ef9dcda6f347fbf652">CompTIA Network+ N10-009 objectives, document version 6.0</a>, objective 1.7. Address-block conventions: <a href="https://www.rfc-editor.org/rfc/rfc4632">RFC 4632</a>. Point-to-point /31 behavior: <a href="https://www.rfc-editor.org/rfc/rfc3021">RFC 3021</a>.</p></details>
 </main>
 <dialog id="replace-dialog" aria-labelledby="replace-title" aria-describedby="replace-description"><h2 id="replace-title">Clear this calculation?</h2><p id="replace-description"></p><div class="actions"><button id="cancel-replace" autofocus>Keep my work</button><button id="confirm-replace" class="primary">Clear calculation</button></div></dialog>
+<dialog id="practice-restart-dialog" aria-labelledby="practice-restart-title" aria-describedby="practice-restart-description"><h2 id="practice-restart-title">Start a fresh practice session?</h2><p id="practice-restart-description">This replaces the current questions, answers, and results with new randomized problems. Your regular worksheet stays saved.</p><div class="actions"><button id="practice-cancel-restart" autofocus>Keep this session</button><button id="practice-confirm-restart" class="primary">Start new questions</button></div></dialog>
 </body>
 </html>

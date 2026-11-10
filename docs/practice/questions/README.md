@@ -66,6 +66,12 @@ These Kahoot! reviews support independent practice: open a review and select **P
 
 ## Network+
 
+### IPv4 subnetting
+
+- [IPv4 Subnetting Learning Lab](../../labs/networking/subnetting/README.md)
+
+    Learn binary subnet calculations, network and broadcast identification, and host ranges, then complete randomized practice with scoring and calculation explanations.
+
 ### OSI model and PDU fundamentals
 
 - [OSI Model & Network PDU Basics - Kahoot!](https://create.kahoot.it/share/osi-model-network-pdu-basics/2a222cfe-b29f-47ed-af86-358a954d8356)
