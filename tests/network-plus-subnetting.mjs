@@ -133,7 +133,11 @@ async function browserChecks() {
     const page=await context.newPage(), errors=[];
     page.on('pageerror',error=>errors.push(error.message));
     async function start(hash='workspace') {
-      await page.goto(url+'#'+hash); await page.locator('#given-ip').waitFor({state:'attached'});
+      await page.goto(url+'#'+hash);
+      // Navigating to the same fragment can stay in the current document. Storage
+      // recovery must exercise a full app startup, including module evaluation.
+      await page.reload();
+      await page.locator('#given-ip').waitFor({state:'attached'});
       await page.waitForFunction(()=>document.getElementById('current-example').textContent.length>0);
     }
     async function fresh() {await page.evaluate(key=>localStorage.removeItem(key),KEY); await start();}
