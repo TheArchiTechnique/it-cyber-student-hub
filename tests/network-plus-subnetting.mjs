@@ -488,7 +488,7 @@ async function practiceBrowserChecks(browser,origin,base,url) {
       }
       await page.locator('#practice-submit').click();
       assert.ok((await page.locator('#practice-feedback').innerText()).includes(q.explanation));
-      assert.equal(await page.locator('#practice-answer-controls :enabled').count(),0,'Submitted inputs stay locked');
+      assert.equal(await page.locator('#practice-answer-controls input, #practice-answer-controls select').evaluateAll(nodes=>nodes.length>0&&nodes.every(node=>node.disabled)),true,'Submitted answer inputs and selects stay locked');
       await page.locator('#practice-next').click();
     }
     assert.equal(await page.locator('#practice-results').isVisible(),true);
