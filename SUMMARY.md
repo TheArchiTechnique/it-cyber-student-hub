@@ -56,6 +56,7 @@
     - [Lab 5 — Centralized DHCP and DNS Services](docs/labs/networking/centralized-dhcp-dns/README.md)
     - [Lab 6 — ACL Traffic Control](docs/labs/networking/acl-traffic-control/README.md)
     - [OSI & TCP/IP Models — PDU Encapsulation and Decapsulation](docs/labs/networking/osi-pdu-tracing/README.md)
+    - [IPv4 Subnetting Learning Lab](docs/labs/networking/subnetting/README.md)
 - [Reference](docs/reference/README.md)
   - [Ports & Protocols](docs/reference/ports-and-protocols.md)
   - [Windows Command-Line Reference](docs/reference/windows-command-line.md)

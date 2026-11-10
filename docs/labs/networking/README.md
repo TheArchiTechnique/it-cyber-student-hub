@@ -5,7 +5,13 @@ hub:
 ---
 # Networking Labs
 
-Build and inspect simulated networks with Cisco Packet Tracer. Start with the installation guide before opening a networking lab. Each activity will identify its prerequisites, device models, and verification steps.
+Learn IPv4 subnetting in your browser, or build and inspect simulated networks with Cisco Packet Tracer. The subnetting lab needs no installation. For Packet Tracer activities, start with the installation guide and follow each lab's prerequisites and verification steps.
+
+## Browser-Based Learning and Practice
+
+- [IPv4 Subnetting Learning Lab](subnetting/README.md)
+
+    Learn binary subnet calculations, identify network and broadcast addresses, find host ranges, and practice with randomized questions and calculation feedback. No installation required.
 
 ## Cisco Packet Tracer
 

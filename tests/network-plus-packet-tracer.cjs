@@ -63,7 +63,7 @@ const server = http.createServer(async (request, response) => {
       await page.waitForURL(base + 'labs/networking/');
       await page.locator('.hub-page').getByRole('link', { name: start, exact: true }).waitFor();
       const cards = page.locator('.hub-page li a');
-      assert.deepEqual(await cards.allTextContents(), [start, ...labs.map(lab => lab.title), independentTitle, 'Open Practice']);
+      assert.deepEqual(await cards.allTextContents(), ['IPv4 Subnetting Learning Lab', start, ...labs.map(lab => lab.title), independentTitle, 'Open Practice']);
       await page.locator('.hub-page').getByRole('link', { name: start, exact: true }).click();
       assert.equal(page.url(), base + route);
       await page.locator('.hub-article').getByRole('link', { name: 'Network+', exact: true }).click();

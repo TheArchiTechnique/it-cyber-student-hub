@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>IPv4 Subnetting Learning Lab | Network+</title>
+  <link rel="stylesheet" href="styles.css"><script type="module" src="app.mjs"></script>
+  <noscript><style>#reference[hidden] { display:block !important; } .tabs,[data-open],#workspace-tab,#reference-tab { display:none; }</style></noscript>
+</head>
+<body>
+<a class="skip" href="#lesson-tab">Skip to lab sections</a>
+<header class="topbar"><div class="top-inner"><p class="eyebrow">NETWORK+ N10-009 · IPV4 ADDRESSING</p><h1>IPv4 Subnetting Learning Lab</h1><p>Understand the bits. Work each operation. Check your reasoning.</p></div></header>
+<main class="app">
+  <nav class="tabs" role="tablist" aria-label="Lab sections">
+    <button id="lesson-tab" role="tab" aria-controls="lesson" aria-selected="true">Lesson</button>
+    <button id="workspace-tab" role="tab" aria-controls="workspace" aria-selected="false" tabindex="-1">Workspace</button>
+    <button id="practice-tab" role="tab" aria-controls="practice" aria-selected="false" tabindex="-1">Practice</button>
+    <button id="reference-tab" role="tab" aria-controls="reference" aria-selected="false" tabindex="-1">Quick Reference</button>
+  </nav>
+  <section id="lesson" role="tabpanel" aria-labelledby="lesson-tab">
+    <article class="panel intro">
+      <h2>From an address to a complete subnet</h2>
+      <p>A subnet is a block of IPv4 addresses that share the same network bits. A mask tells you which bits belong to that shared network and which can identify hosts inside it. We will build that mask, find the block's first and last addresses, and calculate its capacity.</p>
+      <p>Start with binary, then follow the eight steps. Open the workspace whenever you want to practice. Switching sections keeps your entries.</p>
+      <ol class="lesson-nav">
+        <li><a href="#lesson-binary">Understand IPv4 and binary</a></li><li><a href="#lesson-mask">Build a subnet mask</a></li>
+        <li><a href="#lesson-ip">Convert the IPv4 address</a></li><li><a href="#lesson-and">Find the Network ID with AND</a></li>
+        <li><a href="#lesson-broadcast">Find the broadcast with OR</a></li><li><a href="#lesson-range">Find usable addresses</a></li>
+        <li><a href="#lesson-capacity">Calculate capacity</a></li><li><a href="#lesson-example">Complete worked examples</a></li>
+      </ol>
+      <div class="actions"><button data-open="workspace" class="primary">Open workspace</button><button data-open="reference">Open quick reference</button></div>
+    </article>
+    <article class="panel lesson-card" id="lesson-binary">
+      <h2>1. Understand IPv4 and binary place values</h2>
+      <p>An IPv4 address has <strong>32 bits</strong>, split into four <strong>octets</strong> of eight bits. In decimal, the octets are separated by dots, as in <code>192.168.10.130</code>. Each octet ranges from 0 to 255. A bit can be only 0 or 1.</p>
+      <p>Binary uses place values, just as decimal does. From left to right, the eight places are:</p>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Eight binary place values"><div class="place-values"><span>128</span><span>64</span><span>32</span><span>16</span><span>8</span><span>4</span><span>2</span><span>1</span></div></div>
+      <p>A 1 includes that place value in the sum; a 0 leaves it out. With all eight bits set, <code>128 + 64 + 32 + 16 + 8 + 4 + 2 + 1 = 255</code>. With all bits clear, the value is zero.</p>
+      <h3>Decimal to binary: 13</h3>
+      <p>Starting on the left, ask whether each place value fits in the amount remaining. 128, 64, 32, and 16 are too large, so write four zeros. Include 8, leaving 5; include 4, leaving 1; skip 2; include 1. Keep the leading zeros to show all eight positions.</p>
+      <pre class="binary-demo" tabindex="0" aria-label="Decimal 13 converted to binary">Value   128  64  32  16   8   4   2   1
+Bit       0   0   0   0   1   1   0   1
+Sum                       8 + 4     + 1 = 13
+Binary: 00001101</pre>
+      <h3>Binary to decimal: 10100010</h3>
+      <p>Read the 1 positions: <code>128 + 32 + 2 = 162</code>. The zero positions add nothing. Each octet is a separate eight-bit value; do not join the decimal octets into one decimal number.</p>
+      <p><strong>Network bits</strong> identify the subnet; <strong>host bits</strong> identify positions inside it. A <strong>subnet mask</strong> marks network positions with 1 and host positions with 0. <strong>CIDR</strong> (Classless Inter-Domain Routing) writes the number of network bits after a slash. In <code>/26</code>, 26 of the 32 positions are network bits, leaving 6 host bits. The slash is not a division operation.</p>
+      <details><summary>Try before moving on: write 25 as eight bits</summary><p>Include 16, 8, and 1: <code>00011001</code>. Convert back by adding <code>16 + 8 + 1 = 25</code>.</p></details>
+    </article>
+    <article class="panel lesson-card" id="lesson-mask">
+      <h2>2. Convert CIDR to a subnet mask</h2>
+      <ol><li>Draw 32 positions, grouped into four octets.</li><li>Fill the first N positions with 1, where N is the prefix.</li><li>Fill all remaining positions with 0.</li><li>Convert each eight-bit octet to decimal using its place values.</li></ol>
+      <p>For <code>/26</code>, the first three octets use 24 network bits. Put two more 1s in the last octet, then six 0s. Those two 1s are worth <code>128 + 64 = 192</code>.</p>
+      <pre class="binary-demo" tabindex="0" aria-label="Slash 26 subnet mask">Mask bits   11111111.11111111.11111111.11000000
+Decimal          255.     255.     255.     192
+Positions   &lt;----- 26 network bits -----&gt;&lt;6 host&gt;</pre>
+      <div class="legend"><span class="network-bit">N: network position · solid underline</span><span class="host-bit">H: host position · dashed underline</span></div>
+      <p>A mask always has consecutive 1s followed by consecutive 0s. A value such as <code>255.0.255.0</code> is not a valid contiguous subnet mask.</p>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="CIDR boundaries in different octets"><table><thead><tr><th>Prefix</th><th>Binary mask</th><th>Decimal mask</th><th>Boundary</th></tr></thead><tbody>
+        <tr><td>/12</td><td><code>11111111.11110000.00000000.00000000</code></td><td>255.240.0.0</td><td>Second octet, after 4 network bits</td></tr>
+        <tr><td>/23</td><td><code>11111111.11111111.11111110.00000000</code></td><td>255.255.254.0</td><td>Third octet, after 7 network bits</td></tr>
+        <tr><td>/26</td><td><code>11111111.11111111.11111111.11000000</code></td><td>255.255.255.192</td><td>Fourth octet, after 2 network bits</td></tr>
+      </tbody></table></div>
+      <p>Changing the prefix changes which positions are network positions. Every added network bit removes one host bit, halving the number of possible host-bit combinations.</p>
+    </article>
+    <article class="panel lesson-card" id="lesson-ip">
+      <h2>3. Convert the IP address to binary</h2>
+      <p>Convert each octet independently. For <code>192.168.10.130</code>: 192 is 128 + 64; 168 is 128 + 32 + 8; 10 is 8 + 2; and 130 is 128 + 2. Write eight digits for every octet and line the address up above the mask.</p>
+      <pre class="binary-demo" tabindex="0" aria-label="IPv4 address and slash 26 mask aligned">IP decimal       192.     168.      10.     130
+IP binary   11000000.10101000.00001010.10000010
+Mask        11111111.11111111.11111111.11000000</pre>
+      <p>The same address belongs to different-sized blocks when you change the mask. The IP address alone does not tell you where its subnet begins.</p>
+    </article>
+    <article class="panel lesson-card" id="lesson-and">
+      <h2>4. AND matching bits to find the Network ID</h2>
+      <p><strong>AND</strong> is a logical operation: its result is 1 only when <em>both</em> input bits are 1. It is not binary addition and has no carry.</p>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="AND truth table"><table><thead><tr><th>IP bit</th><th>Mask bit</th><th>AND result</th></tr></thead><tbody><tr><td>1</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>0</td></tr><tr><td>0</td><td>0</td><td>0</td></tr></tbody></table></div>
+      <p>A mask bit of 1 keeps the address bit. A mask bit of 0 clears it. AND therefore keeps the network portion and sets every host position to 0, producing the <strong>network address</strong>, also called the <strong>Network ID</strong>.</p>
+      <p>Inspect the last octet below. The outlined column pairs the same bit position in all three rows. The first two positions are network bits; the other six are host bits.</p>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Aligned AND calculation for octet 4"><div class="and-demo">
+        <strong>Position</strong><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span>
+        <strong>Role</strong><span class="network-bit">N</span><span class="network-bit">N</span><span class="host-bit">H</span><span class="host-bit">H</span><span class="host-bit">H</span><span class="host-bit">H</span><span class="host-bit">H</span><span class="host-bit">H</span>
+        <strong>IP (130)</strong><span class="network-bit">1</span><span class="network-bit">0</span><span>0</span><span>0</span><span>0</span><span>0</span><span class="tracked">1</span><span>0</span>
+        <strong>Mask (192)</strong><span class="network-bit">1</span><span class="network-bit">1</span><span>0</span><span>0</span><span>0</span><span>0</span><span class="tracked">0</span><span>0</span>
+        <strong>AND (128)</strong><span class="network-bit">1</span><span class="network-bit">0</span><span>0</span><span>0</span><span>0</span><span>0</span><span class="tracked">0</span><span>0</span>
+      </div></div>
+      <pre class="binary-demo" tabindex="0" aria-label="Full address AND calculation">IP          11000000.10101000.00001010.10000010
+Mask        11111111.11111111.11111111.11000000
+AND result  11000000.10101000.00001010.10000000
+Network ID       192.     168.      10.     128</pre>
+      <p>Convert the result back one octet at a time. In the final octet, only the 128 position is 1, so the Network ID is <code>192.168.10.128</code>.</p>
+    </article>
+    <article class="panel lesson-card" id="lesson-broadcast">
+      <h2>5. Find the broadcast address using the wildcard</h2>
+      <p>In a conventional subnet, the <strong>broadcast address</strong> is its last address. It keeps the same network bits and sets every host bit to 1.</p>
+      <ol><li>Start with the mask. Its 0 positions identify host bits.</li><li>Invert every mask bit to form the <strong>wildcard mask</strong>: network positions become 0; host positions become 1. For /26, the wildcard is <code>0.0.0.63</code>.</li><li>Use <strong>OR</strong> between the Network ID and wildcard. OR produces 1 if either input is 1: <code>0 OR 0 = 0</code>, <code>0 OR 1 = 1</code>, <code>1 OR 0 = 1</code>, <code>1 OR 1 = 1</code>.</li><li>Convert all four result octets back to decimal.</li></ol>
+      <pre class="binary-demo" tabindex="0" aria-label="Wildcard inversion and OR calculation">Mask        11111111.11111111.11111111.11000000
+Wildcard    00000000.00000000.00000000.00111111
+
+Network ID  11000000.10101000.00001010.10000000
+Wildcard    00000000.00000000.00000000.00111111
+OR result   11000000.10101000.00001010.10111111
+Broadcast        192.     168.      10.     191</pre>
+      <p>The last six bits changed from <code>000000</code> to <code>111111</code>; the network bits stayed the same. The final octet is <code>128 + 32 + 16 + 8 + 4 + 2 + 1 = 191</code>.</p>
+      <div class="callout"><strong>Network ID + Wildcard Mask = Broadcast Address</strong><p>Here, <code>192.168.10.128 + 0.0.0.63 = 192.168.10.191</code>. Addition gives the same result as OR because the Network ID has 0s everywhere the wildcard has 1s, so no bit produces a carry. Treat these as complete 32-bit address values, not four unrelated decimal sums.</p></div>
+      <p>For /31 and /32, the same operation finds the block's upper boundary, but it is not a directed broadcast address. See the next step.</p>
+    </article>
+    <article class="panel lesson-card" id="lesson-range">
+      <h2>6. Determine the first and last usable host</h2>
+      <p>For a conventional IPv4 subnet with at least two usable host addresses, the first address identifies the network and the last addresses all hosts in that subnet. These two addresses are reserved for those purposes and are not assigned to ordinary hosts.</p>
+      <ul><li><strong>First usable = Network ID + 1.</strong> Here, <code>192.168.10.129</code>.</li><li><strong>Last usable = broadcast − 1.</strong> Here, <code>192.168.10.190</code>.</li></ul>
+      <p>The conventional subnet runs from <code>192.168.10.128</code> through <code>192.168.10.191</code>, while its usable range runs from <code>192.168.10.129</code> through <code>192.168.10.190</code>. Do not remove an address just because its last octet is 0 or 255; the complete address and mask determine its role.</p>
+      <details><summary>Advanced exceptions: /31 and /32</summary><p>A <strong>/31 on a point-to-point link</strong> uses both addresses as endpoints, with no reserved Network ID or directed broadcast address. For <code>192.0.2.10/31</code>, the lower boundary is .10 and the upper is .11; both are endpoints. This requires point-to-point use and supporting devices (RFC 3021).</p><p>A <strong>/32</strong> identifies one address, commonly a host route or loopback address. It has no host bits and no directed broadcast. For <code>192.0.2.10/32</code>, the lower and upper boundaries are both <code>192.0.2.10</code>. In this lab, record that single address for both usable-range fields and a capacity of 1. These entries describe the address block, not an ordinary multi-host LAN.</p><p>For either exception, enter <code>N/A</code> in the decimal broadcast field. The binary upper-boundary row still follows Network ID OR wildcard. The subtraction-of-two rule does not apply.</p></details>
+    </article>
+    <article class="panel lesson-card" id="lesson-capacity">
+      <h2>7. Calculate host capacity</h2>
+      <p>Each host bit has two possible values. With h host bits, there are <code>2<sup>h</sup></code> combinations, including the all-zero and all-one patterns.</p>
+      <ul><li><code>Host bits = 32 − prefix</code></li><li><code>Total addresses = 2<sup>host bits</sup></code></li><li><code>Conventional usable hosts = total addresses − 2</code></li></ul>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Initial capacity examples"><table><thead><tr><th>Prefix</th><th>Host bits</th><th>Total addresses</th><th>Usable hosts</th></tr></thead><tbody><tr><td>/24</td><td>32 − 24 = 8</td><td>2<sup>8</sup> = 256</td><td>254</td></tr><tr><td>/23</td><td>32 − 23 = 9</td><td>2<sup>9</sup> = 512</td><td>510</td></tr><tr><td>/25</td><td>32 − 25 = 7</td><td>2<sup>7</sup> = 128</td><td>126</td></tr></tbody></table></div>
+      <p>Keep <strong>total addresses</strong> separate from <strong>usable hosts</strong>. A requirement for 128 ordinary hosts does not fit a /25, which has only 126 usable addresses. A /24 is the smallest conventional subnet that fits that requirement. /31 point-to-point links have 2 endpoints; /32 blocks identify 1 address.</p>
+    </article>
+    <article class="panel lesson-card" id="lesson-example">
+      <h2>8. Complete worked examples</h2>
+      <h3>Example A: 192.168.10.130/26</h3>
+      <p>26 network bits leave 6 host bits. Build the mask, AND the IP with it, invert the mask, then OR the wildcard with the Network ID:</p>
+      <pre class="binary-demo" tabindex="0" aria-label="Complete slash 26 binary process">IP          11000000.10101000.00001010.10000010
+Mask        11111111.11111111.11111111.11000000
+AND         11000000.10101000.00001010.10000000
+Wildcard    00000000.00000000.00000000.00111111
+AND OR wild 11000000.10101000.00001010.10111111</pre>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Worked slash 26 answers"><table><thead><tr><th>Calculation</th><th>Result</th><th>Reason</th></tr></thead><tbody>
+        <tr><td>Subnet mask</td><td>255.255.255.192</td><td>Last mask octet: 128 + 64</td></tr><tr><td>Network ID</td><td>192.168.10.128</td><td>AND clears six host bits</td></tr><tr><td>Wildcard</td><td>0.0.0.63</td><td>Invert all mask bits</td></tr><tr><td>Broadcast</td><td>192.168.10.191</td><td>128 + 63 = 191 in the last octet</td></tr><tr><td>First usable</td><td>192.168.10.129</td><td>Network + 1</td></tr><tr><td>Last usable</td><td>192.168.10.190</td><td>Broadcast − 1</td></tr><tr><td>Total addresses</td><td>64</td><td>2<sup>6</sup></td></tr><tr><td>Usable hosts</td><td>62</td><td>64 − 2</td></tr>
+      </tbody></table></div>
+      <h3>Example B: 172.16.5.200/23 crosses an octet boundary</h3>
+      <p>23 network bits leave 9 host bits: one in the third octet and all eight in the fourth. The third mask octet is <code>11111110</code> (254), so the wildcard is <code>0.0.1.255</code>.</p>
+      <pre class="binary-demo" tabindex="0" aria-label="Complete slash 23 binary process">IP          10101100.00010000.00000101.11001000
+Mask        11111111.11111111.11111110.00000000
+AND         10101100.00010000.00000100.00000000
+Wildcard    00000000.00000000.00000001.11111111
+AND OR wild 10101100.00010000.00000101.11111111</pre>
+      <p>AND changes the third octet from 5 to 4 and clears the fourth octet, giving <code>172.16.4.0</code>. Setting all nine host bits produces <code>172.16.5.255</code>. The usable range is <code>172.16.4.1</code> through <code>172.16.5.254</code>; there are <code>2<sup>9</sup> = 512</code> total addresses and <code>510</code> usable hosts. Both <code>172.16.4.255</code> and <code>172.16.5.0</code> are usable addresses inside this block.</p>
+      <p>The subnet mask is <code>255.255.254.0</code>. Adding the wildcard to the network gives the same upper boundary: <code>172.16.4.0 + 0.0.1.255 = 172.16.5.255</code>. The next /23 begins at <code>172.16.6.0</code>, not <code>172.16.5.0</code>.</p>
+    </article>
+    <article class="panel lesson-card" id="lesson-vlsm">
+      <h2>Use different subnet sizes with VLSM</h2>
+      <p><strong>Variable Length Subnet Mask (VLSM)</strong> uses different prefix lengths within a larger address block. Choose each subnet's size to fit its host requirement, rather than giving every group the same-sized subnet.</p>
+      <p>Within <code>192.168.40.0/24</code>, allocate largest requirements first. For 50 hosts, 5 host bits give only 30 usable addresses; 6 give 62, so choose /26. Then allocate smaller blocks on valid boundaries without overlap:</p>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Introductory VLSM allocation"><table><thead><tr><th>Needed hosts</th><th>Subnet</th><th>Complete block</th><th>Usable capacity</th></tr></thead><tbody><tr><td>50</td><td>192.168.40.0/26</td><td>.0 through .63</td><td>62</td></tr><tr><td>20</td><td>192.168.40.64/27</td><td>.64 through .95</td><td>30</td></tr><tr><td>10</td><td>192.168.40.96/28</td><td>.96 through .111</td><td>14</td></tr></tbody></table></div>
+      <p>The remaining addresses, .112 through .255, are still unallocated. VLSM does not change the AND, OR, or capacity calculations; you apply the same process to each chosen prefix.</p>
+      <div class="actions"><button data-open="workspace" class="primary">Practice in the workspace</button><button data-open="reference">Open quick reference</button></div>
+    </article>
+  </section>
+  <section id="workspace" role="tabpanel" aria-labelledby="workspace-tab" hidden>
+    <div id="practice-worksheet-note" class="panel" hidden><h2>Practice calculation sheet</h2><p id="practice-worksheet-status"></p><div class="actions"><button data-open="practice">Return to practice</button><button id="restore-worksheet">Return to my worksheet</button></div></div>
+    <section class="panel" aria-labelledby="given-title">
+      <h2 id="given-title">Given information</h2>
+      <p>Enter your own values or cycle through the supplied examples. Your answer fields start empty.</p>
+      <form id="given-form" class="given-grid" novalidate>
+        <label for="given-ip">IPv4 address<input id="given-ip" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" maxlength="15" aria-describedby="given-error"></label>
+        <label for="given-prefix">CIDR prefix or subnet mask<input id="given-prefix" type="text" autocomplete="off" spellcheck="false" maxlength="18" aria-describedby="given-error"></label>
+        <button type="submit">Use these values</button>
+      </form>
+      <p id="given-error" role="status" aria-live="polite"></p>
+      <p id="current-example"></p><p id="special-note" class="callout" hidden></p>
+      <div class="mode-line"><label for="mode">Workspace mode<select id="mode"><option value="guided">Guided</option><option value="independent">Independent</option></select></label><button id="reset">Reset</button><button id="new-example">New Example</button><button data-open="reference">Quick reference</button></div>
+      <p id="save-note" class="save-note" role="status">Your workspace is saved in this browser.</p>
+    </section>
+    <section class="panel" aria-labelledby="calculate-title">
+      <h2 id="calculate-title">Work the calculation</h2>
+      <p id="progress-text" role="status" aria-live="polite"></p>
+      <ol id="step-list" class="step-list" aria-label="Calculation steps"></ol>
+      <div id="step-help" class="step-help"><h3 id="step-title"></h3><p id="step-instruction"></p><button id="review-step">Review this operation in the lesson</button></div>
+      <p>Type eight bits per octet. You can paste a full row as 32 digits or four eight-bit groups separated by dots or spaces into any octet in that row. All five rows stay vertically aligned.</p>
+      <div class="legend"><span class="network-bit">N: network position · solid underline</span><span class="host-bit">H: host position · dashed underline</span><span>✓ correct after checking · × revisit highlighted bits</span></div>
+      <div class="binary-scroll" role="region" aria-label="Aligned binary worksheet. Scroll horizontally on small screens." tabindex="0">
+        <table class="binary-table"><thead><tr><th scope="col">Binary operation</th><th scope="col">Octet 1</th><th scope="col">Octet 2</th><th scope="col">Octet 3</th><th scope="col">Octet 4</th></tr></thead><tbody id="binary-rows"></tbody></table>
+      </div>
+      <div class="bit-editor" aria-label="Individual bit controls">
+        <p id="bit-editor-title">Select a binary octet to edit its bits.</p>
+        <div id="bit-buttons" class="bit-buttons"></div>
+        <p class="muted">Each button toggles one bit in the selected octet. Editing an empty octet starts its other positions at 0. Focus or point at a bit button to trace that column across all rows. N/H labels show the given prefix's roles.</p>
+      </div>
+      <h3>Final answers</h3>
+      <div id="final-answers" class="final-grid"></div>
+      <p id="answer-note" class="muted">Enter dotted-decimal addresses and whole-number counts. Total addresses and usable hosts are different quantities.</p>
+      <div class="actions"><button id="check" class="primary">Check Step</button><button id="show-solution" disabled>Show Solution</button><button id="next-step">Next step</button></div>
+      <div id="feedback" class="feedback" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+      <section id="solution" class="solution" aria-labelledby="solution-title" hidden></section>
+    </section>
+  </section>
+  <section id="practice" role="tabpanel" aria-labelledby="practice-tab" hidden>
+    <section class="panel" aria-labelledby="practice-title">
+      <h2 id="practice-title">Randomized subnetting practice</h2>
+      <p>Choose a short session, work each problem, and submit an answer. Each question counts equally. Feedback and calculation explanations appear after submission; submitted answers stay locked for an accurate results review.</p>
+      <form id="practice-config" class="practice-options">
+        <label for="practice-count">Question count<select id="practice-count"><option value="5">5 questions</option><option value="10" selected>10 questions</option><option value="15">15 questions</option><option value="20">20 questions</option></select></label>
+        <label for="practice-coverage">Question coverage<select id="practice-coverage"><option value="all">All Categories</option><option value="network">Network and Broadcast</option><option value="hosts">Host Ranges and Capacity</option><option value="selection">Subnet Selection and Boundaries</option><option value="binary">Binary Calculations</option></select></label>
+        <button id="practice-start" class="primary" type="submit">Start new session</button>
+      </form>
+      <p id="practice-save-note" class="save-note" role="status"></p>
+      <p class="muted">All Categories balances the eight categories as evenly as the question count permits. Fresh sessions generate new problems. Your regular binary worksheet is saved separately.</p>
+    </section>
+    <section id="practice-current" class="panel" aria-labelledby="practice-question-title" hidden>
+      <h2 id="practice-question-title"></h2><p id="practice-category" class="muted"></p>
+      <progress id="practice-progress" value="0" max="10" aria-label="Submitted practice questions"></progress><p id="practice-progress-text" class="muted" role="status"></p>
+      <h3 id="practice-prompt" tabindex="-1"></h3>
+      <form id="practice-answer-form" novalidate>
+        <div id="practice-answer-controls"></div><p id="practice-answer-help" class="muted"></p><p id="practice-error" role="status" aria-live="polite"></p>
+        <button id="practice-submit" class="primary" type="submit">Submit answer</button>
+      </form>
+      <div id="practice-feedback" class="feedback" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+      <div class="actions practice-actions"><button id="practice-next" hidden>Next question</button><button id="practice-worksheet">Open binary worksheet for this question</button><button id="practice-lesson">Review the related lesson</button><button data-open="reference">Quick reference</button></div>
+      <p id="practice-worksheet-help" class="muted"></p>
+      <button id="practice-restart" class="restart-session">Restart with new questions</button>
+    </section>
+    <section id="practice-results" class="panel" aria-labelledby="practice-results-title" hidden>
+      <h2 id="practice-results-title" tabindex="-1">Practice results</h2><p id="practice-score"></p><p id="practice-focus"></p>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Performance by subnetting category"><table><thead><tr><th scope="col">Category</th><th scope="col">Correct</th><th scope="col">Incorrect</th><th scope="col">Questions</th></tr></thead><tbody id="practice-category-results"></tbody></table></div>
+      <h3>Review your answers</h3><div id="practice-review"></div>
+      <div class="actions"><button id="practice-new-results" class="primary">New session with these options</button><button data-open="lesson">Return to lesson</button><button data-open="workspace">Return to binary workspace</button></div>
+    </section>
+  </section>
+  <section id="reference" role="tabpanel" aria-labelledby="reference-tab" hidden>
+    <article class="panel">
+      <h2>Subnetting quick reference</h2>
+      <p>Use the lesson to understand each operation, then use this sheet to calculate faster.</p>
+      <div class="actions"><button data-open="workspace">Return to workspace</button><button data-open="lesson">Return to lesson</button></div>
+      <h3>Common CIDR prefixes</h3>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="CIDR reference table"><table id="cidr-reference"><thead><tr><th>CIDR</th><th>Subnet mask</th><th>Total addresses</th><th>Usable hosts</th></tr></thead><tbody>
+        <tr><td>/16</td><td>255.255.0.0</td><td>65,536</td><td>65,534</td></tr>
+        <tr><td>/20</td><td>255.255.240.0</td><td>4,096</td><td>4,094</td></tr>
+        <tr><td>/21</td><td>255.255.248.0</td><td>2,048</td><td>2,046</td></tr>
+        <tr><td>/22</td><td>255.255.252.0</td><td>1,024</td><td>1,022</td></tr>
+        <tr><td>/23</td><td>255.255.254.0</td><td>512</td><td>510</td></tr>
+        <tr><td>/24</td><td>255.255.255.0</td><td>256</td><td>254</td></tr>
+        <tr><td>/25</td><td>255.255.255.128</td><td>128</td><td>126</td></tr>
+        <tr><td>/26</td><td>255.255.255.192</td><td>64</td><td>62</td></tr>
+        <tr><td>/27</td><td>255.255.255.224</td><td>32</td><td>30</td></tr>
+        <tr><td>/28</td><td>255.255.255.240</td><td>16</td><td>14</td></tr>
+        <tr><td>/29</td><td>255.255.255.248</td><td>8</td><td>6</td></tr>
+        <tr><td>/30</td><td>255.255.255.252</td><td>4</td><td>2</td></tr>
+      </tbody></table></div>
+      <p class="muted">/31 point-to-point: 2 endpoints. /32 host route: 1 address. Neither has a directed broadcast; do not subtract two.</p>
+      <h3>Double and halve from /24</h3>
+      <p><code>/22: 1024 ← /23: 512 ← /24: 256 → /25: 128 → /26: 64</code></p>
+      <p>A prefix one bit <strong>shorter</strong> doubles total addresses. One bit <strong>longer</strong> halves them. During a timed question, start at the known /24 value and count the steps, then subtract two for conventional usable hosts. For /27: 256 → 128 → 64 → 32 total, giving 30 usable.</p>
+      <h3>Place values and mask octets</h3>
+      <p><code>128 · 64 · 32 · 16 · 8 · 4 · 2 · 1</code></p>
+      <p>Valid partial mask octets: <code>128, 192, 224, 240, 248, 252, 254</code>. A fully network octet is <code>255</code>; a fully host octet is <code>0</code>. These values come from adding consecutive place values from the left.</p>
+      <h3>Find boundaries with a block size</h3>
+      <ol>
+        <li><strong>Find the interesting octet:</strong> the first mask octet below 255. A partial octet contains the network/host boundary; for an octet-aligned prefix such as /24, use the following all-host octet (0).</li>
+        <li><strong>Block size = 256 − that mask octet.</strong> /26 gives 256 − 192 = 64. /23 gives 256 − 254 = 2 in the <em>third</em> octet.</li>
+        <li><strong>Round the IP's interesting octet down to a block multiple.</strong> Keep earlier network octets and set later octets to 0. For .130/26, multiples are 0, 64, 128, 192; choose 128.</li>
+        <li><strong>Next subnet:</strong> add one block in that octet, carrying to the previous octet if needed. For 192.168.10.128/26, next is 192.168.10.192. For 172.16.4.0/23, next is 172.16.6.0.</li>
+        <li><strong>Broadcast:</strong> take the full address immediately before the next subnet. That gives 192.168.10.191 or 172.16.5.255. If the block ends at 255.255.255.255 there is no next IPv4 subnet; use Network OR wildcard.</li>
+      </ol>
+      <p class="muted">/32 has no host octet and identifies one address. /0 covers the whole IPv4 space. The block method finds numeric boundaries; special-purpose ranges can restrict how addresses are actually used.</p>
+      <h3>Choose a size and finish the range</h3>
+      <ul><li><strong>Needed ordinary hosts:</strong> choose the smallest h for which <code>2<sup>h</sup> − 2</code> meets the requirement, then prefix = 32 − h. 50 hosts need h = 6, giving /26 and 62 usable hosts.</li><li><strong>Network:</strong> IP AND mask. <strong>Wildcard:</strong> invert the mask. <strong>Broadcast:</strong> Network OR wildcard.</li><li><strong>Usable range:</strong> network + 1 through broadcast − 1 for conventional subnets. A /23 has 512 total addresses and 510 usable hosts, not 512 usable hosts.</li></ul>
+      <p><a href="#lesson-and" data-lesson="and">Review binary AND</a> · <a href="#lesson-example" data-lesson="example">Review complete worked examples</a></p>
+    </article>
+  </section>
+  <noscript><p class="panel">The lesson and quick reference are available on this page. The interactive workspace requires JavaScript.</p></noscript>
+  <footer class="section-footer"><a href="../../../../certifications/comptia/network-plus/">Network+</a><a href="../../../../">Student Hub</a></footer>
+  <details class="muted"><summary>Technical references</summary><p>Aligned to <a href="https://lecbyo.files.cmp.optimizely.com/download/35a7403ab73211ef9dcda6f347fbf652">CompTIA Network+ N10-009 objectives, document version 6.0</a>, objective 1.7. Address-block conventions: <a href="https://www.rfc-editor.org/rfc/rfc4632">RFC 4632</a>. Point-to-point /31 behavior: <a href="https://www.rfc-editor.org/rfc/rfc3021">RFC 3021</a>.</p></details>
+</main>
+<dialog id="replace-dialog" aria-labelledby="replace-title" aria-describedby="replace-description"><h2 id="replace-title">Clear this calculation?</h2><p id="replace-description"></p><div class="actions"><button id="cancel-replace" autofocus>Keep my work</button><button id="confirm-replace" class="primary">Clear calculation</button></div></dialog>
+<dialog id="practice-restart-dialog" aria-labelledby="practice-restart-title" aria-describedby="practice-restart-description"><h2 id="practice-restart-title">Start a fresh practice session?</h2><p id="practice-restart-description">This replaces the current questions, answers, and results with new randomized problems. Your regular worksheet stays saved.</p><div class="actions"><button id="practice-cancel-restart" autofocus>Keep this session</button><button id="practice-confirm-restart" class="primary">Start new questions</button></div></dialog>
+</body>
+</html>

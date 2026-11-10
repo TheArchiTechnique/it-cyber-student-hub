@@ -160,6 +160,10 @@ Related activities that build supporting skills for this certification.
 
 ## Published Labs
 
+- [IPv4 Subnetting Learning Lab](../../../labs/networking/subnetting/README.md)
+
+    Learn binary subnet calculations, identify network and broadcast addresses, find host ranges, and practice with randomized questions and calculation feedback. No installation required.
+
 - [Getting Started: Download and Install Cisco Packet Tracer](../../../labs/networking/packet-tracer-setup/README.md)
 
     Set up the free network simulator and learn the controls used in the Network+ networking labs.
