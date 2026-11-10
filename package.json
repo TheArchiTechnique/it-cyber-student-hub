@@ -16,7 +16,8 @@
     "test:malware-investigation-remediation": "node tests/malware-investigation-remediation.cjs --local",
     "test:helpdesk-ticket-triage": "node tests/helpdesk-ticket-triage.cjs --local",
     "test:practice-tests": "node tests/practice-tests.mjs && node tests/certification-mode.mjs && node tests/practice-tests-browser.cjs --local && node tests/certification-mode-browser.cjs --local",
-    "test:network-plus-physical-cabling": "node tests/network-plus-physical-cabling.cjs"
+    "test:network-plus-physical-cabling": "node tests/network-plus-physical-cabling.cjs",
+    "test:network-plus-subnetting": "node tests/network-plus-subnetting.mjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"
