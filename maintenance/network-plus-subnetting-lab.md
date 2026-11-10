@@ -44,6 +44,12 @@ Local arithmetic, source, publication, and strict-build checks run in Work. This
 
 Technical sources: [CompTIA N10-009 objectives v6.0](https://lecbyo.files.cmp.optimizely.com/download/35a7403ab73211ef9dcda6f347fbf652), [RFC 3021](https://www.rfc-editor.org/rfc/rfc3021), and [RFC 4632](https://www.rfc-editor.org/rfc/rfc4632). The lesson explanations and examples are original.
 
-## Deferred
+## Phase 3 release review
 
-Phase 3: independent QA, integration verification, final branch review, and pull-request creation. No pull request or merge belongs to Phase 2.
+Integrated current `main` through `67b7d5d4e2cb2ad66088496318fe577b073bf05b`, preserving the Day 4/Day 5 Kahoot listings, their test expectations, and all completed subnetting work. The merge required no conflict resolution.
+
+Clarified the containing-subnet question to explicitly request a Network ID and prefix, distinguishing a canonical network identifier from a host/CIDR expression. Recovery now rejects missing or undefined seed, count, or coverage metadata instead of letting session-creation defaults regenerate different questions beneath saved answers. Model and browser regression checks cover damaged saved metadata.
+
+The generator algorithm, version 1 question identities, correct answers, choice ordering, and valid saved-session scoring are unchanged. A compatibility comparison against the Phase 2 checkpoint covered 25,000 questions and 2,000 valid saved sessions. Independent Python `ipaddress` validation covered 4,224 address blocks across /0–/32, 8,000 generated questions across all 20 types, all 12 quick-reference rows, and both complete binary worked examples. The conventional /23 and /25 capacities and the /31 and /32 exceptions are consistent throughout.
+
+All four discovery paths use the same published overview and canonical application. The generated summary includes it once; search and project-subpath link validation remain part of the normal build. Final browser and navigation checks run against that built application in GitHub Actions. Pull-request validation precedes user approval for merging.

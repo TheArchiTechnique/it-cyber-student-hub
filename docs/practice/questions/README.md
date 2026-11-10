@@ -90,4 +90,16 @@ These Kahoot! reviews support independent practice: open a review and select **P
 
     Review NICs, MAC addressing, switch MAC learning and frame forwarding, introductory VLANs, and basic network device commands. Select **Play solo** for independent practice.
 
+### IPv4 networking, addresses, subnets, and traffic
+
+- [IPv4 Networking, Addresses, Subnets, and Traffic - Kahoot!](https://create.kahoot.it/share/ipv4-networking-addresses-subnets-traffic/bbb4a50a-ddb7-4324-a0af-3faa1b5538c4)
+
+    Review IPv4 networking, addresses, subnets, and traffic types. Select **Play solo** for independent practice.
+
+### Routing protocols, packet forwarding, NAT/PAT, edge routers, and firewalls
+
+- [Routing Protocols, Packet Forwarding, NAT/PAT, Edge Routers, and Firewalls - Kahoot!](https://create.kahoot.it/details/af85b4de-8410-450e-8182-97ba621590c5)
+
+    Review routing protocols, packet forwarding, NAT/PAT, edge routers, and firewall inspection. Select **Play solo** for independent practice.
+
 [Back to Practice](../README.md) · [A+ Core 2](../../certifications/comptia/a-plus-core-2/README.md) · [Network+](../../certifications/comptia/network-plus/README.md) · [Student Hub](../../../README.md)

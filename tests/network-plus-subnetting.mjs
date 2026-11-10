@@ -383,6 +383,11 @@ function practiceModelChecks() {
   assert.deepEqual(P.sanitizeSession(JSON.parse(JSON.stringify(session))),session);
   assert.deepEqual(P.summarize(P.sanitizeSession({...session,score:100,questions:[{correctAnswer:'forged'}]})),score,'Saved scores or question objects are never trusted');
   for (const raw of [null,{},[],{...session,version:99},{...session,generatorVersion:99},{...session,count:999},{...session,coverage:'__proto__'},{...session,seed:'<script>'}]) assert.equal(P.sanitizeSession(raw),null);
+  for (const key of ['seed','count','coverage']) {
+    const missing={...session};delete missing[key];
+    assert.equal(P.sanitizeSession(missing),null,`Missing ${key} cannot silently default to a different session`);
+    assert.equal(P.sanitizeSession({...session,[key]:undefined}),null,`Undefined ${key} cannot regenerate questions under saved answers`);
+  }
   const partial=P.sanitizeSession({...session,cursor:999,answers:[session.answers[0],null,...session.answers.slice(2)]});
   assert.equal(partial.cursor,1);assert.deepEqual(partial.answers.slice(1),[null,null,null,null]);
   assert.notEqual(P.newSeed(),P.newSeed());
@@ -553,6 +558,10 @@ async function practiceBrowserChecks(browser,origin,base,url) {
     assert.ok(search.docs.some(doc=>doc.location==='labs/networking/subnetting/'&&doc.title==='IPv4 Subnetting Learning Lab'));
     assert.equal((await fs.readFile(path.join(root,'SUMMARY.md'),'utf8')).split('(docs/labs/networking/subnetting/README.md)').length-1,1);
     await page.goto(url+'#practice');
+    const missingSeed=await readSession();delete missingSeed.seed;
+    await page.evaluate(({key,session})=>localStorage.setItem(key,JSON.stringify(session)),{key:practiceKey,session:missingSeed});await page.reload();
+    assert.equal(await page.locator('#practice-current').isVisible(),false);
+    assert.match(await page.locator('#practice-save-note').innerText(),/could not be restored/);
     await page.evaluate(key=>localStorage.setItem(key,'{bad json'),practiceKey);await page.reload();
     assert.equal(await page.locator('#practice-current').isVisible(),false);
     assert.match(await page.locator('#practice-save-note').innerText(),/could not be restored/);

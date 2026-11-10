@@ -354,7 +354,9 @@ class LearningResourceNavigationTests(unittest.TestCase):
         expected_urls = json.loads((ROOT / 'tests/fixtures/kahoots.json').read_text())['network-plus']
         titles = ['OSI Model & Network PDU Basics - Kahoot!',
                   'Ethernet Cabling and Fiber Optics - Kahoot!',
-                  'Ethernet & Switching Fundamentals - Kahoot!']
+                  'Ethernet & Switching Fundamentals - Kahoot!',
+                  'IPv4 Networking, Addresses, Subnets, and Traffic - Kahoot!',
+                  'Routing Protocols, Packet Forwarding, NAT/PAT, Edge Routers, and Firewalls - Kahoot!']
         pattern = r'^- \[([^\]]+)\]\((https://create\.kahoot\.it/(?:share|details)/[^\s)]+)\)\n\n[ \t]+([^\n]+)'
         for key, section in [('practice/questions/README.md', '## Network+'),
                              ('certifications/comptia/network-plus/README.md', '## Practice Quizzes')]:
@@ -369,6 +371,10 @@ class LearningResourceNavigationTests(unittest.TestCase):
                 self.assertIn('Ethernet cabling and fiber-optic', entries[1][2])
                 for topic in ('NICs', 'MAC addressing', 'MAC learning', 'frame forwarding', 'VLANs', 'commands'):
                     self.assertIn(topic, entries[2][2])
+                for topic in ('IPv4', 'addresses', 'subnets', 'traffic'):
+                    self.assertIn(topic, entries[3][2])
+                for topic in ('routing protocols', 'packet forwarding', 'NAT/PAT', 'edge routers', 'firewall inspection'):
+                    self.assertIn(topic, entries[4][2])
 
     def test_reference_groups_and_contextual_connections(self):
         text = self.visible('reference/README.md')

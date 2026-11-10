@@ -128,7 +128,7 @@ export function buildQuestion(type,data,requestedFormat='entry',rng=seededRandom
       q.worksheet={ip:r.network,prefix};
       q.explanation=`/${prefix} contains ${r.total} addresses. Add that full block to ${r.network} to obtain ${next}; ${r.broadcast} is the address just before it. `+blockSizeExplanation(r);break;
     case 'containing':
-      q.prompt=`Which subnet contains address ${r.ip} when the prefix is /${prefix}?`;
+      q.prompt=`Which network ID and prefix identify the subnet containing ${r.ip} with prefix /${prefix}?`;
       q.answerKind='literal';q.format='mcq';q.correctAnswer=`${r.network}/${prefix}`;
       candidates=[`${next}/${prefix}`,`${r.first}/${prefix}`,`${fromNumber(lower+r.total*2)}/${prefix}`];
       q.explanation=`${blockExplanation} The containing block runs from ${r.network} through ${r.broadcast}. `+blockSizeExplanation(r);break;
@@ -297,6 +297,9 @@ export function summarize(session) {
 }
 export function sanitizeSession(raw) {
   if (!raw||raw.version!==1||raw.generatorVersion!==1) return null;
+  // Recovery must never use createSession's defaults to replace lost identity
+  // or coverage metadata with different questions under saved student answers.
+  if (typeof raw.seed!=='string'||!COUNTS.includes(raw.count)||!Object.hasOwn(COVERAGE,raw.coverage)) return null;
   let session,questions;
   try {session=createSession(raw);questions=generateQuestions(session);} catch {return null;}
   if (!Array.isArray(raw.answers)||raw.answers.length!==session.count||!Array.isArray(raw.drafts)||raw.drafts.length!==session.count) return null;
