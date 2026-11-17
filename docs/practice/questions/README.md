@@ -102,4 +102,16 @@ These Kahoot! reviews support independent practice: open a review and select **P
 
     Review routing protocols, packet forwarding, NAT/PAT, edge routers, and firewall inspection. Select **Play solo** for independent practice.
 
+### DHCP and DNS
+
+- [Mastering DHCP & DNS Fundamentals - Kahoot!](https://create.kahoot.it/share/mastering-dhcp-dns-fundamentals/fa4e89ee-4465-47f3-badd-33f08b369e7c)
+
+    Review DHCP address assignment and DNS name resolution. Select **Play solo** for independent practice.
+
+### Web protocols and network time
+
+- [Web Protocols, HTTPS & Network Time - Kahoot!](https://create.kahoot.it/share/web-protocols-https-network-time/56ebe622-aaa4-4895-965c-8669780410c9)
+
+    Review HTTP, HTTPS, TLS, NTP, PTP, and NTS. Select **Play solo** for independent practice.
+
 [Back to Practice](../README.md) · [A+ Core 2](../../certifications/comptia/a-plus-core-2/README.md) · [Network+](../../certifications/comptia/network-plus/README.md) · [Student Hub](../../../README.md)
