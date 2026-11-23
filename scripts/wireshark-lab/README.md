@@ -1,9 +1,9 @@
 # Wireshark lab asset maintenance
 
-Phase 1 supplies capture and logging assets only. The tool-page placeholder and
-all student navigation are unchanged. The installation guide, screenshots,
-walkthrough, answer sheet and Hub integration belong to Phase 2. No PR is
-created in this phase.
+Phase 1 supplies capture and logging assets. Phase 2 adds the Windows setup guide
+at `docs/tools/wireshark/README.md`, the walkthrough and `answers.md` in the lab
+directory, genuine GUI screenshots, original vector diagrams, and Hub links.
+The Phase 1 capture, log, manifest, and validation report remain unchanged.
 
 ## Assets
 
@@ -18,8 +18,8 @@ All downloadable data lives in `docs/labs/networking/wireshark/assets/`:
 
 These assets are directly downloadable from the feature branch. MkDocs copies
 the non-Markdown files to the corresponding `labs/networking/wireshark/assets/`
-site path. Student-facing download links will be added in Phase 2; there is no
-published lesson yet.
+site path. The lab links to the capture and log near its beginning, with solutions
+on a separately linked answer page.
 
 ## Provenance and scope
 
@@ -125,3 +125,35 @@ retransmitted TCP data, and known credential/key markers.
 Official tool references: [TShark manual](https://www.wireshark.org/docs/man-pages/tshark.html),
 [display filters](https://www.wireshark.org/docs/man-pages/wireshark-filter.html),
 and [checksum interpretation](https://www.wireshark.org/docs/wsug_html_chunked/ChAdvChecksums.html).
+
+## Lesson and image verification
+
+Phase 2 screenshots were taken from the real Wireshark 4.4.19 Linux GUI opening
+the frozen capture above. `images/provenance.json` records selected frames,
+dimensions and image hashes. The desktop capture API returned JPEG bytes;
+lossless WebP encoding preserves their decoded pixels exactly. No packet text
+or application controls were redrawn. The interface-map SVG embeds the unaltered
+overview and adds external vector arrows/labels; the topology SVG is an original
+schematic. No official documentation images or AI-generated application images
+are used. Windows installation instructions point to Stable Release 4.6.10,
+verified at the official download page on November 23, 2026. They do not claim
+that Windows installation was executed in this Linux environment.
+
+```sh
+python scripts/wireshark-lab/validate_lesson.py
+python scripts/check_source.py
+python scripts/sync_navigation.py --check
+python -m mkdocs build --strict
+python scripts/check_site.py
+python -m unittest tests.test_content_visibility tests.test_learning_resource_navigation
+node tests/wireshark-lab.cjs
+npm run test:learning-resource-navigation
+npm run test:pbq-library
+```
+
+`validate_lesson.py` accepts the same `--tshark` executable override as the asset
+validator. Browser checks use the repository's existing Playwright dependency
+and accept `PBQ_CHROMIUM_PATH` for a preinstalled Chromium executable. The lesson
+check exercises desktop and mobile widths, both palettes, full-resolution image
+links, answer separation, search/navigation and exact downloaded bytes at the
+GitHub Pages project subpath. Re-running these checks does not regenerate assets.

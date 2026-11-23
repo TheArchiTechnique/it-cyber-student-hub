@@ -61,7 +61,8 @@ class LearningResourceNavigationTests(unittest.TestCase):
         nav = self.availability.navigation(yaml.safe_load((ROOT / 'mkdocs.yml').read_text())['nav'])
         self.assertEqual([p for p in nav_paths(nav) if p.startswith(prefix)],
                          [prefix + 'README.md'] + [prefix + p for p in expected]
-                         + [prefix + 'osi-pdu-tracing/README.md', prefix + 'subnetting/README.md'])
+                         + [prefix + 'osi-pdu-tracing/README.md', prefix + 'subnetting/README.md',
+                            prefix + 'wireshark/README.md', prefix + 'wireshark/answers.md'])
         certification = self.visible('certifications/comptia/network-plus/README.md')
         for i, slug in enumerate(sequence):
             key = prefix + slug + '/README.md'

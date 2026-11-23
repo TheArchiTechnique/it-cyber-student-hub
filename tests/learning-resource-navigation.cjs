@@ -104,8 +104,9 @@ const networkQuizzes = [
         await go('labs/');
         assert.deepEqual(await content().locator('li a').allTextContents(),['IT Support', 'Networking']);
         await follow('IT Support','labs/it-support/');
-        assert.deepEqual(await content().locator('li a').allTextContents(),['Linux Terminal Simulator',installTitle,linuxTitle,windowsTitle]);
-        assert.match(await content().locator('li').nth(2).innerText(),/Prerequisite: complete the Linux Mint installation lab first/);
+        assert.deepEqual(await content().locator('li a').allTextContents(),['Browse Tools','Linux Terminal Simulator',installTitle,linuxTitle,windowsTitle]);
+        assert.match(await content().getByRole('link',{name:linuxTitle,exact:true})
+          .locator('xpath=ancestor::li[1]').innerText(),/Prerequisite: complete the Linux Mint installation lab first/);
         await follow(installTitle,'labs/it-support/virtualbox-linux-mint/');
         await follow(linuxTitle,'labs/it-support/linux-mint-command-line/');
         await follow('Back to IT Support Labs','labs/it-support/');
