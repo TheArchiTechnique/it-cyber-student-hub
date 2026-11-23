@@ -32,7 +32,7 @@
       <text x="890" y="553">10.20.30.40</text><text x="890" y="580">SNMP poller · Syslog</text>
     </g>
     <text x="520" y="339" font-size="23" font-weight="700" fill="white">Office switch</text>
-    <text x="520" y="367" font-size="17" fill="#d3e5f4">10.20.30.2 · SNMP agent · Syslog sender</text>
+    <text x="520" y="367" font-size="15" fill="#d3e5f4">10.20.30.2 · SNMP agent · Syslog sender</text>
     <text x="520" y="640" font-size="17" fill="#34556a">One LAN. No WAN traffic is included in the capture.</text>
   </g>
 </svg>
