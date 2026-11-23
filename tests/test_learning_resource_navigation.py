@@ -356,7 +356,9 @@ class LearningResourceNavigationTests(unittest.TestCase):
                   'Ethernet Cabling and Fiber Optics - Kahoot!',
                   'Ethernet & Switching Fundamentals - Kahoot!',
                   'IPv4 Networking, Addresses, Subnets, and Traffic - Kahoot!',
-                  'Routing Protocols, Packet Forwarding, NAT/PAT, Edge Routers, and Firewalls - Kahoot!']
+                  'Routing Protocols, Packet Forwarding, NAT/PAT, Edge Routers, and Firewalls - Kahoot!',
+                  'Mastering DHCP & DNS Fundamentals - Kahoot!',
+                  'Web Protocols, HTTPS & Network Time - Kahoot!']
         pattern = r'^- \[([^\]]+)\]\((https://create\.kahoot\.it/(?:share|details)/[^\s)]+)\)\n\n[ \t]+([^\n]+)'
         for key, section in [('practice/questions/README.md', '## Network+'),
                              ('certifications/comptia/network-plus/README.md', '## Practice Quizzes')]:
@@ -375,6 +377,10 @@ class LearningResourceNavigationTests(unittest.TestCase):
                     self.assertIn(topic, entries[3][2])
                 for topic in ('routing protocols', 'packet forwarding', 'NAT/PAT', 'edge routers', 'firewall inspection'):
                     self.assertIn(topic, entries[4][2])
+                for topic in ('DHCP', 'address assignment', 'DNS', 'name resolution'):
+                    self.assertIn(topic, entries[5][2])
+                for topic in ('HTTP', 'HTTPS', 'TLS', 'NTP', 'PTP', 'NTS'):
+                    self.assertIn(topic, entries[6][2])
 
     def test_reference_groups_and_contextual_connections(self):
         text = self.visible('reference/README.md')
