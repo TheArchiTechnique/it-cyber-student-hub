@@ -1,0 +1,272 @@
+{
+  "minutes": {
+    "reading": 30,
+    "cards": 15,
+    "quiz": 15,
+    "worksheet": 25,
+    "application": 25
+  },
+  "review": [
+    {
+      "objective": "1.2",
+      "title": "Choose the installation path",
+      "text": "For a supported in-place upgrade, verify the edition, architecture, language, applications and drivers before choosing to keep files and apps. A clean install creates a fresh OS and requires an independent copy of anything the user needs. A repair installation targets an existing installation. Record user preferences and recovery keys, check vendor support dates and test a restore before work starts."
+    },
+    {
+      "objective": "1.2",
+      "title": "Trace how the installer starts",
+      "text": "A single PC can boot from USB or other bootable media. Network boot can use PXE to load a deployment environment; a prepared image standardizes many PCs. Zero-touch describes an automated workflow once its prerequisites are met. Internet recovery retrieves vendor content. An internal recovery partition depends on a readable disk. Multiboot offers a choice of installed operating systems."
+    },
+    {
+      "objective": "1.2",
+      "title": "Distinguish disk layout from file system",
+      "text": "GPT and MBR describe partitions. Formatting a partition creates a file system such as NTFS. A normal Windows UEFI installation uses GPT on the startup disk. If Setup cannot see a disk that firmware detects, check controller configuration and the approved storage driver before changing partitions."
+    },
+    {
+      "objective": "4.3",
+      "title": "Reconstruct a restore chain",
+      "text": "A full backup copies the selected data. An incremental captures changes since the most recent backup in the chain. Restoring Tuesday after a Sunday full with daily incrementals requires Sunday, Monday and Tuesday in order. A differential captures changes since the last full, so Sunday plus Tuesday's differential suffice. A synthetic full is assembled from stored backups."
+    },
+    {
+      "objective": "4.3",
+      "title": "Test recovery before relying on it",
+      "text": "Keep three copies in total, on two media types, with one copy offsite. A grandfather-father-son rotation retains generations, often monthly, weekly and daily. An alternative-location restore lets you open the recovered file without overwriting the original. Test regularly and after changes; record the restore point, destination and verification result."
+    }
+  ],
+  "sources": [
+    [
+      "Microsoft Learn: Windows Setup and partition styles",
+      "https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/windows-setup-installing-using-the-mbr-or-gpt-partition-style"
+    ],
+    [
+      "IBM: backup and restore",
+      "https://www.ibm.com/think/topics/backup-and-restore"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "pxe",
+      "objective": "1.2",
+      "prompt": "What is PXE used for during deployment?",
+      "answer": "Preboot Execution Environment starts a machine from the network so it can load boot files from a deployment service."
+    },
+    {
+      "id": "image",
+      "objective": "1.2",
+      "prompt": "Why use an installation image?",
+      "answer": "A prepared OS and software baseline can be applied consistently to multiple devices."
+    },
+    {
+      "id": "in-place",
+      "objective": "1.2",
+      "prompt": "When can an in-place upgrade preserve applications?",
+      "answer": "When the source and target follow a supported upgrade path and Setup offers the option to keep apps and files."
+    },
+    {
+      "id": "clean",
+      "objective": "1.2",
+      "prompt": "What distinguishes a clean installation?",
+      "answer": "It builds a fresh OS environment. Existing applications must be reinstalled and user data restored as needed."
+    },
+    {
+      "id": "gpt",
+      "objective": "1.2",
+      "prompt": "What does GPT describe?",
+      "answer": "GUID Partition Table, the disk partition layout normally used by Windows when booting in UEFI mode."
+    },
+    {
+      "id": "format",
+      "objective": "1.2",
+      "prompt": "How does formatting differ from partitioning?",
+      "answer": "Partitioning defines regions on a disk. Formatting prepares a volume with a file system."
+    },
+    {
+      "id": "recovery",
+      "objective": "1.2",
+      "prompt": "Why might an internal recovery partition be unavailable?",
+      "answer": "A failed internal disk can take the recovery environment and user volume offline together."
+    },
+    {
+      "id": "incremental",
+      "objective": "4.3",
+      "prompt": "What must you retain for a traditional incremental restore?",
+      "answer": "The base full and every required incremental in the chain through the selected restore point."
+    },
+    {
+      "id": "differential",
+      "objective": "4.3",
+      "prompt": "Which two backup sets recover Thursday with daily differential backups?",
+      "answer": "The most recent full before Thursday's differential and that Thursday differential."
+    },
+    {
+      "id": "synthetic",
+      "objective": "4.3",
+      "prompt": "Where does a synthetic full get its data?",
+      "answer": "Previously stored backup data, such as a full and subsequent incrementals, are combined into a new full."
+    },
+    {
+      "id": "rotation",
+      "objective": "4.3",
+      "prompt": "What does GFS retain?",
+      "answer": "Grandfather-father-son retains generations of backups on different schedules."
+    },
+    {
+      "id": "offsite",
+      "objective": "4.3",
+      "prompt": "What loss can the offsite copy in 3-2-1 address?",
+      "answer": "A site-wide event that damages the workstation and all local backup media."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "layout",
+      "objective": "1.2",
+      "prompt": "A Windows installer started in UEFI mode expects the system disk partition style abbreviated ____.",
+      "answers": [
+        "GPT",
+        "GUID Partition Table",
+        "Globally Unique Identifier Partition Table"
+      ],
+      "explanation": "GPT describes the layout. NTFS describes a volume's file system."
+    },
+    {
+      "id": "boot",
+      "objective": "1.2",
+      "prompt": "The three-letter abbreviation for Preboot Execution Environment is ____.",
+      "answers": [
+        "PXE"
+      ],
+      "explanation": "PXE can load deployment boot files over a suitably configured network."
+    },
+    {
+      "id": "keep",
+      "objective": "1.2",
+      "prompt": "A supported OS migration that keeps installed applications is an ____ upgrade.",
+      "answers": [
+        "in-place",
+        "in place",
+        "inplace"
+      ],
+      "explanation": "Setup must support the source-to-target path and preservation option."
+    },
+    {
+      "id": "auto",
+      "objective": "1.2",
+      "prompt": "A deployment that proceeds without technician interaction once provisioned is called ____ deployment.",
+      "answers": [
+        "zero-touch",
+        "zero touch",
+        "ZTD"
+      ],
+      "explanation": "Automation handles the installation steps after prerequisites are met."
+    },
+    {
+      "id": "delta",
+      "objective": "4.3",
+      "prompt": "A backup that always records all changes since the last full is a ____ backup.",
+      "answers": [
+        "differential",
+        "differential backup"
+      ],
+      "explanation": "Only the base full and the selected differential are needed for that recovery point."
+    },
+    {
+      "id": "chain",
+      "objective": "4.3",
+      "prompt": "In a traditional chain, a backup of changes since the immediately preceding backup is an ____ backup.",
+      "answers": [
+        "incremental",
+        "incremental backup"
+      ],
+      "explanation": "Each link depends on earlier backup data."
+    },
+    {
+      "id": "merge",
+      "objective": "4.3",
+      "prompt": "A full backup assembled from existing backup sets is called a ____ full.",
+      "answers": [
+        "synthetic"
+      ],
+      "explanation": "The repository combines stored data to create the new full."
+    },
+    {
+      "id": "location",
+      "objective": "4.3",
+      "prompt": "In 3-2-1, one copy must be kept ____ to protect against loss of the entire local site.",
+      "answers": [
+        "offsite",
+        "off-site",
+        "off site",
+        "off premises",
+        "off-premises"
+      ],
+      "explanation": "Separating a copy geographically reduces exposure to the same site disaster."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "boot-media",
+      "objective": "1.2",
+      "prompt": "A laptop's internal disk has failed completely. Compare a recovery partition on that disk with bootable USB recovery media.",
+      "type": "Example",
+      "key": "The failed disk can make its recovery partition inaccessible. Bootable USB provides an independent starting point after checking firmware boot support.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "format",
+      "objective": "1.2",
+      "prompt": "Identify what each term describes: GPT, MBR and NTFS.",
+      "type": "Factual",
+      "key": "GPT and MBR are disk partition styles. NTFS is a file system used on a volume.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "preserve",
+      "objective": "1.2",
+      "prompt": "A user wants an upgrade that retains apps. Name three checks before accepting the job.",
+      "type": "Example",
+      "key": "Verify a supported edition, language and architecture path, test required apps and drivers, and verify a restorable backup including user data and settings.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "rollout",
+      "objective": "1.2",
+      "prompt": "Explain how network boot, image deployment and zero-touch relate in a fleet rollout.",
+      "type": "Example",
+      "key": "Network boot loads the deployment environment, the image supplies the standard workstation build, and automation can complete configuration without a technician at each desk.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "restore-table",
+      "objective": "4.3",
+      "prompt": "Write two restore lists for Wednesday. Sunday was a full backup. The next three days used either all incrementals or all differentials.",
+      "type": "Factual",
+      "key": "Incremental: Sunday full, then Monday, Tuesday and Wednesday incrementals. Differential: Sunday full plus Wednesday differential.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "rotation",
+      "objective": "4.3",
+      "prompt": "Describe a 3-2-1 arrangement and explain the different purpose of GFS rotation.",
+      "type": "Example",
+      "key": "Keep the live files, a local backup and an offsite backup across two media types. GFS retains several ages of restore point, so a recent bad change need not replace every older copy.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "disk-error",
+      "objective": "1.2",
+      "prompt": "Microsoft's Setup article describes a GPT-style mismatch. Setup was booted in UEFI mode and sees the disk. What two facts would you record before planning a change?",
+      "type": "Example",
+      "key": "Record the boot mode and current target partition style, for example UEFI and MBR. Confirm backup and restore readiness before any conversion or repartitioning.",
+      "source": "Microsoft Learn: Windows Setup and partition styles"
+    },
+    {
+      "id": "test",
+      "objective": "4.3",
+      "prompt": "Design a restore test for a document that is currently being edited. Give a destination and a success criterion.",
+      "type": "Example",
+      "key": "Restore the selected version to an alternative folder, open it and compare its contents with the expected version. Record the result without disturbing the working copy.",
+      "source": "Application exercise: use the recovery test review"
+    }
+  ]
+}

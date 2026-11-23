@@ -1,0 +1,267 @@
+{
+  "minutes": {
+    "reading": 25,
+    "cards": 10,
+    "quiz": 10,
+    "worksheet": 25,
+    "application": 20
+  },
+  "review": [
+    {
+      "objective": "1.1",
+      "title": "Start with what the device must run",
+      "text": "A browser-based gradebook can work on ChromeOS. A Windows-only desktop application may require Windows even if another OS can open its data files. Check the publisher's supported OS, version and drivers. Linux distributions and macOS have their own app ecosystems. On phones and tablets, distinguish iOS, iPadOS and Android. A device that still starts can already be past its supported update life."
+    },
+    {
+      "objective": "1.1",
+      "title": "Choose a file system for the job",
+      "text": "A Windows system volume normally uses NTFS, which supports permissions for individual users and groups. ReFS emphasizes integrity on supported storage configurations. FAT32 has a single-file limit just under 4 GiB. For a 6 GiB video moving between current Windows and Mac computers, exFAT supports the file size and native read/write access on both. APFS is native to modern Macs. Linux commonly uses ext4 or XFS. Verify that every destination device understands the chosen format before copying."
+    },
+    {
+      "objective": "1.3",
+      "title": "Check the receiving PC's edition",
+      "text": "A Windows Home PC can initiate a Remote Desktop session. Hosting a built-in Remote Desktop session or joining an on-premises Active Directory domain requires a supported business edition such as Pro. A workgroup keeps accounts local to each computer. Pro provides BitLocker management and Local Group Policy Editor. Eligible Home devices can offer Device Encryption. Enterprise adds organizational management options; Pro for Workstations targets demanding hardware. Memory limits vary by edition and architecture."
+    },
+    {
+      "objective": "1.3",
+      "title": "Separate edition, release and hardware requirements",
+      "text": "Windows 10 and 11 have different layouts for Start and Settings. Run winver to identify the installed release and edition before following a support article. An N edition omits certain media technologies. For a Windows 11 migration, verify CPU support, TPM 2.0, UEFI with Secure Boot capability and the supported installation path. A familiar desktop appearance alone establishes none of these."
+    }
+  ],
+  "sources": [
+    [
+      "Microsoft Learn: file system comparison",
+      "https://learn.microsoft.com/en-us/windows/win32/fileio/filesystem-functionality-comparison"
+    ],
+    [
+      "Microsoft Learn: Remote Desktop hosts and clients",
+      "https://learn.microsoft.com/en-us/windows-server/remote/remote-desktop-services/remotepc/remote-desktop-allow-access"
+    ],
+    [
+      "Microsoft Support: Windows 11 requirements",
+      "https://support.microsoft.com/en-us/windows/experience/compatibility/windows-11-system-requirements"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "ntfs",
+      "objective": "1.1",
+      "prompt": "What does NTFS stand for, and why use it on a shared workstation?",
+      "answer": "New Technology File System. Its access control lists can give different users different rights to a file."
+    },
+    {
+      "id": "fat32",
+      "objective": "1.1",
+      "prompt": "Why can a 6 GiB file fail to copy to an empty 32 GB FAT32 drive?",
+      "answer": "The individual file exceeds FAT32's limit. Free capacity and maximum file size are separate limits."
+    },
+    {
+      "id": "exfat",
+      "objective": "1.1",
+      "prompt": "Which removable-drive format suits large files shared by current Macs and Windows PCs?",
+      "answer": "exFAT supports large files and both systems can normally read and write it."
+    },
+    {
+      "id": "refs",
+      "objective": "1.1",
+      "prompt": "What problem does ReFS address?",
+      "answer": "Resilient File System provides integrity and resilience features for supported storage workloads."
+    },
+    {
+      "id": "apfs",
+      "objective": "1.1",
+      "prompt": "What does APFS stand for, and where would you expect it?",
+      "answer": "Apple File System, the normal format for modern Mac startup volumes."
+    },
+    {
+      "id": "linux",
+      "objective": "1.1",
+      "prompt": "Name two journaling file systems used on Linux.",
+      "answer": "ext4 and XFS. Check OS and recovery-tool support when choosing the format."
+    },
+    {
+      "id": "eol",
+      "objective": "1.1",
+      "prompt": "What should a technician verify when a release reaches EOL?",
+      "answer": "Whether security fixes or an extended-support arrangement are available, and which supported migration paths exist."
+    },
+    {
+      "id": "workgroup",
+      "objective": "1.3",
+      "prompt": "Who maintains accounts in a Windows workgroup?",
+      "answer": "Each computer maintains its local accounts. A domain can provide centralized identity and policy."
+    },
+    {
+      "id": "rdp",
+      "objective": "1.3",
+      "prompt": "How do the RDP client and host roles differ?",
+      "answer": "The client initiates the connection. The host accepts the session and must support incoming Remote Desktop."
+    },
+    {
+      "id": "gpo",
+      "objective": "1.3",
+      "prompt": "Which built-in editor changes local Windows Group Policy on Pro?",
+      "answer": "Local Group Policy Editor, opened with gpedit.msc."
+    },
+    {
+      "id": "n-edition",
+      "objective": "1.3",
+      "prompt": "What does an N edition change about Windows?",
+      "answer": "It omits certain media technologies. Check media dependencies before deploying an app."
+    },
+    {
+      "id": "tpm",
+      "objective": "1.3",
+      "prompt": "What is a TPM?",
+      "answer": "A Trusted Platform Module protects cryptographic material. Windows 11 requires TPM version 2.0."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "portable",
+      "objective": "1.1",
+      "prompt": "A 6 GiB recording must travel on USB between a current Mac and a Windows PC. Name the FAT-family format to use: ____.",
+      "answers": [
+        "exFAT",
+        "Extensible File Allocation Table"
+      ],
+      "explanation": "exFAT supports a single file this large and native read/write access on both systems."
+    },
+    {
+      "id": "acl",
+      "objective": "1.1",
+      "prompt": "A normal Windows system volume that enforces per-user file permissions uses ____.",
+      "answers": [
+        "NTFS",
+        "New Technology File System"
+      ],
+      "explanation": "NTFS stores access control entries for files and folders."
+    },
+    {
+      "id": "apple",
+      "objective": "1.1",
+      "prompt": "The native file system abbreviated APFS expands to ____.",
+      "answers": [
+        "Apple File System",
+        "Apple Filesystem"
+      ],
+      "explanation": "APFS is used on modern Mac startup volumes."
+    },
+    {
+      "id": "lifecycle",
+      "objective": "1.1",
+      "prompt": "A release has reached the end of its vendor support life cycle. The three-letter abbreviation is ____.",
+      "answers": [
+        "EOL"
+      ],
+      "explanation": "End of life marks the support milestone. Check the release's servicing terms."
+    },
+    {
+      "id": "peer",
+      "objective": "1.3",
+      "prompt": "Several Windows PCs each maintain local accounts and share files as peers. This arrangement is a ____.",
+      "answers": [
+        "workgroup",
+        "work group"
+      ],
+      "explanation": "In a workgroup, an administrator manages accounts on each computer."
+    },
+    {
+      "id": "host",
+      "objective": "1.3",
+      "prompt": "In a Remote Desktop connection, the computer accepting the incoming session is the ____.",
+      "answers": [
+        "host",
+        "RDP host",
+        "remote desktop host",
+        "server",
+        "RDP server"
+      ],
+      "explanation": "The initiating computer is the client. Windows Home can initiate a session."
+    },
+    {
+      "id": "chip",
+      "objective": "1.3",
+      "prompt": "Windows 11 requires version 2.0 of the security component abbreviated ____.",
+      "answers": [
+        "TPM"
+      ],
+      "explanation": "The Trusted Platform Module protects cryptographic keys."
+    },
+    {
+      "id": "policy",
+      "objective": "1.3",
+      "prompt": "Enter the .msc filename for Local Group Policy Editor on Windows Pro: ____.",
+      "answers": [
+        "gpedit.msc"
+      ],
+      "explanation": "This snap-in edits local computer and user policy settings."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "platforms",
+      "objective": "1.1",
+      "prompt": "Group Windows, ChromeOS, Linux, macOS, iOS, Android and iPadOS by the workstation or mobile role used in objective 1.1.",
+      "type": "Factual",
+      "key": "Workstation: Windows, ChromeOS, Linux and macOS. Mobile: iOS, Android and iPadOS.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "capacity",
+      "objective": "1.1",
+      "prompt": "A 6 GiB video fails to copy to a FAT32 stick with 20 GiB free. Explain the failure and select a common Windows/Mac format.",
+      "type": "Example",
+      "key": "The file exceeds FAT32's per-file limit. After preserving existing data, exFAT would handle this file on both computers.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "formats",
+      "objective": "1.1",
+      "prompt": "Match each format to its usual role: APFS, NTFS, ext4 and ReFS.",
+      "type": "Factual",
+      "key": "APFS: modern Apple storage. NTFS: Windows system volume and permissions. ext4: Linux storage. ReFS: integrity-focused storage in supported configurations.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "support",
+      "objective": "1.1",
+      "prompt": "A vendor has ended standard support for a working OS. List two checks before recommending continued use.",
+      "type": "Example",
+      "key": "Check eligibility for security updates or extended support and whether required applications, drivers and hardware support a maintained replacement.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "editions",
+      "objective": "1.3",
+      "prompt": "A home laptop controls a Windows Pro office PC over Remote Desktop. Which device is the host? Which device could run Home in this setup?",
+      "type": "Factual",
+      "key": "The office PC hosts the session. The initiating laptop could run Windows Home.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "identity",
+      "objective": "1.3",
+      "prompt": "Explain why joining an Active Directory domain helps an office moving away from local accounts.",
+      "type": "Example",
+      "key": "The organization can manage sign-in identities and policies centrally. Confirm the client edition supports domain join.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "research",
+      "objective": "1.3",
+      "prompt": "Use Microsoft's requirements page. Identify two firmware or security checks and one processor check for a Windows 11 migration.",
+      "type": "Example",
+      "key": "Check UEFI and Secure Boot capability, TPM 2.0 and that the processor is supported. Clock speed alone does not establish eligibility.",
+      "source": "Microsoft Support: Windows 11 requirements"
+    },
+    {
+      "id": "decision",
+      "objective": "1.1",
+      "prompt": "A buyer wants Chromebooks for a team using a Windows-only payroll client. What evidence would you request before approving the order?",
+      "type": "Example",
+      "key": "Request the publisher's supported platforms and verify a supported web or remote option with a test account. Being able to open exported spreadsheets does not demonstrate that the client runs.",
+      "source": "Application exercise: use the platform and compatibility review"
+    }
+  ]
+}
