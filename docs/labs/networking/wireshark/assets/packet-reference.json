@@ -1,0 +1,1269 @@
+{
+  "provenance": "SIMULATED offline Ethernet/IP/TCP/UDP traffic; real OpenSSL TLS wire records; not a production recording",
+  "capture": "office-network.pcap",
+  "sha256": "b20640d4c858ea00b225c09f577b77bb98f3a72b804e453d4630c369d08e4566",
+  "log": "office-network.log",
+  "packet_count": 394,
+  "start_utc": "2026-11-23T14:00:00Z",
+  "duration_seconds": 160.255115,
+  "capture_point": "Simulated bidirectional VLAN 30 SPAN; one copy of each Ethernet frame, no FCS",
+  "subnet": "10.20.30.0/24",
+  "hosts": {
+    "gateway": {
+      "ipv4": "10.20.30.1",
+      "mac": "02:00:00:20:30:01"
+    },
+    "switch": {
+      "ipv4": "10.20.30.2",
+      "mac": "02:00:00:20:30:02"
+    },
+    "infra": {
+      "ipv4": "10.20.30.10",
+      "mac": "02:00:00:20:30:10"
+    },
+    "web": {
+      "ipv4": "10.20.30.20",
+      "mac": "02:00:00:20:30:20"
+    },
+    "files": {
+      "ipv4": "10.20.30.30",
+      "mac": "02:00:00:20:30:30"
+    },
+    "monitor": {
+      "ipv4": "10.20.30.40",
+      "mac": "02:00:00:20:30:40"
+    },
+    "pc1": {
+      "ipv4": "10.20.30.101",
+      "mac": "02:00:00:20:30:65"
+    },
+    "pc2": {
+      "ipv4": "10.20.30.102",
+      "mac": "02:00:00:20:30:66"
+    },
+    "pc3": {
+      "ipv4": "10.20.30.103",
+      "mac": "02:00:00:20:30:67"
+    }
+  },
+  "references": [
+    {
+      "id": "dhcp_pc1_discover",
+      "frame": 1,
+      "time_relative": 0,
+      "protocol": "DHCP",
+      "source": "0.0.0.0",
+      "destination": "255.255.255.255",
+      "source_port": 68,
+      "destination_port": 67,
+      "filter": "dhcp.id == 0x90090001",
+      "expected_fields": {
+        "dhcp.option.dhcp": 1,
+        "dhcp.ip.your": "0.0.0.0"
+      },
+      "demonstrates": "DHCP discover"
+    },
+    {
+      "id": "log_link_up",
+      "frame": 2,
+      "time_relative": 0.01,
+      "protocol": "Syslog",
+      "source": "10.20.30.2",
+      "destination": "10.20.30.40",
+      "source_port": 5514,
+      "destination_port": 514,
+      "filter": "syslog",
+      "expected_fields": {
+        "syslog.level": 6
+      },
+      "demonstrates": "Interface Gi1/0/3 operational state up; pc3 workstation link active"
+    },
+    {
+      "id": "dhcp_pc1_offer",
+      "frame": 3,
+      "time_relative": 0.13,
+      "protocol": "DHCP",
+      "source": "10.20.30.10",
+      "destination": "255.255.255.255",
+      "source_port": 67,
+      "destination_port": 68,
+      "filter": "dhcp.id == 0x90090001",
+      "expected_fields": {
+        "dhcp.option.dhcp": 2,
+        "dhcp.ip.your": "10.20.30.101"
+      },
+      "demonstrates": "DHCP offer"
+    },
+    {
+      "id": "dhcp_pc2_discover",
+      "frame": 4,
+      "time_relative": 0.2,
+      "protocol": "DHCP",
+      "source": "0.0.0.0",
+      "destination": "255.255.255.255",
+      "source_port": 68,
+      "destination_port": 67,
+      "filter": "dhcp.id == 0x90090002",
+      "expected_fields": {
+        "dhcp.option.dhcp": 1,
+        "dhcp.ip.your": "0.0.0.0"
+      },
+      "demonstrates": "DHCP discover"
+    },
+    {
+      "id": "dhcp_pc1_request",
+      "frame": 5,
+      "time_relative": 0.28,
+      "protocol": "DHCP",
+      "source": "0.0.0.0",
+      "destination": "255.255.255.255",
+      "source_port": 68,
+      "destination_port": 67,
+      "filter": "dhcp.id == 0x90090001",
+      "expected_fields": {
+        "dhcp.option.dhcp": 3,
+        "dhcp.ip.your": "0.0.0.0"
+      },
+      "demonstrates": "DHCP request"
+    },
+    {
+      "id": "dhcp_pc2_offer",
+      "frame": 6,
+      "time_relative": 0.33,
+      "protocol": "DHCP",
+      "source": "10.20.30.10",
+      "destination": "255.255.255.255",
+      "source_port": 67,
+      "destination_port": 68,
+      "filter": "dhcp.id == 0x90090002",
+      "expected_fields": {
+        "dhcp.option.dhcp": 2,
+        "dhcp.ip.your": "10.20.30.102"
+      },
+      "demonstrates": "DHCP offer"
+    },
+    {
+      "id": "dhcp_pc1_ack",
+      "frame": 7,
+      "time_relative": 0.4,
+      "protocol": "DHCP",
+      "source": "10.20.30.10",
+      "destination": "255.255.255.255",
+      "source_port": 67,
+      "destination_port": 68,
+      "filter": "dhcp.id == 0x90090001",
+      "expected_fields": {
+        "dhcp.option.dhcp": 5,
+        "dhcp.ip.your": "10.20.30.101"
+      },
+      "demonstrates": "DHCP ack"
+    },
+    {
+      "id": "dhcp_pc2_request",
+      "frame": 8,
+      "time_relative": 0.48,
+      "protocol": "DHCP",
+      "source": "0.0.0.0",
+      "destination": "255.255.255.255",
+      "source_port": 68,
+      "destination_port": 67,
+      "filter": "dhcp.id == 0x90090002",
+      "expected_fields": {
+        "dhcp.option.dhcp": 3,
+        "dhcp.ip.your": "0.0.0.0"
+      },
+      "demonstrates": "DHCP request"
+    },
+    {
+      "id": "dhcp_pc3_discover",
+      "frame": 9,
+      "time_relative": 0.5,
+      "protocol": "DHCP",
+      "source": "0.0.0.0",
+      "destination": "255.255.255.255",
+      "source_port": 68,
+      "destination_port": 67,
+      "filter": "dhcp.id == 0x90090003",
+      "expected_fields": {
+        "dhcp.option.dhcp": 1,
+        "dhcp.ip.your": "0.0.0.0"
+      },
+      "demonstrates": "DHCP discover"
+    },
+    {
+      "id": "dhcp_pc2_ack",
+      "frame": 10,
+      "time_relative": 0.6,
+      "protocol": "DHCP",
+      "source": "10.20.30.10",
+      "destination": "255.255.255.255",
+      "source_port": 67,
+      "destination_port": 68,
+      "filter": "dhcp.id == 0x90090002",
+      "expected_fields": {
+        "dhcp.option.dhcp": 5,
+        "dhcp.ip.your": "10.20.30.102"
+      },
+      "demonstrates": "DHCP ack"
+    },
+    {
+      "id": "dhcp_pc3_offer",
+      "frame": 11,
+      "time_relative": 0.63,
+      "protocol": "DHCP",
+      "source": "10.20.30.10",
+      "destination": "255.255.255.255",
+      "source_port": 67,
+      "destination_port": 68,
+      "filter": "dhcp.id == 0x90090003",
+      "expected_fields": {
+        "dhcp.option.dhcp": 2,
+        "dhcp.ip.your": "10.20.30.103"
+      },
+      "demonstrates": "DHCP offer"
+    },
+    {
+      "id": "dhcp_pc3_request",
+      "frame": 12,
+      "time_relative": 0.78,
+      "protocol": "DHCP",
+      "source": "0.0.0.0",
+      "destination": "255.255.255.255",
+      "source_port": 68,
+      "destination_port": 67,
+      "filter": "dhcp.id == 0x90090003",
+      "expected_fields": {
+        "dhcp.option.dhcp": 3,
+        "dhcp.ip.your": "0.0.0.0"
+      },
+      "demonstrates": "DHCP request"
+    },
+    {
+      "id": "dhcp_pc3_ack",
+      "frame": 13,
+      "time_relative": 0.9,
+      "protocol": "DHCP",
+      "source": "10.20.30.10",
+      "destination": "255.255.255.255",
+      "source_port": 67,
+      "destination_port": 68,
+      "filter": "dhcp.id == 0x90090003",
+      "expected_fields": {
+        "dhcp.option.dhcp": 5,
+        "dhcp.ip.your": "10.20.30.103"
+      },
+      "demonstrates": "DHCP ack"
+    },
+    {
+      "id": "arp_request",
+      "frame": 14,
+      "time_relative": 1.0,
+      "protocol": "ARP",
+      "source": "10.20.30.101",
+      "destination": "10.20.30.1",
+      "source_port": null,
+      "destination_port": null,
+      "filter": "arp",
+      "expected_fields": {
+        "arp.opcode": 1,
+        "arp.dst.proto_ipv4": "10.20.30.1"
+      },
+      "demonstrates": "Broadcast ARP request"
+    },
+    {
+      "id": "arp_reply",
+      "frame": 15,
+      "time_relative": 1.003,
+      "protocol": "ARP",
+      "source": "10.20.30.1",
+      "destination": "10.20.30.101",
+      "source_port": null,
+      "destination_port": null,
+      "filter": "arp",
+      "expected_fields": {
+        "arp.opcode": 2,
+        "arp.src.hw_mac": "02:00:00:20:30:01"
+      },
+      "demonstrates": "Unicast IP-to-MAC mapping"
+    },
+    {
+      "id": "log_leases",
+      "frame": 44,
+      "time_relative": 2.5,
+      "protocol": "Syslog",
+      "source": "10.20.30.10",
+      "destination": "10.20.30.40",
+      "source_port": 5514,
+      "destination_port": 514,
+      "filter": "syslog",
+      "expected_fields": {
+        "syslog.level": 6
+      },
+      "demonstrates": "DHCP leases active: pc1=10.20.30.101 pc2=10.20.30.102 pc3=10.20.30.103 lease=28800s"
+    },
+    {
+      "id": "dns_query",
+      "frame": 45,
+      "time_relative": 3.1,
+      "protocol": "DNS",
+      "source": "10.20.30.101",
+      "destination": "10.20.30.10",
+      "source_port": 62894,
+      "destination_port": 53,
+      "filter": "dns.id == 0x4a3e",
+      "expected_fields": {
+        "dns.qry.name": "intranet.office.test",
+        "dns.flags.response": 0
+      },
+      "demonstrates": "DNS query"
+    },
+    {
+      "id": "dns_answer",
+      "frame": 46,
+      "time_relative": 3.112,
+      "protocol": "DNS",
+      "source": "10.20.30.10",
+      "destination": "10.20.30.101",
+      "source_port": 53,
+      "destination_port": 62894,
+      "filter": "dns.id == 0x4a3e",
+      "expected_fields": {
+        "dns.qry.name": "intranet.office.test",
+        "dns.flags.response": 1,
+        "dns.a": "10.20.30.20"
+      },
+      "demonstrates": "DNS answer"
+    },
+    {
+      "id": "http_syn",
+      "frame": 49,
+      "time_relative": 3.18,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.101",
+      "destination": "10.20.30.20",
+      "source_port": 53224,
+      "destination_port": 80,
+      "filter": "tcp.port == 53224 && ip.addr == 10.20.30.101",
+      "expected_fields": {
+        "tcp.srcport": 53224,
+        "tcp.dstport": 80,
+        "tcp.flags": 2
+      },
+      "demonstrates": "syn"
+    },
+    {
+      "id": "http_synack",
+      "frame": 50,
+      "time_relative": 3.189246,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.20",
+      "destination": "10.20.30.101",
+      "source_port": 80,
+      "destination_port": 53224,
+      "filter": "tcp.port == 53224 && ip.addr == 10.20.30.101",
+      "expected_fields": {
+        "tcp.srcport": 80,
+        "tcp.dstport": 53224,
+        "tcp.flags": 18
+      },
+      "demonstrates": "synack"
+    },
+    {
+      "id": "http_ack",
+      "frame": 51,
+      "time_relative": 3.20054,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.101",
+      "destination": "10.20.30.20",
+      "source_port": 53224,
+      "destination_port": 80,
+      "filter": "tcp.port == 53224 && ip.addr == 10.20.30.101",
+      "expected_fields": {
+        "tcp.srcport": 53224,
+        "tcp.dstport": 80,
+        "tcp.flags": 16
+      },
+      "demonstrates": "ack"
+    },
+    {
+      "id": "http_request",
+      "frame": 52,
+      "time_relative": 3.216226,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.101",
+      "destination": "10.20.30.20",
+      "source_port": 53224,
+      "destination_port": 80,
+      "filter": "tcp.port == 53224 && ip.addr == 10.20.30.101",
+      "expected_fields": {
+        "tcp.srcport": 53224,
+        "tcp.dstport": 80,
+        "tcp.flags": 24,
+        "http.request.method": "GET"
+      },
+      "demonstrates": "request"
+    },
+    {
+      "id": "overlap_syn",
+      "frame": 53,
+      "time_relative": 3.22,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.102",
+      "destination": "10.20.30.20",
+      "source_port": 65482,
+      "destination_port": 80,
+      "filter": "tcp.port == 65482 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 65482,
+        "tcp.dstport": 80,
+        "tcp.flags": 2
+      },
+      "demonstrates": "syn"
+    },
+    {
+      "id": "overlap_synack",
+      "frame": 55,
+      "time_relative": 3.233872,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.20",
+      "destination": "10.20.30.102",
+      "source_port": 80,
+      "destination_port": 65482,
+      "filter": "tcp.port == 65482 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 80,
+        "tcp.dstport": 65482,
+        "tcp.flags": 18
+      },
+      "demonstrates": "synack"
+    },
+    {
+      "id": "overlap_ack",
+      "frame": 56,
+      "time_relative": 3.245116,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.102",
+      "destination": "10.20.30.20",
+      "source_port": 65482,
+      "destination_port": 80,
+      "filter": "tcp.port == 65482 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 65482,
+        "tcp.dstport": 80,
+        "tcp.flags": 16
+      },
+      "demonstrates": "ack"
+    },
+    {
+      "id": "overlap_request",
+      "frame": 57,
+      "time_relative": 3.260584,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.102",
+      "destination": "10.20.30.20",
+      "source_port": 65482,
+      "destination_port": 80,
+      "filter": "tcp.port == 65482 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 65482,
+        "tcp.dstport": 80,
+        "tcp.flags": 24,
+        "http.request.method": "GET"
+      },
+      "demonstrates": "request"
+    },
+    {
+      "id": "http_response",
+      "frame": 59,
+      "time_relative": 3.387992,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.20",
+      "destination": "10.20.30.101",
+      "source_port": 80,
+      "destination_port": 53224,
+      "filter": "tcp.port == 53224 && ip.addr == 10.20.30.101",
+      "expected_fields": {
+        "tcp.srcport": 80,
+        "tcp.dstport": 53224,
+        "tcp.flags": 24,
+        "http.response.code": 200
+      },
+      "demonstrates": "response"
+    },
+    {
+      "id": "http_fin",
+      "frame": 61,
+      "time_relative": 3.411981,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.101",
+      "destination": "10.20.30.20",
+      "source_port": 53224,
+      "destination_port": 80,
+      "filter": "tcp.port == 53224 && ip.addr == 10.20.30.101",
+      "expected_fields": {
+        "tcp.srcport": 53224,
+        "tcp.dstport": 80,
+        "tcp.flags": 17
+      },
+      "demonstrates": "fin"
+    },
+    {
+      "id": "overlap_response",
+      "frame": 65,
+      "time_relative": 3.568118,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.20",
+      "destination": "10.20.30.102",
+      "source_port": 80,
+      "destination_port": 65482,
+      "filter": "tcp.port == 65482 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 80,
+        "tcp.dstport": 65482,
+        "tcp.flags": 24,
+        "http.response.code": 200
+      },
+      "demonstrates": "response"
+    },
+    {
+      "id": "overlap_fin",
+      "frame": 67,
+      "time_relative": 3.593223,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.102",
+      "destination": "10.20.30.20",
+      "source_port": 65482,
+      "destination_port": 80,
+      "filter": "tcp.port == 65482 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 65482,
+        "tcp.dstport": 80,
+        "tcp.flags": 17
+      },
+      "demonstrates": "fin"
+    },
+    {
+      "id": "icmp_request",
+      "frame": 71,
+      "time_relative": 5.525074,
+      "protocol": "ICMP",
+      "source": "10.20.30.101",
+      "destination": "10.20.30.1",
+      "source_port": null,
+      "destination_port": null,
+      "filter": "icmp.ident == 0x4100",
+      "expected_fields": {
+        "icmp.type": 8
+      },
+      "demonstrates": "ICMP echo request/reply"
+    },
+    {
+      "id": "icmp_reply",
+      "frame": 72,
+      "time_relative": 5.529074,
+      "protocol": "ICMP",
+      "source": "10.20.30.1",
+      "destination": "10.20.30.101",
+      "source_port": null,
+      "destination_port": null,
+      "filter": "icmp.ident == 0x4100",
+      "expected_fields": {
+        "icmp.type": 0
+      },
+      "demonstrates": "ICMP echo request/reply"
+    },
+    {
+      "id": "snmp_get",
+      "frame": 73,
+      "time_relative": 6.6,
+      "protocol": "SNMP",
+      "source": "10.20.30.40",
+      "destination": "10.20.30.2",
+      "source_port": 52000,
+      "destination_port": 161,
+      "filter": "snmp",
+      "expected_fields": {
+        "snmp.request_id": 1
+      },
+      "demonstrates": "SNMPv2c sysUpTime poll; fictional read-only community"
+    },
+    {
+      "id": "snmp_response",
+      "frame": 74,
+      "time_relative": 6.606,
+      "protocol": "SNMP",
+      "source": "10.20.30.2",
+      "destination": "10.20.30.40",
+      "source_port": 161,
+      "destination_port": 52000,
+      "filter": "snmp",
+      "expected_fields": {
+        "snmp.request_id": 1
+      },
+      "demonstrates": "SNMPv2c sysUpTime poll; fictional read-only community"
+    },
+    {
+      "id": "ntp_request",
+      "frame": 75,
+      "time_relative": 7.9,
+      "protocol": "NTP",
+      "source": "10.20.30.101",
+      "destination": "10.20.30.10",
+      "source_port": 53000,
+      "destination_port": 123,
+      "filter": "ntp",
+      "expected_fields": {
+        "ntp.flags.mode": 3
+      },
+      "demonstrates": "NTP client/server exchange"
+    },
+    {
+      "id": "ntp_response",
+      "frame": 76,
+      "time_relative": 7.908,
+      "protocol": "NTP",
+      "source": "10.20.30.10",
+      "destination": "10.20.30.101",
+      "source_port": 123,
+      "destination_port": 53000,
+      "filter": "ntp",
+      "expected_fields": {
+        "ntp.flags.mode": 4
+      },
+      "demonstrates": "NTP client/server exchange"
+    },
+    {
+      "id": "files_syn",
+      "frame": 79,
+      "time_relative": 9.68,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.102",
+      "destination": "10.20.30.30",
+      "source_port": 61152,
+      "destination_port": 80,
+      "filter": "tcp.port == 61152 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 61152,
+        "tcp.dstport": 80,
+        "tcp.flags": 2
+      },
+      "demonstrates": "syn"
+    },
+    {
+      "id": "files_synack",
+      "frame": 80,
+      "time_relative": 9.695021,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.30",
+      "destination": "10.20.30.102",
+      "source_port": 80,
+      "destination_port": 61152,
+      "filter": "tcp.port == 61152 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 80,
+        "tcp.dstport": 61152,
+        "tcp.flags": 18
+      },
+      "demonstrates": "synack"
+    },
+    {
+      "id": "files_ack",
+      "frame": 81,
+      "time_relative": 9.706117,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.102",
+      "destination": "10.20.30.30",
+      "source_port": 61152,
+      "destination_port": 80,
+      "filter": "tcp.port == 61152 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 61152,
+        "tcp.dstport": 80,
+        "tcp.flags": 16
+      },
+      "demonstrates": "ack"
+    },
+    {
+      "id": "files_request",
+      "frame": 82,
+      "time_relative": 9.720839,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.102",
+      "destination": "10.20.30.30",
+      "source_port": 61152,
+      "destination_port": 80,
+      "filter": "tcp.port == 61152 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 61152,
+        "tcp.dstport": 80,
+        "tcp.flags": 24,
+        "http.request.method": "GET"
+      },
+      "demonstrates": "request"
+    },
+    {
+      "id": "files_response",
+      "frame": 84,
+      "time_relative": 10.023152,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.30",
+      "destination": "10.20.30.102",
+      "source_port": 80,
+      "destination_port": 61152,
+      "filter": "tcp.port == 61152 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 80,
+        "tcp.dstport": 61152,
+        "tcp.flags": 24,
+        "http.response.code": 200
+      },
+      "demonstrates": "response"
+    },
+    {
+      "id": "files_fin",
+      "frame": 86,
+      "time_relative": 10.042441,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.102",
+      "destination": "10.20.30.30",
+      "source_port": 61152,
+      "destination_port": 80,
+      "filter": "tcp.port == 61152 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 61152,
+        "tcp.dstport": 80,
+        "tcp.flags": 17
+      },
+      "demonstrates": "fin"
+    },
+    {
+      "id": "tls_syn",
+      "frame": 130,
+      "time_relative": 38.2,
+      "protocol": "TLS/TCP",
+      "source": "10.20.30.102",
+      "destination": "10.20.30.20",
+      "source_port": 50986,
+      "destination_port": 443,
+      "filter": "tcp.port == 50986 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 50986,
+        "tcp.dstport": 443,
+        "tcp.flags": 2
+      },
+      "demonstrates": "syn"
+    },
+    {
+      "id": "tls_synack",
+      "frame": 131,
+      "time_relative": 38.208826,
+      "protocol": "TLS/TCP",
+      "source": "10.20.30.20",
+      "destination": "10.20.30.102",
+      "source_port": 443,
+      "destination_port": 50986,
+      "filter": "tcp.port == 50986 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 443,
+        "tcp.dstport": 50986,
+        "tcp.flags": 18
+      },
+      "demonstrates": "synack"
+    },
+    {
+      "id": "tls_ack",
+      "frame": 132,
+      "time_relative": 38.218971,
+      "protocol": "TLS/TCP",
+      "source": "10.20.30.102",
+      "destination": "10.20.30.20",
+      "source_port": 50986,
+      "destination_port": 443,
+      "filter": "tcp.port == 50986 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 50986,
+        "tcp.dstport": 443,
+        "tcp.flags": 16
+      },
+      "demonstrates": "ack"
+    },
+    {
+      "id": "tls_clienthello",
+      "frame": 133,
+      "time_relative": 38.234306,
+      "protocol": "TLS/TCP",
+      "source": "10.20.30.102",
+      "destination": "10.20.30.20",
+      "source_port": 50986,
+      "destination_port": 443,
+      "filter": "tcp.port == 50986 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 50986,
+        "tcp.dstport": 443,
+        "tcp.flags": 24,
+        "tls.handshake.type": 1
+      },
+      "demonstrates": "clienthello"
+    },
+    {
+      "id": "tls_serverhello",
+      "frame": 135,
+      "time_relative": 38.257531,
+      "protocol": "TLS/TCP",
+      "source": "10.20.30.20",
+      "destination": "10.20.30.102",
+      "source_port": 443,
+      "destination_port": 50986,
+      "filter": "tcp.port == 50986 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 443,
+        "tcp.dstport": 50986,
+        "tcp.flags": 24,
+        "tls.handshake.type": 2
+      },
+      "demonstrates": "serverhello"
+    },
+    {
+      "id": "tls_encrypted_request",
+      "frame": 141,
+      "time_relative": 38.334021,
+      "protocol": "TLS/TCP",
+      "source": "10.20.30.102",
+      "destination": "10.20.30.20",
+      "source_port": 50986,
+      "destination_port": 443,
+      "filter": "tcp.port == 50986 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 50986,
+        "tcp.dstport": 443,
+        "tcp.flags": 24,
+        "tls.record.content_type": 23
+      },
+      "demonstrates": "encrypted_request"
+    },
+    {
+      "id": "tls_encrypted_response",
+      "frame": 143,
+      "time_relative": 38.355491,
+      "protocol": "TLS/TCP",
+      "source": "10.20.30.20",
+      "destination": "10.20.30.102",
+      "source_port": 443,
+      "destination_port": 50986,
+      "filter": "tcp.port == 50986 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 443,
+        "tcp.dstport": 50986,
+        "tcp.flags": 24,
+        "tls.record.content_type": 23
+      },
+      "demonstrates": "encrypted_response"
+    },
+    {
+      "id": "tls_fin",
+      "frame": 151,
+      "time_relative": 38.43054,
+      "protocol": "TLS/TCP",
+      "source": "10.20.30.102",
+      "destination": "10.20.30.20",
+      "source_port": 50986,
+      "destination_port": 443,
+      "filter": "tcp.port == 50986 && ip.addr == 10.20.30.102",
+      "expected_fields": {
+        "tcp.srcport": 50986,
+        "tcp.dstport": 443,
+        "tcp.flags": 17
+      },
+      "demonstrates": "fin"
+    },
+    {
+      "id": "log_http_stop",
+      "frame": 227,
+      "time_relative": 73.8,
+      "protocol": "Syslog",
+      "source": "10.20.30.30",
+      "destination": "10.20.30.40",
+      "source_port": 5514,
+      "destination_port": 514,
+      "filter": "syslog",
+      "expected_fields": {
+        "syslog.level": 5
+      },
+      "demonstrates": "Document HTTP service stopped; TCP port 80 listener closed"
+    },
+    {
+      "id": "issue_dns_query",
+      "frame": 228,
+      "time_relative": 74,
+      "protocol": "DNS",
+      "source": "10.20.30.101",
+      "destination": "10.20.30.10",
+      "source_port": 55412,
+      "destination_port": 53,
+      "filter": "dns.id == 0xdc04",
+      "expected_fields": {
+        "dns.qry.name": "files.office.test",
+        "dns.flags.response": 0
+      },
+      "demonstrates": "DNS query"
+    },
+    {
+      "id": "issue_dns_answer",
+      "frame": 229,
+      "time_relative": 74.012,
+      "protocol": "DNS",
+      "source": "10.20.30.10",
+      "destination": "10.20.30.101",
+      "source_port": 53,
+      "destination_port": 55412,
+      "filter": "dns.id == 0xdc04",
+      "expected_fields": {
+        "dns.qry.name": "files.office.test",
+        "dns.flags.response": 1,
+        "dns.a": "10.20.30.30"
+      },
+      "demonstrates": "DNS answer"
+    },
+    {
+      "id": "issue_syn",
+      "frame": 230,
+      "time_relative": 74.08,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.101",
+      "destination": "10.20.30.30",
+      "source_port": 54821,
+      "destination_port": 80,
+      "filter": "tcp.port == 54821",
+      "expected_fields": {
+        "tcp.flags": 2
+      },
+      "demonstrates": "Connection attempt to document service"
+    },
+    {
+      "id": "issue_reset",
+      "frame": 231,
+      "time_relative": 74.083,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.30",
+      "destination": "10.20.30.101",
+      "source_port": 80,
+      "destination_port": 54821,
+      "filter": "tcp.port == 54821",
+      "expected_fields": {
+        "tcp.flags": 20
+      },
+      "demonstrates": "Immediate refusal, not a timeout"
+    },
+    {
+      "id": "log_http_start",
+      "frame": 234,
+      "time_relative": 83.9,
+      "protocol": "Syslog",
+      "source": "10.20.30.30",
+      "destination": "10.20.30.40",
+      "source_port": 5514,
+      "destination_port": 514,
+      "filter": "syslog",
+      "expected_fields": {
+        "syslog.level": 5
+      },
+      "demonstrates": "Document HTTP service started; listening on 10.20.30.30:80"
+    },
+    {
+      "id": "recovery_syn",
+      "frame": 235,
+      "time_relative": 84.1,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.101",
+      "destination": "10.20.30.30",
+      "source_port": 60483,
+      "destination_port": 80,
+      "filter": "tcp.port == 60483 && ip.addr == 10.20.30.101",
+      "expected_fields": {
+        "tcp.srcport": 60483,
+        "tcp.dstport": 80,
+        "tcp.flags": 2
+      },
+      "demonstrates": "syn"
+    },
+    {
+      "id": "recovery_synack",
+      "frame": 236,
+      "time_relative": 84.10963,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.30",
+      "destination": "10.20.30.101",
+      "source_port": 80,
+      "destination_port": 60483,
+      "filter": "tcp.port == 60483 && ip.addr == 10.20.30.101",
+      "expected_fields": {
+        "tcp.srcport": 80,
+        "tcp.dstport": 60483,
+        "tcp.flags": 18
+      },
+      "demonstrates": "synack"
+    },
+    {
+      "id": "recovery_ack",
+      "frame": 237,
+      "time_relative": 84.124351,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.101",
+      "destination": "10.20.30.30",
+      "source_port": 60483,
+      "destination_port": 80,
+      "filter": "tcp.port == 60483 && ip.addr == 10.20.30.101",
+      "expected_fields": {
+        "tcp.srcport": 60483,
+        "tcp.dstport": 80,
+        "tcp.flags": 16
+      },
+      "demonstrates": "ack"
+    },
+    {
+      "id": "recovery_request",
+      "frame": 238,
+      "time_relative": 84.133765,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.101",
+      "destination": "10.20.30.30",
+      "source_port": 60483,
+      "destination_port": 80,
+      "filter": "tcp.port == 60483 && ip.addr == 10.20.30.101",
+      "expected_fields": {
+        "tcp.srcport": 60483,
+        "tcp.dstport": 80,
+        "tcp.flags": 24,
+        "http.request.method": "GET"
+      },
+      "demonstrates": "request"
+    },
+    {
+      "id": "recovery_response",
+      "frame": 240,
+      "time_relative": 84.251281,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.30",
+      "destination": "10.20.30.101",
+      "source_port": 80,
+      "destination_port": 60483,
+      "filter": "tcp.port == 60483 && ip.addr == 10.20.30.101",
+      "expected_fields": {
+        "tcp.srcport": 80,
+        "tcp.dstport": 60483,
+        "tcp.flags": 24,
+        "http.response.code": 200
+      },
+      "demonstrates": "response"
+    },
+    {
+      "id": "recovery_fin",
+      "frame": 242,
+      "time_relative": 84.275515,
+      "protocol": "HTTP/TCP",
+      "source": "10.20.30.101",
+      "destination": "10.20.30.30",
+      "source_port": 60483,
+      "destination_port": 80,
+      "filter": "tcp.port == 60483 && ip.addr == 10.20.30.101",
+      "expected_fields": {
+        "tcp.srcport": 60483,
+        "tcp.dstport": 80,
+        "tcp.flags": 17
+      },
+      "demonstrates": "fin"
+    },
+    {
+      "id": "log_http_ok",
+      "frame": 246,
+      "time_relative": 85,
+      "protocol": "Syslog",
+      "source": "10.20.30.30",
+      "destination": "10.20.30.40",
+      "source_port": 5514,
+      "destination_port": 514,
+      "filter": "syslog",
+      "expected_fields": {
+        "syslog.level": 6
+      },
+      "demonstrates": "GET /sample-file.txt from 10.20.30.101 completed status=200"
+    },
+    {
+      "id": "tls2_syn",
+      "frame": 306,
+      "time_relative": 112.5,
+      "protocol": "TLS/TCP",
+      "source": "10.20.30.103",
+      "destination": "10.20.30.20",
+      "source_port": 64164,
+      "destination_port": 443,
+      "filter": "tcp.port == 64164 && ip.addr == 10.20.30.103",
+      "expected_fields": {
+        "tcp.srcport": 64164,
+        "tcp.dstport": 443,
+        "tcp.flags": 2
+      },
+      "demonstrates": "syn"
+    },
+    {
+      "id": "tls2_synack",
+      "frame": 307,
+      "time_relative": 112.513266,
+      "protocol": "TLS/TCP",
+      "source": "10.20.30.20",
+      "destination": "10.20.30.103",
+      "source_port": 443,
+      "destination_port": 64164,
+      "filter": "tcp.port == 64164 && ip.addr == 10.20.30.103",
+      "expected_fields": {
+        "tcp.srcport": 443,
+        "tcp.dstport": 64164,
+        "tcp.flags": 18
+      },
+      "demonstrates": "synack"
+    },
+    {
+      "id": "tls2_ack",
+      "frame": 308,
+      "time_relative": 112.524853,
+      "protocol": "TLS/TCP",
+      "source": "10.20.30.103",
+      "destination": "10.20.30.20",
+      "source_port": 64164,
+      "destination_port": 443,
+      "filter": "tcp.port == 64164 && ip.addr == 10.20.30.103",
+      "expected_fields": {
+        "tcp.srcport": 64164,
+        "tcp.dstport": 443,
+        "tcp.flags": 16
+      },
+      "demonstrates": "ack"
+    },
+    {
+      "id": "tls2_clienthello",
+      "frame": 309,
+      "time_relative": 112.535585,
+      "protocol": "TLS/TCP",
+      "source": "10.20.30.103",
+      "destination": "10.20.30.20",
+      "source_port": 64164,
+      "destination_port": 443,
+      "filter": "tcp.port == 64164 && ip.addr == 10.20.30.103",
+      "expected_fields": {
+        "tcp.srcport": 64164,
+        "tcp.dstport": 443,
+        "tcp.flags": 24,
+        "tls.handshake.type": 1
+      },
+      "demonstrates": "clienthello"
+    },
+    {
+      "id": "tls2_serverhello",
+      "frame": 311,
+      "time_relative": 112.559941,
+      "protocol": "TLS/TCP",
+      "source": "10.20.30.20",
+      "destination": "10.20.30.103",
+      "source_port": 443,
+      "destination_port": 64164,
+      "filter": "tcp.port == 64164 && ip.addr == 10.20.30.103",
+      "expected_fields": {
+        "tcp.srcport": 443,
+        "tcp.dstport": 64164,
+        "tcp.flags": 24,
+        "tls.handshake.type": 2
+      },
+      "demonstrates": "serverhello"
+    },
+    {
+      "id": "tls2_encrypted_request",
+      "frame": 317,
+      "time_relative": 112.629996,
+      "protocol": "TLS/TCP",
+      "source": "10.20.30.103",
+      "destination": "10.20.30.20",
+      "source_port": 64164,
+      "destination_port": 443,
+      "filter": "tcp.port == 64164 && ip.addr == 10.20.30.103",
+      "expected_fields": {
+        "tcp.srcport": 64164,
+        "tcp.dstport": 443,
+        "tcp.flags": 24,
+        "tls.record.content_type": 23
+      },
+      "demonstrates": "encrypted_request"
+    },
+    {
+      "id": "tls2_encrypted_response",
+      "frame": 319,
+      "time_relative": 112.65354,
+      "protocol": "TLS/TCP",
+      "source": "10.20.30.20",
+      "destination": "10.20.30.103",
+      "source_port": 443,
+      "destination_port": 64164,
+      "filter": "tcp.port == 64164 && ip.addr == 10.20.30.103",
+      "expected_fields": {
+        "tcp.srcport": 443,
+        "tcp.dstport": 64164,
+        "tcp.flags": 24,
+        "tls.record.content_type": 23
+      },
+      "demonstrates": "encrypted_response"
+    },
+    {
+      "id": "tls2_fin",
+      "frame": 325,
+      "time_relative": 112.727571,
+      "protocol": "TLS/TCP",
+      "source": "10.20.30.103",
+      "destination": "10.20.30.20",
+      "source_port": 64164,
+      "destination_port": 443,
+      "filter": "tcp.port == 64164 && ip.addr == 10.20.30.103",
+      "expected_fields": {
+        "tcp.srcport": 64164,
+        "tcp.dstport": 443,
+        "tcp.flags": 17
+      },
+      "demonstrates": "fin"
+    },
+    {
+      "id": "log_health",
+      "frame": 392,
+      "time_relative": 159.9,
+      "protocol": "Syslog",
+      "source": "10.20.30.2",
+      "destination": "10.20.30.40",
+      "source_port": 5514,
+      "destination_port": 514,
+      "filter": "syslog",
+      "expected_fields": {
+        "syslog.level": 6
+      },
+      "demonstrates": "Management reachable; workstation interfaces operational"
+    }
+  ],
+  "troubleshooting": {
+    "summary": "Temporary refusal of the internal document HTTP service; subsequent successful retry",
+    "evidence_ids": [
+      "log_http_stop",
+      "issue_dns_query",
+      "issue_dns_answer",
+      "issue_syn",
+      "issue_reset",
+      "log_http_start",
+      "recovery_syn",
+      "recovery_synack",
+      "recovery_request",
+      "recovery_response",
+      "log_http_ok"
+    ],
+    "log_lines": {
+      "HTTP_STOP": 3,
+      "HTTP_START": 4,
+      "HTTP_OK": 5
+    },
+    "limit": "Evidence supports a stopped/unavailable HTTP listener; it does not establish why it stopped."
+  }
+}
