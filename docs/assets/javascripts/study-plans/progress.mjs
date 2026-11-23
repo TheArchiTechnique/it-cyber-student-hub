@@ -8,6 +8,7 @@ export function storageKey(plan, day) {
 }
 
 export function matches(question, value) {
+  if (question.caseSensitive) return question.answers.includes(value.trim());
   const normalize = text => text.trim().normalize('NFKC').toLowerCase().replace(/[\s‐‑–-]+/g, ' ');
   return question.answers.some(answer => normalize(answer) === normalize(value));
 }

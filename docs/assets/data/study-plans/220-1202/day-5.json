@@ -1,0 +1,279 @@
+{
+  "minutes": {
+    "reading": 30,
+    "cards": 15,
+    "quiz": 10,
+    "worksheet": 30,
+    "application": 20
+  },
+  "review": [
+    {
+      "objective": "1.8",
+      "title": "Follow a Mac application from download to launch",
+      "text": "Finder browses files and mounted volumes. Spotlight searches for an app or document by name. A .dmg mounts as a disk image; it might contain a .app bundle to drag to /Applications or a .pkg installer to run. Follow the publisher's instructions and the organization's installation policy. Launch the installed copy and eject the image. When removing an app, use its supplied uninstaller if one exists. Check ~/Library for a single user's app settings and /Library for shared support files. The tilde means the current user's home folder."
+    },
+    {
+      "objective": "1.8",
+      "title": "Separate lost work, disk errors and access problems",
+      "text": "Time Machine can recover an earlier copy of a backed-up document. Disk Utility's First Aid checks volume structures and can repair some errors. macOS Recovery provides tools for startup-disk repair or OS reinstallation. For saved credentials and certificates, think of the keychain; FileVault protects data on the startup disk. When one app stops responding, Force Quit can close it, with a risk of losing unsaved edits. Use the Mac objective breakdown to locate related settings such as network access, privacy and printers."
+    },
+    {
+      "objective": "1.9",
+      "title": "Read the file listing before choosing a command",
+      "text": "The line “-rw-r----- 1 ana support 248 Nov 18 09:10 notes.txt” describes a regular file. The owner ana has read/write permission, members of support have read permission, and others have none through these mode bits. ls -l shows the listing. chmod changes permissions and chown changes ownership. pwd identifies your current directory; cp copies a file, mv moves or renames it, find locates paths and grep searches text. Use man to look up a command. sudo runs an authorized command with the specified privileges, commonly as root."
+    },
+    {
+      "objective": "1.9",
+      "title": "Choose evidence for a Linux support ticket",
+      "text": "df reports filesystem capacity and du estimates space used by a file or directory tree. ps gives a process snapshot; top shows a repeatedly refreshed view. ip addr shows interface addresses and ip route shows routes. ping checks reachability and dig queries DNS. /etc/hosts contains local name-to-address entries, /etc/fstab describes configured mounts and /etc/passwd lists local account records. Password hashes for local shadow-password accounts belong in the restricted /etc/shadow file."
+    },
+    {
+      "objective": "1.9",
+      "title": "Check the distribution before selecting a package tool",
+      "text": "On an Ubuntu-based Mint workstation, APT manages packages from configured repositories. apt update refreshes the package index; apt install requests installation of a named package. A conventional Fedora workstation uses DNF for repository packages. Both tools can resolve dependencies. A missing package name may reflect the repository or distribution. The optional Hub Linux Terminal Simulator lets you practice these choices in a browser."
+    }
+  ],
+  "sources": [
+    [
+      "Apple Support: repair a Mac storage device",
+      "https://support.apple.com/en-us/102611"
+    ],
+    [
+      "Apple Support: macOS Recovery on Apple silicon",
+      "https://support.apple.com/guide/mac-help/macos-recovery-a-mac-apple-silicon-mchl82829c17/mac"
+    ],
+    [
+      "Ubuntu: install and manage packages",
+      "https://ubuntu.com/server/docs/how-to/software/package-management/"
+    ],
+    [
+      "DNF5: package management utility",
+      "https://dnf5.readthedocs.io/en/stable/dnf5.8.html"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "mount",
+      "objective": "1.8",
+      "prompt": "What happens when a user opens a downloadable .dmg on a Mac?",
+      "answer": "macOS mounts the disk image as a volume. Its contents determine the next installation step."
+    },
+    {
+      "id": "bundle",
+      "objective": "1.8",
+      "prompt": "Which macOS filename extension commonly identifies an application bundle?",
+      "answer": ".app. Finder presents the bundle as a single application."
+    },
+    {
+      "id": "spotlight",
+      "objective": "1.8",
+      "prompt": "Which Mac feature can launch an app when the user knows its name but cannot find its icon?",
+      "answer": "Spotlight can search for and open the application."
+    },
+    {
+      "id": "keychain",
+      "objective": "1.8",
+      "prompt": "Where does macOS securely store many credentials and certificates?",
+      "answer": "A keychain. Access to its items depends on the item's access controls."
+    },
+    {
+      "id": "prior-copy",
+      "objective": "1.8",
+      "prompt": "Which backup tool would you consult for last week's saved version of a Mac document?",
+      "answer": "Time Machine, provided the file was included in a backup at that time."
+    },
+    {
+      "id": "first-aid",
+      "objective": "1.8",
+      "prompt": "What does First Aid in Disk Utility check?",
+      "answer": "The formatting and directory structures of a storage device. It can repair some errors."
+    },
+    {
+      "id": "ownership",
+      "objective": "1.9",
+      "prompt": "Which Linux command changes a file's owning user?",
+      "answer": "chown. The caller needs sufficient privileges to change ownership."
+    },
+    {
+      "id": "free-space",
+      "objective": "1.9",
+      "prompt": "Which Linux command reports used and available space by mounted filesystem?",
+      "answer": "df. The -h option presents sizes in human-readable units."
+    },
+    {
+      "id": "mount-table",
+      "objective": "1.9",
+      "prompt": "Which Linux configuration file holds entries for filesystems to be mounted?",
+      "answer": "/etc/fstab records mount definitions, including mount points and options."
+    },
+    {
+      "id": "live-process",
+      "objective": "1.9",
+      "prompt": "Which common Linux utility continuously updates a process and resource-usage display?",
+      "answer": "top. It helps you see whether a process stays busy across several samples."
+    },
+    {
+      "id": "package-index",
+      "objective": "1.9",
+      "prompt": "What changes when apt update succeeds?",
+      "answer": "APT refreshes its local index of available packages from configured sources."
+    },
+    {
+      "id": "resolver",
+      "objective": "1.9",
+      "prompt": "Which Linux DNS query utility is commonly used to inspect returned records?",
+      "answer": "dig. Its answer section can show the record returned by the queried resolver."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "package",
+      "objective": "1.8",
+      "prompt": "A vendor supplies a macOS installer package. Its three-letter filename extension is ____.",
+      "answers": [
+        "pkg",
+        ".pkg"
+      ],
+      "explanation": "A package can install components into several locations according to its instructions."
+    },
+    {
+      "id": "library",
+      "objective": "1.8",
+      "prompt": "On a case-sensitive Mac volume, enter the current user's Library folder path beginning with a tilde: ____.",
+      "answers": [
+        "~/Library",
+        "~/Library/"
+      ],
+      "explanation": "The tilde expands to the signed-in user's home. /Library is the shared location.",
+      "caseSensitive": true
+    },
+    {
+      "id": "encryption",
+      "objective": "1.8",
+      "prompt": "Apple calls its startup-disk encryption feature ____.",
+      "answers": [
+        "FileVault",
+        "File Vault"
+      ],
+      "explanation": "FileVault protects the data at rest. Backup and repair serve different purposes."
+    },
+    {
+      "id": "backup",
+      "objective": "1.8",
+      "prompt": "Which built-in Mac backup feature keeps dated copies for restoring a deleted file? ____.",
+      "answers": [
+        "Time Machine",
+        "Apple Time Machine"
+      ],
+      "explanation": "A backup from before the deletion can supply the missing file."
+    },
+    {
+      "id": "permissions",
+      "objective": "1.9",
+      "prompt": "Complete the Linux command that adds owner execute permission to a file: ____ u+x report.sh.",
+      "answers": [
+        "chmod"
+      ],
+      "explanation": "chmod changes the file mode. The owning user and group stay the same.",
+      "caseSensitive": true
+    },
+    {
+      "id": "pwd",
+      "objective": "1.9",
+      "prompt": "Enter the three-letter command that prints your current Linux working directory: ____.",
+      "answers": [
+        "pwd"
+      ],
+      "explanation": "The working directory gives context to relative paths in a support ticket.",
+      "caseSensitive": true
+    },
+    {
+      "id": "mounts",
+      "objective": "1.9",
+      "prompt": "The Linux file /etc/____ stores persistent filesystem mount definitions.",
+      "answers": [
+        "fstab",
+        "/etc/fstab"
+      ],
+      "explanation": "An fstab entry describes a configured mount. It does not establish that the filesystem is currently mounted.",
+      "caseSensitive": true
+    },
+    {
+      "id": "fedora",
+      "objective": "1.9",
+      "prompt": "On a conventional Fedora Workstation, the default command-line package manager for repository RPMs is ____.",
+      "answers": [
+        "dnf",
+        "dnf5",
+        "Dandified YUM"
+      ],
+      "explanation": "DNF resolves and installs packages from configured repositories. On newer Fedora releases the dnf command uses DNF5."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "install-image",
+      "objective": "1.8",
+      "prompt": "A publisher's Mac disk image contains Sketch.app and an Applications shortcut. The user launches Sketch from the image; its icon vanishes after ejection. Explain how to install it properly in this case.",
+      "type": "Example",
+      "key": "Reopen the trusted image, copy Sketch.app to Applications as instructed, then launch the installed copy and eject the image. Running the bundle from the mounted image leaves no installed copy in Applications.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "choose-recovery",
+      "objective": "1.8",
+      "prompt": "Choose a first tool for each Mac ticket and explain your choices: a paragraph was overwritten last Friday, and another Mac reports a volume directory error. Assume a Thursday backup contains the original paragraph.",
+      "type": "Example",
+      "key": "Use Time Machine to retrieve the earlier document and verify the text. For the volume error, confirm a current backup and use Disk Utility First Aid. It checks filesystem structures; the backed-up document supplies historical content.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "user-settings",
+      "objective": "1.8",
+      "prompt": "An app works for every Mac user except Ana. Which Library would you inspect first for Ana's preferences, and what would be the scope of changing a file in /Library instead?",
+      "type": "Example",
+      "key": "Inspect Ana's ~/Library, including the app's preferences or support files. A change under /Library could affect multiple users. Compare settings and preserve a copy before making an authorized change.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "read-mode",
+      "objective": "1.9",
+      "prompt": "Interpret “-rw-r----- 1 ana support 248 Nov 18 09:10 notes.txt”. Who can edit the file using these mode bits? Which command family would change the permissions, and which would change the owner?",
+      "type": "Factual",
+      "key": "Ana has read/write access, the support group has read access and others have none through these bits. chmod changes mode bits. chown changes the owner. Changing an owner and granting write permission are separate decisions.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "package-choice",
+      "objective": "1.9",
+      "prompt": "One ticket is for Ubuntu-based Mint and another is for Fedora Workstation. Identify each system's usual repository package tool and explain why refreshing Mint's package index alone would not install a requested app.",
+      "type": "Example",
+      "key": "Use APT on Mint and DNF on Fedora. APT's index describes available packages; installing a named package is a separate operation that also resolves required dependencies.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "space-evidence",
+      "objective": "1.9",
+      "prompt": "A ticket includes “df -h: /home is 98% used” and “du -sh /home/ana/Exports: 12G”. What question does each answer? What conclusion about cleanup still needs evidence?",
+      "type": "Example",
+      "key": "df reports utilization of the filesystem mounted at /home. du estimates disk space used by the named directory tree. Check other large directories and retention or ownership requirements before deciding what can be removed.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "first-aid-order",
+      "objective": "1.8",
+      "prompt": "Use Apple's First Aid guide to plan a startup-disk check. The sidebar shows one device, one container and two volumes. Where should the technician start, and when should the container and device be checked?",
+      "type": "Example",
+      "key": "Confirm a current backup and open Disk Utility in macOS Recovery for the startup disk. Show All Devices, start with the last volume and work upward through the volumes, then the container and finally the device.",
+      "source": "Apple Support: repair a Mac storage device"
+    },
+    {
+      "id": "remote-evidence",
+      "objective": "1.9",
+      "prompt": "A Linux user's ticket says “the wiki is down.” The supplied excerpts show an address on the active interface, replies from the gateway and a timeout from dig for wiki.example.test. What do you know, and what additional check would narrow the cause?",
+      "type": "Example",
+      "key": "The interface has an address and the local gateway responded to ICMP. The DNS lookup received no timely answer. Check the configured resolver and query it for a known-good name, or compare the same lookup from a working client. The excerpts alone do not establish whether the web service is running.",
+      "source": "Application exercise: interpret the supplied output"
+    }
+  ]
+}

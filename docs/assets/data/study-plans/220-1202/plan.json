@@ -460,7 +460,8 @@
         "commands",
         "reference",
         "network"
-      ]
+      ],
+      "session": "day-4.json"
     },
     {
       "number": 5,
@@ -475,7 +476,8 @@
       "resources": [
         "linux",
         "mint"
-      ]
+      ],
+      "session": "day-5.json"
     },
     {
       "number": 6,
@@ -491,7 +493,8 @@
       "recall": "Recall how a repair installation differs from an application deployment.",
       "resources": [
         "exam"
-      ]
+      ],
+      "session": "day-6.json"
     },
     {
       "number": 7,
