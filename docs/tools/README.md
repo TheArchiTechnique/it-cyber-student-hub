@@ -13,13 +13,10 @@ Find practical guides for commands, workflows, and troubleshooting.
 
 
 hub:hidden -->
-<!-- hub:hidden
 - [Wireshark](wireshark/README.md)
 
-    Packet capture and traffic analysis.
+    Install on Windows 11, open saved captures, understand packet panes, and start the guided packet-analysis lab.
 
-
-hub:hidden -->
 <!-- hub:hidden
 - [PowerShell](powershell/README.md)
 

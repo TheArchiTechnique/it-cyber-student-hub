@@ -52,12 +52,14 @@ class VisibilityTests(unittest.TestCase):
         a = Availability()
         for hidden in ('labs/cybersecurity/README.md',
                        'labs/log-analysis/README.md', 'labs/incident-response/README.md',
-                       'tools/README.md',
+                       'tools/nmap/README.md', 'tools/powershell/README.md',
                        'reference/powershell-commands.md', 'learn/hardware/README.md',
                        'practice/scenarios/README.md',
                        'practice/pbqs/security-plus/README.md', 'practice/pbqs/cysa-plus/README.md'):
             self.assertNotIn(hidden, a.visible)
         for visible in ('learn/networking/ports-and-protocols.md', 'reference/ports-and-protocols.md',
+                        'tools/README.md', 'tools/wireshark/README.md',
+                        'labs/networking/wireshark/README.md', 'labs/networking/wireshark/answers.md',
                         'practice/questions/README.md', 'practice/pbqs/network-plus/README.md',
                         'practice/pbqs/a-plus-core-2/README.md',
                         'labs/README.md', 'labs/networking/README.md',

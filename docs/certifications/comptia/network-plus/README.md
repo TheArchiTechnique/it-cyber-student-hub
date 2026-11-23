@@ -168,6 +168,10 @@ Related activities that build supporting skills for this certification.
 
 ## Published Labs
 
+- [Wireshark Packet Analysis Lab](../../../labs/networking/wireshark/README.md)
+
+    Follow a visually guided capture-analysis activity covering addressing, DHCP, DNS, transport, web traffic, monitoring, and logging. Includes Windows installation guidance and a separate answer sheet.
+
 - [IPv4 Subnetting Learning Lab](../../../labs/networking/subnetting/README.md)
 
     Learn binary subnet calculations, identify network and broadcast addresses, find host ranges, and practice with randomized questions and calculation feedback. No installation required.

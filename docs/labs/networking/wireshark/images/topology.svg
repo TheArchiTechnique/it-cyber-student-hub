@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="670" viewBox="0 0 1040 670" role="img" aria-labelledby="title desc">
+  <title id="title">Small-office Wireshark lab topology</title>
+  <desc id="desc">Three DHCP workstations, a default gateway, and four service hosts connect to one switch on VLAN 30. All hosts share 10.20.30.0/24. The dataset simulates a bidirectional switch mirror, with no WAN traffic.</desc>
+  <rect width="1040" height="670" rx="18" fill="#f3f7fb"/>
+  <g font-family="sans-serif" text-anchor="middle">
+    <text x="520" y="40" font-size="27" font-weight="700" fill="#123a54">Small-office packet analysis</text>
+    <text x="520" y="70" font-size="18" fill="#34556a">VLAN 30 · 10.20.30.0/24 · simulated switch mirror</text>
+    <g stroke="#69859b" stroke-width="3" fill="none">
+      <path d="M150 190 V280 H520 V308 M390 190 V250 H520 V308 M650 190 V250 H520 M890 190 V280 H520"/>
+      <path d="M520 385 V435 M150 490 V435 H890 V490 M390 490 V435 M650 490 V435"/>
+    </g>
+    <g fill="#fff" stroke="#69859b" stroke-width="2">
+      <rect x="40" y="110" width="220" height="80" rx="10"/>
+      <rect x="280" y="110" width="220" height="80" rx="10"/>
+      <rect x="540" y="110" width="220" height="80" rx="10"/>
+      <rect x="780" y="110" width="220" height="80" rx="10"/>
+      <rect x="40" y="490" width="220" height="112" rx="10"/>
+      <rect x="280" y="490" width="220" height="112" rx="10"/>
+      <rect x="540" y="490" width="220" height="112" rx="10"/>
+      <rect x="780" y="490" width="220" height="112" rx="10"/>
+    </g>
+    <rect x="365" y="308" width="310" height="77" rx="12" fill="#173e58"/>
+    <g fill="#123a54" font-size="21" font-weight="700">
+      <text x="150" y="142">pc1</text><text x="390" y="142">pc2</text><text x="650" y="142">pc3</text><text x="890" y="142">Default gateway</text>
+      <text x="150" y="523">Infrastructure</text><text x="390" y="523">Intranet</text><text x="650" y="523">Documents</text><text x="890" y="523">Monitor</text>
+    </g>
+    <g fill="#34556a" font-size="17">
+      <text x="150" y="171">DHCP workstation</text><text x="390" y="171">DHCP workstation</text><text x="650" y="171">DHCP workstation</text><text x="890" y="171">10.20.30.1</text>
+      <text x="150" y="553">10.20.30.10</text><text x="150" y="580">DHCP · DNS · NTP</text>
+      <text x="390" y="553">10.20.30.20</text><text x="390" y="580">HTTP · HTTPS</text>
+      <text x="650" y="553">10.20.30.30</text><text x="650" y="580">HTTP document service</text>
+      <text x="890" y="553">10.20.30.40</text><text x="890" y="580">SNMP poller · Syslog</text>
+    </g>
+    <text x="520" y="339" font-size="23" font-weight="700" fill="white">Office switch</text>
+    <text x="520" y="367" font-size="15" fill="#d3e5f4">10.20.30.2 · SNMP agent · Syslog sender</text>
+    <text x="520" y="640" font-size="17" fill="#34556a">One LAN. No WAN traffic is included in the capture.</text>
+  </g>
+</svg>

@@ -11,13 +11,10 @@ Apply security tools and techniques.
 No labs published yet.
 hub:placeholder -->
 
-<!-- hub:hidden
 - [Browse Tools](../../tools/README.md)
 
     Find tool guide areas.
 
-
-hub:hidden -->
 - [Open Practice](../../practice/README.md)
 
     Browse shorter exercises and PBQs.

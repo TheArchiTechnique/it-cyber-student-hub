@@ -11,13 +11,10 @@ Practice Linux in your browser without installing a VM, or build a real Linux pr
 No labs published yet.
 hub:placeholder -->
 
-<!-- hub:hidden
 - [Browse Tools](../../tools/README.md)
 
     Find tool guide areas.
 
-
-hub:hidden -->
 - [Linux Terminal Simulator](../../practice/linux-terminal-simulator/README.md)
 
     Practice Linux commands in your browser with guided workstation tasks, Nano, and free practice. No VM or installation lab is required.

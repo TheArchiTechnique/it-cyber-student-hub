@@ -61,13 +61,10 @@ Choose your CompTIA path.
 
     Complete hands-on activities.
 
-<!-- hub:hidden
 - [Tools](docs/tools/README.md)
 
     Find practical tool guides.
 
-
-hub:hidden -->
 - [Reference](docs/reference/README.md)
 
     Look up facts and commands quickly.

@@ -1,0 +1,77 @@
+{
+  "source": "Genuine Wireshark 4.4.19 Linux GUI screenshots captured through the desktop UI; no generated application imagery",
+  "capture_sha256": "b20640d4c858ea00b225c09f577b77bb98f3a72b804e453d4630c369d08e4566",
+  "encoding": "Original screenshots returned as JPEG. Lossless WebP encoding preserves all decoded pixels; exact pixel equality was verified. The SVG interface map embeds that same unaltered screenshot and adds external vector labels.",
+  "images": [
+    {
+      "file": "dhcp.webp",
+      "width": 1366,
+      "height": 960,
+      "selected_frame": 7,
+      "sha256": "4fa8da6a134d1e618ec9e5cf29209c3e88ae36f193a2779dedc769c7d19512b1"
+    },
+    {
+      "file": "dns.webp",
+      "width": 1366,
+      "height": 960,
+      "selected_frame": 46,
+      "sha256": "e76ba1e7a3b25f21888f388e4364d65b2f36a148a8ca4f6ed08d9830e5adda6e"
+    },
+    {
+      "file": "filter.webp",
+      "width": 1366,
+      "height": 960,
+      "selected_frame": 46,
+      "sha256": "d70733e58ee99899c9c52b7a748857e44ea4bc429169a5254a724d5eb74678ce"
+    },
+    {
+      "file": "handshake.webp",
+      "width": 1366,
+      "height": 960,
+      "selected_frame": 49,
+      "sha256": "94c6f895ca09f8c854c7ec19f1e74efe10fae1b0208fadcdef55c7d2560535e8"
+    },
+    {
+      "file": "http.webp",
+      "width": 1366,
+      "height": 960,
+      "selected_frame": 52,
+      "sha256": "db1817aa5ddb7c58c429a47d3bb360de4c38b8f4edc652a703fb91f2ec282f55"
+    },
+    {
+      "file": "overview.webp",
+      "width": 1366,
+      "height": 960,
+      "selected_frame": 1,
+      "sha256": "2fdf5a5c90438add23cf7fdb9cb5f32696550d83a851ead5362c69c263661c4c"
+    },
+    {
+      "file": "startup.webp",
+      "width": 1366,
+      "height": 960,
+      "selected_frame": null,
+      "sha256": "e81a5804718081f1645960e492017929b9734ede39a4711dbddf889cc942c45c"
+    },
+    {
+      "file": "syslog.webp",
+      "width": 1366,
+      "height": 960,
+      "selected_frame": 2,
+      "sha256": "1a4e440ef482efada0dcc74d45dda46b6ba7cfec0023f8cef8052e8883791cdc"
+    },
+    {
+      "file": "tcp.webp",
+      "width": 1366,
+      "height": 960,
+      "selected_frame": 49,
+      "sha256": "92b6a7fb74f190c40c5ec109990cc1f9b7a07d2dc381b2b60d597333bdd49eae"
+    },
+    {
+      "file": "tls.webp",
+      "width": 1366,
+      "height": 960,
+      "selected_frame": 141,
+      "sha256": "1988b569ec09c01669e32ebeff4b058ce834cd8ff9cfaacf70b6607e906532da"
+    }
+  ]
+}

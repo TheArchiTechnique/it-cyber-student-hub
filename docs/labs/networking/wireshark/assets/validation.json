@@ -1,0 +1,37 @@
+{
+  "result": "PASS",
+  "tool": "TShark (Wireshark) 4.4.19.",
+  "capture_sha256": "b20640d4c858ea00b225c09f577b77bb98f3a72b804e453d4630c369d08e4566",
+  "packet_count": 394,
+  "duration_seconds": 160.255115,
+  "protocol_filter_counts": {
+    "arp": 30,
+    "dhcp": 12,
+    "dns": 48,
+    "icmp": 36,
+    "tcp": 224,
+    "udp": 104,
+    "http": 32,
+    "tls": 16,
+    "ntp": 18,
+    "snmp": 20,
+    "syslog": 6
+  },
+  "verified_manifest_references": 72,
+  "dns_query_response_pairs": 24,
+  "dhcp_dora_exchanges": 3,
+  "complete_tcp_sessions": 18,
+  "intentional_refused_tcp_sessions": 1,
+  "tls_sessions": 2,
+  "syslog_messages_matching_log": 6,
+  "malformed_packets": 0,
+  "bad_ipv4_tcp_udp_checksums": 0,
+  "missing_out_of_order_or_retransmitted_tcp_segments": 0,
+  "capture_offload_artifacts": "None; offline serialization calculates final checksums.",
+  "limitations": [
+    "Simulated network traffic, not a live production capture.",
+    "SMB omitted; the internal document service uses HTTP.",
+    "TLS 1.2 lab uses a disposable self-signed certificate; private key is not included.",
+    "The intentional RST is an expected expert warning; SYN SACK-permitted notes are informational."
+  ]
+}
