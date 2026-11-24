@@ -10,15 +10,18 @@ assert.deepEqual(Object.keys(plan.objectives).sort(), ids.sort());
 assert.deepEqual(plan.domains.map(d => d.weight), [28, 28, 23, 21]);
 assert.deepEqual(plan.days.map(d => d.number), Array.from({ length: 14 }, (_, i) => i + 1));
 assert.deepEqual(new Set(plan.days.slice(0, 12).flatMap(d => d.objectives)), new Set(ids));
-assert.deepEqual(plan.days.filter(d => d.session).map(d => d.number), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+assert.deepEqual(plan.days.filter(d => d.session).map(d => d.number), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
 assert.notEqual(storageKey(plan, 1), storageKey({ ...plan, exam: '220-1102' }, 1));
-assert.deepEqual(plan.days.slice(3, 9).map(d => [d.minutes, d.objectives]), [
+assert.deepEqual(plan.days.slice(3, 12).map(d => [d.minutes, d.objectives]), [
   [120, ['1.5', '1.7', '4.9']],
   [105, ['1.8', '1.9']],
   [100, ['1.10', '1.11', '4.2', '4.8']],
   [120, ['2.1', '2.2', '2.7']],
   [100, ['2.3', '2.10', '2.11', '2.5']],
-  [120, ['2.4', '2.5', '2.6', '3.4']]
+  [120, ['2.4', '2.5', '2.6', '3.4']],
+  [115, ['3.1', '3.2', '3.3', '2.8']],
+  [100, ['4.1', '4.6', '4.7', '4.10']],
+  [95, ['2.9', '4.3', '4.4', '4.5']]
 ]);
 for (const day of plan.days) {
   assert.ok(day.minutes >= 75 && day.minutes <= 120);

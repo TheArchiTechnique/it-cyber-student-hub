@@ -396,6 +396,10 @@
     "ticket": [
       "Help Desk Ticket Triage",
       "practice/pbqs/a-plus-core-2/helpdesk-ticket-triage/"
+    ],
+    "windows-troubleshooting": [
+      "Windows Help Desk: Troubleshooting Multiple PCs",
+      "practice/pbqs/a-plus-core-2/windows-troubleshooting/"
     ]
   },
   "days": [
@@ -561,9 +565,11 @@
       "goal": "Separate OS, app, connection and security symptoms. Select diagnostic evidence and match mobile controls to ownership and policy.",
       "recall": "Contrast a suspected malicious app with a failed legitimate update.",
       "resources": [
+        "windows-troubleshooting",
         "bsod",
         "malware"
-      ]
+      ],
+      "session": "day-10.json"
     },
     {
       "number": 11,
@@ -579,7 +585,8 @@
       "recall": "Write a progress note for one of yesterday's cases without including sensitive data.",
       "resources": [
         "ticket"
-      ]
+      ],
+      "session": "day-11.json"
     },
     {
       "number": 12,
@@ -595,7 +602,8 @@
       "recall": "Reconstruct the Day 2 backup chain and identify who records asset disposal.",
       "resources": [
         "exam"
-      ]
+      ],
+      "session": "day-12.json"
     },
     {
       "number": 13,

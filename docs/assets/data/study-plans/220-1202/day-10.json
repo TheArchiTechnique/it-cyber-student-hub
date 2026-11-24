@@ -1,0 +1,308 @@
+{
+  "minutes": {
+    "reading": 35,
+    "cards": 15,
+    "quiz": 15,
+    "worksheet": 30,
+    "application": 20
+  },
+  "review": [
+    {
+      "objective": "3.1",
+      "title": "Find where Windows stops",
+      "text": "Ask what was visible immediately before the failure. A stop screen means Windows encountered a critical error. Record the stop code, time, recent changes and any named module. Compare them with System events and available dump files. A code or an unexpected-shutdown event alone rarely identifies a failed part. If the PC powers on but cannot load Windows, check whether firmware detects the boot drive. When the drive is visible and Windows repeatedly fails to start, Startup Repair in the Windows Recovery Environment can address common boot problems."
+    },
+    {
+      "objective": "3.1",
+      "title": "Separate a slow sign-in from a hung application",
+      "text": "If the desktop eventually loads, check startup apps and their impact in Task Manager. For slowness during use, compare CPU, memory and disk usage while reproducing the symptom. High memory use across many processes can explain paging and delays. A single frozen app with a responsive desktop suggests a narrower failure. Protect unsaved work where possible. Review the application's failures in Reliability Monitor or the Application event log. For a service that fails at startup, record its error and inspect status, startup type and dependencies before changing its configuration."
+    },
+    {
+      "objective": "3.1",
+      "title": "Check integrity, user scope and time",
+      "text": "For suspected corruption of protected Windows files on a running system, an authorized technician can repair the Windows image with DISM /Online /Cleanup-Image /RestoreHealth and then run sfc /scannow in an elevated terminal. If a user signs in to a temporary profile, safeguard new work before signing out, check User Profile Service events and compare another account. If authentication errors coincide with clock drift, compare the time, time zone and configured synchronization source. On Windows, w32tm /query /status reports time-service status."
+    },
+    {
+      "objective": "3.2",
+      "title": "Test one phone function at a time",
+      "text": "For a failed install or OS update, record the exact message. Check supported OS versions, free storage, connectivity, charge and any management restrictions. For one crashing app, compare other apps, restart and check for approved updates. Verify that data is backed up before clearing app storage or reinstalling. For a sluggish phone or short battery life, compare usage by app and recent changes. A large photo upload can account for both battery drain and data use."
+    },
+    {
+      "objective": "3.2",
+      "title": "Distinguish a radio problem from a setting",
+      "text": "If Wi-Fi fails, compare another device on the same network and the same phone on another approved network. For Bluetooth, check pairing mode, proximity and whether the accessory is connected elsewhere. For an NFC reader, verify device support, settings and close placement. A phone locked in portrait mode may have rotation lock enabled, or the app may only support portrait. Compare with an app known to rotate before suspecting a sensor fault."
+    },
+    {
+      "objective": "3.3",
+      "title": "Trace an alert to its source",
+      "text": "Use system settings to identify which app or website sent a notification. A browser ad styled as a security warning is an unverified claim. Avoid its buttons and phone number. Compare per-app data use, installed apps, permissions, reported changes and management alerts. An unfamiliar app with access to contacts and unexplained uploads warrants escalation for possible disclosure. Record observations through the approved channel. Rooting Android or jailbreaking iOS changes platform restrictions and can violate policy. A management alert calls for verification and review by the responsible team."
+    },
+    {
+      "objective": "2.8",
+      "title": "Match the control to the owner and the loss",
+      "text": "A screen lock with a strong passcode and supported biometrics restricts interactive access. Device encryption protects stored data. Keep the OS and apps patched and verify recovery from approved backups. Mobile device management (MDM) can enforce configurations and issue supported actions to enrolled devices. For a lost phone, verify the caller, asset, ownership, enrollment and policy. Authorized location or lock features may help recover it. A full remote wipe can erase personal data. A managed work profile may support selective removal of company data on a personally owned device. Record a pending action separately from confirmed completion."
+    }
+  ],
+  "sources": [
+    [
+      "CompTIA: Core 2 objectives, revision 4.0",
+      "https://lecbyo.files.cmp.optimizely.com/download/cefedfb2b8a511ef809306d06d323538"
+    ],
+    [
+      "Microsoft: Windows stop errors",
+      "https://support.microsoft.com/en-us/windows/experience/performance-optimization/troubleshooting-windows-unexpected-restarts-and-stop-code-errors"
+    ],
+    [
+      "Microsoft: Startup Repair",
+      "https://support.microsoft.com/en-us/windows/experience/startup-boot/startup-repair"
+    ],
+    [
+      "Microsoft: System File Checker",
+      "https://support.microsoft.com/en-us/windows/experience/backup-recovery/using-system-file-checker-in-windows"
+    ],
+    [
+      "Google: Troubleshoot an installed Android app",
+      "https://support.google.com/android/answer/2668665?hl=en"
+    ],
+    [
+      "Microsoft: Intune device wipe",
+      "https://learn.microsoft.com/en-us/intune/device-management/actions/wipe"
+    ],
+    [
+      "Microsoft: Retire a managed device",
+      "https://learn.microsoft.com/en-us/intune/device-management/actions/retire"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "stop-evidence",
+      "objective": "3.1",
+      "prompt": "What two details let you correlate a Windows stop screen with the event log?",
+      "answer": "Record the stop code and the time of the failure. Include any module named on the screen."
+    },
+    {
+      "id": "slow-signin",
+      "objective": "3.1",
+      "prompt": "Where can you compare the startup impact of programs that launch at sign-in?",
+      "answer": "Task Manager, under Startup apps."
+    },
+    {
+      "id": "profile",
+      "objective": "3.1",
+      "prompt": "Why save new work to an approved persistent location before leaving a temporary Windows profile?",
+      "answer": "Files created in the temporary profile may disappear at sign-out."
+    },
+    {
+      "id": "install",
+      "objective": "3.2",
+      "prompt": "Which two local checks help explain why a mobile app store refuses to install a specific app?",
+      "answer": "Check available storage and whether the installed OS meets the app's requirements."
+    },
+    {
+      "id": "pair",
+      "objective": "3.2",
+      "prompt": "A headset works with another phone but never appears on yours. What should you check on the headset?",
+      "answer": "Confirm it is discoverable in pairing mode and available to pair with your phone."
+    },
+    {
+      "id": "battery",
+      "objective": "3.2",
+      "prompt": "Which mobile report can connect new battery drain to a recently installed app?",
+      "answer": "The battery usage breakdown by app over the affected period."
+    },
+    {
+      "id": "notice",
+      "objective": "3.3",
+      "prompt": "What identifies the origin of an alarming mobile notification more reliably than its icon or message?",
+      "answer": "The sending app or website shown in system notification settings."
+    },
+    {
+      "id": "exposure",
+      "objective": "3.3",
+      "prompt": "Why check permissions when an unfamiliar app shows unexplained uploads?",
+      "answer": "Permissions indicate what data the app could access. Combine that with activity records to assess possible exposure."
+    },
+    {
+      "id": "jailbreak",
+      "objective": "3.3",
+      "prompt": "Why does a jailbreak alert matter on a managed iPhone?",
+      "answer": "Changes to platform restrictions may undermine required controls and violate enrollment policy."
+    },
+    {
+      "id": "locked",
+      "objective": "2.8",
+      "prompt": "Which control protects stored mobile data if someone tries to read it without unlocking the phone?",
+      "answer": "Device encryption, backed by properly protected keys and a strong unlock credential."
+    },
+    {
+      "id": "enroll",
+      "objective": "2.8",
+      "prompt": "What allows administrators to centrally apply supported security settings to a fleet of phones?",
+      "answer": "Enrollment in a mobile device management service."
+    },
+    {
+      "id": "ownership",
+      "objective": "2.8",
+      "prompt": "What should a technician establish before requesting a remote wipe?",
+      "answer": "Verify the device identity, ownership, enrollment, authorized scope and approval for the action."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "system-scan",
+      "objective": "3.1",
+      "prompt": "After repairing the Windows image, which complete SFC command scans all protected system files and attempts repairs? ____",
+      "answers": [
+        "sfc /scannow",
+        "sfc.exe /scannow"
+      ],
+      "explanation": "The /scannow switch checks protected files and attempts to replace corrupt copies. A verify-only scan would report problems without repairing them."
+    },
+    {
+      "id": "repair-boot",
+      "objective": "3.1",
+      "prompt": "A PC reaches Windows Recovery Environment after repeated boot failures. Which Advanced options tool automatically diagnoses common startup faults? ____",
+      "answers": [
+        "Startup Repair",
+        "Windows Startup Repair",
+        "Automatic Startup Repair"
+      ],
+      "explanation": "Startup Repair targets problems that prevent Windows from loading. A desktop startup-app setting only takes effect later."
+    },
+    {
+      "id": "tap",
+      "objective": "3.2",
+      "prompt": "A mobile checklist uses the abbreviation ____ for the short-range radio used when tapping a phone on a compatible contactless reader.",
+      "answers": [
+        "NFC"
+      ],
+      "explanation": "Near-field communication works at close range. Successful Wi-Fi browsing does not establish that the tap function works."
+    },
+    {
+      "id": "portrait",
+      "objective": "3.2",
+      "prompt": "An iPad displays a padlock with a circular arrow and stays in portrait even in apps that support landscape. Which display setting is active? ____",
+      "answers": [
+        "rotation lock",
+        "orientation lock",
+        "screen rotation lock",
+        "portrait orientation lock",
+        "lock rotation",
+        "screen orientation lock"
+      ],
+      "explanation": "The setting holds the display orientation. Test rotation in a supported app after unlocking it."
+    },
+    {
+      "id": "root",
+      "objective": "3.3",
+      "prompt": "The term for obtaining privileged root access on an Android phone by changing its normal platform restrictions is ____.",
+      "answers": [
+        "rooting",
+        "rooting the device",
+        "rooting the phone"
+      ],
+      "explanation": "Rooting can change the device's security posture. Verify the device and management report before acting on the alert."
+    },
+    {
+      "id": "ios-restrictions",
+      "objective": "3.3",
+      "prompt": "A report confirms that an iPhone's built-in platform restrictions were deliberately bypassed to allow unauthorized modifications. What is the iOS term for this process? ____",
+      "answers": [
+        "jailbreaking",
+        "jail breaking",
+        "jailbreak"
+      ],
+      "explanation": "Jailbreaking refers to bypassing iOS restrictions. An app crash or an unexpected advertisement alone does not establish this finding."
+    },
+    {
+      "id": "policy-console",
+      "objective": "2.8",
+      "prompt": "Enter the three-letter abbreviation for the system that pushes device policies to enrolled company phones. ____",
+      "answers": [
+        "MDM"
+      ],
+      "explanation": "Mobile device management lets an organization enforce supported configuration and security settings."
+    },
+    {
+      "id": "at-rest",
+      "objective": "2.8",
+      "prompt": "A lost phone's storage must be unreadable without the appropriate key. The required at-rest control is ____.",
+      "answers": [
+        "encryption",
+        "device encryption",
+        "storage encryption",
+        "data encryption",
+        "encryption at rest",
+        "full disk encryption",
+        "file based encryption"
+      ],
+      "explanation": "Encryption protects the stored contents. A lock screen controls interactive use, and location tracking helps find a device."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "restart-triage",
+      "objective": "3.1",
+      "prompt": "One laptop restarted during a presentation and displayed a stop code. Another stayed on the desktop while only its presentation app froze. Give a different first evidence check for each and explain why.",
+      "type": "Example",
+      "key": "For the restart, capture the code and time, then correlate System events or an available crash dump with recent changes. For the freeze, check the app's behavior in Task Manager and look for an Application event at that time. A responsive desktop narrows the second investigation.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "profile-and-time",
+      "objective": "3.1",
+      "prompt": "A user signs in to a temporary profile and has already drafted a report. Another user's files appear normally, but network sign-in fails after the clock drifts. Give a protective first step for the draft and a diagnostic check for each case.",
+      "type": "Example",
+      "key": "Save the draft outside the temporary profile in an approved persistent location and verify it opens there. Check User Profile Service events for the affected account. On the other workstation compare the actual time, time zone and synchronization source, using w32tm /query /status if available.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "two-radio-reports",
+      "objective": "3.2",
+      "prompt": "A phone can browse on Wi-Fi, but a headset will not pair and one reading app will not rotate. Describe one comparison or setting check for each fault before requesting replacement hardware.",
+      "type": "Example",
+      "key": "Check whether the headset is discoverable and available rather than connected elsewhere. Check rotation lock and compare a known landscape-capable app. A working Wi-Fi connection does not test the headset or the orientation sensor.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "mobile-app",
+      "objective": "3.2",
+      "prompt": "An inventory app closes immediately after an update. Other apps still run and the user has unsynced counts. Using the Android troubleshooting reference, choose two low-risk checks and explain what to protect before reinstalling.",
+      "type": "Example",
+      "key": "Restart and retest the app, then check for approved app or OS updates that address compatibility. Confirm the counts are synced or have a verified export or backup before clearing storage or reinstalling, since either action can remove local data.",
+      "source": "Google: Troubleshoot an installed Android app"
+    },
+    {
+      "id": "usage",
+      "objective": "3.3",
+      "prompt": "Two phones report high data use. One lists a scheduled photo backup. The other lists a newly installed unknown app with contact permissions. Explain what the evidence supports in each case and what to record.",
+      "type": "Example",
+      "key": "Compare the first phone's backup time and volume with the usage report. On the second, document the app identity, install timing, permissions and traffic period, then escalate possible exposure. The usage total alone cannot show which contacts, if any, left the phone.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "fake-alert",
+      "objective": "3.3",
+      "prompt": "A user sees a pop-up naming a virus and offering a support number. What should the user avoid, how can a technician establish the source, and what additional finding would warrant security escalation?",
+      "type": "Example",
+      "key": "Avoid the number, links and install prompts. Check the notification sender or browser site's permissions in settings. Escalate under policy if the user entered credentials, installed an unknown app, or reports other evidence of unauthorized changes.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "lost-byod",
+      "objective": "2.8",
+      "prompt": "A departing employee lost a personally owned phone with a managed work profile. A manager asks for an immediate factory reset. Explain the checks, narrower action and confirmation to document.",
+      "type": "Example",
+      "key": "Verify the caller, device, ownership, enrollment and approved offboarding or loss procedure. If authorized and supported, request selective removal of work data and follow the lost-device process. Record whether the service has merely queued the command or confirmed it. A full wipe can erase personal data.",
+      "source": "Microsoft: Retire a managed device"
+    },
+    {
+      "id": "loss-controls",
+      "objective": "2.8",
+      "prompt": "Match four needs for a company phone to distinct safeguards: restrict interactive use, protect stored files, restore data after loss and reduce exposure to fixed vulnerabilities.",
+      "type": "Factual",
+      "key": "Use a screen lock with strong authentication, enable device encryption, maintain and test approved backups, and deploy supported OS and app security updates, respectively.",
+      "source": "Daily review and objective breakdown"
+    }
+  ]
+}

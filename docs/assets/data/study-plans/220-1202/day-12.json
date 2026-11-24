@@ -1,0 +1,309 @@
+{
+  "minutes": {
+    "reading": 30,
+    "cards": 10,
+    "quiz": 15,
+    "worksheet": 25,
+    "application": 15
+  },
+  "review": [
+    {
+      "objective": "4.3",
+      "title": "Choose a backup to meet the restore window",
+      "text": "A full backup captures the entire selected data set. An incremental stores changes since the last qualifying backup in its chain. A differential stores changes since its full base. Suppose a team can retrieve only two backup sets during an outage. A full plus the relevant differential can meet that constraint. A chain of daily incrementals may require more sets. A synthetic full is assembled in the backup repository from an earlier full and later changes. It reduces the need to reread the live source, provided its inputs are intact."
+    },
+    {
+      "objective": "4.3",
+      "title": "Design for loss of a workstation or a whole site",
+      "text": "Use 3-2-1 as a design check: three copies including production, two media types and one copy offsite. Onsite storage can speed routine restores. A separate offsite copy can survive a site loss. Protect backups and access credentials. Grandfather-father-son rotation retains selected daily, weekly and monthly generations, so an older recovery point may survive beyond the daily window. Document the retention periods. Check the backup logs and periodically restore from each recovery source you expect to rely on."
+    },
+    {
+      "objective": "4.3",
+      "title": "Prove the recovered files are usable",
+      "text": "For a failed workstation, confirm the authorized data set and last known good version. If the destination contains newer files or the source of the loss is unresolved, restore into an approved alternative location with appropriate access. Check logs, versions, file counts, permissions and representative files with the owner. A successful job status cannot tell you whether a spreadsheet opens or contains yesterday's edits. Restore to the original location only after confirming the target, overwrite risk and approval."
+    },
+    {
+      "objective": "2.9",
+      "title": "Match the method to the medium and its destination",
+      "text": "Before release, identify the medium, sensitivity, retention or hold requirements and whether it will be reused. Deleting files or quick-formatting can leave recoverable data. For reuse, select an approved, device-supported sanitization method and verify the result. A simple host overwrite may miss remapped or spare SSD storage. For an SSD, consult the vendor's supported sanitize operation. Cryptographic erase requires appropriate prior encryption and effective removal of the relevant keys. Degaussing uses a suitable magnetic field on supported magnetic media such as tape. It cannot sanitize flash memory."
+    },
+    {
+      "objective": "2.9",
+      "title": "Account for retired media",
+      "text": "If reuse is prohibited or sanitization cannot be verified, keep the item controlled and use the approved destruction service. A qualified provider may shred media to the required particle size or use an authorized incineration process. Drilling isolated holes can leave recoverable platters or flash chips. Record serial numbers and each custody transfer, reconcile the vendor's certificate of destruction with the inventory and send remaining materials through the authorized waste stream."
+    },
+    {
+      "objective": "4.4",
+      "title": "Prepare a safe bench",
+      "text": "Shut down, disconnect external power and follow the service manual for battery disconnection and residual power before handling components. Never open a power supply. Use properly grounded equipment and the approved ESD workstation, mat and wired wrist strap as directed. These equalize charge to protect components. They do not make energized electrical work safe. Hold boards by the edges and store them inside shielding bags. Route cables away from walkways. Use a cart, lift aid or team lift for heavy equipment."
+    },
+    {
+      "objective": "4.4",
+      "title": "Recognize when to stop work",
+      "text": "Identify hazards and required personal protective equipment (PPE) before starting. Eye protection may be required for a cleaning procedure. If equipment smokes or catches fire, raise the alarm, leave the area according to the site emergency plan and notify emergency responders from safety. Keep exits clear. Only trained, authorized personnel should consider using an appropriate extinguisher under site procedures."
+    },
+    {
+      "objective": "4.5",
+      "title": "Control heat, contamination and waste",
+      "text": "Keep intakes and exhausts clear and monitor temperature and humidity against manufacturer limits. Excess heat or blocked airflow can cause shutdowns. Very dry air increases static risk, while condensation can damage equipment. Disconnect equipment before approved cleaning and use manufacturer-approved tools. For a toner spill, consult the product's safety data sheet (SDS) and site procedure for cleanup and PPE. Return used toner cartridges via the approved program. Route lithium-ion batteries to an appropriate collection service, keeping terminals protected from shorts. Report damaged or swollen batteries for specialist handling."
+    },
+    {
+      "objective": "4.5",
+      "title": "Choose power protection for the symptom",
+      "text": "A surge is a brief rise in voltage. A brownout is a drop below normal voltage, and a blackout is a loss of supply. A surge suppressor limits transient overvoltage. For a workstation that must save work during an outage, use a correctly sized uninterruptible power supply (UPS) with sufficient battery runtime and a tested shutdown plan. For frequent brownouts, look for a suitable UPS with automatic voltage regulation (AVR). Refer recurring building-power faults to facilities."
+    }
+  ],
+  "sources": [
+    [
+      "CompTIA: Core 2 objectives, revision 4.0",
+      "https://lecbyo.files.cmp.optimizely.com/download/cefedfb2b8a511ef809306d06d323538"
+    ],
+    [
+      "NIST: Guidelines for Media Sanitization",
+      "https://csrc.nist.gov/pubs/sp/800/88/r2/final"
+    ],
+    [
+      "OSHA: Safety data sheets",
+      "https://www.osha.gov/sites/default/files/publications/OSHA3493QUICKCARDSAFETYDATASHEET.pdf"
+    ],
+    [
+      "EPA: Used lithium-ion batteries",
+      "https://www.epa.gov/recycle/used-lithium-ion-batteries"
+    ],
+    [
+      "OSHA: Workplace fire extinguisher procedures",
+      "https://www.osha.gov/etools/evacuation-plans-procedures/emergency-standards/portable-extinguishers/"
+    ],
+    [
+      "Dell: Electrical safety and ESD precautions",
+      "https://www.dell.com/support/kbdoc/en-us/000137973/safety-precautions-when-working-with-electrical-equipment"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "media-type",
+      "objective": "2.9",
+      "prompt": "Why is degaussing unsuitable for retiring an SSD?",
+      "answer": "A degausser changes magnetic media. SSDs store data in flash memory."
+    },
+    {
+      "id": "quick-format",
+      "objective": "2.9",
+      "prompt": "Why is a quick format insufficient evidence that a drive is safe to release?",
+      "answer": "It rebuilds file-system structures and can leave recoverable data. Use and verify the approved sanitization method."
+    },
+    {
+      "id": "certificate",
+      "objective": "2.9",
+      "prompt": "Which document should you reconcile with drive serial numbers after a destruction vendor finishes?",
+      "answer": "The certificate of destruction, together with the inventory and transfer records."
+    },
+    {
+      "id": "broken-chain",
+      "objective": "4.3",
+      "prompt": "A required daily incremental is unreadable. What should you check before promising recovery to the end of that chain?",
+      "answer": "Find another intact copy, an independent usable recovery point, or the most recent complete recoverable chain. Confirm it with a restore test."
+    },
+    {
+      "id": "source-load",
+      "objective": "4.3",
+      "prompt": "Why might a branch office schedule a synthetic full backup?",
+      "answer": "The backup system can build the full set in its repository from existing backups, reducing reads and transfers from the branch."
+    },
+    {
+      "id": "owner-test",
+      "objective": "4.3",
+      "prompt": "A restore reports success. What check can identify a valid file from the wrong date?",
+      "answer": "Have the data owner open it and verify a known version-specific detail, such as the last approved entry."
+    },
+    {
+      "id": "strap",
+      "objective": "4.4",
+      "prompt": "What hazard does a correctly connected ESD wrist strap address?",
+      "answer": "Static charge discharging through sensitive components during handling."
+    },
+    {
+      "id": "component",
+      "objective": "4.4",
+      "prompt": "How should a spare memory module be handled and stored?",
+      "answer": "Hold it by its edges and place it inside suitable static-shielding packaging."
+    },
+    {
+      "id": "heavy",
+      "objective": "4.4",
+      "prompt": "What should you arrange before moving a server that exceeds safe single-person lifting capacity?",
+      "answer": "Follow the site's lifting procedure and use an appropriate lift aid or team lift with a clear route."
+    },
+    {
+      "id": "sds",
+      "objective": "4.5",
+      "prompt": "Where can you check a toner product's spill precautions and required protective equipment?",
+      "answer": "Its safety data sheet and the site's approved cleanup procedure."
+    },
+    {
+      "id": "humidity",
+      "objective": "4.5",
+      "prompt": "How can very low humidity affect an electronics workbench?",
+      "answer": "Static charge builds up more readily, increasing the risk of electrostatic discharge."
+    },
+    {
+      "id": "ups",
+      "objective": "4.5",
+      "prompt": "Why connect a workstation to a battery-backed UPS outlet when safe shutdown is the goal?",
+      "answer": "The battery supplies temporary power during an outage so work can be saved and the system shut down."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "magnetic",
+      "objective": "2.9",
+      "prompt": "The sanitization process that applies a strong magnetic field to suitable backup tape is called ____.",
+      "answers": [
+        "degaussing",
+        "degauss",
+        "demagnetization",
+        "demagnetisation"
+      ],
+      "explanation": "Use a degausser rated for the medium. Magnetic fields do not erase flash cells."
+    },
+    {
+      "id": "vendor-record",
+      "objective": "2.9",
+      "prompt": "After collecting retired drives, a vendor issues a pickup receipt. After destroying them, it should issue a certificate of ____.",
+      "answers": [
+        "destruction",
+        "media destruction",
+        "data destruction"
+      ],
+      "explanation": "The collection receipt documents a transfer. Reconcile the completed destruction certificate against the specific assets sent."
+    },
+    {
+      "id": "recovery-gap",
+      "objective": "4.3",
+      "prompt": "The incremental after Monday is unreadable, but an independent Thursday differential is intact. To restore Thursday, the differential's required base is the associated ____ backup.",
+      "answers": [
+        "full",
+        "full backup"
+      ],
+      "explanation": "The differential contains changes since that full base. A restore from this pair does not depend on the broken incremental."
+    },
+    {
+      "id": "retention-tier",
+      "objective": "4.3",
+      "prompt": "In a daily-son, weekly-father, monthly-grandfather rotation, which named generation would you request for a retained month-end copy? ____",
+      "answers": [
+        "grandfather",
+        "grandfather generation",
+        "grandfather backup"
+      ],
+      "explanation": "The monthly generation outlives the short daily window in this design. Verify that the requested month was retained and can be restored."
+    },
+    {
+      "id": "static-name",
+      "objective": "4.4",
+      "prompt": "What three-letter abbreviation names the sudden transfer of static charge that can damage an exposed memory module? ____",
+      "answers": [
+        "ESD"
+      ],
+      "explanation": "Electrostatic discharge can damage a component during handling. Bonding and suitable packaging help control it."
+    },
+    {
+      "id": "power-unit",
+      "objective": "4.4",
+      "prompt": "The sealed desktop component that converts incoming AC power to motherboard DC power and should only be replaced as a unit is the ____.",
+      "answers": [
+        "power supply",
+        "power supply unit",
+        "PSU",
+        "ATX power supply",
+        "desktop power supply"
+      ],
+      "explanation": "A power supply can retain hazardous energy after unplugging. Keep its enclosure closed."
+    },
+    {
+      "id": "low-line",
+      "objective": "4.5",
+      "prompt": "A facilities log records a sustained drop below normal line voltage while power remains on. The Core 2 term for this event is ____.",
+      "answers": [
+        "brownout",
+        "brown out"
+      ],
+      "explanation": "A brownout is undervoltage. A blackout is loss of supply, while a surge is an overvoltage event."
+    },
+    {
+      "id": "power-conditioning",
+      "objective": "4.5",
+      "prompt": "A line-interactive UPS can raise low input voltage within its operating range without switching to battery. Which three-letter feature name describes this capability? ____",
+      "answers": [
+        "AVR"
+      ],
+      "explanation": "On a suitable UPS this feature compensates for input voltage changes within its operating range. Check the model's limits and load rating."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "workstation-recovery",
+      "objective": "4.3",
+      "prompt": "A CAD workstation fails on Thursday. The replacement already holds a newer unrelated project. The designer needs Wednesday's drawing. Choose a restore destination and state three checks before handing the drawing back.",
+      "type": "Example",
+      "key": "Restore the selected Wednesday version to an access-controlled alternate folder. Check job results, confirm version and permissions, and have the designer open the drawing and verify a known Wednesday edit. Preserve existing projects until the owner approves moving the validated file.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "recovery-window",
+      "objective": "4.3",
+      "prompt": "A branch can transfer only daily changes over its WAN. Headquarters can assemble a backup from those changes. A flood might destroy the entire branch. Propose a design and a test that measures whether the branch can resume work.",
+      "type": "Example",
+      "key": "Keep a protected full base and transfer incrementals to the offsite repository. Build periodic synthetic fulls there, retain the required generations and keep an onsite copy for routine restores if feasible. From the offsite copy, time a restore to a replacement at an alternate site and have a user open a representative project. Compare elapsed time and data age with business requirements.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "sort-media",
+      "objective": "2.9",
+      "prompt": "You have a healthy SSD cleared for internal reuse, a failed SSD holding restricted records and magnetic tape eligible for retirement. For each, choose a defensible method and name evidence required before release.",
+      "type": "Example",
+      "key": "For reuse, select an approved vendor-supported SSD sanitize operation and verify and document success. For the failed SSD, preserve custody through approved physical destruction. For the tape, use an approved method rated for that tape, such as suitable degaussing, or authorized destruction. Reconcile identifiers, completion records and any destruction certificates. Confirm retention and hold status first.",
+      "source": "NIST: Guidelines for Media Sanitization"
+    },
+    {
+      "id": "retirement-gap",
+      "objective": "2.9",
+      "prompt": "A contractor presents a batch pickup receipt and a photo of one drilled drive. Explain the two gaps in the evidence and what the asset owner should request.",
+      "type": "Factual",
+      "key": "Pickup proves transfer, and a photo of holes does not verify sanitization of all recording surfaces or chips. Keep the batch under controlled custody pending reconciliation. Require approved processing for every asset and completion records tied to the inventory.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "bench-order",
+      "objective": "4.4",
+      "prompt": "A technician proposes wearing a wrist strap while replacing memory in a running desktop, then leaving the old module on the case. Put the safe preparation, handling and storage steps in order and explain the strap's purpose.",
+      "type": "Factual",
+      "key": "Shut down, disconnect power and follow the service manual before component access. Prepare the approved grounded ESD station and fit the wired strap as directed. Handle the module by its edges and place it inside a static-shielding bag. The strap protects components from static discharge. Electrical isolation protects the technician.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "aisle",
+      "objective": "4.4",
+      "prompt": "A heavy server blocks an exit and a nearby UPS begins smoking. What takes priority now, and how should the server move be planned after the area is declared safe?",
+      "type": "Example",
+      "key": "Raise the alarm, use a safe exit and notify responders under the site's emergency plan. Leave the smoking unit to authorized personnel. Later arrange a clear route, appropriate lift aid or team and secure cable routing so the exit stays usable.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "closet",
+      "objective": "4.5",
+      "prompt": "A workstation in a dusty closet overheats. Its surge strip also loses power during outages, interrupting shutdown. Identify the environmental correction and the power protection needed for an orderly shutdown.",
+      "type": "Example",
+      "key": "Clear the vents and provide suitable ventilation. Clean under the manufacturer's procedure and verify operating temperature under load. Select a UPS sized for the workstation and required runtime, use its battery-backed outlet and test shutdown. A surge strip alone supplies no standby energy.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "supplies",
+      "objective": "4.5",
+      "prompt": "A supply room has a leaking toner cartridge and an intact spent lithium-ion battery. Use the linked safety data sheet guide to identify where spill and PPE information appears. Describe an appropriate waste route for each item.",
+      "type": "Factual",
+      "key": "Use section 6 of the toner product's SDS for accidental release measures and section 8 for exposure controls and PPE. Follow the approved spill process and cartridge return or waste program. Protect the intact battery terminals from shorting and use a designated battery collection service rather than general trash or mixed recycling.",
+      "source": "OSHA: Safety data sheets"
+    }
+  ]
+}
