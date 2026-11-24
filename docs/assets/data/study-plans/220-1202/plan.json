@@ -509,7 +509,8 @@
       "recall": "Recall the Windows edition features needed for centrally managed devices.",
       "resources": [
         "exam"
-      ]
+      ],
+      "session": "day-7.json"
     },
     {
       "number": 8,
@@ -526,7 +527,8 @@
       "resources": [
         "network",
         "phish"
-      ]
+      ],
+      "session": "day-8.json"
     },
     {
       "number": 9,
@@ -543,7 +545,8 @@
       "resources": [
         "malware",
         "phish"
-      ]
+      ],
+      "session": "day-9.json"
     },
     {
       "number": 10,

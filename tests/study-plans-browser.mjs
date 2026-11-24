@@ -2,6 +2,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { chromium } from 'playwright';
+import { storageKey } from '../docs/assets/javascripts/study-plans/progress.mjs';
 
 const root = new URL(process.argv[2] || 'http://127.0.0.1:8000/');
 const app = new URL('certifications/comptia/a-plus-core-2/study-plan/app/', root);
@@ -18,10 +19,16 @@ try {
   await page.goto(app.href);
   await page.locator('.plan-grid').waitFor();
   assert.equal(await page.locator('.plan-grid article').count(), 14);
-  assert.equal(await page.locator('.plan-grid .open').count(), 6);
-  for (const day of plan.days.slice(0, 6)) {
+  assert.equal(await page.locator('.plan-grid .open').count(), 9);
+  const readDay = number => page.evaluate(key => localStorage.getItem(key), storageKey(plan, number));
+  let previousDays;
+  for (const day of plan.days.slice(0, 9)) {
     const session = JSON.parse(await readFile(new URL(day.session, data)));
     const number = day.number;
+    if (number === 7) {
+      previousDays = await Promise.all([1, 2, 3, 4, 5, 6].map(readDay));
+      assert.ok(previousDays.every(Boolean));
+    }
     await page.getByRole('link', { name: 'Open Day ' + number, exact: true }).press('Enter');
     await btn('Mark review complete').click();
     await nav('Flashcards').press('Enter');
@@ -93,14 +100,16 @@ try {
     await page.getByRole('link', { name: 'Return to study calendar' }).click();
   }
   await page.reload();
-  await page.getByText('6 of 14 days completed · 6 interactive sessions available').waitFor();
+  assert.deepEqual(await Promise.all([1, 2, 3, 4, 5, 6].map(readDay)), previousDays);
+  await page.getByText('9 of 14 days completed · 9 interactive sessions available').waitFor();
   await page.setViewportSize({ width: 320, height: 700 });
   const noOverflow = () => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth);
   assert.ok(await noOverflow());
-  for (const number of [4, 5, 6, 2]) {
+  for (const number of [4, 5, 6, 7, 8, 9, 2]) {
     await page.getByRole('link', { name: 'Open Day ' + number, exact: true }).click();
     for (const activity of ['Topic review', 'Flashcards', 'Recall quiz', 'Worksheet']) {
       await nav(activity).press('Enter');
+      await page.locator('.study-nav a[aria-current="page"]').filter({ hasText: activity }).waitFor();
       assert.ok(await noOverflow(), 'Day ' + number + ' ' + activity);
     }
     if (number !== 2) await page.getByRole('link', { name: 'Return to study calendar' }).click();
@@ -116,8 +125,8 @@ try {
   await btn('Reset this day').click();
   await page.getByText('Not started · 0 of 4 activities completed').waitFor();
   await page.getByRole('link', { name: 'Return to study calendar' }).click();
-  await page.getByText('5 of 14 days completed · 6 interactive sessions available').waitFor();
-  for (const day of plan.days.slice(6)) {
+  await page.getByText('8 of 14 days completed · 9 interactive sessions available').waitFor();
+  for (const day of plan.days.slice(9)) {
     await page.goto(app.href + '#day-' + day.number + '/quiz');
     await page.locator('.plan-grid').waitFor();
     assert.equal(await page.locator('#view input').count(), 0);
@@ -130,7 +139,7 @@ try {
   }
   for (const [, href] of Object.values(plan.resources)) assert.equal((await page.request.get(new URL(href, root).href)).status(), 200);
   assert.deepEqual(errors, []);
-  console.log('Passed six complete sessions, mobile and desktop, keyboard navigation, grading, persistence, reset, worksheet print modes and resource links.');
+  console.log('Passed nine complete sessions, mobile and desktop, keyboard navigation, grading, persistence, reset, worksheet print modes and resource links.');
 } finally {
   await browser.close();
 }

@@ -1,0 +1,279 @@
+{
+  "minutes": {
+    "reading": 25,
+    "cards": 10,
+    "quiz": 15,
+    "worksheet": 30,
+    "application": 20
+  },
+  "review": [
+    {
+      "objective": "2.3",
+      "title": "Read the access point's security menu",
+      "text": "For a network of current devices that support it, choose WPA3-Personal. Its SAE exchange authenticates peers using the network password. When a supported older device needs WPA2, choose WPA2 with AES-based CCMP or an approved WPA2/WPA3 transition mode after checking compatibility. TKIP is a legacy choice. WPA describes a wireless security suite; AES is an encryption algorithm. The network's Wi-Fi password and the router's administrator password serve separate purposes."
+    },
+    {
+      "objective": "2.3",
+      "title": "Identify who checks the credentials",
+      "text": "Enterprise Wi-Fi commonly uses 802.1X with a RADIUS server to evaluate individual credentials or certificates. Removing one employee's network access is then possible without rotating a shared staff password. TACACS+ is commonly used to control administrators' access to routers and switches. Kerberos issues tickets for access to services such as those in a Windows domain. These names identify authentication or access services, not radio encryption algorithms."
+    },
+    {
+      "objective": "2.10",
+      "title": "Walk the boundary between guest, staff and internet",
+      "text": "A second SSID labels a network. Verify its isolation: a guest should reach the internet but should be denied access to staff file shares and router administration. Change default management credentials, apply supported firmware and restrict management to authorized clients. Review unused services and existing inbound port forwards. UPnP may let local software request port mappings; disable that capability when it has no approved use. Verify that needed services still work after hardening."
+    },
+    {
+      "objective": "2.11",
+      "title": "Follow a request through the browser",
+      "text": "Use an approved, updated browser and trusted extension sources. Review each extension's requested site access against its function. A secure DNS option such as DNS over HTTPS encrypts queries between the browser and resolver. HTTPS validates the certificate for the requested hostname and protects the connection; a look-alike domain can hold a valid certificate for its own name. A mismatch warning calls for checking the URL and using a known route to the service before entering credentials."
+    },
+    {
+      "objective": "2.11",
+      "title": "Inspect the active profile",
+      "text": "Unexpected redirects can follow a changed search provider, extension or proxy. Compare the affected profile with an approved clean profile and inspect settings before attributing the issue to malware. Review site notification permissions if alerts continue after a tab closes. Store credentials only in approved password managers and use account sync on authorized devices. Synced extensions or settings may return after a local reset. Private browsing limits local history but cannot establish a site's identity."
+    },
+    {
+      "objective": "2.5",
+      "title": "Verify a familiar-looking network or sign-in page",
+      "text": "A traveler sees two access points advertising the conference name, but one unexpectedly requests the corporate password in a browser. A copied SSID can be an evil twin. Similar names alone cannot establish that either access point is malicious. Disconnect, verify the intended SSID and sign-in method through a trusted organizer contact, and report the discrepancy. For a message claiming to be from IT, open the known service directly instead of relying on the supplied link."
+    }
+  ],
+  "sources": [
+    [
+      "Apple Support: recommended Wi-Fi router settings",
+      "https://support.apple.com/en-us/102766"
+    ],
+    [
+      "Cisco: WPA3 deployment guide",
+      "https://www.cisco.com/c/en/us/td/docs/wireless/controller/9800/technical-reference/wpa3-dg.pdf"
+    ],
+    [
+      "Mozilla Support: extension permission requests",
+      "https://support.mozilla.org/en-US/kb/permission-request-messages-firefox-extensions"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "sae",
+      "objective": "2.3",
+      "prompt": "What password-based exchange is associated with WPA3-Personal?",
+      "answer": "Simultaneous Authentication of Equals (SAE)."
+    },
+    {
+      "id": "radius",
+      "objective": "2.3",
+      "prompt": "Which service commonly checks individual credentials for enterprise Wi-Fi through an 802.1X authenticator?",
+      "answer": "RADIUS evaluates the authentication request and communicates the result."
+    },
+    {
+      "id": "tickets",
+      "objective": "2.3",
+      "prompt": "Which authentication system issues tickets for access to network services?",
+      "answer": "Kerberos. A client can present a service ticket to the intended service."
+    },
+    {
+      "id": "guest",
+      "objective": "2.10",
+      "prompt": "What observation demonstrates a failure of guest isolation when guests should have internet-only access?",
+      "answer": "A guest can reach a staff-only resource, such as an internal share or management page."
+    },
+    {
+      "id": "firmware",
+      "objective": "2.10",
+      "prompt": "What router component receives vendor fixes for flaws in its operating software?",
+      "answer": "Router firmware. Verify model compatibility and the installed version after the update."
+    },
+    {
+      "id": "forward",
+      "objective": "2.10",
+      "prompt": "What does an inbound port-forwarding rule do?",
+      "answer": "It directs matching incoming traffic to a specified internal host and port."
+    },
+    {
+      "id": "dns",
+      "objective": "2.11",
+      "prompt": "What part of a browser's lookup does DNS over HTTPS protect?",
+      "answer": "The DNS exchange between the browser and its chosen resolver."
+    },
+    {
+      "id": "certificate",
+      "objective": "2.11",
+      "prompt": "What does a certificate hostname mismatch tell the user?",
+      "answer": "The certificate presented does not cover the requested hostname. Stop and verify the destination."
+    },
+    {
+      "id": "permission",
+      "objective": "2.11",
+      "prompt": "What should guide approval of a browser extension's permissions?",
+      "answer": "Whether the publisher is trusted and the requested access is necessary for the approved function."
+    },
+    {
+      "id": "evil-twin",
+      "objective": "2.5",
+      "prompt": "What is a wireless evil twin?",
+      "answer": "An unauthorized access point that impersonates a network users expect to trust."
+    },
+    {
+      "id": "lookalike",
+      "objective": "2.5",
+      "prompt": "Why can a phishing site show a valid HTTPS connection?",
+      "answer": "The operator can obtain a certificate for the look-alike domain it controls."
+    },
+    {
+      "id": "verify",
+      "objective": "2.5",
+      "prompt": "How can an employee independently check an unexpected web sign-in request from “IT”?",
+      "answer": "Open the established service from a trusted bookmark or contact IT through its known directory entry."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "enterprise",
+      "objective": "2.3",
+      "prompt": "An access point sends 802.1X authentication requests to a central server using the protocol commonly associated with UDP port 1812. Name the protocol: ____.",
+      "answers": [
+        "RADIUS"
+      ],
+      "explanation": "RADIUS can check individual credentials for network access. The wireless encryption setting is a separate choice."
+    },
+    {
+      "id": "legacy",
+      "objective": "2.3",
+      "prompt": "A router offers two WPA2 cipher options, AES-CCMP and ____. Name the obsolete four-letter option the technician should avoid.",
+      "answers": [
+        "TKIP"
+      ],
+      "explanation": "Temporal Key Integrity Protocol is a legacy option. Select a current secure mode supported by the clients."
+    },
+    {
+      "id": "mapping",
+      "objective": "2.10",
+      "prompt": "A SOHO router lets compatible local apps request port mappings automatically. Which four-letter router feature should support review? ____.",
+      "answers": [
+        "UPnP"
+      ],
+      "explanation": "Review whether automatic mappings are required and audit separate manual forwarding rules."
+    },
+    {
+      "id": "admin",
+      "objective": "2.10",
+      "prompt": "The internet-facing management page accepts the factory username and password. Besides restricting management access, replace the default administrator ____.",
+      "answers": [
+        "credentials",
+        "password",
+        "passwords",
+        "login credentials",
+        "account credentials"
+      ],
+      "explanation": "Unique management credentials protect configuration access independently of the Wi-Fi passphrase."
+    },
+    {
+      "id": "doh",
+      "objective": "2.11",
+      "prompt": "A browser sends encrypted name-resolution queries to its resolver using the same secure application protocol used for websites. Which three-letter DNS option is enabled? ____.",
+      "answers": [
+        "DoH",
+        "DNS over HTTPS"
+      ],
+      "explanation": "DNS over HTTPS protects the exchange with the resolver. A returned site can still be fraudulent."
+    },
+    {
+      "id": "proxy",
+      "objective": "2.11",
+      "prompt": "Only one browser profile sends web requests through an unexpected intermediary configured in its connection settings. The intermediary is a ____ server.",
+      "answers": [
+        "proxy",
+        "proxy server"
+      ],
+      "explanation": "Check the effective proxy against the organization's approved settings before making changes."
+    },
+    {
+      "id": "impostor",
+      "objective": "2.5",
+      "prompt": "An unauthorized access point has been confirmed to be deliberately impersonating the hotel's Wi-Fi network. This type of access point is an ____.",
+      "answers": [
+        "evil twin",
+        "evil twin access point",
+        "evil twin AP"
+      ],
+      "explanation": "Impersonation is the defining clue. An unfamiliar SSID alone would be insufficient evidence."
+    },
+    {
+      "id": "lure",
+      "objective": "2.5",
+      "prompt": "A fraudulent email links to an imitation account portal and asks recipients to enter passwords. The general term for this email-based deception is ____.",
+      "answers": [
+        "phishing",
+        "email phishing",
+        "phishing attack"
+      ],
+      "explanation": "The lure directs recipients to disclose credentials at an impersonated site."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "compatibility",
+      "objective": "2.3",
+      "prompt": "All office laptops support WPA3-Personal, but a supported legacy printer accepts only WPA2 with AES. Compare a WPA3-only setting with transition mode. What would you verify before choosing one?",
+      "type": "Example",
+      "key": "WPA3-only gives compatible clients WPA3 and would exclude this printer. Transition mode can admit the printer using WPA2-AES while supporting WPA3 clients. Check actual client compatibility and policy; a separate restricted network for the printer is another defensible choice.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "auth-jobs",
+      "objective": "2.3",
+      "prompt": "Match three requests to RADIUS, TACACS+ and Kerberos: individual staff Wi-Fi authentication, centralized administrator access to switches, and ticket-based access to domain services. Explain each match.",
+      "type": "Factual",
+      "key": "RADIUS commonly backs 802.1X network access. TACACS+ commonly controls device administration. Kerberos supplies tickets that clients present to services.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "guest-test",
+      "objective": "2.10",
+      "prompt": "A guest laptop joins Visitor and can browse the web, open the staff share and reach router management. Which tests should pass after correction, and why is renaming Visitor insufficient?",
+      "type": "Example",
+      "key": "Internet access should succeed. Access from the guest network to staff shares and management should be blocked. A name change does not change forwarding or access rules; verify the guest network boundary with the same tests.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "unused-rule",
+      "objective": "2.10",
+      "prompt": "A retired camera still has an inbound forwarding rule. The office uses local management only, and no approved application needs UPnP. Identify three settings to review and the business function to retest.",
+      "type": "Example",
+      "key": "Remove the obsolete camera forward, restrict administration to authorized local clients and disable unneeded automatic UPnP mappings. Verify normal outbound access and authorized local management.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "redirect",
+      "objective": "2.11",
+      "prompt": "Searches redirect in one browser profile. The same PC opens the correct search page in a clean profile. What evidence would you collect before deciding that the whole PC is infected?",
+      "type": "Example",
+      "key": "Compare search provider, extensions, proxy and sync settings between profiles. Check when the behavior began and whether an approved extension or policy explains it. The profile difference narrows the investigation.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "portal",
+      "objective": "2.5",
+      "prompt": "At a conference an apparently familiar Wi-Fi name leads to an unexpected corporate sign-in page. Explain what the name and a valid certificate can establish and how you would verify the request.",
+      "type": "Example",
+      "key": "An SSID is a label and can be copied. A valid certificate can authenticate the displayed hostname, including a look-alike name. Disconnect and verify the intended network and portal using a known organizer contact before supplying credentials.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "extension",
+      "objective": "2.11",
+      "prompt": "A simple color theme requests permission to read and change data on every website. Use Mozilla's permission guide to describe what that access could expose and decide whether to approve it.",
+      "type": "Example",
+      "key": "Broad site access can expose page contents and data entered on those pages and allow changes to them. The stated cosmetic purpose gives no clear need for that access. Decline or refer it for review and use an approved alternative.",
+      "source": "Mozilla Support: extension permission requests"
+    },
+    {
+      "id": "warning",
+      "objective": "2.5",
+      "prompt": "A QR flyer advertises “router support.” Its site resembles the vendor's page, but the browser warns that the certificate name does not match. Write a two-sentence response to the office manager that preserves access to legitimate support.",
+      "type": "Example",
+      "key": "Close that page without entering the router password and keep the flyer or URL for reporting. Open the vendor site from a trusted support record and verify whether it issued the notice before taking action.",
+      "source": "Application exercise: verify a support notice"
+    }
+  ]
+}
