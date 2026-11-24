@@ -33,3 +33,11 @@
   .write-space { min-height: 44pt; border-bottom: 1px solid #888; }
   .printed-answer { white-space: pre-wrap; overflow-wrap: anywhere; }
 }
+.capstone form { display: grid; gap: .9rem; }
+.capstone fieldset { min-width: 0; margin: .75rem 0; border: 1px solid var(--hub-card-border); border-radius: 7px; }
+.capstone legend, .capstone dt { font-weight: 650; }
+.cap-field, .cap-check { display: block; margin: .55rem 0; }
+.cap-field select, .cap-field textarea, .cap-field input { display: block; width: 100%; max-width: 100%; margin-top: .3rem; padding: .55rem; font: inherit; color: inherit; background: var(--hub-card-bg); border: 1px solid var(--hub-card-border); border-radius: 7px; }
+.cap-field textarea { min-height: 4rem; resize: vertical; }
+.cap-check input { width: auto; margin-right: .4rem; }
+.capstone dd { margin: .2rem 0 .65rem; white-space: pre-wrap; overflow-wrap: anywhere; }

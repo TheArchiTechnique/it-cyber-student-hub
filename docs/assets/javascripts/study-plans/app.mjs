@@ -1,3 +1,5 @@
+import { node, link, button, panel } from './ui.mjs';
+import { renderCapstone } from './capstone.mjs';
 import { freshDay, storageKey, matches, cardOrder, summary } from './progress.mjs';
 
 const view = document.querySelector('#view');
@@ -10,28 +12,6 @@ const memory = new Map();
 let plan;
 let printMode = 'blank';
 
-function node(tag, content, className) {
-  const element = document.createElement(tag);
-  if (content !== undefined) element.textContent = content;
-  if (className) element.className = className;
-  return element;
-}
-function link(label, href) {
-  const a = node('a', label);
-  a.href = href;
-  return a;
-}
-function button(label, act) {
-  const b = node('button', label);
-  b.type = 'button';
-  b.addEventListener('click', act);
-  return b;
-}
-function panel(title) {
-  const section = node('section', undefined, 'panel');
-  section.append(node('h2', title));
-  return section;
-}
 function route(day, activity = 'review', id = '') {
   return '#day-' + day + '/' + activity + (id ? '/' + id : '');
 }
@@ -92,7 +72,8 @@ function coverage() {
         const line = node('p');
         line.append('Day ' + day.number + ' · ' + day.title + '. ');
         const session = sessions.get(day.number);
-        if (session) {
+        if (session?.type) line.append(link(day.title, route(day.number)));
+        else if (session) {
           for (const kind of ['cards', 'quiz', 'worksheet']) {
             const items = session[kind].filter(item => item.objective === obj.id);
             if (items.length) line.append(link(activities[kind] + ' (' + items.length + ')', route(day.number, kind, items[0].id)), ' ');
@@ -122,7 +103,7 @@ function calendar() {
       node('p', objectivesLabel(day), 'muted'), node('p', day.goal), node('p', day.recall));
     if (session) {
       section.append(node('p', summary(session, read(day.number)).status, 'status'),
-        node('p', 'Topic review · Flashcards · Recall quiz · Worksheet', 'muted'));
+        node('p', session.type === 'rehearsal' ? 'Timed exam · Error analysis' : session.type === 'readiness' ? 'Targeted recall · Practical exercise · Readiness review' : 'Topic review · Flashcards · Recall quiz · Worksheet', 'muted'));
       const open = link('Open Day ' + day.number, route(day.number));
       open.className = 'open';
       section.append(open);
@@ -351,6 +332,9 @@ function render(focusId) {
   const day = parts && plan.days.find(d => d.number === Number(parts[1]));
   if (!day || !sessions.has(day.number)) {
     calendar();
+  } else if (sessions.get(day.number).type) {
+    heading.textContent = 'Day ' + day.number + ' · ' + day.title;
+    renderCapstone(day, sessions.get(day.number), { plan, sessions, view, read, change, reading, route, render });
   } else {
     const [, , kind, target] = parts;
     const session = sessions.get(day.number);
@@ -403,7 +387,7 @@ async function start() {
   });
   window.addEventListener('beforeprint', () => {
     const day = plan.days.find(d => location.hash.split('/')[0] === '#day-' + d.number);
-    if (day && sessions.has(day.number)) preparePrint(day, sessions.get(day.number), printMode);
+    if (day && sessions.get(day.number)?.worksheet) preparePrint(day, sessions.get(day.number), printMode);
   });
   window.addEventListener('afterprint', () => paper.replaceChildren());
 }

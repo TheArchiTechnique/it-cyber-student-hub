@@ -1,3 +1,4 @@
+import { capstoneFlow } from './study-plans-capstone-browser.mjs';
 // Serve a built site locally and pass its root URL (including any project prefix).
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -19,7 +20,7 @@ try {
   await page.goto(app.href);
   await page.locator('.plan-grid').waitFor();
   assert.equal(await page.locator('.plan-grid article').count(), 14);
-  assert.equal(await page.locator('.plan-grid .open').count(), 12);
+  assert.equal(await page.locator('.plan-grid .open').count(), 14);
   const readDay = number => page.evaluate(key => localStorage.getItem(key), storageKey(plan, number));
   let previousDays;
   let daysSevenToNine;
@@ -107,7 +108,7 @@ try {
   await page.reload();
   assert.deepEqual(await Promise.all([1, 2, 3, 4, 5, 6].map(readDay)), previousDays);
   assert.deepEqual(await Promise.all([7, 8, 9].map(readDay)), daysSevenToNine);
-  await page.getByText('12 of 14 days completed · 12 interactive sessions available').waitFor();
+  await page.getByText('12 of 14 days completed · 14 interactive sessions available').waitFor();
   await page.setViewportSize({ width: 320, height: 700 });
   const noOverflow = () => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth);
   assert.ok(await noOverflow());
@@ -131,12 +132,10 @@ try {
   await btn('Reset this day').click();
   await page.getByText('Not started · 0 of 4 activities completed').waitFor();
   await page.getByRole('link', { name: 'Return to study calendar' }).click();
-  await page.getByText('11 of 14 days completed · 12 interactive sessions available').waitFor();
-  for (const day of plan.days.slice(12)) {
-    await page.goto(app.href + '#day-' + day.number + '/quiz');
-    await page.locator('.plan-grid').waitFor();
-    assert.equal(await page.locator('#view input').count(), 0);
-  }
+  await page.getByText('11 of 14 days completed · 14 interactive sessions available').waitFor();
+  const earlier = await Promise.all(plan.days.slice(0, 12).map(d => readDay(d.number)));
+  await capstoneFlow(page, plan, app, noOverflow);
+  assert.deepEqual(await Promise.all(plan.days.slice(0, 12).map(d => readDay(d.number))), earlier);
   for (const obj of Object.values(plan.objectives)) {
     const target = new URL(obj.reading, app);
     const response = await page.request.get(target.href);
@@ -145,7 +144,7 @@ try {
   }
   for (const [, href] of Object.values(plan.resources)) assert.equal((await page.request.get(new URL(href, root).href)).status(), 200);
   assert.deepEqual(errors, []);
-  console.log('Passed twelve complete sessions, mobile and desktop, keyboard navigation, grading, persistence, reset, worksheet print modes and resource links.');
+  console.log('Passed all fourteen sessions, mobile and desktop, keyboard navigation, grading, persistence, reset, worksheet print modes and resource links.');
 } finally {
   await browser.close();
 }

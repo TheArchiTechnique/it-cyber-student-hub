@@ -647,12 +647,13 @@
         "4.9",
         "4.10"
       ],
-      "goal": "Take the Hub's 90-minute Core 2 certification simulation. Use 30 minutes to classify misses by objective and retry one practical task.",
+      "goal": "Complete a timed Core 2 simulation, then use the results to explain missed decisions and choose a practical exercise to retry.",
       "recall": "Pick two weak objectives across different domains. Explain the evidence that would change your answer.",
       "resources": [
         "exam",
         "ticket"
-      ]
+      ],
+      "session": "day-13.json"
     },
     {
       "number": 14,
@@ -701,7 +702,8 @@
       "resources": [
         "exam",
         "bsod"
-      ]
+      ],
+      "session": "day-14.json"
     }
   ]
 }

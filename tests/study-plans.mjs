@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { freshDay, storageKey, matches, cardOrder, summary } from '../docs/assets/javascripts/study-plans/progress.mjs';
+import { freshDay, storageKey, matches, cardOrder, summary, reviewTargets, readinessOutcome } from '../docs/assets/javascripts/study-plans/progress.mjs';
 
 const data = new URL('../docs/assets/data/study-plans/220-1202/', import.meta.url);
 const load = async file => JSON.parse(await readFile(new URL(file, data), 'utf8'));
@@ -10,7 +10,7 @@ assert.deepEqual(Object.keys(plan.objectives).sort(), ids.sort());
 assert.deepEqual(plan.domains.map(d => d.weight), [28, 28, 23, 21]);
 assert.deepEqual(plan.days.map(d => d.number), Array.from({ length: 14 }, (_, i) => i + 1));
 assert.deepEqual(new Set(plan.days.slice(0, 12).flatMap(d => d.objectives)), new Set(ids));
-assert.deepEqual(plan.days.filter(d => d.session).map(d => d.number), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+assert.deepEqual(plan.days.filter(d => d.session).map(d => d.number), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
 assert.notEqual(storageKey(plan, 1), storageKey({ ...plan, exam: '220-1102' }, 1));
 assert.deepEqual(plan.days.slice(3, 12).map(d => [d.minutes, d.objectives]), [
   [120, ['1.5', '1.7', '4.9']],
@@ -30,6 +30,15 @@ for (const day of plan.days) {
   if (!day.session) continue;
   const session = await load(day.session);
   assert.equal(Object.values(session.minutes).reduce((a, b) => a + b), day.minutes);
+  if (day.number >= 13) {
+    assert.equal(session.type, day.number === 13 ? 'rehearsal' : 'readiness');
+    assert.deepEqual(new Set(day.objectives), new Set(ids));
+    assert.deepEqual(session.minutes, day.number === 13 ? { exam: 90, analysis: 30 } : { recall: 25, practical: 30, decision: 20 });
+    assert.equal(summary(session, freshDay()).status, 'Not started');
+    assert.equal(summary(session, { capstoneDraft: { reason: 'a note' } }).status, 'In progress');
+    assert.equal(summary(session, { records: [{ objectives: ['2.1'] }] }).status, 'Completed');
+    continue;
+  }
   assert.equal(session.cards.length, 12);
   assert.equal(session.quiz.length, 8);
   assert.equal(session.worksheet.length, 8);
@@ -77,3 +86,29 @@ for (const day of plan.days) {
   assert.equal(summary(session, state).activities.quiz, false);
 }
 console.log('Passed study-plan schedule, objective mapping, item validation, grading, review priority and version isolation.');
+
+const readiness = await load('day-14.json');
+const balanced = readiness.balanced;
+assert.deepEqual(new Set(balanced.map(id => plan.objectives[id].domain)), new Set(plan.domains.map(d => d.id)));
+for (const [key, objectives] of Object.entries(readiness.practicals)) {
+  assert.ok(plan.resources[key] && objectives.every(id => plan.objectives[id]));
+}
+const day10 = await load('day-10.json');
+const sessions = new Map([[10, day10], [14, readiness]]);
+const ordinary = freshDay();
+const targets = attempt => reviewTargets(plan, sessions, () => ordinary, attempt, balanced);
+assert.deepEqual(targets(null).map(t => t.id), balanced);
+ordinary.cards[day10.cards[0].id] = 'review';
+ordinary.flags['3.1'] = true;
+ordinary.lastQuiz = Object.fromEntries(day10.quiz.map(q => [q.id, q.answers[0]]));
+ordinary.lastQuiz[day10.quiz[0].id] = 'incorrect';
+const selected = targets({ objectives: ['3.1'], domains: ['4.0'] });
+assert.deepEqual(new Set(selected[0].reasons), new Set(['Exam review', 'Manual flag', 'Flashcard', 'Quiz miss']));
+assert.equal(selected[1].id, '4.1');
+const answers = Object.fromEntries(Object.values(readiness.checks).flatMap(group => Object.keys(group).map(id => [id, 'Demonstrated'])));
+answers.independence = 'Independently';
+assert.equal(readinessOutcome(readiness.checks, answers, null), 'Additional targeted review recommended');
+assert.equal(readinessOutcome(readiness.checks, answers, { percentage: '86' }), 'Ready to schedule or attempt the exam');
+assert.equal(readinessOutcome(readiness.checks, { ...answers, gaps: 'Needs work' }, {}), 'Significant objective gaps remain');
+assert.equal(readinessOutcome(readiness.checks, { ...answers, independence: 'With guidance' }, { percentage: '86' }), 'Additional targeted review recommended');
+assert.equal(readinessOutcome(readiness.checks, answers, { percentage: '42' }), 'Additional targeted review recommended');
