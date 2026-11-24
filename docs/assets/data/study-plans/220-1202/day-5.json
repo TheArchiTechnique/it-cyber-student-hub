@@ -25,7 +25,7 @@
     {
       "objective": "1.9",
       "title": "Choose evidence for a Linux support ticket",
-      "text": "df reports filesystem capacity and du estimates space used by a file or directory tree. ps gives a process snapshot; top shows a repeatedly refreshed view. ip addr shows interface addresses and ip route shows routes. ping checks reachability and dig queries DNS. /etc/hosts contains local name-to-address entries, /etc/fstab describes configured mounts and /etc/passwd lists local account records. Password hashes for local shadow-password accounts belong in the restricted /etc/shadow file."
+      "text": "df reports filesystem capacity and du estimates space used by a file or directory tree. ps gives a process snapshot; top shows a repeatedly refreshed view. ip addr shows interface addresses and ip route shows routes. ping checks reachability and dig queries DNS. /etc/hosts contains local name-to-address entries, /etc/fstab describes configured mounts and /etc/passwd lists local account records. Password hashes for local shadow-password accounts belong in the restricted /etc/shadow file. If a machine fails before sign-in, identify the stage: the bootloader loads the kernel, the kernel manages hardware and processes, and systemd starts userspace services on distributions that use it."
     },
     {
       "objective": "1.9",
@@ -39,8 +39,8 @@
       "https://support.apple.com/en-us/102611"
     ],
     [
-      "Apple Support: macOS Recovery on Apple silicon",
-      "https://support.apple.com/guide/mac-help/macos-recovery-a-mac-apple-silicon-mchl82829c17/mac"
+      "Apple Support: start up from macOS Recovery",
+      "https://support.apple.com/en-us/102518"
     ],
     [
       "Ubuntu: install and manage packages",
@@ -232,7 +232,7 @@
       "objective": "1.8",
       "prompt": "An app works for every Mac user except Ana. Which Library would you inspect first for Ana's preferences, and what would be the scope of changing a file in /Library instead?",
       "type": "Example",
-      "key": "Inspect Ana's ~/Library, including the app's preferences or support files. A change under /Library could affect multiple users. Compare settings and preserve a copy before making an authorized change.",
+      "key": "Start with Ana’s ~/Library/Preferences or ~/Library/Application Support. The tilde identifies Ana’s home when she is the signed-in user. /Library holds shared resources, so changes there may affect other users. Preserve a copy before an authorized change.",
       "source": "Daily review and objective breakdown"
     },
     {

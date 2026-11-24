@@ -10,7 +10,7 @@
     {
       "objective": "2.4",
       "title": "Classify behavior before naming a threat",
-      "text": "A virus attaches to a host file and replicates when the host runs. A worm can propagate on its own. A Trojan presents itself as something useful. A rootkit conceals malicious activity; ransomware can deny access to files and demand payment. Spyware collects information, and a keylogger captures keystrokes. Fileless malware may operate in memory or abuse existing system tools. Adware displays unwanted advertising; a potentially unwanted program (PUP) may bundle intrusive features. A cryptominer uses computing resources to mine cryptocurrency. High CPU use alone cannot identify one."
+      "text": "A virus replicates by infecting a host, such as an executable file or boot sector. A file-infecting virus can run when the infected program starts. A worm can propagate on its own. A Trojan presents itself as something useful. A rootkit conceals malicious activity; ransomware can deny access to files and demand payment. Spyware collects information, and a keylogger captures keystrokes. Fileless malware may operate in memory or abuse existing system tools. Adware displays unwanted advertising; a potentially unwanted program (PUP) may bundle intrusive features. A cryptominer uses computing resources to mine cryptocurrency. High CPU use alone cannot identify one."
     },
     {
       "objective": "2.4",
@@ -20,7 +20,7 @@
     {
       "objective": "2.5",
       "title": "Verify the request, even when the sender looks familiar",
-      "text": "Phishing can arrive by email, text (smishing) or voice (vishing). Spear phishing tailors a lure to a target. Business email compromise can involve an actual compromised mailbox or impersonation to redirect money or sensitive data. A mail display name or familiar signature is weak evidence. For a new payment destination, pause the transaction, verify through the number already on file and report the original message. Calling the number in the request repeats the same trust problem."
+      "text": "Phishing can arrive by email, text (smishing) or voice (vishing). Spear phishing tailors a lure to a target. Business email compromise can involve an actual compromised mailbox or impersonation to redirect money or sensitive data. A mail display name or familiar signature is weak evidence. For a new payment destination, pause the transaction, verify through the number already on file and report the original message. Calling the number in the request repeats the same trust problem. A targeted email to an executive is whaling. For a suspected supply-chain incident, the concern is the trusted supplier or update channel. A missing patch is a vulnerability; attempted misuse is a threat. Record the evidence available for each."
     },
     {
       "objective": "2.6",
@@ -53,8 +53,8 @@
       "https://support.microsoft.com/en-us/windows/security/windows-security/protection-history-in-the-windows-security-app"
     ],
     [
-      "Microsoft Support: troubleshoot malware detection and removal",
-      "https://support.microsoft.com/en-us/defender/troubleshoot-problems-with-detecting-and-removing-malware"
+      "Microsoft Learn: Defender Offline scans and results",
+      "https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-offline"
     ]
   ],
   "cards": [
@@ -264,7 +264,7 @@
       "objective": "3.4",
       "prompt": "One user sees repeated search redirects. A second profile on the same PC opens the expected page and Windows Security shows no matching detection. What would you check, and what conclusion can you draw now?",
       "type": "Example",
-      "key": "Check extensions, search provider, proxy settings and recent profile changes against the approved configuration. The difference narrows the problem to the first profile or its settings; a clean history alone cannot rule out a threat.",
+      "key": "Compare extensions, search provider, proxy and sync settings, recent profile changes and organization policy. The comparison suggests a profile-specific trigger. It does not establish the cause or rule out a broader problem. Check any suspicious change against independent evidence.",
       "source": "Daily review and objective breakdown"
     },
     {
@@ -281,7 +281,7 @@
       "prompt": "An approved response plan calls for a Microsoft Defender Offline scan because a threat returns when Windows starts. Consult Microsoft's removal guidance. What should the user do before the scan, why does the restart help, and where can support verify the result?",
       "type": "Example",
       "key": "Save work and close open applications because the PC restarts. Scanning from a recovery environment can examine threats while the normal OS and its processes are inactive. After restart, review Protection History and verify that the original symptoms no longer recur.",
-      "source": "Microsoft Support: troubleshoot malware detection and removal"
+      "source": "Microsoft Learn: Defender Offline scans and results"
     },
     {
       "id": "coaching",

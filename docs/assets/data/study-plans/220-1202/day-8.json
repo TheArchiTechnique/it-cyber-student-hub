@@ -20,7 +20,7 @@
     {
       "objective": "2.10",
       "title": "Walk the boundary between guest, staff and internet",
-      "text": "A second SSID labels a network. Verify its isolation: a guest should reach the internet but should be denied access to staff file shares and router administration. Change default management credentials, apply supported firmware and restrict management to authorized clients. Review unused services and existing inbound port forwards. UPnP may let local software request port mappings; disable that capability when it has no approved use. Verify that needed services still work after hardening."
+      "text": "A second SSID labels a network. Verify its isolation: a guest should reach the internet but should be denied access to staff file shares and router administration. Change default management credentials, apply supported firmware and restrict management to authorized clients. Review unused services and existing inbound port forwards. UPnP may let local software request port mappings; disable that capability when it has no approved use. Verify that needed services still work after hardening. Suppressing SSID broadcasts only reduces ordinary visibility. Authentication and encryption still protect the wireless link, and network rules enforce guest isolation."
     },
     {
       "objective": "2.11",
@@ -148,9 +148,10 @@
     {
       "id": "mapping",
       "objective": "2.10",
-      "prompt": "A SOHO router lets compatible local apps request port mappings automatically. Which four-letter router feature should support review? ____.",
+      "prompt": "A home gateway allows a game console to request its own inbound port mapping. Which feature, abbreviated with four letters, commonly provides that service? ____",
       "answers": [
-        "UPnP"
+        "UPnP",
+        "Universal Plug and Play"
       ],
       "explanation": "Review whether automatic mappings are required and audit separate manual forwarding rules."
     },

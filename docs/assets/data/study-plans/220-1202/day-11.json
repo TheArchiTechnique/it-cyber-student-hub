@@ -20,7 +20,7 @@
     {
       "objective": "4.6",
       "title": "Protect information and preserve evidence",
-      "text": "Use the least identifying detail the ticket needs. Personal identifiers, payment and healthcare information, credentials and confidential business records require controlled handling. Use a restricted evidence reference in the general ticket. Follow retention and approved disposal rules, including any preservation hold. Record observations with times and report suspected prohibited activity through the designated channel. Preserve the original and leave collection decisions, especially for volatile data, to authorized responders. Chain of custody records the evidence identifier, who held it, when transfers occurred and why."
+      "text": "Use the least identifying detail the ticket needs. Personally identifiable information (PII) can identify or be linked to a person. Collect only what the incident requires. Keep credentials, payment details and sensitive personal records out of general ticket notes. Use a restricted evidence reference in the general ticket. Follow retention and approved disposal rules, including any preservation hold. Record observations with times and report suspected prohibited activity through the designated channel. Preserve the original and leave collection decisions, especially for volatile data, to authorized responders. Chain of custody records the evidence identifier, who held it, when transfers occurred and why."
     },
     {
       "objective": "4.6",
@@ -168,7 +168,9 @@
       "prompt": "A technician restates a caller's concern and checks whether they understood it correctly. This communication technique is called ____ listening.",
       "answers": [
         "active",
-        "reflective"
+        "reflective",
+        "active listening",
+        "reflective listening"
       ],
       "explanation": "Reflecting the caller's meaning and confirming it is an active listening technique that can uncover an incorrect assumption early."
     },

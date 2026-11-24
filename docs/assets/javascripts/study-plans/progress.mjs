@@ -9,6 +9,10 @@ export function storageKey(plan, day) {
 
 export function matches(question, value) {
   if (question.caseSensitive) return question.answers.includes(value.trim());
+  if (question.answerFormat === 'command') {
+    const command = value.trim().toLowerCase().replace(/\s+/g, ' ');
+    return question.answers.some(answer => answer.toLowerCase() === command);
+  }
   const normalize = text => text.trim().normalize('NFKC').toLowerCase().replace(/[\s‐‑–-]+/g, ' ');
   return question.answers.some(answer => normalize(answer) === normalize(value));
 }
@@ -84,10 +88,13 @@ export function reviewTargets(plan, sessions, read, rehearsal, balanced) {
 }
 
 export function readinessOutcome(checks, record, rehearsal) {
-  const technical = [...Object.keys(checks['Technical readiness']), ...Object.keys(checks['Practice performance'])];
+  const technical = Object.keys(checks['Technical readiness']);
   const gaps = technical.filter(id => record[id] === 'Needs work');
   if (gaps.length >= 2 || record.gaps === 'Needs work') return 'Significant objective gaps remain';
-  if (!rehearsal || Number(rehearsal.percentage) < 50 || record.objectives?.length || record.independence !== 'Independently' ||
+  // A stored rehearsal percentage is an integer from the exam results or the manual score field.
+  const percentage = Number(String(rehearsal?.percentage ?? '').trim());
+  const meetsPracticeFloor = Number.isInteger(percentage) && percentage >= 50 && percentage <= 100;
+  if (!meetsPracticeFloor || record.objectives?.length || record.independence !== 'Independently' ||
       Object.values(checks).some(group => Object.keys(group).some(id => record[id] !== 'Demonstrated'))) {
     return 'Additional targeted review recommended';
   }

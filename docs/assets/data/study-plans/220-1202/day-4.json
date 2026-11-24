@@ -15,7 +15,7 @@
     {
       "objective": "1.5",
       "title": "Collect the smallest useful piece of evidence",
-      "text": "Use hostname to identify the PC and whoami to record the current account. gpresult /r reports applied policy; gpupdate requests a refresh. netstat shows connections and listeners, tracert shows responding hops and pathping samples loss over time. For a file ticket, use cd and dir to locate the source and robocopy to copy a directory tree. For a disk ticket, distinguish chkdsk (volume integrity) from sfc (protected Windows files). Use the linked Windows command lab to practice collecting evidence without changing a client's settings."
+      "text": "Use hostname to identify the PC and whoami to record the current account. gpresult /r reports applied policy; gpupdate requests a refresh. Without switches, netstat shows active TCP connections. Use netstat -a to include listening ports or netstat -ano to include numeric endpoints and process IDs. tracert shows responding hops and pathping samples loss over time. For a file ticket, use cd and dir to locate the source and robocopy with /E to copy subdirectories, including empty ones. For a disk ticket, distinguish chkdsk (volume integrity) from sfc (protected Windows files). Use the linked Windows command lab to practice collecting evidence without changing a client's settings."
     },
     {
       "objective": "1.7",
@@ -48,7 +48,11 @@
     ],
     [
       "CISA: securing remote access software",
-      "https://www.cisa.gov/sites/default/files/2023-06/guide_to_securing_remote_access_software.pdf"
+      "https://www.cisa.gov/sites/default/files/2023-06/Guide%20to%20Securing%20Remote%20Access%20Software_clean%20Final_508c.pdf"
+    ],
+    [
+      "Microsoft Learn: netstat switches",
+      "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/netstat"
     ]
   ],
   "cards": [
@@ -178,7 +182,7 @@
     {
       "id": "share-path",
       "objective": "1.7",
-      "prompt": "Windows calls its server-and-share path format the Universal Naming Convention, abbreviated ____.",
+      "prompt": "A technician can open \\\\files01\\intake without mapping a drive letter. What three-letter abbreviation identifies this Windows path convention? ____",
       "answers": [
         "UNC"
       ],
@@ -197,9 +201,10 @@
     {
       "id": "shell",
       "objective": "4.9",
-      "prompt": "An administrator needs an encrypted remote terminal. The protocol called Secure Shell is abbreviated ____.",
+      "prompt": "A support client connects to a remote server on TCP port 22 for an authenticated, encrypted interactive terminal. Name the protocol: ____.",
       "answers": [
-        "SSH"
+        "SSH",
+        "Secure Shell"
       ],
       "explanation": "SSH carries an authenticated remote shell suitable for text-based administration."
     }

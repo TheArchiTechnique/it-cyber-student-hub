@@ -15,7 +15,7 @@
     {
       "objective": "4.3",
       "title": "Design for loss of a workstation or a whole site",
-      "text": "Use 3-2-1 as a design check: three copies including production, two media types and one copy offsite. Onsite storage can speed routine restores. A separate offsite copy can survive a site loss. Protect backups and access credentials. Grandfather-father-son rotation retains selected daily, weekly and monthly generations, so an older recovery point may survive beyond the daily window. Document the retention periods. Check the backup logs and periodically restore from each recovery source you expect to rely on."
+      "text": "Use 3-2-1 as a design check: three copies including production, two media types and one copy offsite. Onsite storage can speed routine restores. A separate offsite copy can survive a site loss. Protect backups and access credentials. Grandfather-father-son rotation keeps daily copies as sons, weekly copies as fathers and monthly copies as grandfathers in a common implementation, so an older recovery point may survive beyond the daily window. Document the retention periods. Check the backup logs and periodically restore from each recovery source you expect to rely on."
     },
     {
       "objective": "4.3",
@@ -180,7 +180,7 @@
     {
       "id": "recovery-gap",
       "objective": "4.3",
-      "prompt": "The incremental after Monday is unreadable, but an independent Thursday differential is intact. To restore Thursday, the differential's required base is the associated ____ backup.",
+      "prompt": "A Tuesday incremental is unreadable. Thursday’s intact differential contains all changes since the Sunday baseline. Which type of backup must you retrieve from Sunday to restore Thursday? ____",
       "answers": [
         "full",
         "full backup"
@@ -190,7 +190,7 @@
     {
       "id": "retention-tier",
       "objective": "4.3",
-      "prompt": "In a daily-son, weekly-father, monthly-grandfather rotation, which named generation would you request for a retained month-end copy? ____",
+      "prompt": "A site rotates daily, weekly and monthly copies using GFS. Which named generation holds the month-end copy after the daily and weekly copies have expired? ____",
       "answers": [
         "grandfather",
         "grandfather generation",
@@ -270,7 +270,7 @@
       "objective": "2.9",
       "prompt": "A contractor presents a batch pickup receipt and a photo of one drilled drive. Explain the two gaps in the evidence and what the asset owner should request.",
       "type": "Factual",
-      "key": "Pickup proves transfer, and a photo of holes does not verify sanitization of all recording surfaces or chips. Keep the batch under controlled custody pending reconciliation. Require approved processing for every asset and completion records tied to the inventory.",
+      "key": "A pickup receipt shows custody transferred. One photo cannot establish that every listed drive was destroyed or that no readable material remains. Reconcile the serial numbers and custody trail with the contractor, require approved processing of any outstanding media, and obtain the corresponding destruction certificate before closing the asset records.",
       "source": "Daily review and objective breakdown"
     },
     {

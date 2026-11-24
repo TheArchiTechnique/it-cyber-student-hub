@@ -10,7 +10,7 @@
     {
       "objective": "1.1",
       "title": "Start with what the device must run",
-      "text": "A browser-based gradebook can work on ChromeOS. A Windows-only desktop application may require Windows even if another OS can open its data files. Check the publisher's supported OS, version and drivers. Linux distributions and macOS have their own app ecosystems. On phones and tablets, distinguish iOS, iPadOS and Android. A device that still starts can already be past its supported update life."
+      "text": "A browser-based gradebook can work on ChromeOS. A Windows-only desktop application may require Windows even if another OS can open its data files. Check the publisher's supported OS, version and drivers. Linux distributions and macOS have their own app ecosystems. On phones and tablets, distinguish iOS, iPadOS and Android. A device that still starts can already be past its supported update life. End of life (EOL) refers to product retirement. Check the vendor’s dates for standard and extended support when deciding whether security updates are available."
     },
     {
       "objective": "1.1",
@@ -20,7 +20,7 @@
     {
       "objective": "1.3",
       "title": "Check the receiving PC's edition",
-      "text": "A Windows Home PC can initiate a Remote Desktop session. Hosting a built-in Remote Desktop session or joining an on-premises Active Directory domain requires a supported business edition such as Pro. A workgroup keeps accounts local to each computer. Pro provides BitLocker management and Local Group Policy Editor. Eligible Home devices can offer Device Encryption. Enterprise adds organizational management options; Pro for Workstations targets demanding hardware. Memory limits vary by edition and architecture."
+      "text": "A Windows Home PC can initiate a Remote Desktop session. Hosting a built-in Remote Desktop session or joining an on-premises Active Directory domain requires a supported business edition such as Pro. A workgroup keeps accounts local to each computer. Pro provides BitLocker management and Local Group Policy Editor. Eligible Home devices can offer Device Encryption. Enterprise adds organizational management options; Pro for Workstations targets demanding hardware. On x64 Windows 11, Home supports up to 128 GB of physical memory and Pro up to 2 TB. Check the hardware limit as well when selecting an edition for a large-memory workstation."
     },
     {
       "objective": "1.3",
@@ -40,6 +40,10 @@
     [
       "Microsoft Support: Windows 11 requirements",
       "https://support.microsoft.com/en-us/windows/experience/compatibility/windows-11-system-requirements"
+    ],
+    [
+      "Microsoft Learn: physical memory limits by edition",
+      "https://learn.microsoft.com/en-us/windows/win32/memory/memory-limits-for-windows-releases"
     ]
   ],
   "cards": [
@@ -150,7 +154,7 @@
     {
       "id": "lifecycle",
       "objective": "1.1",
-      "prompt": "A release has reached the end of its vendor support life cycle. The three-letter abbreviation is ____.",
+      "prompt": "A vendor is retiring a product line. Which three-letter lifecycle term in objective 1.1 describes this milestone? ____",
       "answers": [
         "EOL"
       ],
@@ -175,7 +179,8 @@
         "RDP host",
         "remote desktop host",
         "server",
-        "RDP server"
+        "RDP server",
+        "remote desktop server"
       ],
       "explanation": "The initiating computer is the client. Windows Home can initiate a session."
     },

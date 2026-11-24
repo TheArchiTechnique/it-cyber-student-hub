@@ -648,7 +648,7 @@
         "4.10"
       ],
       "goal": "Complete a timed Core 2 simulation, then use the results to explain missed decisions and choose a practical exercise to retry.",
-      "recall": "Pick two weak objectives across different domains. Explain the evidence that would change your answer.",
+      "recall": "Choose two decisions you missed or felt uncertain about. Identify the evidence that would change each answer.",
       "resources": [
         "exam",
         "ticket"

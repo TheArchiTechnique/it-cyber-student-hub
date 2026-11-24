@@ -15,7 +15,7 @@
     {
       "objective": "1.4",
       "title": "Locate the right console",
-      "text": "MMC hosts administrative snap-ins. Device Manager shows devices and driver status; Disk Management shows disks, partitions and volumes; Task Scheduler runs tasks on triggers. Certificate Manager and Local Users and Groups cover different stores. Use System Information for inventory, System Configuration for startup diagnosis, Disk Cleanup to reclaim space and Optimize Drives for media-appropriate optimization. Registry Editor changes configuration directly; a symptom alone rarely justifies an edit."
+      "text": "MMC hosts administrative snap-ins. Device Manager shows devices and driver status; Disk Management shows disks, partitions and volumes; Task Scheduler runs tasks on triggers. certmgr.msc shows the current user’s certificates. lusrmgr.msc manages local accounts and groups on supported editions. Use System Information for inventory, System Configuration for startup diagnosis, Disk Cleanup to reclaim space and Optimize Drives for media-appropriate optimization. Registry Editor changes configuration directly; a symptom alone rarely justifies an edit."
     },
     {
       "objective": "1.6",
@@ -112,7 +112,7 @@
     {
       "id": "crash",
       "objective": "1.4",
-      "prompt": "To inspect Windows application log entries at the minute of a crash, open ____.",
+      "prompt": "Which Windows MMC snap-in lets you inspect Application log entries at the minute of a crash? ____",
       "answers": [
         "Event Viewer",
         "Windows Event Viewer",
@@ -146,7 +146,7 @@
     {
       "id": "schedule",
       "objective": "1.4",
-      "prompt": "To run an approved task whenever a user signs in, configure a trigger in ____.",
+      "prompt": "To run an inventory program at sign-in, a technician creates a task with a logon trigger and a program action. Name the graphical Windows scheduling tool: ____.",
       "answers": [
         "Task Scheduler",
         "Windows Task Scheduler",
@@ -201,7 +201,7 @@
       "objective": "1.4",
       "prompt": "A workstation froze before lunch and now works normally. Which tool could give evidence from that time? Name two details you would record.",
       "type": "Example",
-      "key": "Open Event Viewer and review the relevant log near the reported time. Record details such as source, timestamp, event ID and message.",
+      "key": "Check Event Viewer around the freeze and record the timestamp, source, event ID or message. Reliability Monitor is also appropriate if it captured a matching failure. A freeze may leave no matching entry. Compare any finding with the user’s timeline.",
       "source": "Daily review and objective breakdown"
     },
     {

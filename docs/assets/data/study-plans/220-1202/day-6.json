@@ -20,7 +20,7 @@
     {
       "objective": "1.11",
       "title": "Trace access from sign-in to the document",
-      "text": "For a new employee, verify the work account and tenant, identity synchronization if used, and the license or service plan for the requested email or collaboration service. Then check access to the specific team, library or file. Someone who can edit one team document but can only view another may have different sharing permissions on the two items. Test access using the employee's own account."
+      "text": "For a new employee, verify the work account and tenant, identity synchronization if used, and the license or service plan for the requested email or collaboration service. Then check access to the specific team, library or file. Someone who can edit one team document but can only view another may have different sharing permissions on the two items. Ask the employee to perform the access test in their own signed-in session."
     },
     {
       "objective": "1.11",
@@ -30,7 +30,7 @@
     {
       "objective": "4.2",
       "title": "Make a change request that someone else can execute",
-      "text": "Record the reason, affected users and systems, owner, dependencies, risks, expected interruption and validation criteria. Test the change in a sandbox or representative pilot. Include a backup, a specific rollback trigger, a restoration procedure and a named decision maker. Follow the required authorization process, observe freezes and schedule an approved maintenance window. After implementation, verify the technical result and have an affected user perform the business task before closing the change."
+      "text": "Record the reason, affected users and systems, owner, dependencies, risks, expected interruption and validation criteria. Test the change in a sandbox or representative pilot. Include a backup, a specific rollback trigger, a restoration procedure and a named decision maker. Follow the required authorization process, observe freezes and schedule an approved maintenance window. After implementation, verify the technical result and have an affected user perform the business task before closing the change. A standard change follows a preauthorized procedure. A normal change needs risk-based review and approval. An emergency change uses the organization’s expedited authorization path and is documented afterward as required."
     },
     {
       "objective": "4.8",
@@ -114,8 +114,8 @@
     {
       "id": "batch",
       "objective": "4.8",
-      "prompt": "Which script extension normally identifies commands for the Windows batch interpreter?",
-      "answer": ".bat is a batch script processed by cmd.exe."
+      "prompt": "Which two filename extensions commonly identify Windows command scripts processed by cmd.exe?",
+      "answer": ".bat and .cmd. The Core 2 scripting objective explicitly lists .bat."
     },
     {
       "id": "runtime",
@@ -134,7 +134,7 @@
     {
       "id": "graphics",
       "objective": "1.10",
-      "prompt": "The vendor lists system RAM separately from graphics memory. The four-letter abbreviation for video RAM is ____.",
+      "prompt": "A graphics card must have 4 GB of dedicated memory for textures. Which four-letter memory specification should the technician check? ____",
       "answers": [
         "VRAM"
       ],

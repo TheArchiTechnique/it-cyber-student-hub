@@ -19,18 +19,16 @@
     "bsod": [
       "1.4",
       "1.6",
+      "1.10",
       "3.1"
     ],
     "network": [
-      "1.5",
       "1.7",
       "2.3",
       "2.10"
     ],
     "phish": [
-      "2.5",
-      "2.6",
-      "3.3"
+      "2.5"
     ],
     "malware": [
       "2.4",
@@ -38,24 +36,24 @@
       "3.4"
     ],
     "ticket": [
-      "4.1",
-      "4.6",
-      "4.7",
-      "4.10"
+      "4.1"
     ],
     "linux": [
-      "1.8",
       "1.9"
     ],
     "commands": [
       "1.5",
+      "1.7"
+    ],
+    "windows-troubleshooting": [
+      "1.5",
       "1.7",
-      "4.9"
+      "3.1"
     ]
   },
   "checks": {
     "Technical readiness": {
-      "concepts": "Explain a weak concept from memory and distinguish it from a similar technology.",
+      "concepts": "Explain a previously missed or uncertain concept from memory and distinguish it from a similar technology.",
       "tools": "Choose a tool or command and explain what evidence you expect it to return.",
       "scenario": "Interpret a new troubleshooting scenario and justify the first action.",
       "pbq": "Complete a relevant PBQ or lab independently and explain a tempting wrong action."

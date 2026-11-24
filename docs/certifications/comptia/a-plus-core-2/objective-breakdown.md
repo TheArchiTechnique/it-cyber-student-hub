@@ -161,7 +161,7 @@ Use the [Windows Command-Line Reference](../../../reference/windows-command-line
 | `dir` | Lists files and directories, including names, dates, and sizes. |
 | `ipconfig` | Displays IP configuration. `/all` adds detail; `/release` and `/renew` affect DHCP leases, and `/flushdns` clears the DNS client cache. |
 | `ping` | Sends ICMP echo requests to test reachability and round-trip delay. A blocked reply does not prove the destination is offline. |
-| `netstat` | Shows active connections and listening ports. `-ano` includes numeric addresses and process IDs. |
+| `netstat` | Shows active TCP connections by default. Use `-a` to include listening ports or `-ano` to also show numeric endpoints and process IDs. |
 | `nslookup` | Queries DNS to investigate name resolution and records returned by a resolver. |
 | `net use` | Connects to, lists, or disconnects network shares and mapped drives. |
 | `tracert` | Shows responding hops on the route to a destination. A timeout can reflect filtering rather than a failed hop. |

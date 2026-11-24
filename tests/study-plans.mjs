@@ -112,3 +112,14 @@ assert.equal(readinessOutcome(readiness.checks, answers, { percentage: '86' }), 
 assert.equal(readinessOutcome(readiness.checks, { ...answers, gaps: 'Needs work' }, {}), 'Significant objective gaps remain');
 assert.equal(readinessOutcome(readiness.checks, { ...answers, independence: 'With guidance' }, { percentage: '86' }), 'Additional targeted review recommended');
 assert.equal(readinessOutcome(readiness.checks, answers, { percentage: '42' }), 'Additional targeted review recommended');
+
+for (const percentage of [undefined, '', 'unknown', '101', '80.5', -1, 49]) {
+  assert.equal(readinessOutcome(readiness.checks, answers, { percentage }), 'Additional targeted review recommended');
+}
+assert.equal(readinessOutcome(readiness.checks, { ...answers, timed: 'Needs work', misses: 'Needs work' }, null),
+  'Additional targeted review recommended', 'Missing rehearsal activities alone do not establish technical gaps.');
+const scan = day10.quiz.find(q => q.id === 'system-scan');
+assert.ok(matches(scan, '  SFC.EXE   /SCANNOW  '));
+assert.ok(!matches(scan, 'sfc-/scannow'));
+assert.ok(!matches(scan, 'sfc /verifyonly'));
+assert.equal(readinessOutcome(readiness.checks, answers, { percentage: '80.0' }), 'Ready to schedule or attempt the exam');

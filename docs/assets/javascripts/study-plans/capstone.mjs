@@ -109,7 +109,7 @@ function rehearsalForm(form, session, context, save, refresh) {
   objectiveChoices(form, plan, 'Select missed objectives, if identifiable');
   form.append(node('p', 'Record three priorities. If you had fewer than three misses, use uncertain answers or skills to verify.'));
   for (const n of [1, 2, 3]) field(form, 'priority' + n, 'Review priority ' + n);
-  listChecks(form, 'Why did you miss or guess? Select all that apply.', 'causes', session.causes.map(c => [c, c]));
+  listChecks(form, 'Which difficulties did you observe? Choose the PBQ reason only for a separate practical exercise.', 'causes', session.causes.map(c => [c, c]));
   field(form, 'reason', 'Which clue changed your answer, and what would you do in a similar scenario?');
   field(form, 'resources', 'Which learning resources will you revisit, and what will you use them to check?');
   field(form, 'practice', 'Practical exercise to retry', practiceOptions(plan, sessions.get(14)));
@@ -176,7 +176,7 @@ function readinessForm(form, session, context, rehearsal) {
   field(form, 'evidence', 'What evidence did you use, what did you try, and what result did you observe?');
   form.append(node('h3', 'Exam-readiness review · ' + session.minutes.decision + ' minutes'), link('Official Core 2 exam objectives', plan.source),
     node('p', 'Use your rehearsal and practical evidence for each answer. For appointment and ID requirements, check your booking confirmation and testing provider instructions.'),
-    node('p', 'The Hub recommends further review when more than half of a rehearsal was missed, a skill still needs work, or independent practice is incomplete. This is a study guideline. CompTIA uses its own scoring.'));
+    node('p', 'A missing rehearsal score or a score below 50% triggers further review in the Hub. Reaching 50% alone establishes no readiness level. The ready recommendation also requires independent practical work, demonstrated skills on every checklist item and no objectives you identify as unresolved in this final review. CompTIA reports a passing score of 700 on a 100–900 scale. There is no direct conversion from this practice percentage.'));
   for (const [group, questions] of Object.entries(session.checks)) {
     const set = node('fieldset');
     set.append(node('legend', group));
@@ -229,7 +229,7 @@ export function renderCapstone(day, session, context) {
     section.append(node('h3', isExam ? 'Saved exam reviews' : 'Saved readiness reviews'));
     if (!isExam) {
       section.append(node('p', recent.outcome, 'status'),
-        node('p', 'Student Hub study guidance based on your recorded evidence. It does not predict an exam result.'),
+        node('p', 'This advisory reflects the evidence you recorded for this attempt. Use it to plan your next study session or exam arrangements.'),
         node('p', recent.outcome === 'Significant objective gaps remain'
           ? 'Choose one unresolved skill, revisit its study day, then apply it to a new scenario before your next rehearsal.'
           : recent.outcome === 'Additional targeted review recommended'

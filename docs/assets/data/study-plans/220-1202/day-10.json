@@ -15,7 +15,7 @@
     {
       "objective": "3.1",
       "title": "Separate a slow sign-in from a hung application",
-      "text": "If the desktop eventually loads, check startup apps and their impact in Task Manager. For slowness during use, compare CPU, memory and disk usage while reproducing the symptom. High memory use across many processes can explain paging and delays. A single frozen app with a responsive desktop suggests a narrower failure. Protect unsaved work where possible. Review the application's failures in Reliability Monitor or the Application event log. For a service that fails at startup, record its error and inspect status, startup type and dependencies before changing its configuration."
+      "text": "If the desktop eventually loads, check startup apps and their impact in Task Manager. For slowness during use, compare CPU, memory and disk usage while reproducing the symptom. High memory use across many processes can explain paging and delays. A single frozen app with a responsive desktop suggests a narrower failure. Protect unsaved work where possible. Review the application's failures in Reliability Monitor or the Application event log. For a service that fails at startup, record its error and inspect status, startup type and dependencies before changing its configuration. For a USB controller resource warning, record which devices and controller are in use. Compare behavior with optional peripherals disconnected or on another controller. High system RAM usage alone cannot explain a controller endpoint limit."
     },
     {
       "objective": "3.1",
@@ -35,7 +35,7 @@
     {
       "objective": "3.3",
       "title": "Trace an alert to its source",
-      "text": "Use system settings to identify which app or website sent a notification. A browser ad styled as a security warning is an unverified claim. Avoid its buttons and phone number. Compare per-app data use, installed apps, permissions, reported changes and management alerts. An unfamiliar app with access to contacts and unexplained uploads warrants escalation for possible disclosure. Record observations through the approved channel. Rooting Android or jailbreaking iOS changes platform restrictions and can violate policy. A management alert calls for verification and review by the responsible team."
+      "text": "Use system settings to identify which app or website sent a notification. A browser ad styled as a security warning is an unverified claim. Avoid its buttons and phone number. Compare per-app data use, installed apps, permissions, reported changes and management alerts. An unfamiliar app with access to contacts and unexplained uploads warrants escalation for possible disclosure. Record observations through the approved channel. Rooting Android or jailbreaking iOS changes platform restrictions and can violate policy. A management alert calls for verification and review by the responsible team. Developer mode enables development features and can violate device policy on its own. Verify application source, publisher and device integrity separately before concluding that a device is rooted."
     },
     {
       "objective": "2.8",
@@ -156,7 +156,8 @@
         "sfc /scannow",
         "sfc.exe /scannow"
       ],
-      "explanation": "The /scannow switch checks protected files and attempts to replace corrupt copies. A verify-only scan would report problems without repairing them."
+      "explanation": "The /scannow switch checks protected files and attempts to replace corrupt copies. A verify-only scan would report problems without repairing them.",
+      "answerFormat": "command"
     },
     {
       "id": "repair-boot",
@@ -195,7 +196,7 @@
     {
       "id": "root",
       "objective": "3.3",
-      "prompt": "The term for obtaining privileged root access on an Android phone by changing its normal platform restrictions is ____.",
+      "prompt": "An Android management report says a device owner bypassed platform restrictions and obtained administrative control over the OS. Supply the Android term for this modification: ____.",
       "answers": [
         "rooting",
         "rooting the device",

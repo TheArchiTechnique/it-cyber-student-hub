@@ -20,7 +20,7 @@
     {
       "objective": "1.2",
       "title": "Distinguish disk layout from file system",
-      "text": "GPT and MBR describe partitions. Formatting a partition creates a file system such as NTFS. A normal Windows UEFI installation uses GPT on the startup disk. If Setup cannot see a disk that firmware detects, check controller configuration and the approved storage driver before changing partitions."
+      "text": "GUID Partition Table (GPT) and Master Boot Record (MBR) are disk partition styles. MBR allows four primary partition entries and addresses about 2 TiB with 512-byte logical sectors. GPT supports larger disks and more partitions. Formatting a partition creates a file system such as NTFS. A normal Windows UEFI installation uses GPT on the startup disk. If Setup cannot see a disk that firmware detects, check controller configuration and the approved storage driver before changing partitions."
     },
     {
       "objective": "4.3",
@@ -96,7 +96,7 @@
       "id": "differential",
       "objective": "4.3",
       "prompt": "Which two backup sets recover Thursday with daily differential backups?",
-      "answer": "The most recent full before Thursday's differential and that Thursday differential."
+      "answer": "Restore the full backup used as Thursday’s differential base, followed by Thursday’s differential. Check the backup catalog for the matching base."
     },
     {
       "id": "synthetic",
@@ -132,7 +132,7 @@
     {
       "id": "boot",
       "objective": "1.2",
-      "prompt": "The three-letter abbreviation for Preboot Execution Environment is ____.",
+      "prompt": "An imaging technician selects network boot. The firmware obtains boot information from a deployment service before a local OS starts. What three-letter boot environment is this? ____",
       "answers": [
         "PXE"
       ],
@@ -152,11 +152,12 @@
     {
       "id": "auto",
       "objective": "1.2",
-      "prompt": "A deployment that proceeds without technician interaction once provisioned is called ____ deployment.",
+      "prompt": "In the deployment terms used by objective 1.2, an automated rollout that needs no technician input at the workstation is called ____ deployment.",
       "answers": [
         "zero-touch",
         "zero touch",
-        "ZTD"
+        "ZTD",
+        "zero-touch deployment"
       ],
       "explanation": "Automation handles the installation steps after prerequisites are met."
     },
