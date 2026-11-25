@@ -1,3 +1,4 @@
+import { networkPlanChecks } from './network-plus-study-plan-browser.mjs';
 import { integrationChecks } from './study-plans-integration-browser.mjs';
 import { capstoneFlow } from './study-plans-capstone-browser.mjs';
 // Serve a built site locally and pass its root URL (including any project prefix).
@@ -154,6 +155,8 @@ try {
   for (const [, href] of Object.values(plan.resources)) assert.equal((await page.request.get(new URL(href, root).href)).status(), 200);
   assert.deepEqual(errors, []);
   await integrationChecks(browser, root, app, plan, JSON.parse(await readFile(new URL(plan.days[0].session, data))));
+  await networkPlanChecks(browser, root);
+  console.log('Passed Network+ sessions, reading anchors, resource links and cross-certification reset isolation.');
   console.log('Passed all fourteen sessions, mobile and desktop, keyboard navigation, grading, persistence, reset, worksheet print modes and resource links.');
 } finally {
   await browser.close();

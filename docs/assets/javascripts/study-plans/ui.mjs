@@ -20,3 +20,7 @@ export function panel(title) {
   section.append(node('h2', title));
   return section;
 }
+
+export function hubURL(path) {
+  return new URL(path, new URL(document.body.dataset.hub, document.baseURI));
+}

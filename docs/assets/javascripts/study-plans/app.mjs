@@ -1,4 +1,4 @@
-import { node, link, button, panel } from './ui.mjs';
+import { hubURL, node, link, button, panel } from './ui.mjs';
 import { renderCapstone } from './capstone.mjs';
 import { freshDay, storageKey, matches, cardOrder, summary } from './progress.mjs';
 
@@ -60,7 +60,7 @@ function resourceLinks(day) {
   for (const key of day.resources) {
     const [name, path] = plan.resources[key];
     const li = node('li');
-    li.append(link(name, document.body.dataset.hub + path));
+    li.append(link(name, hubURL(path)));
     list.append(li);
   }
   return list;

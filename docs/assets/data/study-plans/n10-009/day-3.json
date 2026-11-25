@@ -1,0 +1,322 @@
+{
+  "minutes": {
+    "reading": 25,
+    "cards": 10,
+    "quiz": 20,
+    "worksheet": 35,
+    "application": 30
+  },
+  "review": [
+    {
+      "objective": "1.7",
+      "title": "Turn an octet into a sum",
+      "text": "An IPv4 address contains 32 bits in four octets. From left to right, the bit weights in each octet are 128, 64, 32, 16, 8, 4, 2 and 1. To write 173 in binary, select the largest weights that fit: 128 + 32 + 8 + 4 + 1. Put ones in those positions and zeros elsewhere to get 10101101. To check your work, sum the selected weights again."
+    },
+    {
+      "objective": "1.7",
+      "title": "Find the boundary inside an octet",
+      "text": "In 192.168.40.173/27, the first 27 bits identify the network and five bits identify the host. The final mask octet is 11100000, or 224, giving 255.255.255.224. Masking 10101101 with 11100000 leaves 10100000, or 160. The five host bits are 01101, or 13. The network is 192.168.40.160. A mask's ones must be contiguous from the left."
+    },
+    {
+      "objective": "1.7",
+      "title": "Check the answer with a second method",
+      "text": "For that /27, the block size is 256 minus 224, or 32. The boundaries around 173 are 160 and 192. The broadcast is one below the next boundary, 192.168.40.191. The ordinary LAN hosts are .161 through .190. Five host bits yield 32 total addresses and 30 assignable hosts. Splitting a /24 into /27s borrows three bits, yielding eight equal subnets. Count borrowed bits from the stated parent prefix. The usual subtraction of two applies to conventional multiaccess subnets, with special cases such as /31 point-to-point links and /32 host routes."
+    },
+    {
+      "objective": "1.7",
+      "title": "Size by demand, then place blocks",
+      "text": "For 50, 22 and 10 assigned interfaces in 10.40.6.0/24, choose the smallest blocks with enough usable hosts: 64 addresses (/26), 32 (/27) and 16 (/28). Start with the largest on an aligned boundary. Assign .0/26 (.0–.63), .64/27 (.64–.95) and .96/28 (.96–.111). The next free address is .112. Check each full range including network and broadcast. CIDR expresses prefix length. VLSM uses different prefix lengths within an allocation to fit demand."
+    },
+    {
+      "objective": "1.7",
+      "title": "Recognize addresses with special purposes",
+      "text": "RFC 1918 private space comprises 10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16. Public unicast addresses can be globally routed when allocated and advertised. Other special ranges also exist. A Windows client unable to obtain a DHCP lease can self-assign an APIPA address in 169.254.0.0/16 for link-local communication. A successful ping to 127.0.0.1 tests the local stack. It provides no evidence about the cable or gateway."
+    },
+    {
+      "objective": "1.7",
+      "title": "Use a prefix even when an address looks familiar",
+      "text": "Historically, ordinary class A allocations had first octets 1–126 and a /8 default, B used 128–191 and /16, and C used 192–223 and /24. The 0 and 127 blocks have special uses. Class D (224–239) identifies multicast and class E (240–255) is reserved, with 255.255.255.255 used for limited broadcast. Current classless routing uses the stated prefix. For a host at 172.20.8.70/26, .64–.127 is its block. A proposed directly connected gateway at 172.20.8.1 is outside it. Check the address plan before changing either setting."
+    },
+    {
+      "objective": "1.7",
+      "title": "Apply the calculations to a working host",
+      "text": "Use the IPv4 Subnetting Learning Lab in independent mode and record your arithmetic before checking each answer. In Lab 1, compare a host's configured address, mask and gateway against the intended LAN. In the IP Configuration Troubleshooting PBQ, predict which destinations should be local before testing. Use one unexpected result to decide which setting to check next."
+    }
+  ],
+  "sources": [
+    [
+      "IPv4 subnet tables (RFC 1878)",
+      "https://www.rfc-editor.org/rfc/rfc1878"
+    ],
+    [
+      "Private addressing (RFC 1918)",
+      "https://www.rfc-editor.org/rfc/rfc1918"
+    ],
+    [
+      "IPv4 link-local addressing (RFC 3927)",
+      "https://www.rfc-editor.org/rfc/rfc3927"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "bits",
+      "objective": "1.7",
+      "prompt": "Which two bit weights differ between 11000000 and 11110000, and what decimal change do they cause?",
+      "answer": "The 32 and 16 bits are set. Their sum is 48, changing 192 to 240."
+    },
+    {
+      "id": "mask",
+      "objective": "1.7",
+      "prompt": "How many network and host bits does /26 specify in IPv4?",
+      "answer": "26 network bits and six host bits. The split can fall inside an octet."
+    },
+    {
+      "id": "block",
+      "objective": "1.7",
+      "prompt": "What does a last mask octet of 240 tell you about subnet boundaries within that octet?",
+      "answer": "The block size is 16 because 256 − 240 = 16. Within the /24, boundaries are .0, .16, .32 and so on."
+    },
+    {
+      "id": "hosts",
+      "objective": "1.7",
+      "prompt": "Why does a conventional /28 LAN have 14 assignable addresses?",
+      "answer": "It has four host bits, giving 16 addresses. All host bits zero identify the network and all ones identify the broadcast."
+    },
+    {
+      "id": "parent",
+      "objective": "1.7",
+      "prompt": "How many /26 networks fit in a /23, and which two prefixes determine that number?",
+      "answer": "Eight. The child uses three more network bits than the parent, so there are 2³ subnets."
+    },
+    {
+      "id": "cidr",
+      "objective": "1.7",
+      "prompt": "Expand CIDR and explain what the slash number measures.",
+      "answer": "Classless Inter-Domain Routing. The number is the length in bits of the network prefix."
+    },
+    {
+      "id": "vlsm",
+      "objective": "1.7",
+      "prompt": "Why allocate the largest VLSM block first?",
+      "answer": "Large blocks need larger aligned stretches of free space. Allocating largest first makes it easier to avoid fragmentation and overlap."
+    },
+    {
+      "id": "private",
+      "objective": "1.7",
+      "prompt": "Which 172.x addresses are RFC 1918 private space?",
+      "answer": "172.16.0.0 through 172.31.255.255, or 172.16.0.0/12. The whole 172/8 is not private."
+    },
+    {
+      "id": "apipa",
+      "objective": "1.7",
+      "prompt": "A Windows host gets 169.254.22.9 with no DHCP lease. What communication is this address intended for?",
+      "answer": "IPv4 link-local communication on the local link. Investigate the DHCP path if a managed lease was expected."
+    },
+    {
+      "id": "loopback",
+      "objective": "1.7",
+      "prompt": "What evidence does a successful ping to 127.0.0.1 provide?",
+      "answer": "The local IPv4 stack can respond to loopback traffic. Test an actual neighbor to verify traffic crosses the interface."
+    },
+    {
+      "id": "classes",
+      "objective": "1.7",
+      "prompt": "Which historical class used a /16 default, and what defines a modern subnet boundary?",
+      "answer": "Class B. In a classless deployment the configured prefix defines the boundary even when it differs from /16."
+    },
+    {
+      "id": "special",
+      "objective": "1.7",
+      "prompt": "How would you classify 239.1.1.1 and 250.1.1.1 using historical classes?",
+      "answer": "239.1.1.1 is class D multicast. 250.1.1.1 is in class E reserved space. Neither is an ordinary public unicast host address."
+    },
+    {
+      "id": "gateway",
+      "objective": "1.7",
+      "prompt": "What does a host compare before sending a frame directly to a destination or using its default route?",
+      "answer": "Its on-link prefix and the destination IP. With ordinary host routes and one default gateway, off-link destinations use the gateway's local MAC."
+    },
+    {
+      "id": "overlap",
+      "objective": "1.7",
+      "prompt": "Why do different-looking network addresses sometimes still overlap?",
+      "answer": "A smaller subnet can lie wholly inside a larger one. Compare each complete interval from network through broadcast."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "binary",
+      "objective": "1.7",
+      "prompt": "Write decimal 150 as exactly eight binary digits: ____.",
+      "answers": [
+        "10010110"
+      ],
+      "explanation": "128 + 16 + 4 + 2 = 150. Reading the weights from 128 down to 1 gives 10010110."
+    },
+    {
+      "id": "decimal",
+      "objective": "1.7",
+      "prompt": "The binary octet 01101101 equals decimal ____.",
+      "answers": [
+        "109"
+      ],
+      "explanation": "64 + 32 + 8 + 4 + 1 = 109."
+    },
+    {
+      "id": "mask",
+      "objective": "1.7",
+      "prompt": "Write the dotted-decimal mask for /22: ____.",
+      "answers": [
+        "255.255.252.0"
+      ],
+      "explanation": "Two complete mask octets give 16 bits. Six more ones give 11111100, or 252, in the third octet."
+    },
+    {
+      "id": "prefix",
+      "objective": "1.7",
+      "prompt": "The mask 255.255.255.248 has prefix length ____ (number).",
+      "answers": [
+        "29",
+        "/29"
+      ],
+      "explanation": "The final octet is 11111000. Add its five network bits to the first 24."
+    },
+    {
+      "id": "network",
+      "objective": "1.7",
+      "prompt": "For 10.7.19.84/22, write the network address without the prefix: ____.",
+      "answers": [
+        "10.7.16.0"
+      ],
+      "explanation": "With third-octet increments of 4, 19 lies in the 16–19 block. Clear all host bits, including the fourth octet."
+    },
+    {
+      "id": "broadcast",
+      "objective": "1.7",
+      "prompt": "Write the broadcast address of the subnet containing 172.18.4.139/28: ____.",
+      "answers": [
+        "172.18.4.143"
+      ],
+      "explanation": "A /28 advances by 16. The network is .128 and the next network is .144, putting the broadcast at .143."
+    },
+    {
+      "id": "last",
+      "objective": "1.7",
+      "prompt": "What is the last usable host on the ordinary LAN 192.168.5.64/26? ____",
+      "answers": [
+        "192.168.5.126"
+      ],
+      "explanation": "The 64-address block ends at .127. Reserve that address for broadcast and subtract one."
+    },
+    {
+      "id": "hosts",
+      "objective": "1.7",
+      "prompt": "A conventional /25 LAN has room for ____ assigned interfaces.",
+      "answers": [
+        "126"
+      ],
+      "explanation": "Seven host bits give 128 total addresses. Subtract the network and broadcast addresses."
+    },
+    {
+      "id": "borrowed",
+      "objective": "1.7",
+      "prompt": "A /20 allocation is split entirely into equal /24s. How many subnets result? ____",
+      "answers": [
+        "16"
+      ],
+      "explanation": "Four bits switch from host to subnet use, yielding 2⁴ = 16 child prefixes."
+    },
+    {
+      "id": "size",
+      "objective": "1.7",
+      "prompt": "A LAN needs 31 assignable addresses including its gateway. Give the longest prefix that fits: ____.",
+      "answers": [
+        "/26",
+        "26"
+      ],
+      "explanation": "A /27 yields only 30 usable addresses. A /26 has six host bits and yields 62 usable addresses."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "binary",
+      "objective": "1.7",
+      "type": "Convert 203 to an eight-bit binary octet, then convert 01011010 to decimal. Show the weights you used.",
+      "prompt": "Factual",
+      "source": "Write 128, 64, 32, 16, 8, 4, 2, 1 across the page.",
+      "key": "203 = 128 + 64 + 8 + 2 + 1, so its bits are 11001011. For 01011010, sum 64 + 16 + 8 + 2 = 90."
+    },
+    {
+      "id": "prefix",
+      "objective": "1.7",
+      "type": "Write the mask for /21 and the prefix for 255.255.255.192. Identify the partial octet in each.",
+      "prompt": "Factual",
+      "source": "Count leading ones before converting to dotted decimal.",
+      "key": "/21 uses 8 + 8 + 5 ones. Third octet 11111000 is 248, giving 255.255.248.0. In the second mask, 192 is 11000000 in the fourth octet, so 24 + 2 = /26."
+    },
+    {
+      "id": "portion",
+      "objective": "1.7",
+      "type": "For 192.168.15.106/27, write the last octet in binary and mark the network/host boundary. What host number lies within the block?",
+      "prompt": "Factual",
+      "source": "Keep leading zeros in the host field.",
+      "key": "106 is 01101010. Split 011 / 01010. The last five bits represent host number 10. Clearing them leaves 01100000, or .96."
+    },
+    {
+      "id": "range",
+      "objective": "1.7",
+      "type": "For 172.19.77.201/21, calculate the network, broadcast, first host and last host. Explain what happens in the third octet.",
+      "prompt": "Factual",
+      "source": "Find the third-octet block containing 77.",
+      "key": "The mask is 255.255.248.0, so the increment is 8. Third octets 72–79 form the block. Network 172.19.72.0, broadcast 172.19.79.255, first host 172.19.72.1 and last host 172.19.79.254."
+    },
+    {
+      "id": "capacity",
+      "objective": "1.7",
+      "type": "Split 10.8.12.0/23 into equal /27 LANs. Calculate both the number of LANs and usable hosts per LAN. Explain which bits you counted each time.",
+      "prompt": "Factual",
+      "source": "Use the parent prefix for one calculation and the IPv4 address width for the other.",
+      "key": "Borrow 27 − 23 = 4 bits for 2⁴ = 16 LANs. Each has 32 − 27 = 5 host bits, giving 2⁵ − 2 = 30 usable addresses."
+    },
+    {
+      "id": "select",
+      "objective": "1.7",
+      "type": "Choose the smallest subnet for 62 workstations plus one gateway. Explain why the next smaller block fails.",
+      "prompt": "Factual",
+      "source": "Include every assigned interface in the demand.",
+      "key": "63 assigned interfaces are needed. A /26 gives 64 total but only 62 usable. Choose /25 with 128 total and 126 usable."
+    },
+    {
+      "id": "vlsm",
+      "objective": "1.7",
+      "type": "Inside 192.168.60.0/24, allocate LANs for 100, 45 and 12 assigned interfaces, including gateways. Use the lowest aligned space, largest first. Give each prefix, usable range and broadcast.",
+      "prompt": "Factual",
+      "source": "Find the smallest power of two that covers demand plus two.",
+      "key": "100 needs 128 addresses: 192.168.60.0/25, hosts .1–.126, broadcast .127. Next use .128/26 for 45: hosts .129–.190, broadcast .191. Use .192/28 for 12: hosts .193–.206, broadcast .207. The next free address is .208."
+    },
+    {
+      "id": "overlap",
+      "objective": "1.7",
+      "type": "Two routed LANs are proposed as 10.3.0.64/26 and 10.3.0.96/27. Show the overlap. Move only the smaller LAN to the first free aligned block above the larger one.",
+      "prompt": "Factual",
+      "source": "Write out both closed intervals.",
+      "key": "The /26 covers .64–.127. The /27 covers .96–.127, entirely inside it. The next /27 boundary above .127 is .128, so use 10.3.0.128/27, covering .128–.159."
+    },
+    {
+      "id": "fault",
+      "objective": "1.7",
+      "type": "The plan assigns 192.168.7.64/26 to a LAN with gateway .65. A host at .100 is configured /24 and fails to reach a server at .140 on a different routed LAN. Explain its forwarding choice and correct the setting.",
+      "prompt": "Example",
+      "source": "Predict whose MAC address the host tries to resolve.",
+      "key": "With /24 the host treats .140 as local and sends an ARP request for .140. Under /26 its own block ends at .127. Set the planned 255.255.255.192 mask, retain gateway .65, then verify that off-link traffic uses the gateway and reaches the server."
+    },
+    {
+      "id": "classify",
+      "objective": "1.7",
+      "type": "Classify 172.31.5.4, 169.254.7.8, 127.0.0.1 and 8.8.8.8 by intended use. Which address on a DHCP client would prompt you to investigate address assignment?",
+      "prompt": "Factual",
+      "source": "Compare the complete prefixes, including the second octet.",
+      "key": "172.31.5.4 is private RFC 1918 space. 169.254.7.8 is link-local and can indicate APIPA after failure to obtain a lease. 127.0.0.1 is loopback. 8.8.8.8 is public unicast. Check the DHCP path on the link-local client."
+    }
+  ]
+}

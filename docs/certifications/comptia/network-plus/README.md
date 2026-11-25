@@ -20,14 +20,10 @@ hub:
 
 Build your networking knowledge.
 
-<!-- hub:hidden
 - [Start Studying](#start-studying)
 
     Find your starting point.
 
-
-
-hub:hidden -->
 - [Official Exam Objectives](https://lecbyo.files.cmp.optimizely.com/download/35a7403ab73211ef9dcda6f347fbf652)
 
     Open CompTIA's official Network+ (N10-009, V9) exam objectives.
@@ -57,16 +53,12 @@ hub:hidden -->
 
     Find concise lookup resources.
 
-<!-- hub:hidden
 ## Start Studying
 
-&lt;!-- hub:placeholder
-Lessons and a guided study sequence have not been published yet. Browse the topic hubs below to see where material will appear.
-hub:placeholder --&gt;
+- [14-Day Certification Study Plan](study-plan/app/index.html)
 
+    Plan your two-week review and practice networking foundations, physical installation, and IPv4 subnetting.
 
-
-hub:hidden -->
 ## Course Topics
 
 <!-- hub:hidden

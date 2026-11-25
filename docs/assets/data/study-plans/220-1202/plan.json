@@ -1,6 +1,8 @@
 {
   "certification": "CompTIA A+ Core 2",
   "exam": "220-1202",
+  "shortName": "Core 2",
+  "passingScore": 700,
   "series": "V15",
   "revision": "4.0",
   "source": "https://lecbyo.files.cmp.optimizely.com/download/cefedfb2b8a511ef809306d06d323538",

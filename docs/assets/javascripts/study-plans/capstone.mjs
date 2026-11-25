@@ -1,7 +1,6 @@
-import { node, link, panel, button } from './ui.mjs';
+import { hubURL, node, link, panel, button } from './ui.mjs';
 import { matches, reviewTargets, readinessOutcome } from './progress.mjs';
 
-const hubURL = path => new URL(document.body.dataset.hub + path, document.baseURI);
 const latest = state => state.records?.at(-1);
 
 function field(form, key, title, options) {
@@ -66,14 +65,8 @@ async function completedExam(plan) {
   return { id: session.id, score: grade(session, exam, bank) };
 }
 
-function rehearsalForm(form, session, context, save, refresh) {
-  const { plan, sessions, read } = context;
-  for (const instruction of session.instructions) form.append(node('p', instruction));
-  const launch = link('Open Core 2 practice exam (new tab)', hubURL(session.examPath));
-  launch.target = '_blank';
-  launch.rel = 'noopener';
-  form.append(launch, node('h3', 'Error analysis · ' + session.minutes.analysis + ' minutes'),
-    node('p', 'Copy the percentage from your submitted results, or import the latest completed Certification Mode attempt from this browser. Select the domains and objectives you want to revisit. You can adjust imported selections.'));
+function integratedExamControls(form, context, save, refresh) {
+  const { plan, read } = context;
   const notice = node('p');
   notice.setAttribute('role', 'status');
   const load = button('Import completed exam result', async () => {
@@ -82,7 +75,7 @@ function rehearsalForm(form, session, context, save, refresh) {
       const result = await completedExam(plan);
       if (!load.isConnected) return;
       if (!result) {
-        notice.textContent = 'No completed Core 2 Certification Mode result is available here. Finish the timed exam or enter your result below.';
+        notice.textContent = 'No completed ' + plan.shortName + ' Certification Mode result is available here. Finish the timed exam or enter your result below.';
       } else if (read(13).capstoneDraft?.examId === result.id) {
         notice.textContent = 'This result is already in your draft. Your review selections have been kept.';
       } else if (read(13).records?.some(entry => entry.examId === result.id)) {
@@ -101,7 +94,26 @@ function rehearsalForm(form, session, context, save, refresh) {
     finally { load.disabled = false; }
   });
   form.append(load, notice);
-  check(form, 'examDone', 'yes', 'I completed the timed Core 2 Certification Mode exam.').required = true;
+}
+
+function rehearsalForm(form, session, context, save, refresh) {
+  const { plan, sessions } = context;
+  for (const instruction of session.instructions) form.append(node('p', instruction));
+  if (session.examPath) {
+    const launch = link('Open ' + plan.shortName + ' practice exam (new tab)', hubURL(session.examPath));
+    launch.target = '_blank';
+    launch.rel = 'noopener';
+    form.append(launch);
+  }
+  form.append(node('h3', 'Error analysis · ' + session.minutes.analysis + ' minutes'));
+  if (session.examPath) {
+    form.append(node('p', 'Copy the percentage from your submitted results, or import your latest completed Certification Mode attempt. Review the domains and objectives you want to revisit.'));
+    integratedExamControls(form, context, save, refresh);
+  } else {
+    form.append(node('p', 'Enter the percentage from your timed practice exam and select the areas you want to revisit.'));
+  }
+  const examName = plan.shortName + (session.examPath ? ' Certification Mode exam' : ' practice exam');
+  check(form, 'examDone', 'yes', 'I completed the timed ' + examName + '.').required = true;
   const label = node('label', 'Practice exam percentage (0–100)', 'cap-field');
   const score = node('input');
   Object.assign(score, { type: 'number', name: 'percentage', min: '0', max: '100', step: '1', required: true });
@@ -176,9 +188,9 @@ function readinessForm(form, session, context, rehearsal) {
   field(form, 'practice', 'Exercise completed', options);
   field(form, 'independence', 'How did you solve it?', ['Independently', 'With guidance', 'Completed using a walkthrough'].map(v => [v, v]));
   field(form, 'evidence', 'What evidence did you use, what did you try, and what result did you observe?');
-  form.append(node('h3', 'Exam-readiness review · ' + session.minutes.decision + ' minutes'), link('Official Core 2 exam objectives', plan.source),
+  form.append(node('h3', 'Exam-readiness review · ' + session.minutes.decision + ' minutes'), link('Official ' + plan.shortName + ' exam objectives', plan.source),
     node('p', 'Use your rehearsal and practical evidence for each answer. For appointment and ID requirements, check your booking confirmation and testing provider instructions.'),
-    node('p', 'A missing rehearsal score or a score below 50% triggers further review in the Hub. Reaching 50% alone establishes no readiness level. The ready recommendation also requires independent practical work, demonstrated skills on every checklist item and no objectives you identify as unresolved in this final review. CompTIA reports a passing score of 700 on a 100–900 scale. There is no direct conversion from this practice percentage.'));
+    node('p', 'A missing rehearsal score or a score below 50% triggers further review in the Hub. Reaching 50% alone establishes no readiness level. The ready recommendation also requires independent practical work, demonstrated skills on every checklist item and no objectives you identify as unresolved in this final review. CompTIA reports a passing score of ' + plan.passingScore + ' on a 100–900 scale. There is no direct conversion from this practice percentage.'));
   for (const [group, questions] of Object.entries(session.checks)) {
     const set = node('fieldset');
     set.append(node('legend', group));

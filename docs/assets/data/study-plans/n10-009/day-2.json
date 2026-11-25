@@ -1,0 +1,303 @@
+{
+  "minutes": {
+    "reading": 30,
+    "cards": 15,
+    "quiz": 15,
+    "worksheet": 30,
+    "application": 30
+  },
+  "review": [
+    {
+      "objective": "1.5",
+      "title": "Start with rate, reach and medium",
+      "text": "IEEE 802.3 covers Ethernet. On compliant twisted-pair channels, 1000BASE-T can carry 1 Gb/s over Cat 5e for 100 m. For 10GBASE-T at 100 m, specify Cat 6A. Existing Cat 6 can carry 10 Gb/s over shorter qualified runs. Include patch cords in the channel length. For a short compatible switch-to-server link in one rack, a direct attach copper (DAC) twinax assembly can replace two optical modules and a fiber jumper. Coax has a center conductor and shield and is common on broadband service feeds. A straight-through patch uses the same T568 pinout at both ends. A crossover swaps the designated transmit and receive pairs. Auto-MDI-X can accommodate either on supported ports. For wireless media, compare local 802.11 access, carrier cellular coverage and satellite where terrestrial paths are unavailable."
+    },
+    {
+      "objective": "5.2",
+      "title": "Read the cable jacket before blaming the port",
+      "text": "Check the whole channel against the required Ethernet standard. A legacy Cat 5 marking alone does not certify an installed channel for gigabit service. A Cat 6 run may need qualification for 10 Gb/s. Cat 7 is an ISO shielded cabling category. Cat 8 supports 25GBASE-T or 40GBASE-T on short channels up to 30 m. Unshielded twisted pair (UTP) relies on balanced pairs and their twists. Shielded twisted pair (STP) adds shielding and needs compatible termination and bonding. An inexpensive wire-map pass verifies connections but cannot certify channel bandwidth."
+    },
+    {
+      "objective": "1.5",
+      "title": "Read both module labels",
+      "text": "For an optical link, match protocol, form factor, line rate, wavelength pair, fiber grade and reach at both ends. 10GBASE-SR commonly uses multimode fiber within a building. 10GBASE-LR uses single-mode fiber and supports longer links. The receiver needs signal within its specified range. SFP and QSFP describe module families. Common examples are 10 Gb/s SFP+ and 40 Gb/s QSFP+. The specific module and host determine the supported rate. Similar-looking Ethernet and Fibre Channel modules can use incompatible protocols. Identify SC by its square push-pull body, LC by its small latch, ST by its round bayonet, and MPO by its multi-fiber face. F-type and BNC are threaded and bayonet coax connectors respectively. RJ11 is common on telephone wiring and RJ45 on twisted-pair Ethernet."
+    },
+    {
+      "objective": "2.4",
+      "title": "Follow the installed path",
+      "text": "Trace the desk outlet to a labeled copper patch panel in the floor's intermediate distribution frame (IDF). A patch cord connects the panel to an access switch. An uplink can run through a fiber distribution panel to the main distribution frame (MDF). Size racks for depth, rack units, service clearance and cable management. Check the intake and exhaust direction on each switch before mounting it. Select a jacket rated for the pathway, including plenum rating where required. Lock the closet, monitor temperature and humidity, and confirm suitable fire suppression with facilities."
+    },
+    {
+      "objective": "2.4",
+      "title": "Budget power at two levels",
+      "text": "Check supply voltage and total rack load against the circuits, UPS and rack power distribution unit (PDU). The UPS provides temporary backup power. The PDU distributes power to outlets. At a PoE switch, check the supported IEEE standard, power available per port and the total allocatable budget. A compatible port can still deny power to a new AP if other devices consume the budget."
+    },
+    {
+      "objective": "5.2",
+      "title": "Use the fault pattern to select a test",
+      "text": "A wire map can show opens, shorts and miswired pins. A split pair may pass simple continuity while losing the noise cancellation provided by the twists. Use a tester that measures pair performance. A toner and probe identify an unlabeled run. A time-domain reflectometer (TDR) estimates distance to a copper fault. An optical power meter measures received light and an OTDR localizes optical events along a fiber. Attenuation is signal loss over the path. Crosstalk is coupling between pairs. Errors that coincide with nearby machinery suggest external interference. Preserve pair twists near terminations, use the intended pinout, and on duplex fiber connect transmit to receive."
+    },
+    {
+      "objective": "5.2",
+      "title": "Read the interface before replacing hardware",
+      "text": "Compare counter changes over the same time interval. Increasing CRC errors indicate damaged frames and justify inspecting the medium and interface settings. Runts are undersized frames, giants exceed the accepted size, and drops can result from full queues. Administratively down indicates a configured shutdown. Error-disabled calls for checking the recorded protection event. A suspended member of a link bundle calls for checking aggregation settings. In the cabling PBQ, record one symptom, the tool you selected, and a post-repair observation that would verify service."
+    }
+  ],
+  "sources": [
+    [
+      "Fluke Networks: testing copper cabling",
+      "https://www.flukenetworks.com/expertise/learn-about/category-8-cable-testing"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "cat6a",
+      "objective": "1.5",
+      "prompt": "Which category is designed for 10GBASE-T over a full 100 m copper channel?",
+      "answer": "Category 6A. Include patch cords, panels and outlets when qualifying the channel."
+    },
+    {
+      "id": "fiber",
+      "objective": "1.5",
+      "prompt": "What makes single-mode fiber suitable for longer links than multimode fiber at a comparable rate?",
+      "answer": "Its small core supports one propagation mode, avoiding the modal dispersion that limits multimode reach. The optics and link budget still set the supported distance."
+    },
+    {
+      "id": "dac",
+      "objective": "1.5",
+      "prompt": "What is a DAC assembly used for in a rack?",
+      "answer": "Direct attach copper uses twinax with pluggable ends to connect compatible ports over a short distance."
+    },
+    {
+      "id": "protocol",
+      "objective": "1.5",
+      "prompt": "Two SFP modules fit the same cage. What can still prevent the link from working?",
+      "answer": "Host support, protocol, rate and media or optical specifications can differ. Fibre Channel storage and Ethernet are distinct protocols."
+    },
+    {
+      "id": "optic",
+      "objective": "1.5",
+      "prompt": "Which connector carries multiple fibers in one ferrule, and which small latched connector is common on duplex jumpers?",
+      "answer": "MPO carries multiple fibers. LC is the small latched connector, often paired for duplex."
+    },
+    {
+      "id": "coax",
+      "objective": "1.5",
+      "prompt": "How do F-type and BNC coax connectors attach?",
+      "answer": "F-type screws onto threads. BNC uses a push-and-twist bayonet lock."
+    },
+    {
+      "id": "closet",
+      "objective": "2.4",
+      "prompt": "What connects the floor's IDF to the building's MDF, and what terminates desk runs in the IDF?",
+      "answer": "A backbone uplink connects the distribution locations. Horizontal desk cabling typically terminates on a labeled patch panel."
+    },
+    {
+      "id": "ups",
+      "objective": "2.4",
+      "prompt": "Power is lost at the wall. Which device maintains power briefly, and which distributes it inside the rack?",
+      "answer": "A UPS supplies stored energy. A rack PDU distributes power among connected devices."
+    },
+    {
+      "id": "plenum",
+      "objective": "2.4",
+      "prompt": "Why check the jacket rating even on a cable that meets the required Ethernet category?",
+      "answer": "A pathway used for environmental air may require a plenum-rated jacket for fire and smoke performance."
+    },
+    {
+      "id": "air",
+      "objective": "2.4",
+      "prompt": "Why inspect port-side intake or exhaust before installing a switch?",
+      "answer": "Align the airflow with the room's supply and return so hot exhaust does not recirculate into equipment intakes."
+    },
+    {
+      "id": "polarity",
+      "objective": "5.2",
+      "prompt": "Both transmitters are connected to each other on a duplex fiber link. What should be corrected?",
+      "answer": "Polarity. Each transmitter needs an optical path to the receiver at the other end."
+    },
+    {
+      "id": "split",
+      "objective": "5.2",
+      "prompt": "A tester shows pin-to-pin continuity, but reports a split pair. Why can Ethernet still fail?",
+      "answer": "Conductors assigned to a signal pair came from different twisted pairs. Continuity alone misses the resulting coupling and noise susceptibility."
+    },
+    {
+      "id": "power",
+      "objective": "5.2",
+      "prompt": "A switch powers eleven cameras but denies power to a twelfth identical camera. What two limits should you inspect?",
+      "answer": "Per-port power and the switch's remaining total PoE budget. Also verify the required PoE standard."
+    },
+    {
+      "id": "states",
+      "objective": "5.2",
+      "prompt": "What evidence separates an administratively disabled interface from a broken patch cord?",
+      "answer": "A configured shutdown state identifies an intentional software setting. A cable fault can remove link on an enabled port."
+    },
+    {
+      "id": "tools",
+      "objective": "5.2",
+      "prompt": "Which readings would help distinguish low optical power from a break at a particular distance?",
+      "answer": "A power meter measures received optical level. An optical time-domain reflectometer estimates the location of reflective or loss events."
+    },
+    {
+      "id": "shield",
+      "objective": "5.2",
+      "prompt": "A cable is labeled STP and the switch reports STP forwarding. What does each STP mean?",
+      "answer": "On a cable, STP is shielded twisted pair. In a switch topology, STP is Spanning Tree Protocol. Shielding addresses interference, while spanning tree controls Layer 2 loops."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "standard",
+      "objective": "1.5",
+      "prompt": "The IEEE family defining wired Ethernet is ____ (enter the 802 number).",
+      "answers": [
+        "802.3",
+        "IEEE 802.3"
+      ],
+      "explanation": "802.3 includes twisted-pair and optical Ethernet. IEEE 802.11 covers wireless LANs."
+    },
+    {
+      "id": "module",
+      "objective": "1.5",
+      "prompt": "The Q in QSFP stands for ____.",
+      "answers": [
+        "quad"
+      ],
+      "explanation": "Quad small form-factor pluggable identifies a multi-lane module family. Check the specific variant for rate and compatibility."
+    },
+    {
+      "id": "connector",
+      "objective": "1.5",
+      "prompt": "A legacy fiber patch cord has a round bayonet connector for a single fiber. Give the two-letter connector name: ____.",
+      "answers": [
+        "ST"
+      ],
+      "explanation": "Straight tip uses a twist lock. BNC uses a similar action on coaxial cable."
+    },
+    {
+      "id": "closet",
+      "objective": "2.4",
+      "prompt": "A floor closet aggregates desk runs and uplinks to the building MDF. Its distribution role is abbreviated ____.",
+      "answers": [
+        "IDF"
+      ],
+      "explanation": "The intermediate distribution frame serves a local area and connects it to the main distribution point."
+    },
+    {
+      "id": "distribute",
+      "objective": "2.4",
+      "prompt": "A rack has battery backup already. The unit whose job is to distribute input power to multiple outlets is a ____ (acronym).",
+      "answers": [
+        "PDU"
+      ],
+      "explanation": "A power distribution unit feeds rack devices. A UPS provides battery-backed power."
+    },
+    {
+      "id": "loss",
+      "objective": "5.2",
+      "prompt": "Optical power falls progressively as a signal travels along fiber. This loss of strength is called ____.",
+      "answers": [
+        "attenuation"
+      ],
+      "explanation": "Length, connectors and splices contribute to loss. Compare the total with the link budget."
+    },
+    {
+      "id": "distance",
+      "objective": "5.2",
+      "prompt": "A technician must estimate the distance to an open on twisted-pair copper using reflected pulses. Name the instrument (acronym): ____.",
+      "answers": [
+        "TDR"
+      ],
+      "explanation": "A time-domain reflectometer measures the reflection delay and uses the cable's propagation speed to estimate distance."
+    },
+    {
+      "id": "errors",
+      "objective": "5.2",
+      "prompt": "A received frame fails its Ethernet integrity check. The relevant error counter is commonly labeled ____ (three letters).",
+      "answers": [
+        "CRC"
+      ],
+      "explanation": "A cyclic redundancy check mismatch indicates frame corruption. Compare new errors over time and test the suspected path."
+    },
+    {
+      "id": "budget",
+      "objective": "5.2",
+      "prompt": "A switch allocates 110 W from a 120 W PoE budget. How many watts remain for a new device? ____",
+      "answers": [
+        "10",
+        "10 W",
+        "10 watts",
+        "10W"
+      ],
+      "explanation": "Subtract the 110 W already allocated from 120 W. A device requesting 15 W exceeds the remaining budget even if its port supports it."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "media",
+      "objective": "1.5",
+      "type": "Select media for two 10 Gb/s links: a 92 m installed office copper channel and a 2 km interbuilding uplink. State the physical-layer standard and one check for each.",
+      "prompt": "Example",
+      "source": "Use the wired-media and transceiver sections of objective 1.5.",
+      "key": "Use Cat 6A and 10GBASE-T on compatible copper ports. Confirm the 92 m includes patch leads. Use single-mode fiber with compatible 10GBASE-LR optics for the uplink and check the optical loss budget."
+    },
+    {
+      "id": "patch",
+      "objective": "1.5",
+      "type": "An installer has a latched LC duplex fiber jumper, a threaded coax lead and an eight-position modular patch cord. Match them to a compatible optical transceiver, cable modem input and 1000BASE-T port. What else must match on the optical link?",
+      "prompt": "Factual",
+      "source": "Identify the media before matching connector shapes.",
+      "key": "LC goes to the optical transceiver, threaded F-type to the modem, and RJ45 to 1000BASE-T. Check fiber type, optic specification, supported reach and duplex polarity."
+    },
+    {
+      "id": "rack",
+      "objective": "2.4",
+      "type": "Trace a desk connection from outlet to access switch and onward to the MDF. Identify a passive termination and an active forwarding device.",
+      "prompt": "Example",
+      "source": "Use the installation view of the cabling PBQ.",
+      "key": "The horizontal run reaches the IDF patch panel. A patch cord connects it to an access switch, which forwards traffic onto the backbone. The panel is passive. The switch is active."
+    },
+    {
+      "id": "install",
+      "objective": "2.4",
+      "type": "A new switch fits the rack width. What else would you verify before installation in a locked, warm closet?",
+      "prompt": "Example",
+      "source": "Group your checks by space, airflow, power and environment.",
+      "key": "Verify rack units, depth, service clearance and intake/exhaust direction. Verify circuit voltage, PDU and UPS capacity under load. Check cooling, humidity sensing, suitable fire suppression and authorized access."
+    },
+    {
+      "id": "wiremap",
+      "objective": "5.2",
+      "type": "The remote tester reports pins 1 through 7 connected to matching pins and pin 8 open. The link negotiates below 1 Gb/s. Identify a likely fault, choose the next test and verify the repair.",
+      "prompt": "Example",
+      "source": "Use the termination and testing activity in the cabling PBQ.",
+      "key": "1000BASE-T needs all four pairs. Isolate removable patch cords, inspect pin 8 at each termination and retest the run. Verify all pairs pass and the link negotiates 1 Gb/s without increasing errors."
+    },
+    {
+      "id": "noise",
+      "objective": "5.2",
+      "type": "An 80 m copper link passes its wire map. CRC errors rise only when a nearby motor runs. Another link has steadily low optical receive power. Give a distinct next test for each.",
+      "prompt": "Example",
+      "source": "Compare interference with attenuation in objective 5.2.",
+      "key": "Try a known-good temporary copper path away from the motor and compare CRC increments under the same load. For fiber, measure received power against the optic limits, then inspect connectors, bends and loss along the run."
+    },
+    {
+      "id": "poe",
+      "objective": "5.2",
+      "type": "A switch has a 180 W PoE allocation limit and already reserves 156 W. A new AP requests 30 W. Explain the startup failure and how you would verify a repair.",
+      "prompt": "Factual",
+      "source": "Check the per-port standard as well as the total.",
+      "key": "Only 24 W remains, leaving a 6 W shortfall. Free capacity or supply another compatible power source. Verify the port supports the AP's standard, the requested allocation is granted and the AP starts at full capability."
+    },
+    {
+      "id": "state",
+      "objective": "5.2",
+      "type": "Port A is administratively down. Port B is error-disabled after a protection event. Port C is suspended from an aggregated uplink. Write the first evidence to collect for each.",
+      "prompt": "Example",
+      "source": "Use interface status together with configuration and logs.",
+      "key": "For A, confirm intended configuration and change history. For B, read the event log and correct the triggering cause before restoring service. For C, compare bundle settings and negotiation with its peer."
+    }
+  ]
+}

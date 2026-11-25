@@ -1,0 +1,297 @@
+{
+  "minutes": {
+    "reading": 25,
+    "cards": 10,
+    "quiz": 15,
+    "worksheet": 25,
+    "application": 25
+  },
+  "review": [
+    {
+      "objective": "1.1",
+      "title": "Rebuild the layers from a familiar request",
+      "text": "Imagine opening an HTTP page over TCP. At the top of the OSI model, application (7) defines service messages, presentation (6) describes how data is represented or encoded, and session (5) manages a dialogue. Transport (4) identifies endpoint processes by port and, with TCP, orders and acknowledges data. Network (3) delivers packets between IP networks. Data link (2) delivers frames across one link. Physical (1) carries bits as electrical, optical or radio signals. The four-layer TCP/IP model groups the top three OSI roles under application and the bottom two under link. Its internet and transport layers correspond to OSI 3 and 4."
+    },
+    {
+      "objective": "1.1",
+      "title": "Predict the two Ethernet headers",
+      "text": "For a server outside the client's subnet, the first Ethernet frame targets the local gateway's MAC address. Inside it, the IP packet targets the server. A switch learns the source MAC on the incoming port and looks up the destination MAC in that VLAN. At the router, the incoming frame ends. The router checks the destination IP, selects a next hop, decreases the IPv4 TTL and builds a frame for the outgoing link. With ordinary routing and no translation, the endpoint IP addresses persist. The server removes the headers and delivers the request to the listening process."
+    },
+    {
+      "objective": "1.2",
+      "title": "Place an appliance where it can do its job",
+      "text": "A router connects IP networks. A switch bridges frames within a LAN. An access point (AP) bridges wireless clients into a LAN, while a wireless controller manages multiple APs. A firewall applies traffic policy. An IDS monitors and alerts, while an inline IPS can also block matching traffic. A proxy accepts requests on a client's behalf. A load balancer distributes requests among healthy backends. These roles can run on dedicated hardware or as virtual appliances. Identify which traffic must reach the device for it to perform its job."
+    },
+    {
+      "objective": "1.2",
+      "title": "Separate delivery, storage and traffic treatment",
+      "text": "A content delivery network (CDN) serves content from distributed locations. A network-attached storage (NAS) system shares files, while a storage area network (SAN) presents block storage to hosts. A VPN builds a logical private connection across another network. Quality of service (QoS) can prioritize delay-sensitive voice during congestion. IPv4 time to live (TTL) limits how far a packet can be forwarded if routes loop."
+    },
+    {
+      "objective": "1.6",
+      "title": "Read the connections before naming the design",
+      "text": "A point-to-point link joins two endpoints. In a star or hub-and-spoke design, spokes depend on a central device or site. Full mesh gives each pair a direct link. Partial mesh connects selected pairs. A hybrid combines designs. Trace the physical links, then draw the logical forwarding path separately. For example, two PCs cabled to the same switch can occupy different VLANs and require a router to communicate."
+    },
+    {
+      "objective": "1.6",
+      "title": "Follow campus and data center traffic",
+      "text": "In a three-tier campus, access switches connect endpoints, distribution aggregates access and applies routing or policy, and the core interconnects distribution blocks. A collapsed core combines core and distribution duties. In a spine-and-leaf fabric, attach endpoints to leaves and connect each leaf to every spine. A server-to-server transfer inside the data center is east-west traffic. A client request entering the data center is north-south traffic."
+    },
+    {
+      "objective": "1.1",
+      "title": "Trace one request before running the simulation",
+      "text": "Open the PDU tracing lab diagram. Predict the first-hop destination MAC, final destination IP and outgoing frame at Router-A. Follow the HTTP event in the lab or use the TCP/IP Packet Walk to check your prediction. Record one field that changed and one that survived the routed hop."
+    }
+  ],
+  "sources": [
+    [
+      "PDU tracing lab topology",
+      "../../../../../labs/networking/osi-pdu-tracing/images/topology.svg"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "layers",
+      "objective": "1.1",
+      "prompt": "A cable carries pulses, a switch receives a frame and a router forwards a packet. Which layers act in that order?",
+      "answer": "Physical (1), data link (2) and network (3). Each builds on the service below it."
+    },
+    {
+      "id": "tcpip",
+      "objective": "1.1",
+      "prompt": "Which OSI functions fit inside the TCP/IP application layer?",
+      "answer": "Application service, data representation and session dialogue, corresponding to OSI layers 7, 6 and 5."
+    },
+    {
+      "id": "pdus",
+      "objective": "1.1",
+      "prompt": "Name the units carrying an HTTP message over TCP, IP and Ethernet, from inside to outside.",
+      "answer": "A TCP segment carries application data, an IP packet carries the segment, and an Ethernet frame carries the packet. The medium transmits bits."
+    },
+    {
+      "id": "udp",
+      "objective": "1.1",
+      "prompt": "What is the transport PDU called when an application uses UDP?",
+      "answer": "A UDP datagram. TCP's unit is a segment."
+    },
+    {
+      "id": "frame",
+      "objective": "1.1",
+      "prompt": "Which two MAC fields have different jobs when a switch receives a frame?",
+      "answer": "It learns the source MAC on the ingress port and uses the destination MAC to decide where to forward."
+    },
+    {
+      "id": "router",
+      "objective": "1.1",
+      "prompt": "Which two addresses identify different destinations in a client's frame to a remote server?",
+      "answer": "The destination MAC identifies the local next hop. The destination IP identifies the remote server."
+    },
+    {
+      "id": "wireless",
+      "objective": "1.2",
+      "prompt": "Which roles let a wireless client enter a LAN and let an administrator manage many radios?",
+      "answer": "An AP provides wireless access. A wireless controller coordinates AP configurations and policies."
+    },
+    {
+      "id": "ids",
+      "objective": "1.2",
+      "prompt": "A sensor receives mirrored traffic. What can an IDS do with that copy?",
+      "answer": "Inspect it and alert on a match. Blocking the original traffic directly requires an enforcement point in its path."
+    },
+    {
+      "id": "proxy",
+      "objective": "1.2",
+      "prompt": "What distinguishes an outbound proxy from a load balancer serving a web farm?",
+      "answer": "The proxy makes an upstream request on behalf of the client. The load balancer chooses a backend for an incoming request."
+    },
+    {
+      "id": "storage",
+      "objective": "1.2",
+      "prompt": "Which storage service would a workstation browse as files, and which would a server see as a block device?",
+      "answer": "A NAS exports file shares. A SAN supplies block storage on which the host can create a file system."
+    },
+    {
+      "id": "qos",
+      "objective": "1.2",
+      "prompt": "During congestion, which function gives voice packets preferential treatment?",
+      "answer": "Quality of service (QoS). Queue scheduling can reduce voice delay within the available bandwidth."
+    },
+    {
+      "id": "vpn",
+      "objective": "1.2",
+      "prompt": "How can two offices have a private logical path across a provider network?",
+      "answer": "A site-to-site VPN carries traffic in a tunnel between their gateways."
+    },
+    {
+      "id": "mesh",
+      "objective": "1.6",
+      "prompt": "Four sites each need a direct link to every other site. How many point-to-point links are needed?",
+      "answer": "Six. Four sites each have three peers, and dividing 4 × 3 by two avoids counting each link twice."
+    },
+    {
+      "id": "campus",
+      "objective": "1.6",
+      "prompt": "Which two campus roles are combined in a collapsed core?",
+      "answer": "Core and distribution. Access switches still connect endpoints."
+    },
+    {
+      "id": "leaf",
+      "objective": "1.6",
+      "prompt": "A server sends a backup to another rack in the same data center. Name the traffic direction and a typical fabric path.",
+      "answer": "East-west. With the servers on different leaves, traffic passes from the source leaf through a spine to the destination leaf."
+    },
+    {
+      "id": "upper-layers",
+      "objective": "1.1",
+      "prompt": "In OSI terms, which layer handles dialogue checkpoints, which handles character encoding, and which defines HTTP requests?",
+      "answer": "Session (5) manages the dialogue, presentation (6) describes how data is represented, and application (7) defines the service messages."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "ports",
+      "objective": "1.1",
+      "prompt": "TCP uses destination ports to deliver data to processes at OSI layer ____ (enter a number).",
+      "answers": [
+        "4",
+        "four",
+        "layer 4"
+      ],
+      "explanation": "Ports distinguish services at the transport layer. The network layer uses IP addresses to reach hosts."
+    },
+    {
+      "id": "encap",
+      "objective": "1.1",
+      "prompt": "Adding a TCP header, an IP header and Ethernet framing around data is called ____.",
+      "answers": [
+        "encapsulation"
+      ],
+      "explanation": "Each layer wraps the higher-layer unit for delivery. The receiving stack reverses this process during decapsulation."
+    },
+    {
+      "id": "pdu",
+      "objective": "1.1",
+      "prompt": "On an Ethernet link, the unit with source and destination MAC addresses and a frame check sequence is a ____.",
+      "answers": [
+        "frame",
+        "Ethernet frame",
+        "data link frame"
+      ],
+      "explanation": "These fields belong to the link-layer envelope around its payload."
+    },
+    {
+      "id": "ttl",
+      "objective": "1.2",
+      "prompt": "Which IPv4 header field prevents a packet from circulating indefinitely? Give its acronym: ____.",
+      "answers": [
+        "TTL"
+      ],
+      "explanation": "Each forwarding router decrements time to live. A router discards a packet that cannot be forwarded with a positive TTL."
+    },
+    {
+      "id": "cdn",
+      "objective": "1.2",
+      "prompt": "A publisher places cached videos at edge locations near viewers. Name this distributed service (acronym): ____.",
+      "answers": [
+        "CDN"
+      ],
+      "explanation": "A content delivery network serves copies near consumers, reducing distance to the source of the content."
+    },
+    {
+      "id": "balance",
+      "objective": "1.2",
+      "prompt": "Several healthy web servers share a single service address. The appliance selecting a backend for each new connection is a ____.",
+      "answers": [
+        "load balancer",
+        "load-balancer"
+      ],
+      "explanation": "A load balancer spreads requests across a pool and can stop selecting an unhealthy member."
+    },
+    {
+      "id": "spine",
+      "objective": "1.6",
+      "prompt": "In a two-tier fabric where each leaf attaches to every upper-tier switch, an upper-tier switch is called a ____.",
+      "answers": [
+        "spine",
+        "spine switch"
+      ],
+      "explanation": "Leaves attach endpoints and use the spines as paths between leaves."
+    },
+    {
+      "id": "direction",
+      "objective": "1.6",
+      "prompt": "A customer outside the data center retrieves a page hosted inside it. This is ____ traffic (use the directional term).",
+      "answers": [
+        "north-south",
+        "north/south"
+      ],
+      "explanation": "The flow crosses the data center boundary. Traffic between application and database tiers inside it is east-west."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "trace",
+      "objective": "1.1",
+      "type": "Use the PDU lab topology diagram. List the devices from PC-A to Server-A and identify the device that replaces the Ethernet header between subnets.",
+      "prompt": "Factual",
+      "source": "Open the PDU tracing lab under Readings and optional practice.",
+      "key": "PC-A, Switch-A, Router-A, Switch-B, Server-A. Router-A removes the incoming link header and builds the outgoing one. Each switch forwards within its local Ethernet segment."
+    },
+    {
+      "id": "headers",
+      "objective": "1.1",
+      "type": "PC-A sends an HTTP request to Server-A on another subnet with no NAT. Label the destination MAC and IP on the first and last links. Assume neighbor caches are populated.",
+      "prompt": "Factual",
+      "source": "Trace the HTTP event in the PDU lab.",
+      "key": "First link: Router-A's PC-facing MAC and Server-A's IP. Last link: Server-A's MAC and Server-A's IP. Ethernet addresses identify delivery on each link."
+    },
+    {
+      "id": "stack",
+      "objective": "1.1",
+      "type": "Work from the receiving server's perspective. List the units it processes from physical reception until HTTP can interpret the request.",
+      "prompt": "Factual",
+      "source": "Recall the model from objective 1.1 before tracing the event.",
+      "key": "Bits yield an Ethernet frame. Its payload is an IP packet containing a TCP segment. TCP checks and reassembles stream data for HTTP. The port identifies the listening service."
+    },
+    {
+      "id": "edge",
+      "objective": "1.2",
+      "type": "A branch needs Wi-Fi access, individual traffic rules between subnets and central AP configuration. Assign each responsibility to a logical device.",
+      "prompt": "Example",
+      "source": "Read objective 1.2 and distinguish data forwarding from management.",
+      "key": "An AP bridges the client onto the LAN. A firewall on the inter-subnet path applies the traffic rules. A controller manages configurations across APs. One physical appliance may combine roles."
+    },
+    {
+      "id": "virtual",
+      "objective": "1.2",
+      "type": "Two VMs on the same host exchange traffic through a virtual switch. An IDS attached only to an external physical link misses it. Explain why and identify a suitable observation point.",
+      "prompt": "Example",
+      "source": "Trace the path of a frame between the VMs.",
+      "key": "Local traffic can stay inside the host's virtual switch. Mirroring the relevant virtual ports to an IDS lets it inspect the flow where the frames actually pass."
+    },
+    {
+      "id": "logical",
+      "objective": "1.6",
+      "type": "Six PCs cable into one switch. Three are in the staff VLAN and three in the guest VLAN. Describe both the physical arrangement and the logical broadcast boundaries.",
+      "prompt": "Factual",
+      "source": "Sketch the cables first, then group the ports by VLAN.",
+      "key": "The cabling forms a star. There are two Layer 2 broadcast domains. Communication between them requires Layer 3 forwarding and any required policy permission."
+    },
+    {
+      "id": "campus",
+      "objective": "1.6",
+      "type": "A campus has endpoint switches and one redundant pair that aggregates them, routes between VLANs and interconnects buildings. Name the architecture and map its roles.",
+      "prompt": "Example",
+      "source": "Compare the three-tier and collapsed-core designs in objective 1.6.",
+      "key": "This is a collapsed core. Endpoint switches form the access tier. The redundant pair combines distribution and core functions."
+    },
+    {
+      "id": "failure",
+      "objective": "1.6",
+      "type": "Three branch spokes reach headquarters over separate links with no backup. Compare the effects of losing one spoke link and losing the headquarters hub.",
+      "prompt": "Example",
+      "source": "Draw each link before crossing out the failed element.",
+      "key": "One failed spoke link isolates that branch. Failure of the central hub removes every spoke's path through headquarters. A second independent hub and path can reduce this dependency."
+    }
+  ]
+}

@@ -1,0 +1,612 @@
+{
+  "certification": "CompTIA Network+",
+  "exam": "N10-009",
+  "shortName": "Network+",
+  "passingScore": 720,
+  "series": "V9",
+  "revision": "6.0",
+  "source": "https://lecbyo.files.cmp.optimizely.com/download/35a7403ab73211ef9dcda6f347fbf652",
+  "domains": [
+    {
+      "id": "1.0",
+      "name": "Networking Concepts",
+      "weight": 23
+    },
+    {
+      "id": "2.0",
+      "name": "Network Implementation",
+      "weight": 20
+    },
+    {
+      "id": "3.0",
+      "name": "Network Operations",
+      "weight": 19
+    },
+    {
+      "id": "4.0",
+      "name": "Network Security",
+      "weight": 14
+    },
+    {
+      "id": "5.0",
+      "name": "Network Troubleshooting",
+      "weight": 24
+    }
+  ],
+  "objectives": {
+    "1.1": {
+      "id": "1.1",
+      "domain": "1.0",
+      "name": "OSI reference model",
+      "skill": "Explain",
+      "workload": "Moderate",
+      "scope": "Trace a web request through seven OSI layers and identify the header used at each forwarding decision.",
+      "reading": "../../objective-breakdown/#11-osi-reference-model"
+    },
+    "1.2": {
+      "id": "1.2",
+      "domain": "1.0",
+      "name": "Networking appliances, applications, and functions",
+      "skill": "Compare",
+      "workload": "Moderate",
+      "scope": "Choose appliances and services for forwarding, inspection, storage, wireless access, content delivery and traffic treatment.",
+      "reading": "../../objective-breakdown/#12-networking-appliances-applications-and-functions"
+    },
+    "1.3": {
+      "id": "1.3",
+      "domain": "1.0",
+      "name": "Cloud concepts and connectivity",
+      "skill": "Summarize",
+      "workload": "Moderate",
+      "scope": "Choose a deployment and service model, then determine how a private cloud subnet reaches an enterprise network or the internet.",
+      "reading": "../../objective-breakdown/#13-cloud-concepts-and-connectivity"
+    },
+    "1.4": {
+      "id": "1.4",
+      "domain": "1.0",
+      "name": "Ports, protocols, services, and traffic types",
+      "skill": "Explain",
+      "workload": "Moderate",
+      "scope": "Identify services from ports, distinguish transport and IP protocols, and identify the recipients of a traffic flow.",
+      "reading": "../../objective-breakdown/#14-ports-protocols-services-and-traffic-types"
+    },
+    "1.5": {
+      "id": "1.5",
+      "domain": "1.0",
+      "name": "Transmission media and transceivers",
+      "skill": "Compare",
+      "workload": "Moderate",
+      "scope": "Match an application to copper, fiber or wireless media and compatible interfaces, connectors and pluggable modules.",
+      "reading": "../../objective-breakdown/#15-transmission-media-and-transceivers"
+    },
+    "1.6": {
+      "id": "1.6",
+      "domain": "1.0",
+      "name": "Network topologies, architectures, and types",
+      "skill": "Compare",
+      "workload": "Moderate",
+      "scope": "Read campus and data center diagrams, identify failure boundaries, and trace north-south and east-west flows.",
+      "reading": "../../objective-breakdown/#16-network-topologies-architectures-and-types"
+    },
+    "1.7": {
+      "id": "1.7",
+      "domain": "1.0",
+      "name": "IPv4 network addressing",
+      "skill": "Apply",
+      "workload": "High",
+      "scope": "Calculate IPv4 subnets, distinguish address types and troubleshoot host settings with CIDR and VLSM.",
+      "reading": "../../objective-breakdown/#17-ipv4-network-addressing"
+    },
+    "1.8": {
+      "id": "1.8",
+      "domain": "1.0",
+      "name": "Modern networking environments and technologies",
+      "skill": "Summarize",
+      "workload": "Moderate",
+      "scope": "Explain controller-based networks, overlays, modern access policies, infrastructure automation and IPv6 transition.",
+      "reading": "../../objective-breakdown/#18-modern-networking-environments-and-technologies"
+    },
+    "2.1": {
+      "id": "2.1",
+      "domain": "2.0",
+      "name": "Routing technologies",
+      "skill": "Explain",
+      "workload": "Moderate",
+      "scope": "Read routing tables, select paths, and reason about translation, redundancy and routed subinterfaces.",
+      "reading": "../../objective-breakdown/#21-routing-technologies"
+    },
+    "2.2": {
+      "id": "2.2",
+      "domain": "2.0",
+      "name": "Switching technologies and features",
+      "skill": "Configure",
+      "workload": "High",
+      "scope": "Interpret switchport membership, trunk tagging, spanning tree, link aggregation and interface settings.",
+      "reading": "../../objective-breakdown/#22-switching-technologies-and-features"
+    },
+    "2.3": {
+      "id": "2.3",
+      "domain": "2.0",
+      "name": "Wireless devices and technologies",
+      "skill": "Configure",
+      "workload": "High",
+      "scope": "Select radio bands, channels, antennas, authentication and access point designs for a coverage requirement.",
+      "reading": "../../objective-breakdown/#23-wireless-devices-and-technologies"
+    },
+    "2.4": {
+      "id": "2.4",
+      "domain": "2.0",
+      "name": "Physical installation considerations",
+      "skill": "Explain",
+      "workload": "Moderate",
+      "scope": "Plan closet placement, termination, airflow, environmental controls and the rack power budget.",
+      "reading": "../../objective-breakdown/#24-physical-installation-considerations"
+    },
+    "3.1": {
+      "id": "3.1",
+      "domain": "3.0",
+      "name": "Organizational processes and procedures",
+      "skill": "Explain",
+      "workload": "Moderate",
+      "scope": "Use diagrams, inventories, lifecycle records, change control and a known-good configuration in daily operations.",
+      "reading": "../../objective-breakdown/#31-organizational-processes-and-procedures"
+    },
+    "3.2": {
+      "id": "3.2",
+      "domain": "3.0",
+      "name": "Network monitoring technologies",
+      "skill": "Compare",
+      "workload": "Moderate",
+      "scope": "Compare logs, counters, flow data, packet captures, discovery and baselines when investigating network health.",
+      "reading": "../../objective-breakdown/#32-network-monitoring-technologies"
+    },
+    "3.3": {
+      "id": "3.3",
+      "domain": "3.0",
+      "name": "Disaster recovery concepts",
+      "skill": "Explain",
+      "workload": "Moderate",
+      "scope": "Choose recovery sites and availability measures using tolerable downtime and acceptable data loss.",
+      "reading": "../../objective-breakdown/#33-disaster-recovery-concepts"
+    },
+    "3.4": {
+      "id": "3.4",
+      "domain": "3.0",
+      "name": "IPv4 and IPv6 network services",
+      "skill": "Configure",
+      "workload": "High",
+      "scope": "Trace address assignment, name resolution and time synchronization, including IPv6 service behavior.",
+      "reading": "../../objective-breakdown/#34-ipv4-and-ipv6-network-services"
+    },
+    "3.5": {
+      "id": "3.5",
+      "domain": "3.0",
+      "name": "Network access and management methods",
+      "skill": "Compare",
+      "workload": "Moderate",
+      "scope": "Choose local, remote or out-of-band management and select an appropriate tunnel and access method.",
+      "reading": "../../objective-breakdown/#35-network-access-and-management-methods"
+    },
+    "4.1": {
+      "id": "4.1",
+      "domain": "4.0",
+      "name": "Basic network security concepts",
+      "skill": "Explain",
+      "workload": "Moderate",
+      "scope": "Relate identity, encryption, segmentation, physical controls, compliance and deception to the assets they protect.",
+      "reading": "../../objective-breakdown/#41-basic-network-security-concepts"
+    },
+    "4.2": {
+      "id": "4.2",
+      "domain": "4.0",
+      "name": "Network attacks and their impact",
+      "skill": "Recognize",
+      "workload": "Moderate",
+      "scope": "Recognize attack symptoms and distinguish impersonation, traffic disruption and social engineering.",
+      "reading": "../../objective-breakdown/#42-network-attacks-and-their-impact"
+    },
+    "4.3": {
+      "id": "4.3",
+      "domain": "4.0",
+      "name": "Network security features and defenses",
+      "skill": "Apply",
+      "workload": "High",
+      "scope": "Select hardening, admission controls, filtering, zones and device protections for a stated requirement.",
+      "reading": "../../objective-breakdown/#43-network-security-features-and-defenses"
+    },
+    "5.1": {
+      "id": "5.1",
+      "domain": "5.0",
+      "name": "Troubleshooting methodology",
+      "skill": "Apply",
+      "workload": "High",
+      "scope": "Move from a reproducible symptom to a tested theory, verified repair and documented outcome.",
+      "reading": "../../objective-breakdown/#51-troubleshooting-methodology"
+    },
+    "5.2": {
+      "id": "5.2",
+      "domain": "5.0",
+      "name": "Cabling and physical interface issues",
+      "skill": "Diagnose",
+      "workload": "High",
+      "scope": "Use cable tests, power readings, port states, error counters and optical measurements to isolate physical faults.",
+      "reading": "../../objective-breakdown/#52-cabling-and-physical-interface-issues"
+    },
+    "5.3": {
+      "id": "5.3",
+      "domain": "5.0",
+      "name": "Network services troubleshooting",
+      "skill": "Diagnose",
+      "workload": "High",
+      "scope": "Isolate addressing, switching, routing and service configuration faults from client and infrastructure evidence.",
+      "reading": "../../objective-breakdown/#53-network-services-troubleshooting"
+    },
+    "5.4": {
+      "id": "5.4",
+      "domain": "5.0",
+      "name": "Network performance troubleshooting",
+      "skill": "Diagnose",
+      "workload": "High",
+      "scope": "Use latency, jitter, loss, throughput and radio observations to distinguish resource and coverage problems.",
+      "reading": "../../objective-breakdown/#54-network-performance-troubleshooting"
+    },
+    "5.5": {
+      "id": "5.5",
+      "domain": "5.0",
+      "name": "Troubleshooting tools and protocols",
+      "skill": "Select",
+      "workload": "Moderate",
+      "scope": "Choose the diagnostic tool or protocol that will supply the missing evidence and interpret its output.",
+      "reading": "../../objective-breakdown/#55-troubleshooting-tools-and-protocols"
+    }
+  },
+  "resources": {
+    "pdu": [
+      "OSI & TCP/IP Models — PDU Encapsulation and Decapsulation",
+      "labs/networking/osi-pdu-tracing/"
+    ],
+    "walk": [
+      "TCP/IP Packet Walk",
+      "practice/pbqs/a-plus-core-1/tcp-ip-packet-walk/"
+    ],
+    "osi-quiz": [
+      "OSI Model & Network PDU Basics - Kahoot!",
+      "https://create.kahoot.it/share/osi-model-network-pdu-basics/2a222cfe-b29f-47ed-af86-358a954d8356"
+    ],
+    "cabling": [
+      "Network Cabling & Physical Installation PBQ",
+      "practice/pbqs/network-plus/physical-cabling-installation/"
+    ],
+    "setup": [
+      "Network Setup & Cabling",
+      "practice/pbqs/a-plus-core-1/network-setup-and-cabling/"
+    ],
+    "media-quiz": [
+      "Ethernet Cabling and Fiber Optics - Kahoot!",
+      "https://create.kahoot.it/share/ethernet-cabling-and-fiber-optics/4d6b8274-8881-44d8-8233-74c55be1cad6"
+    ],
+    "subnet": [
+      "IPv4 Subnetting Learning Lab",
+      "labs/networking/subnetting/"
+    ],
+    "lab1": [
+      "Lab 1 — Basic Network Configuration",
+      "labs/networking/basic-network-configuration/"
+    ],
+    "ipv4-quiz": [
+      "IPv4 Networking, Addresses, Subnets, and Traffic - Kahoot!",
+      "https://create.kahoot.it/share/ipv4-networking-addresses-subnets-traffic/bbb4a50a-ddb7-4324-a0af-3faa1b5538c4"
+    ],
+    "ip-fault": [
+      "IP Configuration Troubleshooting",
+      "practice/pbqs/a-plus-core-1/ip-configuration-troubleshooting/"
+    ],
+    "vlan": [
+      "Lab 2 — VLAN Configuration",
+      "labs/networking/vlan-configuration/"
+    ],
+    "route": [
+      "Lab 3 — Static Routing",
+      "labs/networking/static-routing/"
+    ],
+    "dns": [
+      "Lab 5 — Centralized DHCP and DNS Services",
+      "labs/networking/centralized-dhcp-dns/"
+    ],
+    "wifi": [
+      "Wireless Coverage",
+      "practice/pbqs/a-plus-core-1/wireless-coverage/"
+    ],
+    "capture": [
+      "Wireshark Packet Analysis Lab",
+      "labs/networking/wireshark/"
+    ],
+    "acl": [
+      "Lab 6 — ACL Traffic Control",
+      "labs/networking/acl-traffic-control/"
+    ],
+    "reading": [
+      "Network+ Student Objective Breakdown",
+      "certifications/comptia/network-plus/objective-breakdown/"
+    ]
+  },
+  "days": [
+    {
+      "number": 1,
+      "title": "Networking foundations",
+      "minutes": 100,
+      "objectives": [
+        "1.1",
+        "1.2",
+        "1.6"
+      ],
+      "goal": "Trace a request across two LANs and explain how device roles and topology shape its path.",
+      "recall": "Without notes, sketch the devices between a client and a remote server. Label the addresses a switch and a router each inspect.",
+      "resources": [
+        "pdu",
+        "walk",
+        "osi-quiz",
+        "reading"
+      ],
+      "session": "day-1.json"
+    },
+    {
+      "number": 2,
+      "title": "Network media and physical installation",
+      "minutes": 120,
+      "objectives": [
+        "1.5",
+        "2.4",
+        "5.2"
+      ],
+      "goal": "Select a link for its distance and rate, plan its installation and isolate a physical fault from test evidence.",
+      "recall": "Recall where a frame becomes a signal. Name two physical failures that could stop the next hop from receiving that frame.",
+      "resources": [
+        "cabling",
+        "setup",
+        "media-quiz",
+        "reading"
+      ],
+      "session": "day-2.json"
+    },
+    {
+      "number": 3,
+      "title": "IPv4 addressing and subnetting",
+      "minutes": 120,
+      "objectives": [
+        "1.7"
+      ],
+      "goal": "Calculate subnet boundaries and usable ranges by hand, allocate unequal LANs and use the results to diagnose a host.",
+      "recall": "Recall how a host reaches a different LAN. Which setting determines whether to send the frame to a neighbor or the gateway?",
+      "resources": [
+        "subnet",
+        "lab1",
+        "ip-fault",
+        "ipv4-quiz",
+        "reading"
+      ],
+      "session": "day-3.json"
+    },
+    {
+      "number": 4,
+      "title": "Switching, VLANs and trunks",
+      "minutes": 120,
+      "objectives": [
+        "2.2",
+        "5.3"
+      ],
+      "goal": "Trace VLAN membership and tags, select an STP path and diagnose a switching fault.",
+      "recall": "Recall which addresses a switch learns and how a broadcast reaches other ports.",
+      "resources": [
+        "vlan",
+        "reading"
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Routing and connectivity",
+      "minutes": 120,
+      "objectives": [
+        "2.1",
+        "5.3"
+      ],
+      "goal": "Read a routing table, predict an address translation and isolate a missing return path.",
+      "recall": "Calculate the local prefix before choosing the next hop.",
+      "resources": [
+        "route",
+        "ip-fault",
+        "reading"
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Ports, protocols and network services",
+      "minutes": 120,
+      "objectives": [
+        "1.4",
+        "3.4",
+        "5.3"
+      ],
+      "goal": "Trace transport, address leasing, name resolution and clock synchronization from client evidence.",
+      "recall": "Recall how a client reaches a DNS server on a remote subnet.",
+      "resources": [
+        "dns",
+        "capture",
+        "reading"
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Wireless networking and performance",
+      "minutes": 105,
+      "objectives": [
+        "1.5",
+        "2.3",
+        "5.4"
+      ],
+      "goal": "Choose radio settings and distinguish congestion, interference, roaming and coverage faults.",
+      "recall": "Compare shared radio airtime with a switched Ethernet link.",
+      "resources": [
+        "wifi",
+        "reading"
+      ]
+    },
+    {
+      "number": 8,
+      "title": "Cloud networks, IPv6 and modern architectures",
+      "minutes": 100,
+      "objectives": [
+        "1.3",
+        "1.8",
+        "3.4"
+      ],
+      "goal": "Map virtual networks, overlays and access policies. Explain address configuration and IPv6 transition choices.",
+      "recall": "Explain which addressing and routing decisions remain when a router runs as software.",
+      "resources": [
+        "reading"
+      ]
+    },
+    {
+      "number": 9,
+      "title": "Network operations and disaster recovery",
+      "minutes": 100,
+      "objectives": [
+        "3.1",
+        "3.3"
+      ],
+      "goal": "Use documentation, change records and recovery targets to plan service restoration.",
+      "recall": "Sketch a physical path and list the records needed to rebuild it.",
+      "resources": [
+        "reading"
+      ]
+    },
+    {
+      "number": 10,
+      "title": "Monitoring, analysis and management",
+      "minutes": 120,
+      "objectives": [
+        "3.2",
+        "3.5",
+        "5.5"
+      ],
+      "goal": "Choose a management channel, correlate logs and capture evidence, and explain deviations from a baseline.",
+      "recall": "Recall the ports and timestamps you would expect in a normal DNS exchange.",
+      "resources": [
+        "capture",
+        "reading"
+      ]
+    },
+    {
+      "number": 11,
+      "title": "Network security and defenses",
+      "minutes": 120,
+      "objectives": [
+        "4.1",
+        "4.2",
+        "4.3"
+      ],
+      "goal": "Recognize threats from symptoms and choose controls for identity, device access and segmentation.",
+      "recall": "Recall how VLANs, routed boundaries and management paths affect exposure.",
+      "resources": [
+        "acl",
+        "reading"
+      ]
+    },
+    {
+      "number": 12,
+      "title": "Troubleshooting across the network",
+      "minutes": 120,
+      "objectives": [
+        "5.1",
+        "5.2",
+        "5.3",
+        "5.4",
+        "5.5"
+      ],
+      "goal": "Work through physical, service and performance cases. Select a test, verify a repair and document the evidence.",
+      "recall": "Name one observation that separates a cable fault from an addressing fault.",
+      "resources": [
+        "cabling",
+        "capture",
+        "ip-fault",
+        "reading"
+      ]
+    },
+    {
+      "number": 13,
+      "title": "Timed rehearsal and error analysis",
+      "minutes": 120,
+      "objectives": [
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "1.6",
+        "1.7",
+        "1.8",
+        "2.1",
+        "2.2",
+        "2.3",
+        "2.4",
+        "3.1",
+        "3.2",
+        "3.3",
+        "3.4",
+        "3.5",
+        "4.1",
+        "4.2",
+        "4.3",
+        "5.1",
+        "5.2",
+        "5.3",
+        "5.4",
+        "5.5"
+      ],
+      "goal": "Complete a timed N10-009 practice exam and use the results to prioritize weak objectives.",
+      "recall": "Identify two decisions you made with low confidence and the evidence that would settle them.",
+      "resources": [
+        "reading"
+      ]
+    },
+    {
+      "number": 14,
+      "title": "Targeted remediation and exam readiness",
+      "minutes": 75,
+      "objectives": [
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "1.6",
+        "1.7",
+        "1.8",
+        "2.1",
+        "2.2",
+        "2.3",
+        "2.4",
+        "3.1",
+        "3.2",
+        "3.3",
+        "3.4",
+        "3.5",
+        "4.1",
+        "4.2",
+        "4.3",
+        "5.1",
+        "5.2",
+        "5.3",
+        "5.4",
+        "5.5"
+      ],
+      "goal": "Retry weak skills, demonstrate a practical task independently and decide what evidence supports your exam date.",
+      "recall": "Recall a missed concept from each weak domain before checking your notes.",
+      "resources": [
+        "subnet",
+        "capture",
+        "reading"
+      ]
+    }
+  ]
+}
