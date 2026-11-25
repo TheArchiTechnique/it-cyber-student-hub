@@ -1,0 +1,264 @@
+{
+  "minutes": {
+    "reading": 25,
+    "cards": 15,
+    "quiz": 15,
+    "worksheet": 30,
+    "application": 20
+  },
+  "review": [
+    {
+      "objective": "1.4",
+      "title": "Match the tool to the evidence",
+      "text": "A user reports freezes at 09:15. Start with Event Viewer to examine the relevant system or application log at that time. A timestamp and source help narrow the next question; a warning alone does not prove a cause. For a slowdown happening now, Task Manager shows which processes consume resources. Resource Monitor adds per-process disk, network and memory detail. Performance Monitor can collect counters across time."
+    },
+    {
+      "objective": "1.4",
+      "title": "Locate the right console",
+      "text": "MMC hosts administrative snap-ins. Device Manager shows devices and driver status; Disk Management shows disks, partitions and volumes; Task Scheduler runs tasks on triggers. certmgr.msc shows the current user’s certificates. lusrmgr.msc manages local accounts and groups on supported editions. Use System Information for inventory, System Configuration for startup diagnosis, Disk Cleanup to reclaim space and Optimize Drives for media-appropriate optimization. Registry Editor changes configuration directly; a symptom alone rarely justifies an edit."
+    },
+    {
+      "objective": "1.6",
+      "title": "Choose a setting the user can verify",
+      "text": "A file shown as invoice.pdf might have a hidden final extension. Use File Explorer's file name extensions view to inspect the full name without opening it. Showing hidden items is a separate setting. Match audio output, printer selection, account, display, language, application and network settings to the reported behavior. Indexing Options controls search indexing locations. Modern Settings and legacy Control Panel names can vary by Windows version."
+    },
+    {
+      "objective": "1.6",
+      "title": "Use power behavior as a clue",
+      "text": "Sleep normally preserves the session in powered memory. Hibernate writes it to disk and can resume after power is removed. Lid-close behavior can vary on battery and AC. Fast startup speeds a shutdown/start cycle by preserving kernel state; Restart performs a fresh boot. USB selective suspend can reduce power to an idle USB device. Record the starting setting, change one variable and verify the original symptom."
+    }
+  ],
+  "sources": [
+    [
+      "Microsoft Support: system configuration tools",
+      "https://support.microsoft.com/en-us/windows/experience/system-configuration-tools-in-windows"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "events",
+      "objective": "1.4",
+      "prompt": "Which tool shows time-stamped Windows system and application logs?",
+      "answer": "Event Viewer (eventvwr.msc). Match the source, time and event details to the report."
+    },
+    {
+      "id": "live",
+      "objective": "1.4",
+      "prompt": "Which Task Manager views answer who is signed in and what is busy?",
+      "answer": "Users identifies sessions. Processes and Performance show current workload."
+    },
+    {
+      "id": "resmon",
+      "objective": "1.4",
+      "prompt": "What detail can Resource Monitor add to a disk investigation?",
+      "answer": "It can associate current disk activity and file paths with individual processes."
+    },
+    {
+      "id": "perfmon",
+      "objective": "1.4",
+      "prompt": "When is Performance Monitor a better fit than a single snapshot?",
+      "answer": "When counters need to be sampled or logged over time to capture an intermittent pattern."
+    },
+    {
+      "id": "devices",
+      "objective": "1.4",
+      "prompt": "Which snap-in shows device and driver status?",
+      "answer": "Device Manager (devmgmt.msc). A warning is a reason to inspect the device's properties."
+    },
+    {
+      "id": "volumes",
+      "objective": "1.4",
+      "prompt": "What can Disk Management show when a USB drive lacks a letter?",
+      "answer": "Whether the disk and volume are present and which drive letter, if any, is assigned."
+    },
+    {
+      "id": "schedule",
+      "objective": "1.4",
+      "prompt": "Which Windows tool connects a trigger to an action?",
+      "answer": "Task Scheduler (taskschd.msc), for example to run an approved inventory task at sign-in."
+    },
+    {
+      "id": "mmc",
+      "objective": "1.4",
+      "prompt": "What does MMC provide?",
+      "answer": "Microsoft Management Console hosts administrative snap-ins such as Event Viewer."
+    },
+    {
+      "id": "extensions",
+      "objective": "1.6",
+      "prompt": "Which Explorer option distinguishes invoice.pdf from invoice.pdf.exe?",
+      "answer": "Show file name extensions. Inspecting a full filename does not require opening the file."
+    },
+    {
+      "id": "index",
+      "objective": "1.6",
+      "prompt": "Where can you check whether a folder is included in Windows search indexing?",
+      "answer": "Indexing Options lists indexed locations and lets an authorized user adjust them."
+    },
+    {
+      "id": "hibernate",
+      "objective": "1.6",
+      "prompt": "Which power state can preserve a session through complete loss of power?",
+      "answer": "Hibernate writes session state to disk."
+    },
+    {
+      "id": "usb",
+      "objective": "1.6",
+      "prompt": "What does USB selective suspend do?",
+      "answer": "It lets Windows suspend an idle USB device or port to save power while other devices continue operating."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "crash",
+      "objective": "1.4",
+      "prompt": "Which Windows MMC snap-in lets you inspect Application log entries at the minute of a crash? ____",
+      "answers": [
+        "Event Viewer",
+        "Windows Event Viewer",
+        "eventvwr",
+        "eventvwr.msc"
+      ],
+      "explanation": "Event Viewer lets you inspect the time, source and details of logged events."
+    },
+    {
+      "id": "driver",
+      "objective": "1.4",
+      "prompt": "Enter the .msc filename for Device Manager: ____.",
+      "answers": [
+        "devmgmt.msc"
+      ],
+      "explanation": "Device Manager displays hardware status and driver details."
+    },
+    {
+      "id": "trend",
+      "objective": "1.4",
+      "prompt": "To log Windows performance counters over several hours, use ____ Monitor.",
+      "answers": [
+        "Performance",
+        "Performance Monitor",
+        "perfmon",
+        "perfmon.exe",
+        "perfmon.msc"
+      ],
+      "explanation": "A counter log captures a trend that a single usage snapshot can miss."
+    },
+    {
+      "id": "schedule",
+      "objective": "1.4",
+      "prompt": "To run an inventory program at sign-in, a technician creates a task with a logon trigger and a program action. Name the graphical Windows scheduling tool: ____.",
+      "answers": [
+        "Task Scheduler",
+        "Windows Task Scheduler",
+        "taskschd.msc"
+      ],
+      "explanation": "Task Scheduler pairs a trigger such as logon with an action."
+    },
+    {
+      "id": "inventory",
+      "objective": "1.4",
+      "prompt": "Enter the executable for System Information: ____.",
+      "answers": [
+        "msinfo32.exe",
+        "msinfo32"
+      ],
+      "explanation": "System Information reports hardware and software configuration for inventory and support."
+    },
+    {
+      "id": "resume",
+      "objective": "1.6",
+      "prompt": "A laptop must retain open work with no power available. Choose the Windows power state called ____.",
+      "answers": [
+        "hibernate",
+        "hibernation"
+      ],
+      "explanation": "Hibernation stores session state on disk so memory need not stay powered."
+    },
+    {
+      "id": "suffix",
+      "objective": "1.6",
+      "prompt": "To see the final .exe in a double-extension filename, turn on File name ____ in Explorer.",
+      "answers": [
+        "extensions",
+        "extension"
+      ],
+      "explanation": "This exposes the filename suffix. Showing hidden items controls different entries."
+    },
+    {
+      "id": "search",
+      "objective": "1.6",
+      "prompt": "The classic control that lists folders included in Windows search indexing is called ____.",
+      "answers": [
+        "Indexing Options",
+        "Windows Indexing Options"
+      ],
+      "explanation": "Review indexed locations before considering more disruptive search repairs."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "history",
+      "objective": "1.4",
+      "prompt": "A workstation froze before lunch and now works normally. Which tool could give evidence from that time? Name two details you would record.",
+      "type": "Example",
+      "key": "Check Event Viewer around the freeze and record the timestamp, source, event ID or message. Reliability Monitor is also appropriate if it captured a matching failure. A freeze may leave no matching entry. Compare any finding with the user’s timeline.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "performance",
+      "objective": "1.4",
+      "prompt": "Match three needs to tools: current CPU use by process, current file activity by process, and counters collected overnight.",
+      "type": "Factual",
+      "key": "Task Manager, Resource Monitor and Performance Monitor, respectively.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "snapins",
+      "objective": "1.4",
+      "prompt": "Give the snap-in for a missing drive letter and the snap-in for a device reporting a driver error.",
+      "type": "Factual",
+      "key": "Disk Management (diskmgmt.msc) and Device Manager (devmgmt.msc).",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "triggers",
+      "objective": "1.4",
+      "prompt": "Describe one trigger and one action for an approved workstation inventory task.",
+      "type": "Example",
+      "key": "Trigger at user sign-in and run the approved inventory program. Confirm the task history and expected inventory output.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "explorer",
+      "objective": "1.6",
+      "prompt": "Compare showing hidden items with showing file name extensions. Which setting helps inspect an unexpected attachment's suffix?",
+      "type": "Factual",
+      "key": "Hidden items controls visibility of entries marked hidden. File name extensions exposes suffixes and is the relevant setting for this check.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "power",
+      "objective": "1.6",
+      "prompt": "A laptop resumes from sleep overnight only while its battery lasts. Explain how hibernation preserves the session differently.",
+      "type": "Factual",
+      "key": "Sleep normally needs power to retain memory. Hibernation writes the session to disk so it can be restored after power loss.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "consoles",
+      "objective": "1.4",
+      "prompt": "Using Microsoft's configuration tools guide, compare System Information and System Configuration. Which would you use to record the BIOS version?",
+      "type": "Example",
+      "key": "System Information provides inventory, including the BIOS version. System Configuration helps diagnose startup and service conflicts. Use System Information for this ticket.",
+      "source": "Microsoft Support: system configuration tools"
+    },
+    {
+      "id": "validation",
+      "objective": "1.6",
+      "prompt": "A user's laptop sleeps when the lid closes on AC but must stay awake while docked. Outline one targeted change and how to test it.",
+      "type": "Example",
+      "key": "Record the existing AC and battery settings, change only the plugged-in lid-close action to the approved setting, and test while docked. Verify battery behavior separately.",
+      "source": "Application exercise: use the power behavior review"
+    }
+  ]
+}

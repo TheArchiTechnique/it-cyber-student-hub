@@ -1,0 +1,296 @@
+{
+  "minutes": {
+    "reading": 25,
+    "cards": 10,
+    "quiz": 15,
+    "worksheet": 30,
+    "application": 20
+  },
+  "review": [
+    {
+      "objective": "1.10",
+      "title": "Check the application against the workstation",
+      "text": "A desktop design app lists a supported OS release, x64 processor, 16 GB RAM, dedicated graphics with 4 GB VRAM and 20 GB free storage. Compare each requirement with the workstation inventory. System RAM serves the computer; VRAM serves graphics. Check required runtimes, drivers, peripherals and any hardware license token. An OS that runs normally can still be an unsupported platform for this app."
+    },
+    {
+      "objective": "1.10",
+      "title": "Choose how to deliver the software",
+      "text": "A trusted downloadable package can update a single application on an existing OS. Mounting an ISO opens a disk image so the installer inside can be used. A network distribution point supplies approved installation files to multiple clients. For a large rollout, check link capacity, staging space and how long users will lose access. A workstation image can include an OS and an application baseline. Replacing a whole workstation image has a different effect on user data and settings than running an app installer."
+    },
+    {
+      "objective": "1.11",
+      "title": "Trace access from sign-in to the document",
+      "text": "For a new employee, verify the work account and tenant, identity synchronization if used, and the license or service plan for the requested email or collaboration service. Then check access to the specific team, library or file. Someone who can edit one team document but can only view another may have different sharing permissions on the two items. Ask the employee to perform the access test in their own signed-in session."
+    },
+    {
+      "objective": "1.11",
+      "title": "Separate cloud access from a local sync problem",
+      "text": "A user can edit a spreadsheet in the browser, but the laptop still shows yesterday's version. Compare the work account, selected sync folder, client status, connection and last successful sync. An online-only file requires a connection to download it. For offline work, make the file available locally and verify it opens before disconnecting. Meetings, chat, email and coauthoring share an identity platform but can have different service settings."
+    },
+    {
+      "objective": "4.2",
+      "title": "Make a change request that someone else can execute",
+      "text": "Record the reason, affected users and systems, owner, dependencies, risks, expected interruption and validation criteria. Test the change in a sandbox or representative pilot. Include a backup, a specific rollback trigger, a restoration procedure and a named decision maker. Follow the required authorization process, observe freezes and schedule an approved maintenance window. After implementation, verify the technical result and have an affected user perform the business task before closing the change. A standard change follows a preauthorized procedure. A normal change needs risk-based review and approval. An emergency change uses the organization’s expedited authorization path and is documented afterward as required."
+    },
+    {
+      "objective": "4.8",
+      "title": "Read a script as a support procedure",
+      "text": "A .ps1 file is a PowerShell script, .bat is a Windows batch file, .vbs is VBScript, .sh commonly denotes a shell script, .js is JavaScript and .py is Python. The appropriate runtime must be available. A script can gather inventory, map a drive, install an app or schedule a restart. Check its source, target list, privileges and expected effects. Test on a representative device and review logs before expanding. A mistaken target list can restart an entire department during business hours."
+    }
+  ],
+  "sources": [
+    [
+      "Microsoft Learn: plan an application deployment",
+      "https://learn.microsoft.com/en-us/microsoft-365-apps/deploy/plan-microsoft-365-apps"
+    ],
+    [
+      "Microsoft Learn: assign user licenses",
+      "https://learn.microsoft.com/en-us/microsoft-365/admin/manage/assign-licenses-to-users"
+    ],
+    [
+      "Microsoft Support: OneDrive status icons",
+      "https://support.microsoft.com/en-us/onedrive/what-do-the-onedrive-icons-mean"
+    ],
+    [
+      "Microsoft Learn: PowerShell scripts",
+      "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_scripts"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "vram",
+      "objective": "1.10",
+      "prompt": "What does a requirement for 4 GB VRAM measure?",
+      "answer": "Graphics memory available to the GPU. Check the vendor's graphics requirements separately from system RAM."
+    },
+    {
+      "id": "dependency",
+      "objective": "1.10",
+      "prompt": "What is a software dependency in an installation guide?",
+      "answer": "A component the application needs, such as a supported runtime or driver."
+    },
+    {
+      "id": "iso",
+      "objective": "1.10",
+      "prompt": "What does mounting an installer ISO accomplish?",
+      "answer": "It makes the disk image's contents available as a virtual drive so the installation files can be accessed."
+    },
+    {
+      "id": "entitlement",
+      "objective": "1.11",
+      "prompt": "What does assigning a supported cloud service license to a work account establish?",
+      "answer": "The account's entitlement to the included service, subject to its enabled service plans."
+    },
+    {
+      "id": "sharing",
+      "objective": "1.11",
+      "prompt": "Which control determines whether a particular collaborator may edit a shared file?",
+      "answer": "The effective sharing or library permissions for that identity, including group or link access."
+    },
+    {
+      "id": "offline",
+      "objective": "1.11",
+      "prompt": "What does an online-only file in OneDrive require before it can be opened offline?",
+      "answer": "Its contents must be downloaded and available locally."
+    },
+    {
+      "id": "freeze",
+      "objective": "4.2",
+      "prompt": "What is a change freeze?",
+      "answer": "A protected period when changes are restricted according to policy."
+    },
+    {
+      "id": "rollback",
+      "objective": "4.2",
+      "prompt": "What should a rollback trigger tell the change owner?",
+      "answer": "The observed condition or deadline that calls for reverting to the previous working state."
+    },
+    {
+      "id": "acceptance",
+      "objective": "4.2",
+      "prompt": "What is end-user acceptance after an application upgrade?",
+      "answer": "An affected user verifies the agreed business task works and records the result."
+    },
+    {
+      "id": "batch",
+      "objective": "4.8",
+      "prompt": "Which two filename extensions commonly identify Windows command scripts processed by cmd.exe?",
+      "answer": ".bat and .cmd. The Core 2 scripting objective explicitly lists .bat."
+    },
+    {
+      "id": "runtime",
+      "objective": "4.8",
+      "prompt": "Which interpreter is expected for a .py support script?",
+      "answer": "A compatible Python interpreter, together with any dependencies the script uses."
+    },
+    {
+      "id": "pilot-scope",
+      "objective": "4.8",
+      "prompt": "Why run a reviewed inventory script against a pilot group first?",
+      "answer": "A pilot can expose incorrect targeting, permissions or resource use before they affect the whole group."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "graphics",
+      "objective": "1.10",
+      "prompt": "A graphics card must have 4 GB of dedicated memory for textures. Which four-letter memory specification should the technician check? ____",
+      "answers": [
+        "VRAM"
+      ],
+      "explanation": "Check the GPU's memory specification independently of the workstation's installed system RAM."
+    },
+    {
+      "id": "disk-image",
+      "objective": "1.10",
+      "prompt": "An installer is supplied as an optical-disc image that Windows can mount. Enter its three-letter extension: ____.",
+      "answers": [
+        "ISO",
+        ".iso"
+      ],
+      "explanation": "Mounting the ISO provides access to its files; the application installer still needs to run."
+    },
+    {
+      "id": "sync",
+      "objective": "1.11",
+      "prompt": "A cloud client propagates saved file changes between a selected local folder and the cloud. This process is called ____.",
+      "answers": [
+        "synchronization",
+        "synchronisation",
+        "sync",
+        "syncing",
+        "synching",
+        "file synchronization",
+        "file synchronisation"
+      ],
+      "explanation": "Check the account, folder selection and client status when the local copy lags behind the web copy."
+    },
+    {
+      "id": "service-license",
+      "objective": "1.11",
+      "prompt": "A Microsoft 365 user has the correct account but no entitlement to the paid service. The admin must assign a ____ that includes the required service plan.",
+      "answers": [
+        "license",
+        "licence",
+        "product license",
+        "product licence",
+        "Microsoft 365 license",
+        "Microsoft 365 licence",
+        "user license",
+        "user licence"
+      ],
+      "explanation": "A license grants access to its enabled services. Access to an individual shared document also depends on its permissions."
+    },
+    {
+      "id": "window",
+      "objective": "4.2",
+      "prompt": "The approved period set aside for a planned service interruption is a maintenance ____.",
+      "answers": [
+        "window",
+        "maintenance window"
+      ],
+      "explanation": "The window coordinates the disruption with users, dependencies and support staff."
+    },
+    {
+      "id": "revert",
+      "objective": "4.2",
+      "prompt": "The change record's ____ plan specifies how to return to the previous working version after a failed rollout.",
+      "answers": [
+        "rollback",
+        "roll back",
+        "backout",
+        "back out",
+        "reversion",
+        "rollback plan",
+        "backout plan"
+      ],
+      "explanation": "The plan identifies restoration steps, a trigger and who makes the decision."
+    },
+    {
+      "id": "powershell",
+      "objective": "4.8",
+      "prompt": "A technician saves a PowerShell script as Inventory.____. Supply its standard filename extension.",
+      "answers": [
+        "ps1",
+        ".ps1"
+      ],
+      "explanation": "PowerShell script files use .ps1. Review the script's actions and scope before authorizing its use."
+    },
+    {
+      "id": "shell",
+      "objective": "4.8",
+      "prompt": "An approved Unix shell script is named collect.____. Supply the conventional two-letter extension.",
+      "answers": [
+        "sh",
+        ".sh"
+      ],
+      "explanation": "The .sh extension commonly denotes a shell script. The script still requires a compatible shell."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "compare-specs",
+      "objective": "1.10",
+      "prompt": "An app requires x64 Windows, 16 GB RAM, 4 GB dedicated VRAM and 20 GB free disk space. A PC has supported x64 Windows, 32 GB RAM, 2 GB dedicated VRAM and 80 GB free. Which check fails, and why would adding system RAM miss the requirement?",
+      "type": "Factual",
+      "key": "The GPU has 2 GB of dedicated VRAM against a 4 GB minimum. System RAM and available disk space already exceed their listed minima. Additional system RAM would not increase dedicated VRAM on that graphics card.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "distribution",
+      "objective": "1.10",
+      "prompt": "Sixteen PCs with supported operating systems need one app upgrade over a slow office link. Compare staging an approved installer locally with applying a full workstation image. Which would you choose and what would you verify?",
+      "type": "Example",
+      "key": "Stage the approved application package once on a local distribution point, then pilot the upgrade. Check package version, dependencies and available storage. Reimaging could replace the OS, settings and data and would require a broader recovery plan.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "identity",
+      "objective": "1.11",
+      "prompt": "A new hire can sign into the work portal but the mail service reports that it is unlicensed. Later the mailbox works, but a private team folder denies access. Identify the separate check for each symptom.",
+      "type": "Example",
+      "key": "For mail, verify that the correct work identity has a license with the mail service enabled. For the folder, check the intended team's membership and the folder's sharing permissions for that identity.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "local-file",
+      "objective": "1.11",
+      "prompt": "A spreadsheet shows today's figures in the browser but yesterday's figures in a local folder. List three checks before replacing either copy.",
+      "type": "Example",
+      "key": "Confirm the same work account and the same cloud file, verify that its folder is selected for sync and check connection, pause or error status. Preserve any local edits until you understand which copy changed.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "sequence",
+      "objective": "4.2",
+      "prompt": "Put these actions in a defensible order for a normal change: verify with the user, deploy, document impact and recovery, obtain production approval, and test in a sandbox. What evidence would you keep?",
+      "type": "Example",
+      "key": "Document scope, impact and recovery, then test the proposed change in a sandbox under the applicable process. Obtain production approval using the results, deploy in the approved window, and verify with the user. Retain test results, approval, implementation notes and acceptance.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "extensions",
+      "objective": "4.8",
+      "prompt": "Match inventory.ps1, setup.bat, legacy.vbs, copy.sh, status.js and report.py to their script environments. Why check the runtime on a newly imaged device?",
+      "type": "Factual",
+      "key": "PowerShell, Windows batch (cmd.exe), VBScript, a compatible shell, JavaScript and Python, respectively. The required interpreter, version or components may be absent or disabled by policy.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "travel",
+      "objective": "1.11",
+      "prompt": "A OneDrive traveler sees a blue cloud beside tomorrow's agenda. Use Microsoft's icon guide to explain the risk for an offline meeting and how to confirm the file will be available.",
+      "type": "Example",
+      "key": "The blue cloud marks an online-only file. While connected, select Always keep on this device and wait for the solid green circle with a white check. Verify the agenda opens offline before travel.",
+      "source": "Microsoft Support: OneDrive status icons"
+    },
+    {
+      "id": "pilot",
+      "objective": "4.8",
+      "prompt": "An approved script schedules a reboot after an app upgrade. The ticket authorizes five pilot PCs tonight; its target list contains 50. What would you do before rollout, and what evidence would justify expanding it?",
+      "type": "Example",
+      "key": "Hold execution and reconcile the target list with the approved five devices. Have a peer verify scope, timing and privilege, then test under the approved change. Record restart and application results, check for lost work or unexpected effects, and obtain authorization for a wider rollout.",
+      "source": "Application exercise: use the change and scripting reviews"
+    }
+  ]
+}

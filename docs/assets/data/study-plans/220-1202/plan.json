@@ -1,0 +1,709 @@
+{
+  "certification": "CompTIA A+ Core 2",
+  "exam": "220-1202",
+  "series": "V15",
+  "revision": "4.0",
+  "source": "https://lecbyo.files.cmp.optimizely.com/download/cefedfb2b8a511ef809306d06d323538",
+  "domains": [
+    {
+      "id": "1.0",
+      "name": "Operating Systems",
+      "weight": 28
+    },
+    {
+      "id": "2.0",
+      "name": "Security",
+      "weight": 28
+    },
+    {
+      "id": "3.0",
+      "name": "Software Troubleshooting",
+      "weight": 23
+    },
+    {
+      "id": "4.0",
+      "name": "Operational Procedures",
+      "weight": 21
+    }
+  ],
+  "objectives": {
+    "1.1": {
+      "id": "1.1",
+      "domain": "1.0",
+      "name": "Operating system types and purposes",
+      "skill": "Compare",
+      "workload": "Moderate",
+      "scope": "Desktop and mobile platform fit (Windows, Linux, macOS, ChromeOS, iOS, iPadOS, Android). Choose among NTFS, ReFS, FAT32, ext4, XFS, APFS and exFAT. Check vendor support, update limits and interoperability.",
+      "reading": "../../objective-breakdown/#11-operating-system-types-and-purposes"
+    },
+    "1.2": {
+      "id": "1.2",
+      "domain": "1.0",
+      "name": "OS installation and upgrades",
+      "skill": "Apply",
+      "workload": "High",
+      "scope": "Boot from USB, flash, network, internet, external media or internal recovery. Contrast multiboot, clean, upgrade, repair, image, network and zero-touch installs. Choose GPT/MBR and format; verify backups, preferences, hardware, drivers, app support, feature updates and lifecycle.",
+      "reading": "../../objective-breakdown/#12-os-installation-and-upgrades"
+    },
+    "1.3": {
+      "id": "1.3",
+      "domain": "1.0",
+      "name": "Microsoft Windows editions",
+      "skill": "Compare",
+      "workload": "Moderate",
+      "scope": "Compare Windows 10 Home, Pro, Pro for Workstations and Enterprise with Windows 11 Home, Pro and Enterprise. Recognize N variants and UI differences. Compare domain join, workgroups, RDP hosting, memory limits, BitLocker, Group Policy, upgrade paths, TPM and UEFI.",
+      "reading": "../../objective-breakdown/#13-microsoft-windows-editions"
+    },
+    "1.4": {
+      "id": "1.4",
+      "domain": "1.0",
+      "name": "Windows features and tools",
+      "skill": "Apply",
+      "workload": "High",
+      "scope": "Task Manager processes, performance, users, startup and services. Select MMC snap-ins for events, disks, tasks, devices, certificates, users/groups, counters and policy. Distinguish msinfo32, resmon, msconfig, cleanmgr, dfrgui and regedit.",
+      "reading": "../../objective-breakdown/#14-windows-features-and-tools"
+    },
+    "1.5": {
+      "id": "1.5",
+      "domain": "1.0",
+      "name": "Windows command-line tools",
+      "skill": "Apply",
+      "workload": "High",
+      "scope": "Navigate with cd and dir; manage folders with md and rmdir and copy with robocopy. Choose chkdsk, format or diskpart. Identify a system with hostname, net user, winver and whoami. Use /?, gpupdate, gpresult and sfc. Interpret ipconfig, ping, netstat, nslookup, net use, tracert and pathping.",
+      "reading": "../../objective-breakdown/#15-windows-command-line-tools"
+    },
+    "1.6": {
+      "id": "1.6",
+      "domain": "1.0",
+      "name": "Windows settings",
+      "skill": "Configure",
+      "workload": "High",
+      "scope": "Find Internet Options, peripherals, installed features, networking, System, firewall, Mail, Sound, accounts, devices, indexing and administrative tools. Configure Explorer views, extensions and hidden items; sleep, hibernate, standby, lid, startup and USB power. Locate accessibility, language, updates, personalization, apps, privacy, networking and gaming settings.",
+      "reading": "../../objective-breakdown/#16-windows-settings"
+    },
+    "1.7": {
+      "id": "1.7",
+      "domain": "1.0",
+      "name": "Windows client networking",
+      "skill": "Configure",
+      "workload": "High",
+      "scope": "Compare workgroups and domains for printers, shares, UNC paths and mapped drives. Configure address, mask, gateway and DNS with DHCP or static settings. Select wired, wireless, cellular or VPN connections, proxy, metering, public/private profiles and firewall exceptions.",
+      "reading": "../../objective-breakdown/#17-windows-client-networking"
+    },
+    "1.8": {
+      "id": "1.8",
+      "domain": "1.0",
+      "name": "macOS features and tools",
+      "skill": "Explain",
+      "workload": "Moderate",
+      "scope": "Install and remove apps from DMG, PKG, app bundles or App Store. Distinguish Applications, Users, System and user/system-wide Library. Review account restrictions, backups, antivirus, updates and RSR. Find display, network, printer, scanner, privacy and accessibility controls. Use Time Machine, Spaces, Mission Control, Keychain, Spotlight, iCloud services, gestures, Finder, Dock, Continuity, Disk Utility, FileVault, Terminal and Force Quit.",
+      "reading": "../../objective-breakdown/#18-macos-features-and-tools"
+    },
+    "1.9": {
+      "id": "1.9",
+      "domain": "1.0",
+      "name": "Linux features and tools",
+      "skill": "Identify",
+      "workload": "High",
+      "scope": "Identify ls, pwd, mv, cp, rm, chmod, chown, grep, find, fsck, mount, su, sudo, apt, dnf, ip, ping, curl, dig, traceroute, man, cat, top, ps, du, df and nano. Locate passwd, shadow, hosts, fstab and resolv.conf under /etc. Distinguish root, systemd, kernel and bootloader.",
+      "reading": "../../objective-breakdown/#19-linux-features-and-tools"
+    },
+    "1.10": {
+      "id": "1.10",
+      "domain": "1.0",
+      "name": "Application installation requirements",
+      "skill": "Apply",
+      "workload": "Moderate",
+      "scope": "Check architecture, graphics/VRAM, RAM, CPU, hardware tokens, disk and OS requirements. Choose physical media, mounted ISO, package or image. Consider workstation, network, operational and business impact.",
+      "reading": "../../objective-breakdown/#110-application-installation-requirements"
+    },
+    "1.11": {
+      "id": "1.11",
+      "domain": "1.0",
+      "name": "Cloud productivity tools",
+      "skill": "Configure",
+      "workload": "Moderate",
+      "scope": "Set up email, synchronized folders, messaging, meetings, slides, documents and spreadsheets. Verify identity synchronization, permissions and license assignment.",
+      "reading": "../../objective-breakdown/#111-cloud-productivity-tools"
+    },
+    "2.1": {
+      "id": "2.1",
+      "domain": "2.0",
+      "name": "Security measures and purposes",
+      "skill": "Explain",
+      "workload": "High",
+      "scope": "Relate barriers, vestibules, badges, cameras, alarms, sensors, locks, guards and fences to physical risks. Compare keys, tokens, mobile keys, biometrics, lighting and metal detection. Distinguish least privilege, Zero Trust, ACL, MFA factors and channels, OTP/TOTP, SAML, SSO, JIT/PAM, MDM, DLP, IAM and directory services.",
+      "reading": "../../objective-breakdown/#21-security-measures-and-purposes"
+    },
+    "2.2": {
+      "id": "2.2",
+      "domain": "2.0",
+      "name": "Windows security settings",
+      "skill": "Configure",
+      "workload": "High",
+      "scope": "Manage Defender definitions, firewall ports/apps, local and Microsoft accounts, account types, password, PIN, biometric, SSO and Hello sign-in. Compare inherited NTFS and share permissions, attributes, elevation, UAC, BitLocker, removable-drive encryption and EFS. Manage domain join, scripts, OUs, home folders, group policy, groups and folder redirection.",
+      "reading": "../../objective-breakdown/#22-windows-security-settings"
+    },
+    "2.3": {
+      "id": "2.3",
+      "domain": "2.0",
+      "name": "Wireless security and authentication",
+      "skill": "Compare",
+      "workload": "Moderate",
+      "scope": "Distinguish WPA2 and WPA3, TKIP and AES, RADIUS, TACACS+, Kerberos and multifactor authentication.",
+      "reading": "../../objective-breakdown/#23-wireless-security-and-authentication"
+    },
+    "2.4": {
+      "id": "2.4",
+      "domain": "2.0",
+      "name": "Malware and protective tools",
+      "skill": "Recognize",
+      "workload": "High",
+      "scope": "Identify Trojans, rootkits, viruses including boot-sector viruses, spyware, ransomware, keyloggers, miners, stalkerware, fileless malware, adware and PUPs. Compare recovery tools, EDR/MDR/XDR, endpoint scanners, mail gateways, firewalls, training and reinstallation.",
+      "reading": "../../objective-breakdown/#24-malware-and-protective-tools"
+    },
+    "2.5": {
+      "id": "2.5",
+      "domain": "2.0",
+      "name": "Social engineering, threats, and vulnerabilities",
+      "skill": "Compare",
+      "workload": "High",
+      "scope": "Recognize email, voice, text, QR, targeted and executive phishing; shoulder surfing, tailgating, impersonation and discarded data. Distinguish denial of service, evil twins, spoofing, on-path, zero-day, password attacks, insider risks, injection, XSS, BEC and supply-chain compromise. Assess missing controls, patching, compliance, EOL and BYOD.",
+      "reading": "../../objective-breakdown/#25-social-engineering-threats-and-vulnerabilities"
+    },
+    "2.6": {
+      "id": "2.6",
+      "domain": "2.0",
+      "name": "SOHO malware removal",
+      "skill": "Apply",
+      "workload": "High",
+      "scope": "Sequence the SOHO workflow from symptom verification and isolation through Windows Home restore handling, remediation, updated scanners, offline/safe-mode scans, reimaging when needed, scheduled maintenance, a fresh restore point and user education.",
+      "reading": "../../objective-breakdown/#26-soho-malware-removal"
+    },
+    "2.7": {
+      "id": "2.7",
+      "domain": "2.0",
+      "name": "Workstation security and hardening",
+      "skill": "Apply",
+      "workload": "Moderate",
+      "scope": "Choose encryption, firmware credentials, password length, complexity, uniqueness, expiration and managers. Protect devices and PII; lock or log out. Restrict permissions, hours, guest access, failures and account lifetime. Secure defaults, AutoRun and unused services.",
+      "reading": "../../objective-breakdown/#27-workstation-security-and-hardening"
+    },
+    "2.8": {
+      "id": "2.8",
+      "domain": "2.0",
+      "name": "Mobile device security",
+      "skill": "Apply",
+      "workload": "Moderate",
+      "scope": "Select encryption, screen locks, profile settings, patching, endpoint filtering, locating, remote wipe, remote backup and failed-login limits. Apply MDM rules for corporate and personal devices.",
+      "reading": "../../objective-breakdown/#28-mobile-device-security"
+    },
+    "2.9": {
+      "id": "2.9",
+      "domain": "2.0",
+      "name": "Data destruction and disposal",
+      "skill": "Compare",
+      "workload": "Moderate",
+      "scope": "Choose sanitization for reuse versus physical destruction, including wiping, format limits, shredding, drilling, incineration and magnetic-media degaussing. Check recycling rules, vendor custody and certificates.",
+      "reading": "../../objective-breakdown/#29-data-destruction-and-disposal"
+    },
+    "2.10": {
+      "id": "2.10",
+      "domain": "2.0",
+      "name": "SOHO network security",
+      "skill": "Configure",
+      "workload": "Moderate",
+      "scope": "Secure router credentials, firmware, physical placement and management. Evaluate filtering, UPnP, screened subnets, SSIDs and broadcast, encryption and guest isolation. Limit ports and review forwarding rules.",
+      "reading": "../../objective-breakdown/#210-soho-network-security"
+    },
+    "2.11": {
+      "id": "2.11",
+      "domain": "2.0",
+      "name": "Browser security",
+      "skill": "Configure",
+      "workload": "Moderate",
+      "scope": "Verify browser and extension sources, hashes, patches and certificates. Configure credential storage, pop-ups, history/cache, private windows, sync, ad blocking, proxy and secure DNS. Review permissions and disable unwanted features.",
+      "reading": "../../objective-breakdown/#211-browser-security"
+    },
+    "3.1": {
+      "id": "3.1",
+      "domain": "3.0",
+      "name": "Windows OS issues",
+      "skill": "Troubleshoot",
+      "workload": "High",
+      "scope": "Diagnose stop errors, slow or unstable systems, poor profile load, startup failures and missing OS, shutdowns, services, crashing apps, low memory, USB resource warnings and time drift using targeted evidence.",
+      "reading": "../../objective-breakdown/#31-windows-os-issues"
+    },
+    "3.2": {
+      "id": "3.2",
+      "domain": "3.0",
+      "name": "Mobile OS and application issues",
+      "skill": "Troubleshoot",
+      "workload": "Moderate",
+      "scope": "Trace app launch, close, crash, install and update failures. Evaluate OS updates, slow response, battery, restarts, rotation and Bluetooth, Wi-Fi or NFC symptoms.",
+      "reading": "../../objective-breakdown/#32-mobile-os-and-application-issues"
+    },
+    "3.3": {
+      "id": "3.3",
+      "domain": "3.0",
+      "name": "Mobile security issues",
+      "skill": "Troubleshoot",
+      "workload": "High",
+      "scope": "Check app origin, developer mode, root/jailbreak and impersonated apps. Investigate traffic, slowness, data alerts, connectivity loss, ads, fake warnings, changed app behavior and exposed private data.",
+      "reading": "../../objective-breakdown/#33-mobile-security-issues"
+    },
+    "3.4": {
+      "id": "3.4",
+      "domain": "3.0",
+      "name": "PC security issues",
+      "skill": "Troubleshoot",
+      "workload": "High",
+      "scope": "Triage network loss, system alerts and notifications, fake antivirus, missing/renamed/inaccessible files and blocked updates. Correlate redirects, pop-ups, certificate errors and browser slowdown with evidence.",
+      "reading": "../../objective-breakdown/#34-pc-security-issues"
+    },
+    "4.1": {
+      "id": "4.1",
+      "domain": "4.0",
+      "name": "Documentation and support systems",
+      "skill": "Apply",
+      "workload": "Moderate",
+      "scope": "Record user, asset, issue, category, severity, escalation, progress and resolution. Track assets, owners, procurement, warranty, licensing and CMDB records. Select incident reports, SOPs, onboarding/offboarding checklists, internal/vendor SLAs and knowledge articles.",
+      "reading": "../../objective-breakdown/#41-documentation-and-support-systems"
+    },
+    "4.2": {
+      "id": "4.2",
+      "domain": "4.0",
+      "name": "Change management",
+      "skill": "Apply",
+      "workload": "Moderate",
+      "scope": "Build change requests with purpose, scope, owners, risk, dependencies, impact, type, schedule, freeze/window, approval, sandbox test, backup and rollback. Implement, peer review and verify user acceptance.",
+      "reading": "../../objective-breakdown/#42-change-management"
+    },
+    "4.3": {
+      "id": "4.3",
+      "domain": "4.0",
+      "name": "Backup and recovery",
+      "skill": "Apply",
+      "workload": "High",
+      "scope": "Select full, incremental, differential and synthetic full backups. Compare overwrite and alternative-location restores, repeatable restore tests, onsite/offsite copies, GFS rotation and the 3-2-1 rule.",
+      "reading": "../../objective-breakdown/#43-backup-and-recovery"
+    },
+    "4.4": {
+      "id": "4.4",
+      "domain": "4.0",
+      "name": "Safety procedures",
+      "skill": "Apply",
+      "workload": "Moderate",
+      "scope": "Select ESD straps, mats and bags; store components, route cables and ground equipment. Review power disconnection, lifting, fire response, goggles, particulate protection and applicable safety rules.",
+      "reading": "../../objective-breakdown/#44-safety-procedures"
+    },
+    "4.5": {
+      "id": "4.5",
+      "domain": "4.0",
+      "name": "Environmental controls",
+      "skill": "Explain",
+      "workload": "Moderate",
+      "scope": "Consult safety data sheets for battery, toner and electronics disposal. Address heat, humidity, airflow, placement and dust cleaning. Match surge suppressors and UPS units to surges, brownouts and outages.",
+      "reading": "../../objective-breakdown/#45-environmental-controls"
+    },
+    "4.6": {
+      "id": "4.6",
+      "domain": "4.0",
+      "name": "Privacy, licensing, and policy",
+      "skill": "Explain",
+      "workload": "High",
+      "scope": "Preserve evidence, document custody, escalation and volatility. Distinguish DRM, EULAs, perpetual, personal, corporate and open-source licenses, NDAs and mutual NDAs. Protect payment, government ID, health and personal data; apply retention, AUP, compliance and sign-in notices.",
+      "reading": "../../objective-breakdown/#46-privacy-licensing-and-policy"
+    },
+    "4.7": {
+      "id": "4.7",
+      "domain": "4.0",
+      "name": "Communication and professionalism",
+      "skill": "Apply",
+      "workload": "Moderate",
+      "scope": "Choose suitable dress, respectful plain language, active listening and culturally appropriate forms of address. Manage punctuality, interruptions and difficult calls. Clarify issues, agree on options and timeline, document, follow up and protect private materials.",
+      "reading": "../../objective-breakdown/#47-communication-and-professionalism"
+    },
+    "4.8": {
+      "id": "4.8",
+      "domain": "4.0",
+      "name": "Scripting basics",
+      "skill": "Explain",
+      "workload": "Moderate",
+      "scope": "Recognize BAT, PS1, VBS, SH, JS and PY scripts. Relate automation to restarts, shares, installations, backups, inventory and updates; anticipate malware, configuration and resource risks.",
+      "reading": "../../objective-breakdown/#48-scripting-basics"
+    },
+    "4.9": {
+      "id": "4.9",
+      "domain": "4.0",
+      "name": "Remote access technologies",
+      "skill": "Apply",
+      "workload": "Moderate",
+      "scope": "Compare RDP, VPN, VNC, SSH, RMM, SPICE, WinRM and third-party screen-sharing, meetings, file transfer and desktop management. Select access controls appropriate to the support task.",
+      "reading": "../../objective-breakdown/#49-remote-access-technologies"
+    },
+    "4.10": {
+      "id": "4.10",
+      "domain": "4.0",
+      "name": "Artificial intelligence basics",
+      "skill": "Explain",
+      "workload": "Light",
+      "scope": "Evaluate AI features in applications against appropriate-use and plagiarism policies. Check for bias, hallucinations and errors; compare private/public services, data sources, confidentiality and privacy.",
+      "reading": "../../objective-breakdown/#410-artificial-intelligence-basics"
+    }
+  },
+  "resources": {
+    "commands": [
+      "Windows command-line lab",
+      "labs/it-support/windows-command-line/"
+    ],
+    "reference": [
+      "Windows command-line reference",
+      "reference/windows-command-line/"
+    ],
+    "linux": [
+      "Linux Terminal Simulator",
+      "practice/linux-terminal-simulator/"
+    ],
+    "mint": [
+      "Install Linux Mint in VirtualBox",
+      "labs/it-support/virtualbox-linux-mint/"
+    ],
+    "exam": [
+      "Core 2 practice test",
+      "practice/tests/"
+    ],
+    "boot": [
+      "Windows Startup Recovery",
+      "practice/pbqs/a-plus-core-2/windows-startup-recovery/"
+    ],
+    "bsod": [
+      "Windows BSOD and Application Troubleshooting",
+      "practice/pbqs/a-plus-core-2/windows-bsod-application/"
+    ],
+    "network": [
+      "Network Configuration Concepts",
+      "practice/pbqs/a-plus-core-2/network-configuration-concepts/"
+    ],
+    "malware": [
+      "Malware Investigation and Remediation",
+      "practice/pbqs/a-plus-core-2/malware-investigation-remediation/"
+    ],
+    "phish": [
+      "Phishing Email Investigation",
+      "practice/pbqs/a-plus-core-2/phishing-email-investigation/"
+    ],
+    "ticket": [
+      "Help Desk Ticket Triage",
+      "practice/pbqs/a-plus-core-2/helpdesk-ticket-triage/"
+    ],
+    "windows-troubleshooting": [
+      "Windows Help Desk: Troubleshooting Multiple PCs",
+      "practice/pbqs/a-plus-core-2/windows-troubleshooting/"
+    ]
+  },
+  "days": [
+    {
+      "number": 1,
+      "title": "Platforms, file systems and Windows editions",
+      "minutes": 90,
+      "objectives": [
+        "1.1",
+        "1.3"
+      ],
+      "goal": "Choose an OS, volume format and Windows edition from a user's applications, files and management needs.",
+      "recall": "Start from memory: name your own OS, edition and system volume format. Check each against the reading.",
+      "resources": [
+        "exam"
+      ],
+      "session": "day-1.json"
+    },
+    {
+      "number": 2,
+      "title": "Install, upgrade and recover",
+      "minutes": 110,
+      "objectives": [
+        "1.2",
+        "4.3"
+      ],
+      "goal": "Select boot media and an installation path, then build and test a recovery chain before changing a workstation.",
+      "recall": "Recall yesterday's difference between a file system and an edition. Which one changes when you format a USB drive?",
+      "resources": [
+        "boot",
+        "mint"
+      ],
+      "session": "day-2.json"
+    },
+    {
+      "number": 3,
+      "title": "Investigate a Windows workstation",
+      "minutes": 105,
+      "objectives": [
+        "1.4",
+        "1.6"
+      ],
+      "goal": "Use symptoms and timestamps to choose Windows tools, then locate the setting that addresses the user's request.",
+      "recall": "Explain how to verify a backup before changing a machine. Revisit one card you marked for review.",
+      "resources": [
+        "bsod"
+      ],
+      "session": "day-3.json"
+    },
+    {
+      "number": 4,
+      "title": "Command-line evidence and client networks",
+      "minutes": 120,
+      "objectives": [
+        "1.5",
+        "1.7",
+        "4.9"
+      ],
+      "goal": "Trace a name-resolution or share failure from configuration to connectivity. Choose a remote session method and explain its access controls.",
+      "recall": "Match yesterday's graphical tools to evidence you can collect at a command prompt.",
+      "resources": [
+        "commands",
+        "reference",
+        "network"
+      ],
+      "session": "day-4.json"
+    },
+    {
+      "number": 5,
+      "title": "Support macOS and Linux desktops",
+      "minutes": 105,
+      "objectives": [
+        "1.8",
+        "1.9"
+      ],
+      "goal": "Locate files, settings and recovery tools on a Mac. Trace a Linux support request through permissions, packages and network configuration.",
+      "recall": "Compare a Windows and a Linux command for names, addresses and connectivity.",
+      "resources": [
+        "linux",
+        "mint"
+      ],
+      "session": "day-5.json"
+    },
+    {
+      "number": 6,
+      "title": "Deploy apps and manage workplace changes",
+      "minutes": 100,
+      "objectives": [
+        "1.10",
+        "1.11",
+        "4.2",
+        "4.8"
+      ],
+      "goal": "Check application fit and cloud licenses. Plan a tested rollout, including script risks, approval and rollback.",
+      "recall": "Recall how a repair installation differs from an application deployment.",
+      "resources": [
+        "exam"
+      ],
+      "session": "day-6.json"
+    },
+    {
+      "number": 7,
+      "title": "Identity, permissions and endpoint protection",
+      "minutes": 120,
+      "objectives": [
+        "2.1",
+        "2.2",
+        "2.7"
+      ],
+      "goal": "Trace access from a physical door to sign-in, a shared folder and encrypted storage. Select account and workstation controls.",
+      "recall": "Recall the Windows edition features needed for centrally managed devices.",
+      "resources": [
+        "exam"
+      ],
+      "session": "day-7.json"
+    },
+    {
+      "number": 8,
+      "title": "Wireless, router and browser defenses",
+      "minutes": 100,
+      "objectives": [
+        "2.3",
+        "2.10",
+        "2.11",
+        "2.5"
+      ],
+      "goal": "Compare Wi-Fi and authentication choices. Review a guest network and browser configuration, then recognize an impersonated network or site.",
+      "recall": "Explain which part of a failed connection a firewall rule can affect.",
+      "resources": [
+        "network",
+        "phish"
+      ],
+      "session": "day-8.json"
+    },
+    {
+      "number": 9,
+      "title": "Recognize and respond to PC threats",
+      "minutes": 120,
+      "objectives": [
+        "2.4",
+        "2.5",
+        "2.6",
+        "3.4"
+      ],
+      "goal": "Distinguish malware indicators from look-alikes, recognize social engineering and sequence an evidence-based SOHO response.",
+      "recall": "Use yesterday's browser settings to explain two benign causes of redirects or warnings.",
+      "resources": [
+        "malware",
+        "phish"
+      ],
+      "session": "day-9.json"
+    },
+    {
+      "number": 10,
+      "title": "Troubleshoot Windows and mobile incidents",
+      "minutes": 115,
+      "objectives": [
+        "3.1",
+        "3.2",
+        "3.3",
+        "2.8"
+      ],
+      "goal": "Separate OS, app, connection and security symptoms. Select diagnostic evidence and match mobile controls to ownership and policy.",
+      "recall": "Contrast a suspected malicious app with a failed legitimate update.",
+      "resources": [
+        "windows-troubleshooting",
+        "bsod",
+        "malware"
+      ],
+      "session": "day-10.json"
+    },
+    {
+      "number": 11,
+      "title": "Tickets, evidence and customer communication",
+      "minutes": 100,
+      "objectives": [
+        "4.1",
+        "4.6",
+        "4.7",
+        "4.10"
+      ],
+      "goal": "Document and escalate a support incident. Explain privacy, licensing and AI constraints when communicating with a customer.",
+      "recall": "Write a progress note for one of yesterday's cases without including sensitive data.",
+      "resources": [
+        "ticket"
+      ],
+      "session": "day-11.json"
+    },
+    {
+      "number": 12,
+      "title": "Recovery, retirement and site safety",
+      "minutes": 95,
+      "objectives": [
+        "2.9",
+        "4.3",
+        "4.4",
+        "4.5"
+      ],
+      "goal": "Choose restore tests, media retirement, ESD protection, safe handling and environmental controls for a workstation replacement.",
+      "recall": "Reconstruct the Day 2 backup chain and identify who records asset disposal.",
+      "resources": [
+        "exam"
+      ],
+      "session": "day-12.json"
+    },
+    {
+      "number": 13,
+      "title": "Timed rehearsal and error analysis",
+      "minutes": 120,
+      "objectives": [
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "1.6",
+        "1.7",
+        "1.8",
+        "1.9",
+        "1.10",
+        "1.11",
+        "2.1",
+        "2.2",
+        "2.3",
+        "2.4",
+        "2.5",
+        "2.6",
+        "2.7",
+        "2.8",
+        "2.9",
+        "2.10",
+        "2.11",
+        "3.1",
+        "3.2",
+        "3.3",
+        "3.4",
+        "4.1",
+        "4.2",
+        "4.3",
+        "4.4",
+        "4.5",
+        "4.6",
+        "4.7",
+        "4.8",
+        "4.9",
+        "4.10"
+      ],
+      "goal": "Complete a timed Core 2 simulation, then use the results to explain missed decisions and choose a practical exercise to retry.",
+      "recall": "Choose two decisions you missed or felt uncertain about. Identify the evidence that would change each answer.",
+      "resources": [
+        "exam",
+        "ticket"
+      ],
+      "session": "day-13.json"
+    },
+    {
+      "number": 14,
+      "title": "Readiness decision and exam day",
+      "minutes": 75,
+      "objectives": [
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "1.6",
+        "1.7",
+        "1.8",
+        "1.9",
+        "1.10",
+        "1.11",
+        "2.1",
+        "2.2",
+        "2.3",
+        "2.4",
+        "2.5",
+        "2.6",
+        "2.7",
+        "2.8",
+        "2.9",
+        "2.10",
+        "2.11",
+        "3.1",
+        "3.2",
+        "3.3",
+        "3.4",
+        "4.1",
+        "4.2",
+        "4.3",
+        "4.4",
+        "4.5",
+        "4.6",
+        "4.7",
+        "4.8",
+        "4.9",
+        "4.10"
+      ],
+      "goal": "Spend 25 minutes recalling flagged topics, 30 on a targeted practical retry and 20 explaining earlier misses without notes. Decide whether to sit or schedule more study; allow exam time separately.",
+      "recall": "Compare your repeated errors, independent explanations and practical results across all four domains.",
+      "resources": [
+        "exam",
+        "bsod"
+      ],
+      "session": "day-14.json"
+    }
+  ]
+}

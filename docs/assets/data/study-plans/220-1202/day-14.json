@@ -1,0 +1,74 @@
+{
+  "type": "readiness",
+  "minutes": {
+    "recall": 25,
+    "practical": 30,
+    "decision": 20
+  },
+  "balanced": [
+    "1.5",
+    "2.3",
+    "3.1",
+    "4.1"
+  ],
+  "practicals": {
+    "boot": [
+      "1.2",
+      "3.1"
+    ],
+    "bsod": [
+      "1.4",
+      "1.6",
+      "1.10",
+      "3.1"
+    ],
+    "network": [
+      "1.7",
+      "2.3",
+      "2.10"
+    ],
+    "phish": [
+      "2.5"
+    ],
+    "malware": [
+      "2.4",
+      "2.6",
+      "3.4"
+    ],
+    "ticket": [
+      "4.1"
+    ],
+    "linux": [
+      "1.9"
+    ],
+    "commands": [
+      "1.5",
+      "1.7"
+    ],
+    "windows-troubleshooting": [
+      "1.5",
+      "1.7",
+      "3.1"
+    ]
+  },
+  "checks": {
+    "Technical readiness": {
+      "concepts": "Explain a previously missed or uncertain concept from memory and distinguish it from a similar technology.",
+      "tools": "Choose a tool or command and explain what evidence you expect it to return.",
+      "scenario": "Interpret a new troubleshooting scenario and justify the first action.",
+      "pbq": "Complete a relevant PBQ or lab independently and explain a tempting wrong action."
+    },
+    "Practice performance": {
+      "timed": "Finish a timed rehearsal and inspect the incorrect and unanswered questions.",
+      "misses": "Explain the evidence behind previous misses or guesses without viewing the key.",
+      "gaps": "Resolve the main knowledge gaps identified in your review.",
+      "transfer": "Apply the reviewed skill to a different example without help."
+    },
+    "Exam preparation": {
+      "format": "Describe the official exam format, including the possibility of performance-based questions.",
+      "pace": "Set a realistic pace and reserve time to revisit flagged items.",
+      "rules": "Verify the check-in, ID and testing rules for your delivery method.",
+      "booking": "Verify exam code 220-1202 and your appointment details, or the intended booking if you still need to schedule."
+    }
+  }
+}

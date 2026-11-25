@@ -1,0 +1,24 @@
+{
+  "type": "rehearsal",
+  "minutes": {
+    "exam": 90,
+    "analysis": 30
+  },
+  "examPath": "practice/tests/app/",
+  "instructions": [
+    "Choose A+ Core 2 (220-1202), select Certification Mode, then Start Exam. Allow 90 uninterrupted minutes. Work independently with your notes and references closed.",
+    "The Hub uses 90 multiple-choice questions: 25 Operating Systems, 25 Security, 21 Software Troubleshooting and 19 Operational Procedures. Each correct answer earns one point. Multiple-response items require the full correct set. The official 220-1202 exam allows up to 90 questions in 90 minutes and can include performance-based questions (PBQs). CompTIA uses a scaled score. The Hub reports the percentage correct.",
+    "Use the scenario evidence to rule out choices. Flag uncertain answers and use the navigator to return before submitting. The timer continues if you leave. At the deadline the exam submits your current responses.",
+    "After submission, inspect the practice percentage, time used, domain and objective tables, and explanations for missed or unanswered questions. Pick a separate Hub PBQ to practice applying one decision on Day 14."
+  ],
+  "causes": [
+    "Missing technical knowledge",
+    "Confused similar technologies",
+    "Misread the scenario",
+    "Incorrect troubleshooting sequence",
+    "Time management",
+    "Difficulty applying a skill in a PBQ",
+    "Guessed without enough evidence",
+    "No errors identified on review"
+  ]
+}

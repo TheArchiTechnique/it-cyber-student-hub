@@ -1,0 +1,295 @@
+{
+  "minutes": {
+    "reading": 35,
+    "cards": 15,
+    "quiz": 15,
+    "worksheet": 30,
+    "application": 25
+  },
+  "review": [
+    {
+      "objective": "2.4",
+      "title": "Classify behavior before naming a threat",
+      "text": "A virus replicates by infecting a host, such as an executable file or boot sector. A file-infecting virus can run when the infected program starts. A worm can propagate on its own. A Trojan presents itself as something useful. A rootkit conceals malicious activity; ransomware can deny access to files and demand payment. Spyware collects information, and a keylogger captures keystrokes. Fileless malware may operate in memory or abuse existing system tools. Adware displays unwanted advertising; a potentially unwanted program (PUP) may bundle intrusive features. A cryptominer uses computing resources to mine cryptocurrency. High CPU use alone cannot identify one."
+    },
+    {
+      "objective": "2.4",
+      "title": "Choose a source of evidence",
+      "text": "Browser banners can imitate security products. Open the installed Windows Security app independently and inspect Protection History, detection details and current protection status. Antivirus can detect, block and quarantine threats. Endpoint detection and response adds endpoint activity and investigation data; managed detection and response supplies a monitored service. Email filtering, software updates and user education reduce opportunities for infection."
+    },
+    {
+      "objective": "2.5",
+      "title": "Verify the request, even when the sender looks familiar",
+      "text": "Phishing can arrive by email, text (smishing) or voice (vishing). Spear phishing tailors a lure to a target. Business email compromise can involve an actual compromised mailbox or impersonation to redirect money or sensitive data. A mail display name or familiar signature is weak evidence. For a new payment destination, pause the transaction, verify through the number already on file and report the original message. Calling the number in the request repeats the same trust problem. A targeted email to an executive is whaling. For a suspected supply-chain incident, the concern is the trusted supplier or update channel. A missing patch is a vulnerability; attempted misuse is a threat. Record the evidence available for each."
+    },
+    {
+      "objective": "2.6",
+      "title": "Contain the confirmed infection",
+      "text": "For the Core 2 SOHO workflow, first investigate the reported symptoms and verify the evidence (1). Once infection is established, isolate the affected computer from the network (2). CompTIA next specifies disabling System Restore on Windows Home (3), so an affected restore point will not be used for recovery. Start remediation of the affected system (4). Preserve the ticket evidence and follow the applicable support process."
+    },
+    {
+      "objective": "2.6",
+      "title": "Clean and verify before returning the workstation",
+      "text": "Continue by bringing the anti-malware tool up to date (5), using an approved update source while maintaining containment. Scan and remove the threat (6); safe mode or a trusted offline environment may help when Windows cannot clean it while running. Reimaging or reinstalling is the next recovery option (7) when a trustworthy state cannot be established. Verify detection results, protection status and the user's original symptom before returning the machine to service."
+    },
+    {
+      "objective": "2.6",
+      "title": "Restore protective settings and close the ticket",
+      "text": "Arrange recurring scans and apply updates (8). On Windows Home, re-enable System Restore and create a fresh restore point on the verified system (9). Explain the specific prevention or reporting action the user should take in future (10). A restore point concerns system settings and files; separate backups protect personal documents."
+    },
+    {
+      "objective": "3.4",
+      "title": "Test the alternative explanation",
+      "text": "Missing files might be in another profile or an unsynced folder. Unexpected browser alerts can come from site notification permissions. Redirects can follow an extension, search setting or corporate proxy. A managed antivirus product may change Defender's active status. Compare accounts, affected profiles, approved software, policy and security history. Files suddenly renamed across several folders alongside a ransom demand warrant prompt containment and escalation. Record the observations and distinguish them from your diagnosis."
+    }
+  ],
+  "sources": [
+    [
+      "CompTIA: Core 2 objectives, revision 4.0",
+      "https://lecbyo.files.cmp.optimizely.com/download/cefedfb2b8a511ef809306d06d323538"
+    ],
+    [
+      "Microsoft Support: Protection History",
+      "https://support.microsoft.com/en-us/windows/security/windows-security/protection-history-in-the-windows-security-app"
+    ],
+    [
+      "Microsoft Learn: Defender Offline scans and results",
+      "https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-offline"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "trojan",
+      "objective": "2.4",
+      "prompt": "Which malware category describes a malicious program disguised as a useful application?",
+      "answer": "A Trojan. The disguise encourages the user to install or run it."
+    },
+    {
+      "id": "rootkit",
+      "objective": "2.4",
+      "prompt": "What characteristic points to a rootkit?",
+      "answer": "Concealment of malicious components or activity from ordinary system inspection."
+    },
+    {
+      "id": "miner",
+      "objective": "2.4",
+      "prompt": "What resource-use claim would distinguish a cryptominer from an ordinary busy application?",
+      "answer": "Evidence that the process is performing cryptocurrency mining. High utilization by itself is ambiguous."
+    },
+    {
+      "id": "voice",
+      "objective": "2.5",
+      "prompt": "What is the term for a phishing lure delivered by a voice call?",
+      "answer": "Vishing. Verify the caller's request through a known independent channel."
+    },
+    {
+      "id": "targeted",
+      "objective": "2.5",
+      "prompt": "How does spear phishing differ from a generic mass lure?",
+      "answer": "It tailors the message to a specific person or group."
+    },
+    {
+      "id": "payment",
+      "objective": "2.5",
+      "prompt": "What is a good verification channel for an emailed request to change bank details?",
+      "answer": "An established contact number from a trusted record independent of the message."
+    },
+    {
+      "id": "isolation",
+      "objective": "2.6",
+      "prompt": "What does quarantining an infected computer accomplish?",
+      "answer": "Network isolation limits further contact with other systems while the technician investigates and remediates it."
+    },
+    {
+      "id": "updated-tool",
+      "objective": "2.6",
+      "prompt": "Why update an anti-malware tool before its remediation scan?",
+      "answer": "Current detection intelligence improves its ability to recognize threats."
+    },
+    {
+      "id": "restore",
+      "objective": "2.6",
+      "prompt": "What two actions involving System Restore belong near the end of the Windows Home workflow?",
+      "answer": "Turn it back on and create a new restore point after verification."
+    },
+    {
+      "id": "alert-source",
+      "objective": "3.4",
+      "prompt": "How can a technician check whether a browser's alleged Defender alert matches a recorded Defender action?",
+      "answer": "Open Windows Security independently and inspect Protection History for matching evidence."
+    },
+    {
+      "id": "one-profile",
+      "objective": "3.4",
+      "prompt": "What does a redirect confined to one browser profile suggest checking first?",
+      "answer": "Profile-specific extensions, search settings, site permissions or other configuration."
+    },
+    {
+      "id": "missing-files",
+      "objective": "3.4",
+      "prompt": "What account-related check can explain several missing documents after sign-in?",
+      "answer": "Confirm that the user is in the expected profile and looking in the expected local or synced folder."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "keystrokes",
+      "objective": "2.4",
+      "prompt": "A security report confirms that a program secretly records the user's keystrokes. The most specific name for its function is ____.",
+      "answers": [
+        "keylogger",
+        "key logger",
+        "keystroke logger",
+        "keylogging",
+        "keystroke logging"
+      ],
+      "explanation": "A keylogger captures keyboard input. Spyware is the broader category."
+    },
+    {
+      "id": "ransom",
+      "objective": "2.4",
+      "prompt": "A previously readable collection is now encrypted and a message demands payment for a decryption key. These findings are characteristic of ____.",
+      "answers": [
+        "ransomware",
+        "crypto ransomware",
+        "crypto-ransomware",
+        "cryptoransomware"
+      ],
+      "explanation": "The combination of encryption and extortion distinguishes this pattern from an ordinary permissions problem."
+    },
+    {
+      "id": "text",
+      "objective": "2.5",
+      "prompt": "A text message impersonates payroll and asks the employee to sign in through a link. The channel-specific name for this lure is ____.",
+      "answers": [
+        "smishing",
+        "SMS phishing",
+        "text phishing",
+        "text message phishing"
+      ],
+      "explanation": "Smishing uses text messages. The employee can verify the request through the established payroll portal."
+    },
+    {
+      "id": "invoice",
+      "objective": "2.5",
+      "prompt": "After a supplier's real mailbox is taken over, an attacker emails new bank details for an invoice. This payment fraud is abbreviated ____.",
+      "answers": [
+        "BEC",
+        "business email compromise",
+        "business e-mail compromise"
+      ],
+      "explanation": "Business email compromise can exploit a legitimate correspondence thread. Verify payment changes independently."
+    },
+    {
+      "id": "contain",
+      "objective": "2.6",
+      "prompt": "A SOHO technician verifies an infection. Before remediation, the next step in objective 2.6 is to ____ the affected workstation from the network.",
+      "answers": [
+        "isolate",
+        "disconnect",
+        "quarantine",
+        "separate"
+      ],
+      "explanation": "Contain the system so it cannot continue communicating with other devices during cleanup."
+    },
+    {
+      "id": "checkpoint",
+      "objective": "2.6",
+      "prompt": "After cleanup, a technician re-enables System Restore on Windows Home. The new recovery checkpoint the technician creates is called a ____.",
+      "answers": [
+        "restore point",
+        "system restore point",
+        "Windows restore point"
+      ],
+      "explanation": "Create the restore point on the verified system. Continue with end-user education."
+    },
+    {
+      "id": "history",
+      "objective": "3.4",
+      "prompt": "A webpage claims Defender quarantined a file. In Windows Security, open Protection ____ to check for a corresponding action.",
+      "answers": [
+        "History",
+        "Protection History"
+      ],
+      "explanation": "A record in the installed security app is a better source for Defender actions than a banner on a website."
+    },
+    {
+      "id": "notifications",
+      "objective": "3.4",
+      "prompt": "Messages from one site appear in the desktop notification area even after its tab closes. Check the site's browser permission to send ____.",
+      "answers": [
+        "notifications",
+        "push notifications",
+        "web notifications",
+        "browser notifications"
+      ],
+      "explanation": "A granted notification permission can account for the messages. Inspect the origin before assuming an OS infection."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "classify",
+      "objective": "2.4",
+      "prompt": "Compare three reports: a malicious utility presented as a printer driver, a confirmed keystroke recorder, and an unauthorized mining process. Give the most specific classification each report supports and the distinguishing clue.",
+      "type": "Example",
+      "key": "The fake driver uses a Trojan disguise. The recorder is a keylogger because it captures keyboard input. The miner consumes resources to mine cryptocurrency. These labels describe different properties, so one program might fit several.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "vendor",
+      "objective": "2.5",
+      "prompt": "A known supplier's usual email thread now asks for payment to a new bank. Give two reasons the thread is insufficient authorization and explain how to verify the request.",
+      "type": "Example",
+      "key": "A mailbox can be compromised, and a familiar signature or display name can be copied. Pause the transfer and use a contact number already in the vendor record. Report the request and preserve the message.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "opening",
+      "objective": "2.6",
+      "prompt": "A Windows Home user reports a fake warning; the technician later confirms an infection. Order the four opening actions in the Core 2 workflow, from first report through starting remediation. Explain where the evidence changes the response.",
+      "type": "Factual",
+      "key": "Investigate and verify the symptoms, isolate the infected workstation, disable System Restore on Windows Home, then begin remediation. A reported popup calls for verification; confirmation justifies isolating the system.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "recovery",
+      "objective": "2.6",
+      "prompt": "A confirmed infection persists after an ordinary scan. Starting at step 5, reconstruct the remaining Core 2 workflow, including the recovery decision, both Windows Home actions at step 9 and the final user-facing step.",
+      "type": "Example",
+      "key": "Update the anti-malware tool, then scan and remove using an appropriate environment. Consider reimaging or reinstalling if the system cannot be trusted. Verify recovery, arrange scans and updates, turn System Restore back on and create a fresh restore point on Windows Home, then educate the user.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "profile-case",
+      "objective": "3.4",
+      "prompt": "One user sees repeated search redirects. A second profile on the same PC opens the expected page and Windows Security shows no matching detection. What would you check, and what conclusion can you draw now?",
+      "type": "Example",
+      "key": "Compare extensions, search provider, proxy and sync settings, recent profile changes and organization policy. The comparison suggests a profile-specific trigger. It does not establish the cause or rule out a broader problem. Check any suspicious change against independent evidence.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "files-case",
+      "objective": "3.4",
+      "prompt": "Compare two tickets. In one, a user signs into a temporary profile and sees an empty Documents folder. In another, files across several usual folders have new extensions and a ransom demand appears. Explain the first response to each.",
+      "type": "Example",
+      "key": "Verify the first user's profile and expected storage or sync location before restoring files. Treat the second pattern as a possible active ransomware incident, isolate the affected system promptly and escalate with the observations.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "offline",
+      "objective": "2.4",
+      "prompt": "An approved response plan calls for a Microsoft Defender Offline scan because a threat returns when Windows starts. Consult Microsoft's removal guidance. What should the user do before the scan, why does the restart help, and where can support verify the result?",
+      "type": "Example",
+      "key": "Save work and close open applications because the PC restarts. Scanning from a recovery environment can examine threats while the normal OS and its processes are inactive. After restart, review Protection History and verify that the original symptoms no longer recur.",
+      "source": "Microsoft Learn: Defender Offline scans and results"
+    },
+    {
+      "id": "coaching",
+      "objective": "2.5",
+      "prompt": "After a cleanup, an employee explains that someone claiming to be support called and asked them to approve a sign-in prompt. Write a brief coaching response naming the channel, the immediate action and a trustworthy route to support.",
+      "type": "Example",
+      "key": "This was a voice-based impersonation attempt, or vishing. Decline any sign-in request you did not initiate, end the call, and contact the help desk through its listed number to report what happened. If you approved a request, tell support immediately.",
+      "source": "Application exercise: tailor the education step to the event"
+    }
+  ]
+}

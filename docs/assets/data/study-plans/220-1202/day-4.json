@@ -1,0 +1,278 @@
+{
+  "minutes": {
+    "reading": 35,
+    "cards": 15,
+    "quiz": 15,
+    "worksheet": 30,
+    "application": 25
+  },
+  "review": [
+    {
+      "objective": "1.5",
+      "title": "What does the ticket actually establish?",
+      "text": "A workstation can open the print server by address. That confirms one path to one service. To investigate a failure by name, use ipconfig /all to identify the active adapter, its address, mask, gateway and DNS servers. Ask the configured resolver about the exact hostname with nslookup. An answer with an unexpected address points toward the record or resolver; a timeout calls for checking whether that DNS server responds. A reply to ping by IP shows ICMP reachability. A silent ping can mean filtering."
+    },
+    {
+      "objective": "1.5",
+      "title": "Collect the smallest useful piece of evidence",
+      "text": "Use hostname to identify the PC and whoami to record the current account. gpresult /r reports applied policy; gpupdate requests a refresh. Without switches, netstat shows active TCP connections. Use netstat -a to include listening ports or netstat -ano to include numeric endpoints and process IDs. tracert shows responding hops and pathping samples loss over time. For a file ticket, use cd and dir to locate the source and robocopy with /E to copy subdirectories, including empty ones. For a disk ticket, distinguish chkdsk (volume integrity) from sfc (protected Windows files). Use the linked Windows command lab to practice collecting evidence without changing a client's settings."
+    },
+    {
+      "objective": "1.7",
+      "title": "Follow traffic from the client",
+      "text": "For 192.0.2.44 with mask 255.255.255.0, traffic to 192.0.2.50 is local. Traffic to another subnet generally needs a gateway or a more specific route. DHCP can supply the address, mask, gateway and DNS server together; a static configuration needs the correct values entered individually. Identify whether Ethernet, Wi-Fi or cellular is active. A metered connection can limit background traffic. A proxy can affect a web application even when IP connectivity works. Select firewall rules for the active profile and connection type."
+    },
+    {
+      "objective": "1.7",
+      "title": "Read the share path before changing permissions",
+      "text": "In the UNC path \\\\files01\\intake, files01 is the server and intake is the share. Mapping it to a drive letter adds a shortcut. net use lists current network connections. In a workgroup the serving PC can authenticate a local account; a domain can use a centrally managed identity. For a network request to an NTFS folder, both the share permissions and the NTFS permissions must allow the requested action. A user who can open a file but cannot save a change has already reached the share."
+    },
+    {
+      "objective": "4.9",
+      "title": "Choose the remote session the job requires",
+      "text": "A VPN can provide a protected network path to an office. RDP supplies a graphical session on a supported Windows host, while SSH gives an encrypted command-line session. VNC can share a graphical desktop across platforms; check the product's authentication and encryption. SPICE can display a virtual machine console. WinRM supports Windows administration. An RMM platform manages enrolled endpoints and can handle inventory or maintenance. For an attended call, use an approved screen-sharing tool, verify the user and device, obtain consent for control, use your own authorized account and record when the session ends."
+    }
+  ],
+  "sources": [
+    [
+      "Microsoft Learn: troubleshoot DNS clients",
+      "https://learn.microsoft.com/en-us/windows-server/networking/dns/troubleshoot/troubleshoot-dns-client"
+    ],
+    [
+      "Microsoft Learn: nslookup",
+      "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup"
+    ],
+    [
+      "Microsoft Learn: Remote Desktop host requirements",
+      "https://learn.microsoft.com/en-us/windows-server/remote/remote-desktop-services/remotepc/remote-desktop-allow-access"
+    ],
+    [
+      "CISA: securing remote access software",
+      "https://www.cisa.gov/sites/default/files/2023-06/Guide%20to%20Securing%20Remote%20Access%20Software_clean%20Final_508c.pdf"
+    ],
+    [
+      "Microsoft Learn: netstat switches",
+      "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/netstat"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "adapter",
+      "objective": "1.5",
+      "prompt": "Which CMD command shows the configured DNS servers for each Windows adapter?",
+      "answer": "ipconfig /all. Read the details under the adapter carrying the traffic."
+    },
+    {
+      "id": "resolver",
+      "objective": "1.5",
+      "prompt": "Which Windows utility lets you ask a particular DNS server for a record?",
+      "answer": "nslookup. Specify the hostname and, if needed, the resolver to query."
+    },
+    {
+      "id": "hops",
+      "objective": "1.5",
+      "prompt": "What evidence does tracert provide?",
+      "answer": "The responding hops toward a destination. A missing reply from one hop can occur even when later hops respond."
+    },
+    {
+      "id": "policy",
+      "objective": "1.5",
+      "prompt": "Which command summarizes the Group Policy settings applied to a user or computer?",
+      "answer": "gpresult /r reports resultant policy information."
+    },
+    {
+      "id": "gateway",
+      "objective": "1.7",
+      "prompt": "When does an IPv4 client use its default gateway?",
+      "answer": "When the destination is off the local subnet and no more specific route applies."
+    },
+    {
+      "id": "unc",
+      "objective": "1.7",
+      "prompt": "What does a UNC path identify in Windows file sharing?",
+      "answer": "A server and shared resource, optionally followed by folders and a filename."
+    },
+    {
+      "id": "mapped",
+      "objective": "1.7",
+      "prompt": "What changes when a reachable share is mapped to a drive letter?",
+      "answer": "The user gains another way to address the share. The underlying access checks still apply."
+    },
+    {
+      "id": "meter",
+      "objective": "1.7",
+      "prompt": "What is the purpose of marking a cellular connection as metered?",
+      "answer": "It signals that data is limited, allowing Windows and compatible apps to reduce background transfers."
+    },
+    {
+      "id": "rdp",
+      "objective": "4.9",
+      "prompt": "What does an RDP host provide to an authorized client?",
+      "answer": "A remote graphical desktop session on the host."
+    },
+    {
+      "id": "ssh",
+      "objective": "4.9",
+      "prompt": "Which protocol provides an encrypted interactive shell on a remote system?",
+      "answer": "Secure Shell (SSH)."
+    },
+    {
+      "id": "rmm",
+      "objective": "4.9",
+      "prompt": "What distinguishes an RMM platform from a single screen-sharing call?",
+      "answer": "Remote monitoring and management can inventory, monitor and maintain enrolled systems over time."
+    },
+    {
+      "id": "attended",
+      "objective": "4.9",
+      "prompt": "What should happen before changing an attended session from viewing to control?",
+      "answer": "Verify the request and obtain the user's consent under the support policy."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "dns-query",
+      "objective": "1.5",
+      "prompt": "Complete the Windows command that directly queries DNS: ____ print01.example.test 192.0.2.53.",
+      "answers": [
+        "nslookup",
+        "nslookup.exe"
+      ],
+      "explanation": "This asks the specified DNS server for the name. A ping by IP would test a different part of the connection."
+    },
+    {
+      "id": "identity",
+      "objective": "1.5",
+      "prompt": "Complete the built-in CMD command that prints the current account: ____ (no arguments).",
+      "answers": [
+        "whoami",
+        "whoami.exe"
+      ],
+      "explanation": "The account context helps explain why two users on the same computer may see different results."
+    },
+    {
+      "id": "rsop",
+      "objective": "1.5",
+      "prompt": "Complete the command that summarizes applied Group Policy: ____ /r.",
+      "answers": [
+        "gpresult",
+        "gpresult.exe"
+      ],
+      "explanation": "The report shows policy results. Refreshing policy with gpupdate answers a different question."
+    },
+    {
+      "id": "gateway-field",
+      "objective": "1.7",
+      "prompt": "An IPv4 client needs a router for destinations beyond its subnet. In ipconfig, that router appears in the Default ____ field.",
+      "answers": [
+        "gateway",
+        "default gateway"
+      ],
+      "explanation": "The client uses the default route when it has no more specific route to the destination."
+    },
+    {
+      "id": "dynamic",
+      "objective": "1.7",
+      "prompt": "Which four-letter protocol can supply an IPv4 lease and DNS settings automatically? ____.",
+      "answers": [
+        "DHCP"
+      ],
+      "explanation": "Dynamic Host Configuration Protocol can provide these values together with the subnet mask and gateway."
+    },
+    {
+      "id": "share-path",
+      "objective": "1.7",
+      "prompt": "A technician can open \\\\files01\\intake without mapping a drive letter. What three-letter abbreviation identifies this Windows path convention? ____",
+      "answers": [
+        "UNC"
+      ],
+      "explanation": "A UNC path refers to the resource even when the user has no drive letter mapped."
+    },
+    {
+      "id": "tunnel",
+      "objective": "4.9",
+      "prompt": "Before opening Remote Desktop, a home user must establish an encrypted tunnel into the office network. The three-letter name for this private-network connection is ____.",
+      "answers": [
+        "VPN",
+        "Virtual private network"
+      ],
+      "explanation": "The VPN provides an approved path to private addresses. RDP supplies the graphical session over that path."
+    },
+    {
+      "id": "shell",
+      "objective": "4.9",
+      "prompt": "A support client connects to a remote server on TCP port 22 for an authenticated, encrypted interactive terminal. Name the protocol: ____.",
+      "answers": [
+        "SSH",
+        "Secure Shell"
+      ],
+      "explanation": "SSH carries an authenticated remote shell suitable for text-based administration."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "paths",
+      "objective": "1.5",
+      "prompt": "A user can reach 192.0.2.18 by ping. nslookup print01.example.test returns a nonexistent-domain response. What worked, what failed, and what would you verify next?",
+      "type": "Example",
+      "key": "ICMP reached that address and a DNS server responded, but that resolver did not find the requested name. Verify the exact hostname, the selected DNS server and the expected record before changing the client.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "identity-policy",
+      "objective": "1.5",
+      "prompt": "A ticket says a policy is missing on one PC. Give three commands that establish the machine, account and applied policies. Explain why to capture them before requesting a refresh.",
+      "type": "Example",
+      "key": "hostname identifies the PC, whoami identifies the session identity and gpresult /r summarizes applied policy. Recording the starting state preserves evidence for comparison after a refresh.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "subnet",
+      "objective": "1.7",
+      "prompt": "A client is 192.0.2.44/24 with no default gateway or other routes beyond its local subnet. Explain how it could still reach 192.0.2.50 but fail to contact 198.51.100.20.",
+      "type": "Factual",
+      "key": "The first address is on the local subnet. The second requires a route through a router. Check the expected gateway and whether DHCP or a static configuration should supply it.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "access",
+      "objective": "1.7",
+      "prompt": "On a domain workstation, Lee opens \\\\files01\\intake but cannot edit its files. Share access is Read and NTFS access is Modify. Which permission limits Lee's network session? Would mapping drive J: change it?",
+      "type": "Factual",
+      "key": "The share's Read permission limits this network request even though NTFS allows modification. J: would refer to the same share and would not grant write access.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "remote-choice",
+      "objective": "4.9",
+      "prompt": "A technician must first reach the office network, then use a Windows-only graphical utility on an office PC. Explain the two roles and give one host-side requirement.",
+      "type": "Example",
+      "key": "A VPN supplies the approved network path. RDP can supply the graphical desktop. The host needs a supported edition, Remote Desktop enabled and an authorized account. A firewall rule must allow the connection along the approved path.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "support-choice",
+      "objective": "4.9",
+      "prompt": "Choose an approach for each request: guide an employee through a dialog on their current screen, and collect inventory across 40 enrolled laptops. Explain one access control for each.",
+      "type": "Example",
+      "key": "Use attended screen sharing with the employee's consent for the dialog. Use the approved RMM inventory function with a scoped technician role and strong authentication for the fleet.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "dns-comparison",
+      "objective": "1.5",
+      "prompt": "Two approved DNS servers should return the same address for files.example.test. Using the nslookup reference, write two queries using 192.0.2.53 and 192.0.2.54. What would different answers establish?",
+      "type": "Example",
+      "key": "Use nslookup files.example.test 192.0.2.53 and nslookup files.example.test 192.0.2.54. Different addresses establish a difference in the replies; compare them against the expected record before deciding which, if either, is incorrect.",
+      "source": "Microsoft Learn: nslookup"
+    },
+    {
+      "id": "remote-ticket",
+      "objective": "1.7",
+      "prompt": "A remote employee on hotel Wi-Fi can browse public sites but cannot reach an internal share. Write a short sequence that separates private network access, name resolution and file authorization.",
+      "type": "Example",
+      "key": "Check the approved VPN connection and private route first. Query the share server's internal name using the expected resolver, then test the UNC path. If the share returns access denied, verify the account and the required share and NTFS rights. Keep the hotel connection on its appropriate public profile.",
+      "source": "Application exercise: use the client networking and share reviews"
+    }
+  ]
+}

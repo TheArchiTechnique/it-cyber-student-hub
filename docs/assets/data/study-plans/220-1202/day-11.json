@@ -1,0 +1,279 @@
+{
+  "minutes": {
+    "reading": 30,
+    "cards": 15,
+    "quiz": 15,
+    "worksheet": 25,
+    "application": 15
+  },
+  "review": [
+    {
+      "objective": "4.1",
+      "title": "Build a ticket the next technician can use",
+      "text": "Record the affected service and asset, onset and time zone, scope, reported symptoms, observed results, actions tried, owner and next update. Separate the caller's report from what you reproduced. Severity describes impact. Priority sets the order of response using impact, urgency and the agreed rules. A workaround can reduce urgency even when several users are affected. A service level agreement (SLA) can set response and resolution targets. Escalate when permissions, expertise, impact or an approaching target requires another team. Include what they need to continue."
+    },
+    {
+      "objective": "4.1",
+      "title": "Find the right support record",
+      "text": "A knowledge base contains reusable solutions and known issues. A standard operating procedure (SOP) gives approved steps for a repeatable task. An asset inventory tracks items such as serial number, owner and lifecycle. A configuration management database (CMDB) also relates configuration items to services and dependencies. For onboarding, document authorized access and issued equipment. For offboarding, track account or session revocation, equipment return and data handling under policy. At closure, record the fix, verification and user follow-up."
+    },
+    {
+      "objective": "4.6",
+      "title": "Protect information and preserve evidence",
+      "text": "Use the least identifying detail the ticket needs. Personally identifiable information (PII) can identify or be linked to a person. Collect only what the incident requires. Keep credentials, payment details and sensitive personal records out of general ticket notes. Use a restricted evidence reference in the general ticket. Follow retention and approved disposal rules, including any preservation hold. Record observations with times and report suspected prohibited activity through the designated channel. Preserve the original and leave collection decisions, especially for volatile data, to authorized responders. Chain of custody records the evidence identifier, who held it, when transfers occurred and why."
+    },
+    {
+      "objective": "4.6",
+      "title": "Check permission to use and share",
+      "text": "An acceptable use policy (AUP) defines permitted use of organizational systems. An end-user license agreement (EULA) sets software-use terms. A personal-use license may exclude business use. Perpetual licenses grant continuing use under their terms, while subscriptions depend on an active entitlement. Open-source licenses can impose conditions such as attribution. Digital rights management (DRM) enforces technical restrictions. A nondisclosure agreement (NDA) limits disclosure of covered information. Check the relevant document and entitlement before installing or sharing."
+    },
+    {
+      "objective": "4.7",
+      "title": "Give the customer a useful update",
+      "text": "Let the caller explain the impact, restate it in your own words, then ask a focused question. With an upset caller, acknowledge the disruption and agree on a next contact time. Use language the customer can act on. Distinguish what works now, what is still affected and who is investigating. Promise an update at a time you control. Verify the fix with the user, document their result and explain how to reopen the ticket if symptoms return."
+    },
+    {
+      "objective": "4.10",
+      "title": "Check an AI draft before using it",
+      "text": "An approved AI tool can summarize sanitized notes, translate a draft or propose search terms. It can also invent a setting, citation or command. This is a hallucination. Bias can appear as systematically different advice for similar cases. Check the cited vendor instructions, product version and observed facts, then have an authorized person review the result. Apply the organization's policy on which service and data classes are permitted. Public services and private organizational services can differ in access, retention and data sources. A private service still has usage rules. Respect attribution and course rules when using generated material in assignments."
+    }
+  ],
+  "sources": [
+    [
+      "CompTIA: Core 2 objectives, revision 4.0",
+      "https://lecbyo.files.cmp.optimizely.com/download/cefedfb2b8a511ef809306d06d323538"
+    ],
+    [
+      "NIST: Generative AI profile",
+      "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "queue",
+      "objective": "4.1",
+      "prompt": "What is the difference between ticket severity and priority?",
+      "answer": "Severity reflects the impact. Priority determines response order under the organization's impact and urgency rules."
+    },
+    {
+      "id": "linked-assets",
+      "objective": "4.1",
+      "prompt": "Where would a technician look for the relationship between a failed host and the business services it supports?",
+      "answer": "The configuration management database (CMDB)."
+    },
+    {
+      "id": "handoff",
+      "objective": "4.1",
+      "prompt": "What lets an escalation team continue troubleshooting without repeating work?",
+      "answer": "A timestamped record of scope, evidence, actions and results, plus the unresolved issue and reason for escalation."
+    },
+    {
+      "id": "restricted-evidence",
+      "objective": "4.6",
+      "prompt": "How can a general ticket point to sensitive evidence without exposing it to every ticket reader?",
+      "answer": "Reference the approved restricted evidence record by identifier and include only the details needed for support."
+    },
+    {
+      "id": "license",
+      "objective": "4.6",
+      "prompt": "Which agreement should you read to see whether a free personal-use utility permits installation at work?",
+      "answer": "The software's end-user license agreement or applicable license terms."
+    },
+    {
+      "id": "custody",
+      "objective": "4.6",
+      "prompt": "What does a chain-of-custody record establish?",
+      "answer": "Who controlled an identified item of evidence and when, why and to whom it was transferred."
+    },
+    {
+      "id": "reflect",
+      "objective": "4.7",
+      "prompt": "How can a technician show active listening before proposing a fix?",
+      "answer": "Restate the reported problem and impact, then ask the caller to confirm or clarify."
+    },
+    {
+      "id": "expectations",
+      "objective": "4.7",
+      "prompt": "What can you promise when the repair time is unknown?",
+      "answer": "A specific time and channel for the next update, along with the immediate next step."
+    },
+    {
+      "id": "closure",
+      "objective": "4.7",
+      "prompt": "What should you confirm with the customer before closing a resolved ticket?",
+      "answer": "That the affected task works again for them, and that they know how to report a recurrence."
+    },
+    {
+      "id": "invented",
+      "objective": "4.10",
+      "prompt": "What is an AI hallucination in a support answer?",
+      "answer": "A plausible-sounding claim, setting or citation that is fabricated or incorrect."
+    },
+    {
+      "id": "bias",
+      "objective": "4.10",
+      "prompt": "What pattern suggests bias in an AI assistant's ticket summaries?",
+      "answer": "Similar incidents receive systematically different descriptions or recommendations based on irrelevant user characteristics."
+    },
+    {
+      "id": "private-tool",
+      "objective": "4.10",
+      "prompt": "What determines whether customer data can be entered into a private workplace AI tool?",
+      "answer": "The approved use case, data classification and organizational rules for that specific service."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "service-target",
+      "objective": "4.1",
+      "prompt": "The agreement between a provider and customer that defines support response targets is abbreviated ____.",
+      "answers": [
+        "SLA"
+      ],
+      "explanation": "A service level agreement sets agreed service targets. Check the ticket category against the applicable target."
+    },
+    {
+      "id": "procedure",
+      "objective": "4.1",
+      "prompt": "An onboarding checklist refers to the approved step-by-step process for issuing a laptop. The three-letter abbreviation for that type of procedure is ____.",
+      "answers": [
+        "SOP"
+      ],
+      "explanation": "A standard operating procedure describes the approved repeatable process. An individual ticket records its execution."
+    },
+    {
+      "id": "terms",
+      "objective": "4.6",
+      "prompt": "An installer asks you to accept the publisher's terms for using its software. The four-letter abbreviation for this agreement is ____.",
+      "answers": [
+        "EULA"
+      ],
+      "explanation": "The end-user license agreement specifies use rights and restrictions. Being able to download the installer does not establish a business entitlement."
+    },
+    {
+      "id": "record-transfer",
+      "objective": "4.6",
+      "prompt": "The record tracking who possessed a numbered evidence drive from collection through each handoff is called the ____.",
+      "answers": [
+        "chain of custody",
+        "chain of custody record",
+        "chain of custody log",
+        "chain of custody form"
+      ],
+      "explanation": "It connects an identified item to its handlers, transfers, times and purposes so its handling can be accounted for."
+    },
+    {
+      "id": "listen",
+      "objective": "4.7",
+      "prompt": "A technician restates a caller's concern and checks whether they understood it correctly. This communication technique is called ____ listening.",
+      "answers": [
+        "active",
+        "reflective",
+        "active listening",
+        "reflective listening"
+      ],
+      "explanation": "Reflecting the caller's meaning and confirming it is an active listening technique that can uncover an incorrect assumption early."
+    },
+    {
+      "id": "jargon",
+      "objective": "4.7",
+      "prompt": "In “check whether your VPN tunnel can reach the IdP,” unexplained specialist vocabulary for a nontechnical caller is called ____.",
+      "answers": [
+        "jargon",
+        "technical jargon",
+        "IT jargon"
+      ],
+      "explanation": "Ask about an observable action, such as whether the usual work sign-in page opens. That gives the user a clear test to perform."
+    },
+    {
+      "id": "false-citation",
+      "objective": "4.10",
+      "prompt": "An AI summary cites a vendor bulletin that the vendor confirms never existed. The term for this kind of fabricated output is ____.",
+      "answers": [
+        "hallucination",
+        "a hallucination",
+        "AI hallucination",
+        "confabulation"
+      ],
+      "explanation": "A plausible citation still needs verification against the publisher's actual documentation."
+    },
+    {
+      "id": "unequal",
+      "objective": "4.10",
+      "prompt": "An AI assistant repeatedly rates otherwise equivalent requests differently based only on the caller's surname. This pattern illustrates ____.",
+      "answers": [
+        "bias",
+        "AI bias",
+        "algorithmic bias",
+        "harmful bias"
+      ],
+      "explanation": "A systematic difference tied to an irrelevant characteristic warrants review. Check examples with equivalent impact and urgency."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "ticket-update",
+      "objective": "4.1",
+      "prompt": "At 09:10 ET, three payroll staff report a printer offline. You reproduce the error at 09:14. A second printer works. The print team accepts the case at 09:20 and you agree to update payroll at 09:45. Write the internal ticket update.",
+      "type": "Example",
+      "key": "Essential details include time and zone, scope, user report, verified result, workaround, owner and next update. Sample update: “09:10 ET, three payroll users reported the payroll printer offline. Reproduced at 09:14. Staff can print using the second printer. Print team accepted at 09:20. I will update payroll at 09:45 ET.”",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "escalate",
+      "objective": "4.1",
+      "prompt": "A single department can no longer approve purchases. The help desk has reproduced the issue but cannot inspect the approval service. Explain how to prioritize and escalate it, and identify one source for service dependencies.",
+      "type": "Example",
+      "key": "Record affected users, the deadline and any workaround. Apply the impact and urgency rules and check the SLA. Route to the service owner with the reproduction steps, timestamps and results. The CMDB can identify related services and owners. Confirm who will update the customer.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "evidence-note",
+      "objective": "4.6",
+      "prompt": "A caller sends a screenshot exposing a government ID number and reports possible unauthorized access. What belongs in the general ticket, where should evidence go, and what must accompany a transfer?",
+      "type": "Example",
+      "key": "Record the reported symptom, time, impact, escalation and restricted evidence ID. Keep the original in the approved restricted evidence channel under retention or hold rules. Document the item, sender, recipient, time and purpose at each handoff. Omit the ID number from the general ticket.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "personal-license",
+      "objective": "4.6",
+      "prompt": "A manager says a free personal-use converter is acceptable because the AUP allows productivity software. Which two permissions must be checked and what should happen if business use is excluded?",
+      "type": "Factual",
+      "key": "Check internal software approval or acceptable-use rules and the publisher's license terms. Internal approval cannot grant the publisher's rights. Obtain an appropriate business license or an approved alternative before installing.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "customer-reply",
+      "objective": "4.7",
+      "prompt": "A frustrated caller cannot submit a report. The workaround lets them save a draft. The specialist is investigating and you can call back at 14:30 local time. Write the customer-facing ticket update.",
+      "type": "Example",
+      "key": "Essential details include acknowledgment, impact, the usable workaround, who is investigating and the next contact. Sample update: “I understand the deadline is close and you still cannot submit the report. Please save your draft so you can continue working. Our application team is investigating. I will call you at 14:30 local time with an update.”",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "follow-up",
+      "objective": "4.7",
+      "prompt": "A remote user says “it works now” after a sign-in repair. Give one clarifying question before closure, one detail to document and a follow-up instruction.",
+      "type": "Example",
+      "key": "Ask whether they can now sign in and open the specific report that failed. Record the change, time and verified result. Give the user their ticket reference and the approved way to report a recurrence.",
+      "source": "Daily review and objective breakdown"
+    },
+    {
+      "id": "check-ai",
+      "objective": "4.10",
+      "prompt": "An assistant proposes a reset and cites a plausible article. Outline how to decide whether to include the recommendation in a customer reply. Explain what to do if the source is missing.",
+      "type": "Example",
+      "key": "Find the original vendor article, confirm the product version, compare the steps with observed symptoms and check data-loss risk and approval. If the article cannot be verified, leave the step out, consult the knowledge base or escalate. A fluent explanation is insufficient evidence.",
+      "source": "NIST: Generative AI profile"
+    },
+    {
+      "id": "training-draft",
+      "objective": "4.10",
+      "prompt": "A trainee wants to paste a real ticket into a public chatbot and turn in its answer as their own. Describe a policy-compliant way to practice and two checks before submitting.",
+      "type": "Example",
+      "key": "Use an invented or approved sanitized example in an authorized service if course and workplace rules permit. Check the technical claims against original sources and follow the assignment's attribution or disclosure rules. If AI assistance is prohibited, complete the work independently.",
+      "source": "Daily review and objective breakdown"
+    }
+  ]
+}

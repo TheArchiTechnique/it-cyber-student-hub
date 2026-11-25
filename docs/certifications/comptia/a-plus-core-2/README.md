@@ -17,14 +17,11 @@ hub:
 
 Operating systems, software, and support.
 
-<!-- hub:hidden
 - [Start Studying](#start-studying)
 
     Find your starting point.
 
 
-
-hub:hidden -->
 - [Official Exam Objectives](https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-a-220-1202-exam-objectives.pdf)
 
     Open CompTIA's official A+ Core 2 (220-1202) exam objectives.
@@ -63,16 +60,13 @@ hub:hidden -->
 
     Find concise lookup resources.
 
-<!-- hub:hidden
 ## Start Studying
 
-&lt;!-- hub:placeholder
-Lessons and a guided study sequence have not been published yet. Browse the topic hubs below to see where material will appear.
-hub:placeholder --&gt;
+- [14-Day Certification Study Plan](study-plan/app/index.html)
+
+    Review the Core 2 objectives through daily study sessions, flashcards, quizzes and worksheets. Finish with a timed rehearsal and an exam-readiness review.
 
 
-
-hub:hidden -->
 <!-- hub:hidden
 ## Course Topics
 
