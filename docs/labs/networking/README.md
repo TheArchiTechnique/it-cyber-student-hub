@@ -5,7 +5,17 @@ hub:
 ---
 # Networking Labs
 
-Learn IPv4 subnetting in your browser, or build and inspect simulated networks with Cisco Packet Tracer. The subnetting lab needs no installation. For Packet Tracer activities, start with the installation guide and follow each lab's prerequisites and verification steps.
+Learn IPv4 subnetting in your browser, analyze a supplied capture in Wireshark, or build simulated networks with Cisco Packet Tracer. The subnetting lab needs no installation. Other activities link to their software setup guides.
+
+## Wireshark Packet Analysis
+
+- [Wireshark: Install and Explore](../../tools/wireshark/README.md)
+
+    Install on Windows 11, open a saved capture, and identify the filter toolbar and packet panes.
+
+- [Wireshark Packet Analysis Lab](wireshark/README.md)
+
+    Analyze a supplied capture with guided protocol activities, genuine application screenshots, a separate answer sheet, and an optional troubleshooting investigation. No live network capture required.
 
 ## Browser-Based Learning and Practice
 
@@ -47,13 +57,10 @@ Learn IPv4 subnetting in your browser, or build and inspect simulated networks w
 
     Independent lab: trace ARP, ICMP, TCP, and HTTP across two subnets in Simulation Mode; compare encapsulation, switching, routing, and decapsulation. No earlier labs required.
 
-<!-- hub:hidden
 - [Browse Tools](../../tools/README.md)
 
     Find tool guide areas.
 
-
-hub:hidden -->
 - [Open Practice](../../practice/README.md)
 
     Browse shorter exercises and PBQs.

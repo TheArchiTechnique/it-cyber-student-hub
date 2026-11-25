@@ -33,12 +33,16 @@ const cablingQuiz = 'https://create.kahoot.it/share/ethernet-cabling-and-fiber-o
 const switchingQuiz = 'https://create.kahoot.it/details/3b44b33b-24c6-43e7-847f-ddf3ac7cf019';
 const ipv4Quiz = 'https://create.kahoot.it/share/ipv4-networking-addresses-subnets-traffic/bbb4a50a-ddb7-4324-a0af-3faa1b5538c4';
 const routingQuiz = 'https://create.kahoot.it/details/af85b4de-8410-450e-8182-97ba621590c5';
+const dhcpDnsQuiz = 'https://create.kahoot.it/share/mastering-dhcp-dns-fundamentals/fa4e89ee-4465-47f3-badd-33f08b369e7c';
+const webTimeQuiz = 'https://create.kahoot.it/share/web-protocols-https-network-time/56ebe622-aaa4-4895-965c-8669780410c9';
 const networkQuizzes = [
   ['OSI Model & Network PDU Basics - Kahoot!', networkQuiz],
   ['Ethernet Cabling and Fiber Optics - Kahoot!', cablingQuiz],
   ['Ethernet & Switching Fundamentals - Kahoot!', switchingQuiz],
   ['IPv4 Networking, Addresses, Subnets, and Traffic - Kahoot!', ipv4Quiz],
-  ['Routing Protocols, Packet Forwarding, NAT/PAT, Edge Routers, and Firewalls - Kahoot!', routingQuiz]
+  ['Routing Protocols, Packet Forwarding, NAT/PAT, Edge Routers, and Firewalls - Kahoot!', routingQuiz],
+  ['Mastering DHCP & DNS Fundamentals - Kahoot!', dhcpDnsQuiz],
+  ['Web Protocols, HTTPS & Network Time - Kahoot!', webTimeQuiz]
 ];
 
 (async () => {
@@ -104,8 +108,9 @@ const networkQuizzes = [
         await go('labs/');
         assert.deepEqual(await content().locator('li a').allTextContents(),['IT Support', 'Networking']);
         await follow('IT Support','labs/it-support/');
-        assert.deepEqual(await content().locator('li a').allTextContents(),['Linux Terminal Simulator',installTitle,linuxTitle,windowsTitle]);
-        assert.match(await content().locator('li').nth(2).innerText(),/Prerequisite: complete the Linux Mint installation lab first/);
+        assert.deepEqual(await content().locator('li a').allTextContents(),['Browse Tools','Linux Terminal Simulator',installTitle,linuxTitle,windowsTitle]);
+        assert.match(await content().getByRole('link',{name:linuxTitle,exact:true})
+          .locator('xpath=ancestor::li[1]').innerText(),/Prerequisite: complete the Linux Mint installation lab first/);
         await follow(installTitle,'labs/it-support/virtualbox-linux-mint/');
         await follow(linuxTitle,'labs/it-support/linux-mint-command-line/');
         await follow('Back to IT Support Labs','labs/it-support/');
@@ -162,7 +167,7 @@ const networkQuizzes = [
       }
     }
     assert.deepEqual(errors,[]);
-    console.log(`Passed: resource cards, prerequisites, grouped references, ${quizUrls.length} exact quiz URLs, Network+ Days 1–5 in both listings, student journeys and returns, keyboard focus, desktop/mobile, and both themes.`);
+    console.log(`Passed: resource cards, prerequisites, grouped references, ${quizUrls.length} exact quiz URLs, ${networkQuizzes.length} Network+ quizzes in both listings, student journeys and returns, keyboard focus, desktop/mobile, and both themes.`);
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));

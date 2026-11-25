@@ -103,6 +103,14 @@ hub:hidden -->
 
     Review routing protocols, packet forwarding, NAT/PAT, edge routers, and firewall inspection. Select **Play solo** on Kahoot! for independent practice.
 
+- [Mastering DHCP & DNS Fundamentals - Kahoot!](https://create.kahoot.it/share/mastering-dhcp-dns-fundamentals/fa4e89ee-4465-47f3-badd-33f08b369e7c)
+
+    Review DHCP address assignment and DNS name resolution. Select **Play solo** on Kahoot! for independent practice.
+
+- [Web Protocols, HTTPS & Network Time - Kahoot!](https://create.kahoot.it/share/web-protocols-https-network-time/56ebe622-aaa4-4895-965c-8669780410c9)
+
+    Review HTTP, HTTPS, TLS, NTP, PTP, and NTS. Select **Play solo** on Kahoot! for independent practice.
+
 <!-- BEGIN GENERATED PBQ LISTINGS -->
 
 ## Published PBQ Practice
@@ -159,6 +167,10 @@ Related activities that build supporting skills for this certification.
 
 
 ## Published Labs
+
+- [Wireshark Packet Analysis Lab](../../../labs/networking/wireshark/README.md)
+
+    Follow a visually guided capture-analysis activity covering addressing, DHCP, DNS, transport, web traffic, monitoring, and logging. Includes Windows installation guidance and a separate answer sheet.
 
 - [IPv4 Subnetting Learning Lab](../../../labs/networking/subnetting/README.md)
 

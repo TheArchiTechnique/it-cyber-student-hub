@@ -1,0 +1,6 @@
+<134>1 2026-11-23T14:00:00.010Z switch.office.test lab-service - LINK_UP - Interface Gi1/0/3 operational state up; pc3 workstation link active
+<134>1 2026-11-23T14:00:02.500Z infra.office.test lab-service - LEASES - DHCP leases active: pc1=10.20.30.101 pc2=10.20.30.102 pc3=10.20.30.103 lease=28800s
+<133>1 2026-11-23T14:01:13.800Z files.office.test lab-service - HTTP_STOP - Document HTTP service stopped; TCP port 80 listener closed
+<133>1 2026-11-23T14:01:23.900Z files.office.test lab-service - HTTP_START - Document HTTP service started; listening on 10.20.30.30:80
+<134>1 2026-11-23T14:01:25.000Z files.office.test lab-service - HTTP_OK - GET /sample-file.txt from 10.20.30.101 completed status=200
+<134>1 2026-11-23T14:02:39.900Z switch.office.test lab-service - HEALTH - Management reachable; workstation interfaces operational

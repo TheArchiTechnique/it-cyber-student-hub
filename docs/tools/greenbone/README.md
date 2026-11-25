@@ -22,6 +22,4 @@ hub:hidden -->
 
     Browse hands-on activity areas.
 
-<!-- hub:hidden
-[Back to Tools](../README.md) ·&#32;
-hub:hidden -->[Student Hub](../../../README.md)
+[Back to Tools](../README.md) · [Student Hub](../../../README.md)
