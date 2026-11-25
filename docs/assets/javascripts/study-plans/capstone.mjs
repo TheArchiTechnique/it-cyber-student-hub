@@ -83,6 +83,8 @@ function rehearsalForm(form, session, context, save, refresh) {
       if (!load.isConnected) return;
       if (!result) {
         notice.textContent = 'No completed Core 2 Certification Mode result is available here. Finish the timed exam or enter your result below.';
+      } else if (read(13).capstoneDraft?.examId === result.id) {
+        notice.textContent = 'This result is already in your draft. Your review selections have been kept.';
       } else if (read(13).records?.some(entry => entry.examId === result.id)) {
         notice.textContent = 'This exam is already recorded. Complete a new timed attempt to import another result.';
       } else {

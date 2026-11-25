@@ -1,15 +1,17 @@
+import { integrationChecks } from './study-plans-integration-browser.mjs';
 import { capstoneFlow } from './study-plans-capstone-browser.mjs';
 // Serve a built site locally and pass its root URL (including any project prefix).
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { chromium } from 'playwright';
+import { chromium, firefox, webkit } from 'playwright';
 import { storageKey } from '../docs/assets/javascripts/study-plans/progress.mjs';
 
 const root = new URL(process.argv[2] || 'http://127.0.0.1:8000/');
 const app = new URL('certifications/comptia/a-plus-core-2/study-plan/app/', root);
 const data = new URL('../docs/assets/data/study-plans/220-1202/', import.meta.url);
 const plan = JSON.parse(await readFile(new URL('plan.json', data)));
-const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH });
+const engine = { chromium, firefox, webkit }[process.env.STUDY_PLAN_BROWSER || 'chromium'];
+const browser = await engine.launch(engine === chromium ? { executablePath: process.env.CHROMIUM_PATH } : {});
 try {
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   const errors = [];
@@ -17,10 +19,23 @@ try {
   await page.route('**/*', r => new URL(r.request().url()).origin === root.origin ? r.continue() : r.abort());
   const btn = name => page.getByRole('button', { name, exact: true });
   const nav = name => page.locator('.study-nav').getByRole('link', { name, exact: true });
-  await page.goto(app.href);
+  const hubLink = name => page.locator('.hub-page').getByRole('link', { name, exact: true });
+  await page.goto(new URL('certifications/', root).href);
+  await hubLink('CompTIA').click();
+  await hubLink('A+ Core 2').click();
+  await hubLink('Start Studying').click();
+  await hubLink('14-Day Certification Study Plan').press('Enter');
   await page.locator('.plan-grid').waitFor();
   assert.equal(await page.locator('.plan-grid article').count(), 14);
   assert.equal(await page.locator('.plan-grid .open').count(), 14);
+  assert.ok([app.pathname, app.pathname + 'index.html'].includes(new URL(page.url()).pathname));
+  for (const [index, day] of plan.days.entries()) {
+    const card = page.locator('.plan-grid article').nth(index);
+    assert.equal(await card.locator('h2').textContent(), day.title);
+    assert.ok((await card.innerText()).includes(day.minutes + ' min'));
+    assert.ok((await card.innerText()).includes(day.goal));
+    assert.ok((await card.innerText()).includes(day.objectives.length === 36 ? 'All 36 objectives' : day.objectives.join(', ')));
+  }
   const readDay = number => page.evaluate(key => localStorage.getItem(key), storageKey(plan, number));
   let previousDays;
   let daysSevenToNine;
@@ -68,37 +83,31 @@ try {
     await page.getByText('Last attempt: 8 / 8').waitFor();
     await nav('Worksheet').click();
     const fields = page.locator('textarea');
-    await fields.first().fill('My saved response <check>');
+    await fields.first().fill('My saved response <check>\nSecond line.');
     await page.reload();
-    assert.equal(await fields.first().inputValue(), 'My saved response <check>');
+    assert.equal(await fields.first().inputValue(), 'My saved response <check>\nSecond line.');
     await btn('Complete worksheet and review key').click();
     assert.equal(await page.locator('.feedback').count(), 0);
     for (let i = 1; i < session.worksheet.length; i++) await fields.nth(i).fill('Practice response ' + i);
     await btn('Complete worksheet and review key').click();
     assert.equal(await page.locator('.feedback').count(), session.worksheet.length);
     await page.getByText('Completed · 4 of 4 activities completed').waitFor();
-    await page.emulateMedia({ media: 'print' });
-    await page.evaluate(() => {
-      window.print = () => {
-        dispatchEvent(new Event('beforeprint'));
-        window.printed = document.querySelector('#print-sheet').innerText;
-        window.printVisible = getComputedStyle(document.querySelector('#print-sheet')).display !== 'none';
-        window.mainHidden = getComputedStyle(document.querySelector('#main')).display === 'none';
-        dispatchEvent(new Event('afterprint'));
-      };
-    });
+    await page.evaluate(() => { window.print = () => dispatchEvent(new Event('beforeprint')); });
     for (const [control, filled] of [['Print blank worksheet', false], ['Print my responses', true]]) {
       await btn(control).click();
-      const result = await page.evaluate(() => [window.printed, window.printVisible, window.mainHidden]);
-      assert.ok(result[1] && result[2]);
-      assert.ok(result[0].includes(session.worksheet[0].prompt));
-      assert.equal(result[0].includes('My saved response <check>'), filled);
+      await page.emulateMedia({ media: 'print' });
+      const sheet = page.locator('#print-sheet');
+      assert.ok(await sheet.isVisible());
+      assert.equal(await page.locator('#main').isVisible(), false);
+      const printed = await sheet.innerText();
+      assert.equal(printed.includes('My saved response <check>\nSecond line.'), filled);
       for (const task of session.worksheet) {
-        assert.ok(result[0].includes(task.prompt));
-        assert.ok(!result[0].includes(task.key));
+        assert.ok(printed.includes(task.prompt));
+        assert.ok(!printed.includes(task.key));
       }
+      await page.emulateMedia({ media: 'screen' });
+      await page.evaluate(() => dispatchEvent(new Event('afterprint')));
     }
-    await page.emulateMedia({ media: 'screen' });
     await btn('Flag ' + day.objectives[0]).click();
     await page.getByText('Needs review · 4 of 4 activities completed').waitFor();
     await page.reload();
@@ -144,6 +153,7 @@ try {
   }
   for (const [, href] of Object.values(plan.resources)) assert.equal((await page.request.get(new URL(href, root).href)).status(), 200);
   assert.deepEqual(errors, []);
+  await integrationChecks(browser, root, app, plan, JSON.parse(await readFile(new URL(plan.days[0].session, data))));
   console.log('Passed all fourteen sessions, mobile and desktop, keyboard navigation, grading, persistence, reset, worksheet print modes and resource links.');
 } finally {
   await browser.close();

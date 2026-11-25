@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { STORAGE_KEY } from '../docs/assets/javascripts/practice-tests/engine.mjs';
 import { storageKey } from '../docs/assets/javascripts/study-plans/progress.mjs';
 
 export async function capstoneFlow(page, plan, app, noOverflow) {
@@ -15,6 +17,15 @@ export async function capstoneFlow(page, plan, app, noOverflow) {
   await open(13);
   await btn('Save exam review').press('Enter');
   assert.equal(await state(13), null);
+  for (const stored of [null, '{"status":"submitted"}']) {
+    if (stored) await page.evaluate(([key, value]) => localStorage.setItem(key, value), [STORAGE_KEY, stored]);
+    await btn('Import completed exam result').click();
+    await page.waitForFunction(() => ![...document.querySelectorAll('button')].find(b => b.textContent === 'Import completed exam result').disabled);
+    await page.getByText('No completed Core 2 Certification Mode result', { exact: false }).waitFor();
+    assert.equal(await control('percentage').inputValue(), '');
+    assert.equal(await state(13), null);
+  }
+  await page.evaluate(key => localStorage.removeItem(key), STORAGE_KEY);
   const popup = page.waitForEvent('popup');
   await page.getByRole('link', { name: 'Open Core 2 practice exam (new tab)' }).press('Enter');
   const exam = await popup;
@@ -23,7 +34,16 @@ export async function capstoneFlow(page, plan, app, noOverflow) {
   await btn('Import completed exam result').click();
   await page.getByText('No completed Core 2 Certification Mode result', { exact: false }).waitFor();
   assert.equal(await state(13), null);
-  await exam.locator('#answer-options input').first().check();
+  const bank = JSON.parse(await readFile(new URL('../docs/assets/data/practice-tests/a-plus-core-2-questions.json', import.meta.url)));
+  const ids = await exam.evaluate(key => JSON.parse(localStorage.getItem(key)).questionIds, STORAGE_KEY);
+  assert.equal(ids.length, 90);
+  const questions = ids.map(id => bank.questions.find(q => q.id === id));
+  const missed = questions[0];
+  for (const [i, question] of questions.entries()) {
+    await exam.locator('#question-navigator button').nth(i).click();
+    const choices = i ? question.correct : [question.choices.find(c => !question.correct.includes(c.id)).id];
+    for (const choice of choices) await exam.locator('#answer-options input[value="' + choice + '"]').check();
+  }
   await exam.locator('#submit-test').click();
   await exam.locator('#confirm-action').click();
   const percentage = (await exam.locator('#results .score').innerText()).replace('%', '');
@@ -33,7 +53,13 @@ export async function capstoneFlow(page, plan, app, noOverflow) {
   await page.getByText('Imported ' + percentage + '%', { exact: false }).waitFor();
   assert.equal(await control('percentage').inputValue(), percentage);
   assert.equal(await control('examDone').isChecked(), false);
-  assert.ok((await state(13)).capstoneDraft.objectives.length > 0);
+  assert.equal(percentage, '99');
+  assert.deepEqual((await state(13)).capstoneDraft.domains, [missed.domain]);
+  assert.deepEqual(new Set((await state(13)).capstoneDraft.objectives), new Set(missed.objectives));
+  await page.locator('[name=domains][value="' + missed.domain + '"]').uncheck();
+  await btn('Import completed exam result').click();
+  await page.getByText('This result is already in your draft.', { exact: false }).waitFor();
+  assert.deepEqual((await state(13)).capstoneDraft.domains, []);
   const fillAnalysis = async () => {
     await control('examDone').check();
     for (const n of [1, 2, 3]) await control('priority' + n).fill('Review decision ' + n);
@@ -43,6 +69,8 @@ export async function capstoneFlow(page, plan, app, noOverflow) {
     await page.getByLabel('Misread the scenario', { exact: true }).check();
   };
   await fillAnalysis();
+  await open(14);
+  await open(13);
   await page.reload();
   assert.equal(await control('priority2').inputValue(), 'Review decision 2');
   await btn('Save exam review').click();
@@ -71,6 +99,10 @@ export async function capstoneFlow(page, plan, app, noOverflow) {
   assert.match(await target.getByRole('link', { name: 'Quiz', exact: true }).getAttribute('href'), /#day-10\/quiz\//);
   assert.equal(await page.locator('li').filter({ hasText: 'Your Day 13 choice' }).getByRole('link').getAttribute('href'),
     new URL(plan.resources.bsod[1], new URL('../../../../../', app)).href);
+  await target.getByRole('link', { name: 'Quiz', exact: true }).press('Enter');
+  await page.locator('.study-nav [aria-current=page]').filter({ hasText: 'Recall quiz' }).waitFor();
+  await page.waitForFunction(() => document.activeElement.id.startsWith('answer-'));
+  await open(14);
   await control('recall').fill('I compared the stop code and the time of the restart.');
   await control('practice').selectOption('bsod');
   await control('independence').selectOption('With guidance');
@@ -90,6 +122,14 @@ export async function capstoneFlow(page, plan, app, noOverflow) {
   assert.equal(assessment.rehearsalPercentage, '86');
   await btn('Repeat readiness review').click();
   assert.equal(await control('recall').inputValue(), '');
+  assert.deepEqual((await state(14)).records[0], assessment);
+  for (const name of ['recall', 'evidence', 'next']) await control(name).fill('I repeated the task and verified the result.');
+  await control('practice').selectOption('bsod');
+  await control('independence').selectOption('Independently');
+  for (const c of await page.locator('fieldset select').all()) await c.selectOption('Demonstrated');
+  await btn('Save readiness review').press('Enter');
+  await page.getByText('Ready to schedule or attempt the exam', { exact: true }).waitFor();
+  assert.equal((await state(14)).records.length, 2);
   assert.deepEqual((await state(14)).records[0], assessment);
   assert.ok(await noOverflow());
   await page.getByRole('link', { name: 'Return to study calendar' }).click();

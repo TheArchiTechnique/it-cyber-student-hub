@@ -9,6 +9,8 @@ const planURL = new URL(document.body.dataset.plan, document.baseURI);
 const activities = { review: 'Topic review', cards: 'Flashcards', quiz: 'Recall quiz', worksheet: 'Worksheet' };
 const sessions = new Map();
 const memory = new Map();
+// Keep the original stored value so retrying a failed write cannot overwrite a newer tab.
+const unsavedDays = new Map();
 let plan;
 let printMode = 'blank';
 
@@ -32,13 +34,21 @@ function read(day) {
 function change(day, edit) {
   const key = storageKey(plan, day);
   let state = read(day);
+  let stored;
   try {
-    const latest = localStorage.getItem(key);
-    if (latest && !document.querySelector('#storage-note').textContent) state = { ...freshDay(), ...JSON.parse(latest) };
+    stored = localStorage.getItem(key);
+    if (!unsavedDays.has(day)) state = { ...freshDay(), ...JSON.parse(stored) };
   } catch { warning(); }
   edit(state);
   memory.set(day, state);
-  try { localStorage.setItem(key, JSON.stringify(state)); } catch { warning(); }
+  if (unsavedDays.has(day) && unsavedDays.get(day) !== stored) return state;
+  try {
+    localStorage.setItem(key, JSON.stringify(state));
+    unsavedDays.delete(day);
+  } catch {
+    unsavedDays.set(day, stored);
+    warning();
+  }
   return state;
 }
 function reading(id) {
@@ -183,7 +193,12 @@ function quiz(day, session) {
   const section = panel('Fill-in-the-blank quiz');
   const form = node('form');
   section.append(node('p', 'Enter a response for every blank, then check your answers.'));
-  if (state.lastQuiz) section.append(node('p', 'Last attempt: ' + summary(session, state).score + ' / ' + session.quiz.length, 'status'));
+  if (state.lastQuiz) {
+    const score = node('p', 'Last attempt: ' + summary(session, state).score + ' / ' + session.quiz.length, 'status');
+    score.id = 'quiz-score';
+    score.tabIndex = -1;
+    section.append(score);
+  }
   for (const [index, q] of session.quiz.entries()) {
     const item = node('div', undefined, 'item');
     const input = node('input');
@@ -201,7 +216,10 @@ function quiz(day, session) {
     item.append(node('span', 'Objective ' + q.objective, 'muted'), label, input);
     if (locked) {
       const verdict = matches(q, input.value) ? 'Correct. ' : 'Review this answer. ';
-      item.append(node('p', verdict + q.answers[0] + '. ' + q.explanation, 'feedback'));
+      const feedback = node('p', verdict + q.answers[0] + '. ' + q.explanation, 'feedback');
+      feedback.id = 'feedback-' + q.id;
+      input.setAttribute('aria-describedby', feedback.id);
+      item.append(feedback);
     }
     form.append(item);
   }
@@ -222,7 +240,7 @@ function quiz(day, session) {
     if (locked) return;
     const answers = Object.fromEntries(session.quiz.map(q => [q.id, form.querySelector('#answer-' + q.id).value]));
     change(day.number, s => { s.lastQuiz = answers; s.retry = false; });
-    render('quiz-result');
+    render('quiz-score');
   });
   section.append(form);
   view.append(section);
@@ -246,7 +264,6 @@ function worksheet(day, session) {
       printMode = mode;
       preparePrint(day, session, mode);
       window.print();
-      printMode = 'blank';
     }));
   }
   section.append(tools);
@@ -380,16 +397,22 @@ async function start() {
   window.addEventListener('hashchange', () => render('heading'));
   window.addEventListener('storage', event => {
     const day = plan.days.find(d => storageKey(plan, d.number) === event.key);
-    if (day || event.key === null) {
-      memory.clear();
-      render();
-    }
+    if (!day && event.key !== null) return;
+    if (day && unsavedDays.has(day.number)) return;
+    if (day) memory.delete(day.number);
+    else for (const number of memory.keys()) if (!unsavedDays.has(number)) memory.delete(number);
+
+    const active = Number(location.hash.match(/^#day-(\d+)/)?.[1]);
+    if (!day || !active || active === day.number || sessions.get(active)?.type === 'readiness') render();
   });
   window.addEventListener('beforeprint', () => {
     const day = plan.days.find(d => location.hash.split('/')[0] === '#day-' + d.number);
     if (day && sessions.get(day.number)?.worksheet) preparePrint(day, sessions.get(day.number), printMode);
   });
-  window.addEventListener('afterprint', () => paper.replaceChildren());
+  window.addEventListener('afterprint', () => {
+    printMode = 'blank';
+    paper.replaceChildren();
+  });
 }
 document.querySelector('.skip-link').addEventListener('click', event => {
   event.preventDefault();
