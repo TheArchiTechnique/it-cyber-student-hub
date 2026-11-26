@@ -364,6 +364,22 @@
     "voip": [
       "Two-Site VoIP Troubleshooting",
       "practice/pbqs/a-plus-core-1/two-site-voip-cli/"
+    ],
+    "cloud-cases": [
+      "Day 8 worksheet · cloud connectivity and modern network design",
+      "certifications/comptia/network-plus/study-plan/app/#day-8/worksheet"
+    ],
+    "recovery-cases": [
+      "Day 9 worksheet · change control and service recovery",
+      "certifications/comptia/network-plus/study-plan/app/#day-9/worksheet"
+    ],
+    "access-cases": [
+      "Day 10 worksheet · remote access and management paths",
+      "certifications/comptia/network-plus/study-plan/app/#day-10/worksheet"
+    ],
+    "security-cases": [
+      "Day 11 worksheet · identity, segmentation and attack evidence",
+      "certifications/comptia/network-plus/study-plan/app/#day-11/worksheet"
     ]
   },
   "days": [
@@ -642,7 +658,8 @@
       "recall": "Identify two decisions you made with low confidence and the evidence that would settle them.",
       "resources": [
         "reading"
-      ]
+      ],
+      "session": "day-13.json"
     },
     {
       "number": 14,
@@ -681,7 +698,8 @@
         "subnet",
         "capture",
         "reading"
-      ]
+      ],
+      "session": "day-14.json"
     }
   ]
 }

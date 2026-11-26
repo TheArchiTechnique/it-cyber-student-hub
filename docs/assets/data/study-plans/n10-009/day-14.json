@@ -1,0 +1,119 @@
+{
+  "type": "readiness",
+  "minutes": {
+    "recall": 25,
+    "practical": 30,
+    "decision": 20
+  },
+  "balanced": [
+    "1.7",
+    "2.2",
+    "3.4",
+    "4.3",
+    "5.3"
+  ],
+  "practicals": {
+    "pdu": [
+      "1.1",
+      "1.2",
+      "1.4"
+    ],
+    "cabling": [
+      "1.5",
+      "2.4",
+      "5.2"
+    ],
+    "subnet": [
+      "1.7"
+    ],
+    "ip-fault": [
+      "1.7",
+      "5.1",
+      "5.3",
+      "5.5"
+    ],
+    "vlan": [
+      "2.2",
+      "5.3"
+    ],
+    "route": [
+      "2.1",
+      "5.3"
+    ],
+    "dns": [
+      "3.4",
+      "5.3"
+    ],
+    "wifi": [
+      "2.3",
+      "5.4"
+    ],
+    "capture": [
+      "1.4",
+      "3.2",
+      "5.5"
+    ],
+    "acl": [
+      "4.3",
+      "5.3"
+    ],
+    "voip": [
+      "5.1",
+      "5.4",
+      "5.5"
+    ],
+    "lab1": [
+      "1.6",
+      "1.7",
+      "5.5"
+    ],
+    "dhcp": [
+      "3.4"
+    ],
+    "soho": [
+      "2.3",
+      "3.4",
+      "4.3"
+    ],
+    "cloud-cases": [
+      "1.3",
+      "1.8"
+    ],
+    "recovery-cases": [
+      "3.1",
+      "3.3"
+    ],
+    "access-cases": [
+      "3.5"
+    ],
+    "security-cases": [
+      "4.1",
+      "4.2"
+    ]
+  },
+  "practicalInstructions": "Choose one exercise or a portion you can verify in 30 minutes. For example, trace one DNS request and reply in Wireshark, predict one routing decision and test it, or diagnose one client in IP Configuration Troubleshooting. Start from the task and evidence with the walkthrough closed. Record any guidance you needed. For a worksheet, select one case for your weak objective, record a fresh decision and verification here, then check your reasoning against the objective reading beside that case.",
+  "checks": {
+    "Technical readiness": {
+      "concepts": "Explain a missed networking concept from memory and distinguish it from a similar technology.",
+      "subnet": "Given an unfamiliar IPv4 address and prefix, calculate the network, broadcast address and usable host range.",
+      "ports": "Recall the required ports and transports and explain the services they carry.",
+      "path": "Read a client configuration, VLAN assignment and routing table to predict a packet’s next hop.",
+      "tools": "Choose a diagnostic command or tool and interpret the evidence it returns.",
+      "security": "Recognize a network threat and explain how a specific defense addresses it.",
+      "scenario": "Apply the troubleshooting methodology to a new symptom, test the probable cause and verify the repair.",
+      "pbq": "Complete a relevant PBQ or lab independently and justify your technical decision."
+    },
+    "Practice performance": {
+      "timed": "Complete a timed N10-009 rehearsal and review incorrect, guessed and unanswered items.",
+      "misses": "Explain why an earlier answer was wrong and identify the evidence for a better choice.",
+      "gaps": "Resolve the significant objective gaps recorded in your rehearsal and study sessions.",
+      "transfer": "Demonstrate improvement by applying the reviewed skill to a different scenario without assistance."
+    },
+    "Exam preparation": {
+      "format": "Describe the 90-minute exam format, its maximum of 90 questions and its multiple-choice and performance-based tasks.",
+      "pace": "Choose time checkpoints and reserve time to revisit unanswered or flagged items.",
+      "rules": "Use your official appointment confirmation and testing provider instructions to verify identification, environment and check-in requirements.",
+      "booking": "Confirm the exam code N10-009, date, time and delivery method, or record your intended booking milestone."
+    }
+  }
+}

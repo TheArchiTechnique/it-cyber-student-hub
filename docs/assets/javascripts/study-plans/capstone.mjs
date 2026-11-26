@@ -3,6 +3,10 @@ import { matches, reviewTargets, readinessOutcome } from './progress.mjs';
 
 const latest = state => state.records?.at(-1);
 
+function practiceScore(value) {
+  return value == null || value === '' ? 'Percentage unavailable' : value + '%';
+}
+
 function field(form, key, title, options) {
   const label = node('label', title, 'cap-field');
   const control = node(options ? 'select' : 'textarea');
@@ -110,20 +114,20 @@ function rehearsalForm(form, session, context, save, refresh) {
     form.append(node('p', 'Copy the percentage from your submitted results, or import your latest completed Certification Mode attempt. Review the domains and objectives you want to revisit.'));
     integratedExamControls(form, context, save, refresh);
   } else {
-    form.append(node('p', 'Enter the percentage from your timed practice exam and select the areas you want to revisit.'));
+    form.append(node('p', 'Enter the whole-number percentage shown by your provider, if available. Leave it blank if the provider reports only a scaled score or no whole-number percentage. Your unfinished entries are saved as a draft.'));
   }
   const examName = plan.shortName + (session.examPath ? ' Certification Mode exam' : ' practice exam');
   check(form, 'examDone', 'yes', 'I completed the timed ' + examName + '.').required = true;
-  const label = node('label', 'Practice exam percentage (0–100)', 'cap-field');
+  const label = node('label', session.examPath ? 'Practice exam percentage (0–100)' : 'Practice exam percentage (0–100, if available)', 'cap-field');
   const score = node('input');
-  Object.assign(score, { type: 'number', name: 'percentage', min: '0', max: '100', step: '1', required: true });
+  Object.assign(score, { type: 'number', name: 'percentage', min: '0', max: '100', step: '1', required: Boolean(session.examPath) });
   label.append(score);
   form.append(label);
   listChecks(form, 'Domains to revisit', 'domains', plan.domains.map(d => [d.id, d.name + ' · ' + d.weight + '%']));
   objectiveChoices(form, plan, 'Select missed objectives, if identifiable');
   form.append(node('p', 'Record three priorities. If you had fewer than three misses, use uncertain answers or skills to verify.'));
   for (const n of [1, 2, 3]) field(form, 'priority' + n, 'Review priority ' + n);
-  listChecks(form, 'Which difficulties did you observe? Choose the PBQ reason only for a separate practical exercise.', 'causes', session.causes.map(c => [c, c]));
+  listChecks(form, session.examPath ? 'Which difficulties did you observe? Choose the PBQ reason only for a separate practical exercise.' : 'Which difficulties did you observe during the rehearsal?', 'causes', session.causes.map(c => [c, c]));
   field(form, 'reason', 'Which clue changed your answer, and what would you do in a similar scenario?');
   field(form, 'resources', 'Which learning resources will you revisit, and what will you use them to check?');
   field(form, 'practice', 'Practical exercise to retry', practiceOptions(plan, sessions.get(14)));
@@ -133,7 +137,7 @@ function recallLinks(section, targets, context) {
   const { plan, sessions, read, route, reading } = context;
   const fallback = targets[0].reasons.includes('Balanced review');
   section.append(node('p', fallback
-    ? 'No weak areas have been recorded. Sample one objective from each domain. Recall a principle from memory and check it against the objective breakdown.'
+    ? 'No weak areas have been recorded. Sample one objective from each domain. Recall a principle from memory and check it against the objective breakdown. Readiness still depends on rehearsal and practical evidence.'
     : 'Start with objectives supported by several signals, then exam selections. Domain weight breaks ties. Explain a missed decision from memory before checking the answer.'));
   for (const { id, reasons } of targets) {
     const item = node('details', undefined, 'item');
@@ -142,7 +146,8 @@ function recallLinks(section, targets, context) {
       const source = sessions.get(day.number);
       if (!source || source.type) continue;
       const state = read(day.number);
-      const row = node('p', 'Day ' + day.number + ' · ');
+      const row = node('p');
+      row.append(link('Day ' + day.number, route(day.number, 'review')), ' · ');
       for (const [kind, label] of [['cards', 'Flashcards'], ['quiz', 'Quiz'], ['worksheet', 'Worksheet']]) {
         const items = source[kind].filter(i => i.objective === id);
         const target = items.find(i => kind === 'cards' && state.cards[i.id] === 'review' ||
@@ -158,7 +163,7 @@ function recallLinks(section, targets, context) {
 function readinessForm(form, session, context, rehearsal) {
   const { plan, sessions, read, route } = context;
   if (rehearsal) {
-    form.append(node('p', 'Latest rehearsal: ' + rehearsal.percentage + '%. Your priorities: ' +
+    form.append(node('p', 'Latest rehearsal: ' + practiceScore(rehearsal.percentage) + '. Your priorities: ' +
       [rehearsal.priority1, rehearsal.priority2, rehearsal.priority3].join(' · ')),
       node('p', 'Resources you chose: ' + rehearsal.resources));
   } else form.append(link('Record a timed rehearsal on Day 13', route(13)));
@@ -166,7 +171,7 @@ function readinessForm(form, session, context, rehearsal) {
   recallLinks(form, targets, context);
   field(form, 'recall', 'Which objective did you revisit, and what could you explain without notes?');
   form.append(node('h3', 'Practical troubleshooting · ' + session.minutes.practical + ' minutes'),
-    node('p', 'Complete one exercise. Identify the evidence, choose the next action and explain why an alternative would be unnecessary.'));
+    node('p', session.practicalInstructions || 'Complete one exercise. Identify the evidence, choose the next action and explain why an alternative would be unnecessary.'));
   const options = practiceOptions(plan, session);
   const recommended = [];
   if (rehearsal && Object.hasOwn(session.practicals, rehearsal.practice)) recommended.push(rehearsal.practice);
@@ -187,7 +192,7 @@ function readinessForm(form, session, context, rehearsal) {
   form.append(list);
   field(form, 'practice', 'Exercise completed', options);
   field(form, 'independence', 'How did you solve it?', ['Independently', 'With guidance', 'Completed using a walkthrough'].map(v => [v, v]));
-  field(form, 'evidence', 'What evidence did you use, what did you try, and what result did you observe?');
+  field(form, 'evidence', 'What evidence did you examine? Describe your decision, action, observed result and verification. Why would a different action have been inappropriate?');
   form.append(node('h3', 'Exam-readiness review · ' + session.minutes.decision + ' minutes'), link('Official ' + plan.shortName + ' exam objectives', plan.source),
     node('p', 'Use your rehearsal and practical evidence for each answer. For appointment and ID requirements, check your booking confirmation and testing provider instructions.'),
     node('p', 'A missing rehearsal score or a score below 50% triggers further review in the Hub. Reaching 50% alone establishes no readiness level. The ready recommendation also requires independent practical work, demonstrated skills on every checklist item and no objectives you identify as unresolved in this final review. CompTIA reports a passing score of ' + plan.passingScore + ' on a 100–900 scale. There is no direct conversion from this practice percentage.'));
@@ -200,7 +205,7 @@ function readinessForm(form, session, context, rehearsal) {
     form.append(set);
   }
   objectiveChoices(form, plan, 'Select any objectives that still need work after this review');
-  field(form, 'next', 'What will you do next, when, and how will you verify improvement or confirm your exam arrangements?');
+  field(form, 'next', 'Name your remaining priority, resource and next action. How will you verify improvement, and what is your intended exam date or next review milestone?');
 }
 
 function history(section, records, session, plan) {
@@ -213,9 +218,9 @@ function history(section, records, session, plan) {
   };
   records.forEach((record, i) => {
     const detail = node('details', undefined, 'item');
-    const result = session.type === 'rehearsal' ? record.percentage + '%' : record.outcome;
+    const result = session.type === 'rehearsal' ? practiceScore(record.percentage) : record.outcome;
     detail.append(node('summary', 'Attempt ' + (i + 1) + ' · ' + result + ' · ' + new Date(record.savedAt).toLocaleDateString()));
-    if (record.rehearsalNumber) detail.append(node('p', 'Based on rehearsal ' + record.rehearsalNumber + ' (' + record.rehearsalPercentage + '%).'));
+    if (record.rehearsalNumber) detail.append(node('p', 'Based on rehearsal ' + record.rehearsalNumber + ' (' + practiceScore(record.rehearsalPercentage) + ').'));
     const terms = node('dl');
     for (const [key, label] of Object.entries(labels)) {
       if (!(key in record)) continue;

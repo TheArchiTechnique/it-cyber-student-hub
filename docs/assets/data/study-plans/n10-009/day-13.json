@@ -1,0 +1,28 @@
+{
+  "type": "rehearsal",
+  "minutes": {
+    "exam": 90,
+    "analysis": 30
+  },
+  "instructions": [
+    "Choose a timed CompTIA Network+ N10-009 practice exam from your course materials or another authorized educational provider. The official exam allows up to 90 questions in 90 minutes and includes multiple-choice and performance-based questions (PBQs). Set aside 90 uninterrupted minutes, close your notes and references, and work independently.",
+    "Check the time and question count at the start. Reserve time to revisit unanswered questions and PBQs. In a scenario, identify the requested outcome and the evidence that narrows the choice, such as a prefix length, a VLAN assignment or a change in interface counters. Eliminate answers inconsistent with that evidence. Flag uncertain questions where the provider allows it and return before submitting.",
+    "Complete the available PBQs during the timed attempt. If your exam has none, choose a separate Hub practical for Day 14. If you do not have a timed exam available, continue the study activities and leave this review as a draft until you complete one.",
+    "After submission, inspect missed, unanswered and guessed items. For each priority, name the technical concept, the clue you missed and a different scenario you can use to test your reasoning. Select a domain when the report cannot identify a numbered objective. Use only the percentage your provider reports. CompTIA's passing score is 720 on a 100–900 scale. A practice percentage cannot be converted to that score or predict a pass."
+  ],
+  "causes": [
+    "Missing technical knowledge",
+    "Confused similar technologies",
+    "Incorrect port or protocol recognition",
+    "Subnetting calculation error",
+    "Misinterpreted command output",
+    "Misinterpreted a network diagram",
+    "Incorrect troubleshooting sequence",
+    "Misread the scenario requirements",
+    "Difficulty applying a technical skill",
+    "Time management",
+    "Guessed without sufficient evidence",
+    "Difficulty completing a performance-based activity",
+    "No errors identified on review"
+  ]
+}
