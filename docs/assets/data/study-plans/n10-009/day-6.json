@@ -1,0 +1,412 @@
+{
+  "minutes": {
+    "reading": 30,
+    "cards": 20,
+    "quiz": 15,
+    "worksheet": 30,
+    "application": 25
+  },
+  "review": [
+    {
+      "objective": "1.4",
+      "title": "Separate the delivery address from the service",
+      "text": "Unicast selects one endpoint, multicast addresses a joined group, and IPv4 broadcast reaches the local broadcast domain. Anycast advertises the same address from several sites and routing selects one instance. TCP establishes a connection and provides ordered delivery, acknowledgments and retransmission. UDP supplies independent datagrams. Applications can add reliability when needed. A client normally chooses a temporary source port. The server's well-known port identifies the expected service, and the reply reverses the endpoint pair. Confirm the actual application from the exchange."
+    },
+    {
+      "objective": "1.4",
+      "title": "Recall file transfer and remote access ports",
+      "text": "FTP control uses TCP 21. In traditional active FTP the server opens the data connection from TCP 20 to the client. In passive FTP the client opens the data connection to a negotiated server port. SFTP uses SSH on TCP 22. SSH also supplies a remote shell. TFTP sends its initial request to UDP 69 and uses transfer-specific UDP ports thereafter. Telnet uses TCP 23 for a cleartext terminal. RDP provides a graphical session on TCP 3389 and can also use UDP 3389. Direct-hosted SMB shares files and printers on TCP 445."
+    },
+    {
+      "objective": "1.4",
+      "title": "Recall messaging, web, directory and database ports",
+      "text": "SMTP relays mail between servers on TCP 25. The objectives associate secure submission (SMTPS) with TCP 587: this is client submission, commonly upgraded with STARTTLS. Implicit TLS submission commonly uses TCP 465. HTTP typically uses TCP 80. HTTPS typically uses TCP 443. HTTP/3 uses QUIC over UDP 443. LDAP directory access commonly uses TCP 389, with connectionless uses on UDP 389. LDAPS uses TCP 636 for implicit TLS. Microsoft SQL Server's default database listener uses TCP 1433. SIP sets up calls on UDP or TCP 5060, or with TLS on TCP 5061. The actual media uses separately negotiated streams."
+    },
+    {
+      "objective": "1.4",
+      "title": "Read a monitoring or tunnel trace",
+      "text": "An SNMP manager usually polls an agent on UDP 161. Traps and informs go to a receiver on UDP 162. Classic syslog sends event messages to UDP 514. IPv4's protocol field identifies ICMP (1), TCP (6), UDP (17), GRE (47), ESP (50) or AH (51). ICMP uses types and codes, and GRE encapsulates other traffic. Neither uses TCP or UDP ports directly. With IPsec, AH provides integrity and authentication, ESP can protect payload confidentiality and integrity, and IKE negotiates keys and security associations using UDP 500. NAT traversal commonly uses UDP 4500."
+    },
+    {
+      "objective": "3.4",
+      "title": "Read what the DHCP server actually offered",
+      "text": "A static host keeps locally configured settings. A dynamic host can receive an address and options for a lease interval. For a new DHCPv4 lease, Discover finds servers, Offer proposes settings, Request selects an offer, and Acknowledge confirms the lease. On the client-facing link DHCP uses UDP 68 at the client and 67 at the server. A scope serves a particular subnet. Exclusions keep addresses out of automatic assignment. A reservation ties an address to a client identifier. Options commonly supply the router (3) and DNS servers (6). A relay on the client VLAN forwards requests to a server across a router and identifies the originating subnet for pool selection."
+    },
+    {
+      "objective": "3.4",
+      "title": "Follow a name through the resolver",
+      "text": "A client asks a recursive resolver for a final answer. The resolver may answer from a still-valid cache or follow iterative referrals to authoritative servers. A primary holds the managed zone data and a secondary can serve an authoritative copy. A cached recursive answer may be non-authoritative. In a forward zone, A maps a name to IPv4, AAAA to IPv6, CNAME names an alias target, MX names a mail exchanger, NS identifies an authoritative nameserver and TXT carries text such as a domain-verification value. A reverse zone uses PTR for address-to-name lookup. Internal and public DNS views can intentionally return different answers. A local hosts-file mapping can affect application lookups without changing a DNS server."
+    },
+    {
+      "objective": "3.4",
+      "title": "Choose DNS transport and protection",
+      "text": "Conventional DNS uses both UDP and TCP 53. A truncated UDP reply can lead to a TCP retry. Zone transfers normally use TCP. DNSSEC lets a validating resolver check authenticity and integrity of signed data. DNS over TLS (DoT) encrypts the client-to-resolver connection, normally on TCP 853. DNS over HTTPS (DoH) carries DNS in HTTPS on 443. Transport encryption and validation answer different questions and can be combined."
+    },
+    {
+      "objective": "3.4",
+      "title": "Match the clock service to the requirement",
+      "text": "NTP typically uses UDP 123 for system time. Logs from several devices are easier to correlate when their clocks agree, and large skew can break time-sensitive authentication. Precision Time Protocol (PTP) can provide tighter synchronization on a designed local network with hardware timestamping. PTP over UDP/IP uses 319 for event messages and 320 for general messages. It can also run directly over Ethernet. Network Time Security (NTS) protects NTP exchanges: TLS key establishment normally uses TCP 4460, then authenticated NTP packets normally use UDP 123."
+    },
+    {
+      "objective": "3.4",
+      "title": "Identify the IPv6 address source",
+      "text": "With SLAAC, a host receives an IPv6 Router Advertisement, uses an advertised autonomous prefix to form an address, and checks for duplicates. Router Advertisements also identify default routers through their router lifetimes. An IPv6 address does not by itself prove a DHCPv6 lease was issued. DHCPv6 can supply an address or other configuration, depending on the design. On Day 8, apply this distinction when selecting and troubleshooting an IPv6 deployment."
+    },
+    {
+      "objective": "5.3",
+      "title": "Separate address, name, transport and clock failures",
+      "text": "An APIPA address on a DHCP-managed Windows LAN is evidence that the client lacks the expected lease. Compare the VLAN, relay, server availability and free leases. If clients have leases but use the wrong gateway, inspect the ACK options and offering server identity. Multiple offers can be legitimate, so compare server identifiers with the approved list before declaring a rogue. If a service works by IP but a name fails, verify the client's resolver, answer, cache and record. If DNS and the TCP handshake succeed but certificate or ticket times appear invalid, compare the client's clock with the configured time source."
+    },
+    {
+      "objective": "3.4",
+      "title": "Assigned practical: trace one lease and one lookup",
+      "text": "Use Activities C and D of the Wireshark lab. Match the DHCP transaction ID across its four messages, record the DNS option in the ACK, then match a DNS response to its query by transaction ID and endpoints. Use the annotated captures if Wireshark is unavailable. The remaining links are optional. Packet Tracer Lab 4 requires the completed Lab 3 topology. Lab 5 continues Lab 4 and moves DHCP to a central server. The Kahoots and port reference provide additional recall practice."
+    }
+  ],
+  "sources": [
+    [
+      "Network+ service and port table",
+      "../../objective-breakdown/#required-service-and-port-associations"
+    ],
+    [
+      "NTS for NTP (RFC 8915)",
+      "https://www.rfc-editor.org/rfc/rfc8915"
+    ],
+    [
+      "Mail submission (RFC 6409)",
+      "https://www.rfc-editor.org/rfc/rfc6409"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "tcp",
+      "objective": "1.4",
+      "prompt": "What makes TCP a better fit than bare UDP for an ordered remote shell, and does TCP encrypt it?",
+      "answer": "TCP provides an ordered byte stream and retransmits missing data. SSH provides encryption above that transport."
+    },
+    {
+      "id": "ftp",
+      "objective": "1.4",
+      "prompt": "Recall the FTP control port and explain who opens the separate data connection in each mode.",
+      "answer": "The client connects to TCP 21 for control. In traditional active mode the server opens data from TCP 20. In passive mode the client connects to a negotiated server data port."
+    },
+    {
+      "id": "files",
+      "objective": "1.4",
+      "prompt": "Recall the initial ports and transports for an SSH-based file transfer and a simple boot-file transfer.",
+      "answer": "SFTP uses TCP 22. TFTP initially contacts UDP 69 and transfers using negotiated UDP endpoints."
+    },
+    {
+      "id": "admin",
+      "objective": "1.4",
+      "prompt": "From memory, name the usual ports for cleartext terminal, encrypted shell and remote graphical desktop.",
+      "answer": "Telnet TCP 23, SSH TCP 22 and RDP TCP 3389 with optional UDP 3389."
+    },
+    {
+      "id": "mail",
+      "objective": "1.4",
+      "prompt": "Which SMTP ports distinguish server relay, client submission with STARTTLS, and implicit TLS submission?",
+      "answer": "TCP 25 for relay, 587 for submission with STARTTLS and 465 for implicit TLS submission."
+    },
+    {
+      "id": "web",
+      "objective": "1.4",
+      "prompt": "Which default endpoints distinguish cleartext HTTP, conventional HTTPS and HTTP/3?",
+      "answer": "Usually TCP 80, TCP 443 and QUIC over UDP 443 respectively."
+    },
+    {
+      "id": "directory",
+      "objective": "1.4",
+      "prompt": "Recall the ports for an LDAP directory, LDAP over implicit TLS and a default Microsoft SQL Server listener.",
+      "answer": "TCP 389 for ordinary LDAP, TCP 636 for LDAPS and TCP 1433 for the database listener."
+    },
+    {
+      "id": "ops",
+      "objective": "1.4",
+      "prompt": "Which UDP ports receive an SNMP query, an SNMP trap and a classic syslog message?",
+      "answer": "161 at the SNMP agent, 162 at the notification receiver and 514 at the syslog collector."
+    },
+    {
+      "id": "voice",
+      "objective": "1.4",
+      "prompt": "Which ports identify ordinary and TLS-protected SIP signaling? What must you check if the call connects but audio fails?",
+      "answer": "5060 for UDP or TCP signaling and 5061 for SIP over TLS. Inspect the negotiated media endpoints and their independently permitted traffic."
+    },
+    {
+      "id": "numbers",
+      "objective": "1.4",
+      "prompt": "Why would a TCP 47 rule fail to permit GRE, and what does an ICMP echo use instead of ports?",
+      "answer": "GRE is IP protocol 47. ICMP is a separate IP payload and identifies messages with types and codes."
+    },
+    {
+      "id": "ipsec",
+      "objective": "1.4",
+      "prompt": "Which IPsec component negotiates keys, which can encrypt a payload, and which authenticates without encryption?",
+      "answer": "IKE negotiates keys, ESP can encrypt payloads, and AH authenticates and checks integrity. IKE commonly starts on UDP 500."
+    },
+    {
+      "id": "anycast",
+      "objective": "1.4",
+      "prompt": "Several DNS sites advertise one IP, while one video stream addresses a joined group. Name each delivery pattern.",
+      "answer": "The DNS service uses anycast, with routing choosing one site. The video stream uses multicast to reach group members."
+    },
+    {
+      "id": "lease",
+      "objective": "3.4",
+      "prompt": "A new DHCPv4 lease uses four messages. Name them and the client/server UDP ports.",
+      "answer": "Discover, Offer, Request, Acknowledge. The client uses 68 and the server 67 on the client-facing exchange."
+    },
+    {
+      "id": "reserve",
+      "objective": "3.4",
+      "prompt": "How do a DHCP reservation and an exclusion differ for a printer?",
+      "answer": "A reservation supplies the printer a stable lease by identifier. An exclusion keeps addresses out of general dynamic allocation, for example for statically configured devices."
+    },
+    {
+      "id": "dns",
+      "objective": "3.4",
+      "prompt": "Which records give an IPv6 address, a mail exchanger and a reverse name?",
+      "answer": "AAAA for an IPv6 address, MX for mail routing and PTR for the reverse mapping."
+    },
+    {
+      "id": "privacy",
+      "objective": "3.4",
+      "prompt": "Which DNS feature validates signed records, and which two protect the transport to the resolver?",
+      "answer": "DNSSEC validates signed data. DoT usually uses TCP 853 and DoH uses HTTPS 443."
+    },
+    {
+      "id": "clock",
+      "objective": "3.4",
+      "prompt": "Recall the endpoints for ordinary NTP, NTS key establishment and UDP-based PTP.",
+      "answer": "NTP normally uses UDP 123. NTS establishes keys over TCP 4460. PTP uses UDP 319 for event and 320 for general messages in its UDP mapping."
+    },
+    {
+      "id": "v6",
+      "objective": "3.4",
+      "prompt": "How can a host obtain a global IPv6 address without leasing one from a server?",
+      "answer": "SLAAC uses an autonomous prefix from a Router Advertisement and a host-generated interface identifier."
+    },
+    {
+      "id": "pool",
+      "objective": "5.3",
+      "prompt": "Existing clients renew successfully but new devices get no offer. Which server evidence distinguishes exhaustion from a missing relay?",
+      "answer": "Look for received requests for the affected scope and zero free addresses. A missing relay would prevent those remote requests from reaching the server."
+    },
+    {
+      "id": "lookup",
+      "objective": "5.3",
+      "prompt": "A cached resolver returns an old A record while the correct authoritative answer is already published. What value bounds ordinary cache retention?",
+      "answer": "The record's remaining time to live (TTL). Check the actual resolver and remaining TTL before editing the zone again."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "smb",
+      "objective": "1.4",
+      "prompt": "A client reaches the web interface on 443. To access the same server's direct-hosted SMB share, the default TCP destination port is ____.",
+      "answers": [
+        "445",
+        "TCP 445"
+      ],
+      "explanation": "The web and file-sharing services use separate listeners. A successful web request establishes reachability to only one of them."
+    },
+    {
+      "id": "sftp",
+      "objective": "1.4",
+      "prompt": "A managed file transfer runs as an SSH subsystem rather than FTP. Its standard TCP destination port is ____.",
+      "answers": [
+        "22",
+        "TCP 22"
+      ],
+      "explanation": "SFTP shares the SSH transport. Opening the FTP control port does not enable SFTP."
+    },
+    {
+      "id": "trap",
+      "objective": "1.4",
+      "prompt": "An SNMP agent sends a trap to a management server. Give the destination UDP port: ____.",
+      "answers": [
+        "162",
+        "UDP 162"
+      ],
+      "explanation": "Agents receive ordinary polls on 161. The notification receiver listens on 162."
+    },
+    {
+      "id": "sip",
+      "objective": "1.4",
+      "prompt": "A phone is configured for SIP signaling over TLS. Give the default TCP destination port: ____.",
+      "answers": [
+        "5061",
+        "TCP 5061"
+      ],
+      "explanation": "5061 is the TLS signaling endpoint. Session media ordinarily uses other ports."
+    },
+    {
+      "id": "cast",
+      "objective": "1.4",
+      "prompt": "Three sites advertise the same service address. Routing delivers one client request to one selected site. This addressing model is ____.",
+      "answers": [
+        "anycast"
+      ],
+      "explanation": "Anycast selects a reachable instance by routing. Multicast targets a group of receivers."
+    },
+    {
+      "id": "ack",
+      "objective": "3.4",
+      "prompt": "In a successful initial DHCPv4 exchange, which message from the selected server follows the client's Request? ____",
+      "answers": [
+        "ACK",
+        "DHCPACK",
+        "DHCP ACK",
+        "Acknowledge",
+        "Acknowledgment",
+        "Acknowledgement"
+      ],
+      "explanation": "The acknowledgment confirms the lease and options the client should apply."
+    },
+    {
+      "id": "alias",
+      "objective": "3.4",
+      "prompt": "An application name must be an alias for the canonical hostname of a service. Which DNS record type provides this? ____",
+      "answers": [
+        "CNAME"
+      ],
+      "explanation": "A CNAME identifies the canonical target name. Its address is then resolved separately."
+    },
+    {
+      "id": "ptr",
+      "objective": "3.4",
+      "prompt": "A reverse lookup requests the hostname associated with an IP address. Give the DNS record type: ____.",
+      "answers": [
+        "PTR"
+      ],
+      "explanation": "A pointer record in the reverse zone maps the reverse lookup name to a hostname."
+    },
+    {
+      "id": "nts",
+      "objective": "3.4",
+      "prompt": "A client already uses NTP and needs cryptographic authentication with TLS-based key establishment. Name the extension (acronym): ____.",
+      "answers": [
+        "NTS"
+      ],
+      "explanation": "Network Time Security establishes keys and cookies and authenticates subsequent NTP exchanges."
+    },
+    {
+      "id": "relay",
+      "objective": "5.3",
+      "prompt": "Requests broadcast in VLAN 40 never reach a healthy authorized DHCP server on VLAN 60. Which gateway function forwards them across this boundary? ____",
+      "answers": [
+        "DHCP relay",
+        "relay",
+        "DHCP relay agent",
+        "relay agent",
+        "IP helper",
+        "DHCP helper"
+      ],
+      "explanation": "A relay receives the client broadcast and forwards a request toward the remote server with subnet information."
+    },
+    {
+      "id": "fallback",
+      "objective": "5.3",
+      "prompt": "A large DNS response over UDP 53 is truncated. To retry ordinary DNS against that server on port 53, which transport must also be permitted? ____",
+      "answers": [
+        "TCP",
+        "Transmission Control Protocol"
+      ],
+      "explanation": "Conventional DNS supports TCP. Blocking it can cause selective failures even while small UDP replies succeed."
+    },
+    {
+      "id": "opts",
+      "objective": "5.3",
+      "prompt": "A DHCPv4 client reaches local peers but its acquired default gateway is wrong. Which DHCP option number carries the router address? ____",
+      "answers": [
+        "3",
+        "03",
+        "option 3",
+        "option 03"
+      ],
+      "explanation": "Option 3 supplies routers. Verify the server identifier and renew after correcting the option for the affected scope."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "recall",
+      "objective": "1.4",
+      "type": "Factual",
+      "prompt": "Close the reference. Give the default transport and destination port for a Microsoft SQL Server connection, SMB file share, cleartext web request, LDAPS query and SIP signaling with TLS. Name the service offered on UDP 514.",
+      "source": "Write the pairs first, then use the objective 1.4 service table to correct them.",
+      "key": "SQL Server TCP 1433, SMB TCP 445, HTTP TCP 80, LDAPS TCP 636 and SIP over TLS TCP 5061. UDP 514 receives classic syslog messages."
+    },
+    {
+      "id": "flows",
+      "objective": "1.4",
+      "type": "Example",
+      "prompt": "A client opens TCP 21 and logs in to FTP, then sends a passive-mode request. Its attempt to open the returned server port times out. Explain the two connections and why allowing inbound client traffic from server port 20 would address the wrong mode.",
+      "source": "Draw each connection with its initiator and destination.",
+      "key": "Control is client to server TCP 21. Passive data is a second client-initiated connection to a negotiated server port. Review the advertised endpoint, permitted passive range and NAT path. Server-initiated data from TCP 20 describes traditional active FTP."
+    },
+    {
+      "id": "lease",
+      "objective": "3.4",
+      "type": "Factual",
+      "prompt": "Read this client-facing trace: 68→67 Discover, 67→68 Offer, 68→67 Request, 67→68 ACK. The ACK assigns 10.60.4.23/24, router 10.60.5.1 and DNS 10.60.4.53. Which setting deserves investigation and which local service could still work?",
+      "source": "Check the ACK against the client subnet before changing DNS.",
+      "key": "The expected gateway must be reachable on the LAN. The supplied router .5.1 lies outside 10.60.4.0/24. Local access to the DNS server .4.53 can still work. Verify the intended gateway and correct option 3 on the authorized server."
+    },
+    {
+      "id": "offers",
+      "objective": "5.3",
+      "type": "Example",
+      "prompt": "Two offers arrive for one Discover. Inventory lists only server 10.60.4.2 as authorized. Clients accepting .2 receive the intended gateway. Those accepting .99 receive another gateway. What should you verify, correct and retest?",
+      "source": "Compare server identifiers and options for the same transaction.",
+      "key": "Correlate .99's server identifier with inventory, leases and the switchport. Confirm and remove or isolate the unauthorized DHCP service under the site's process. Renew the test lease, confirm the approved server and gateway, and verify remote service access."
+    },
+    {
+      "id": "scope",
+      "objective": "5.3",
+      "type": "Example",
+      "prompt": "Site A's server sees new Discovers in the correct scope but shows zero free leases. Site B's client sees repeated Discovers, no offers and a 169.254 address. Its VLAN gateway has no relay and the server is remote. Give a distinct repair and verification for each.",
+      "source": "Compare where the exchange stops, then check the client's resulting options.",
+      "key": "For A, check legitimate utilization, exclusions and stale allocations. Restore capacity within the address plan and verify a new lease. For B, configure the relay toward the approved server and verify scope, return path and receipt of an ACK for that VLAN."
+    },
+    {
+      "id": "records",
+      "objective": "3.4",
+      "type": "Factual",
+      "prompt": "Design records for portal.example's IPv4 and IPv6 addresses, an alias named help.example, mail routing for example, the authoritative server, a verification string and reverse lookup of the IPv4 address. Name all seven record types.",
+      "source": "Classify each result as an address, another name or text.",
+      "key": "Use A and AAAA for portal, CNAME for help pointing to portal, MX for the mail exchanger, NS for the authoritative nameserver, TXT for verification and PTR in the reverse zone for the address-to-name mapping."
+    },
+    {
+      "id": "resolver",
+      "objective": "5.3",
+      "type": "Example",
+      "prompt": "An application reaches the expected service by IP. A query to the configured resolver for its internal hostname returns NXDOMAIN. The internal authoritative server returns the correct A record. What evidence would distinguish a wrong resolver from an outdated cached negative response?",
+      "source": "Record which server answered each query and compare the internal view.",
+      "key": "Check the client's configured DNS address and the resolver actually queried. Test against the approved internal resolver. If that resolver is correct, check its cached negative TTL and forwarding or delegation for the internal zone. After correction or expiry, repeat the name lookup and service connection."
+    },
+    {
+      "id": "time",
+      "objective": "3.4",
+      "type": "Example",
+      "prompt": "Choose a time service for office log correlation, a precision measurement LAN with hardware timestamp support, and authenticated NTP over an untrusted path. Give relevant transports and a check for each.",
+      "source": "Use the clock requirement and transport mapping together.",
+      "key": "Use NTP over UDP 123 and compare host offsets. Use PTP with the LAN's supported profile and verify synchronization to the intended grandmaster. Its UDP mapping uses 319/320. Use NTS, verify TLS key establishment on TCP 4460 and authenticated NTP exchanges on UDP 123."
+    },
+    {
+      "id": "dnswire",
+      "objective": "1.4",
+      "type": "Factual",
+      "prompt": "A trace shows 10.1.4.8:53014 → 10.1.4.53:53 over UDP and a reply with the endpoint pairs reversed. Which port identifies the resolver? How would you confirm a matching answer, and what condition could trigger a TCP retry?",
+      "source": "Compare the DNS transaction ID, question and response flags.",
+      "key": "53 is the resolver's port and 53014 is the client's temporary port. Match the transaction ID, question and endpoints, then check the response flag and result. A truncated UDP answer can trigger TCP to the same server on 53."
+    },
+    {
+      "id": "v6",
+      "objective": "3.4",
+      "type": "Factual",
+      "prompt": "A new IPv6 client sees a Router Advertisement with an autonomous /64 prefix and a nonzero router lifetime, then configures an address without any DHCPv6 address exchange. Explain the address and gateway evidence.",
+      "source": "Identify what the router advertises and what the host constructs.",
+      "key": "SLAAC lets the host form an address in the advertised prefix and perform duplicate address detection. The advertising router can enter the default-router list through the router lifetime. Neither observation requires a stateful DHCPv6 address lease."
+    }
+  ]
+}

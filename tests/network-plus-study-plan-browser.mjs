@@ -31,6 +31,8 @@ export async function networkPlanChecks(browser, root) {
     await page.locator('.hub-page').getByRole('link', { name: 'Start Studying', exact: true }).click();
     await page.locator('.hub-page').getByRole('link', { name: '14-Day Certification Study Plan' }).press('Enter');
     await page.locator('.plan-grid').waitFor();
+    const available = plan.days.filter(day => day.session);
+    assert.deepEqual(available.map(day => day.number), [1, 2, 3, 4, 5, 6]);
     const scheduled = plan.days.filter(day => !day.session);
     assert.equal(await page.locator('.plan-grid article').count(), 14);
     assert.equal(await page.locator('.plan-grid .open').count(), 14 - scheduled.length);
@@ -50,7 +52,7 @@ export async function networkPlanChecks(browser, root) {
       if (url.origin === root.origin) await get(url);
       else assert.ok(listing.includes(url.href), url.href);
     }
-    for (const day of plan.days.slice(0, 3)) {
+    for (const day of available) {
       const session = await (await get(new URL(day.session, data))).json();
       assert.equal(Object.values(session.minutes).reduce((sum, minutes) => sum + minutes, 0), day.minutes);
       for (const items of [session.review, session.cards, session.quiz, session.worksheet]) {
@@ -59,7 +61,8 @@ export async function networkPlanChecks(browser, root) {
       for (const items of [session.cards, session.quiz, session.worksheet]) {
         assert.equal(new Set(items.map(item => item.id)).size, items.length);
       }
-      await open(app, 'day-' + day.number + '/review');
+      await open(app, 'calendar');
+      await page.getByRole('link', { name: 'Open Day ' + day.number, exact: true }).press('Enter');
       await button('Mark review complete').click();
       const hrefs = await page.locator('.topic-list a').evaluateAll(links => links.map(link => link.href));
       assert.deepEqual(hrefs, day.resources.map(key => new URL(plan.resources[key][1], root).href));
@@ -75,11 +78,26 @@ export async function networkPlanChecks(browser, root) {
         assert.ok(q.answers.every(answer => matches(q, answer)) && !matches(q, 'incorrect'));
         await page.locator('#answer-' + q.id).fill(q.answers.at(-1));
       }
+      if (day.number >= 4) {
+        const first = session.quiz[0];
+        await page.locator('#answer-' + first.id).fill('incorrect');
+        await button('Check answers').click();
+        assert.equal(await page.locator('#feedback-' + first.id).innerText(), 'Review this answer. ' + first.answers[0] + '. ' + first.explanation);
+        await button('Retry quiz').click();
+        for (const q of session.quiz) await page.locator('#answer-' + q.id).fill(q.answers[0]);
+      }
       await button('Check answers').click();
       await page.reload();
       assert.equal(await page.locator('#quiz-score').innerText(), 'Last attempt: ' + session.quiz.length + ' / ' + session.quiz.length);
       for (const q of session.quiz) assert.ok((await page.locator('#feedback-' + q.id).innerText()).includes(q.explanation));
       await active('Worksheet').click();
+      for (const [index, task] of session.worksheet.entries()) {
+        if (day.number >= 4) {
+          assert.ok(['Factual', 'Example'].includes(task.type), task.id);
+          assert.ok(task.prompt.trim() && task.prompt !== task.type && task.source.trim() && task.key.trim(), task.id);
+        }
+        await page.getByRole('textbox', { name: (index + 1) + '. ' + task.prompt, exact: true }).waitFor();
+      }
       for (const task of session.worksheet) await page.locator('#answer-' + task.id).fill('My reasoning for ' + task.id);
       await button('Complete worksheet and review key').click();
       await page.getByText('Completed · 4 of 4 activities completed').waitFor();
@@ -90,11 +108,19 @@ export async function networkPlanChecks(browser, root) {
         await page.emulateMedia({ media: 'print' });
         assert.ok(await page.locator('#print-sheet').isVisible());
         assert.equal(await page.locator('.print-item').count(), session.worksheet.length);
-        assert.equal((await page.locator('#print-sheet').innerText()).includes('My reasoning'), filled);
+        const printed = await page.locator('#print-sheet').innerText();
+        assert.equal(printed.includes('My reasoning'), filled);
+        for (const task of session.worksheet) assert.ok(printed.includes(task.prompt));
         await page.emulateMedia({ media: 'screen' });
         await page.evaluate(() => dispatchEvent(new Event('afterprint')));
       }
     }
+    await open(app, 'calendar');
+    await page.getByText('6 of 14 days completed · 6 interactive sessions available').waitFor();
+    const reopened = await context.newPage();
+    await reopened.goto(app.href);
+    await reopened.getByText('6 of 14 days completed · 6 interactive sessions available').waitFor();
+    await reopened.close();
     await open(app, 'day-1/review');
     page.once('dialog', dialog => dialog.accept());
     await button('Reset this day').click();
@@ -105,7 +131,7 @@ export async function networkPlanChecks(browser, root) {
     await page.getByText('Completed · 4 of 4 activities completed').waitFor();
     await page.setViewportSize({ width: 320, height: 720 });
     await page.locator('#theme').click();
-    for (const view of ['calendar', 'day-1/review', 'day-2/cards', 'day-3/quiz', 'day-3/worksheet']) {
+    for (const view of ['calendar', 'day-1/review', 'day-2/cards', 'day-3/quiz', 'day-3/worksheet', 'day-4/worksheet', 'day-5/quiz', 'day-6/review']) {
       await open(app, view);
       await page.locator('#view .panel').first().waitFor();
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), view);

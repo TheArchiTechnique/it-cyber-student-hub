@@ -328,6 +328,30 @@
     "reading": [
       "Network+ Student Objective Breakdown",
       "certifications/comptia/network-plus/objective-breakdown/"
+    ],
+    "switch-quiz": [
+      "Ethernet & Switching Fundamentals - Kahoot!",
+      "https://create.kahoot.it/details/3b44b33b-24c6-43e7-847f-ddf3ac7cf019"
+    ],
+    "route-quiz": [
+      "Routing Protocols, Packet Forwarding, NAT/PAT, Edge Routers, and Firewalls - Kahoot!",
+      "https://create.kahoot.it/details/af85b4de-8410-450e-8182-97ba621590c5"
+    ],
+    "dhcp-quiz": [
+      "Mastering DHCP & DNS Fundamentals - Kahoot!",
+      "https://create.kahoot.it/share/mastering-dhcp-dns-fundamentals/fa4e89ee-4465-47f3-badd-33f08b369e7c"
+    ],
+    "time-quiz": [
+      "Web Protocols, HTTPS & Network Time - Kahoot!",
+      "https://create.kahoot.it/share/web-protocols-https-network-time/56ebe622-aaa4-4895-965c-8669780410c9"
+    ],
+    "dhcp": [
+      "Lab 4 — DHCP Configuration",
+      "labs/networking/dhcp-configuration/"
+    ],
+    "ports": [
+      "Ports & Protocols reference",
+      "reference/ports-and-protocols/"
     ]
   },
   "days": [
@@ -396,11 +420,14 @@
         "5.3"
       ],
       "goal": "Trace VLAN membership and tags, select an STP path and diagnose a switching fault.",
-      "recall": "Recall which addresses a switch learns and how a broadcast reaches other ports.",
+      "recall": "Draw the first Ethernet frame from a /26 client to an off-subnet server. Name the destination MAC, the device that makes the Layer 3 decision and a physical check if the link is down.",
       "resources": [
         "vlan",
+        "lab1",
+        "switch-quiz",
         "reading"
-      ]
+      ],
+      "session": "day-4.json"
     },
     {
       "number": 5,
@@ -411,12 +438,16 @@
         "5.3"
       ],
       "goal": "Read a routing table, predict an address translation and isolate a missing return path.",
-      "recall": "Calculate the local prefix before choosing the next hop.",
+      "recall": "For 10.12.5.70/26, find the network and broadcast. Explain how traffic to a different VLAN reaches its gateway and where the Ethernet header changes.",
       "resources": [
         "route",
+        "vlan",
+        "subnet",
         "ip-fault",
+        "route-quiz",
         "reading"
-      ]
+      ],
+      "session": "day-5.json"
     },
     {
       "number": 6,
@@ -428,12 +459,17 @@
         "5.3"
       ],
       "goal": "Trace transport, address leasing, name resolution and clock synchronization from client evidence.",
-      "recall": "Recall how a client reaches a DNS server on a remote subnet.",
+      "recall": "Trace a DNS query to an off-subnet server through a VLAN and a PAT gateway. Identify what the switch reads, how the router picks a next hop and which fields PAT can rewrite.",
       "resources": [
-        "dns",
         "capture",
+        "dhcp",
+        "dns",
+        "dhcp-quiz",
+        "time-quiz",
+        "ports",
         "reading"
-      ]
+      ],
+      "session": "day-6.json"
     },
     {
       "number": 7,

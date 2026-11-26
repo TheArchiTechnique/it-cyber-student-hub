@@ -1,0 +1,297 @@
+{
+  "minutes": {
+    "reading": 25,
+    "cards": 15,
+    "quiz": 15,
+    "worksheet": 35,
+    "application": 30
+  },
+  "review": [
+    {
+      "objective": "2.2",
+      "title": "Follow a frame on one switch",
+      "text": "A PC on port 2 sends a frame to a printer on port 6. The switch learns the source MAC against port 2 in the ingress VLAN. It looks up the destination MAC in that VLAN. A known unicast leaves the recorded port. A destination learned on the ingress port needs no forwarding. An unknown unicast or a broadcast goes to the other eligible forwarding ports in the same VLAN, including trunks carrying it. A switched Ethernet port separates collision domains. On full-duplex point-to-point links, collisions do not occur. Several ports can still share one broadcast domain."
+    },
+    {
+      "objective": "2.2",
+      "title": "Trace the access link and the trunk",
+      "text": "On an ordinary access port, an untagged frame joins the port's data VLAN. An 802.1Q trunk can carry several VLANs over one link. The tag identifies the VLAN to the next device. On trunks configured to use an untagged native VLAN, both ends must agree on its ID. A phone with a PC behind it commonly sends tagged voice traffic while the PC's untagged traffic joins the access VLAN. Check the local VLAN database, membership, allowed list and forwarding state on every switch in the path."
+    },
+    {
+      "objective": "2.2",
+      "title": "Decide where switching ends",
+      "text": "Two hosts in the same VLAN and IPv4 subnet can exchange frames without using the gateway. Across subnets, the sending host frames its packet for the gateway. An L3 switch can route between addressed switch virtual interfaces (SVIs) when routing is enabled. An alternative is a router with one 802.1Q subinterface per VLAN on a shared trunk. A management SVI alone does not give a Layer 2 switch inter-VLAN routing capability."
+    },
+    {
+      "objective": "2.2",
+      "title": "Use redundant links deliberately",
+      "text": "Spanning Tree Protocol (STP) exchanges bridge protocol data units to elect the lowest bridge ID as root for an instance. Each non-root switch selects a root port on its best path to that root. A designated port serves each segment. In a stable rapid spanning tree an alternate path discards user frames, ready to take over. Classic STP distinguishes blocking, listening, learning and forwarding, plus disabled. Rapid STP uses discarding, learning and forwarding. Link aggregation can combine compatible links into one logical path. LACP negotiates bundle membership. Multiple flows may share the links, but a single flow often uses just one member."
+    },
+    {
+      "objective": "5.3",
+      "title": "Localize a broken path",
+      "text": "If one desk receives a lease for the wrong subnet, trace its wall jack and check its access VLAN. If the same VLAN works locally but fails only across an uplink, compare trunk mode, allowed VLANs and the VLAN database at both ends. If only routed traffic fails, check the client's mask and gateway, SVI or subinterface, and any ACL in the path. A native VLAN mismatch can misclassify untagged frames even when tagged VLANs work. If broadcasts surge and a stationary MAC repeatedly moves between uplinks, map the physical cycle and inspect STP roles before changing forwarding."
+    },
+    {
+      "objective": "5.3",
+      "title": "Read the port settings alongside the symptom",
+      "text": "Check operational speed and duplex on both ends. A link can stay up while a duplex mismatch causes poor throughput and error counters. Ethernet links commonly support an IP MTU of 1500 bytes. A jumbo configuration such as 9000 requires compatible limits across the path. A switch with a smaller frame limit can drop an oversized frame. At a router a too-large IPv4 packet with Don't Fragment set cannot be fragmented. Compare small and large probes and interface counters before attributing a size-dependent failure to a VLAN."
+    },
+    {
+      "objective": "2.2",
+      "title": "Assigned practical: trace Lab 2's VLANs",
+      "text": "Use the Lab 2 diagram and port assignment table. Trace PC1 to PC2, then PC1 to PC3. Mark the access VLAN, router-facing trunk and first routed hop for each. Compare your predictions with Lab 2's verification section. If you already have the saved topology, check the VLAN and trunk status in Packet Tracer. Lab 2 builds on the completed Lab 1 file. Rebuilding the labs and playing the switching Kahoot are optional."
+    }
+  ],
+  "sources": [
+    [
+      "Lab 2 topology and VLAN assignments",
+      "../../../../../labs/networking/vlan-configuration/#1-update-the-topology-and-plan"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "learn",
+      "objective": "2.2",
+      "prompt": "Which fields let a switch learn a moving endpoint's new location?",
+      "answer": "It records the source MAC, ingress port and VLAN on the arriving frame. A later frame from the endpoint can update the entry."
+    },
+    {
+      "id": "known",
+      "objective": "2.2",
+      "prompt": "A destination MAC is already learned on the port that received a unicast. Where should the switch forward it?",
+      "answer": "Nowhere else. The destination is already on the incoming segment."
+    },
+    {
+      "id": "unknown",
+      "objective": "2.2",
+      "prompt": "How far does an ordinary unknown unicast travel when a switch floods it?",
+      "answer": "To other forwarding ports in the same VLAN, including eligible trunks. The incoming port is excluded."
+    },
+    {
+      "id": "domains",
+      "objective": "2.2",
+      "prompt": "Four PCs use four full-duplex access ports, all in one VLAN. How many Layer 2 broadcast domains do the PCs share?",
+      "answer": "One. Each switchport separates collision domains, while full duplex eliminates collisions on those links."
+    },
+    {
+      "id": "tag",
+      "objective": "2.2",
+      "prompt": "How does a switch distinguish VLAN 12 from VLAN 24 on the same tagged Ethernet uplink?",
+      "answer": "The 802.1Q tag carries the VLAN identifier."
+    },
+    {
+      "id": "voice",
+      "objective": "2.2",
+      "prompt": "A desk phone bridges a workstation onto the same switchport. How can their traffic enter different VLANs?",
+      "answer": "Configure the data access VLAN and a voice VLAN. A suitably configured phone tags its voice frames and passes ordinary PC traffic untagged."
+    },
+    {
+      "id": "svi",
+      "objective": "2.2",
+      "prompt": "Which logical interface gives a multilayer switch a Layer 3 endpoint in a VLAN?",
+      "answer": "A switch virtual interface (SVI). It can supply the gateway when addressed, operational and configured for routing."
+    },
+    {
+      "id": "root",
+      "objective": "2.2",
+      "prompt": "What selects the root bridge, and how is a non-root switch's root port selected?",
+      "answer": "Lowest bridge ID wins the election. A non-root switch chooses its best path to the root using path cost and tie breakers."
+    },
+    {
+      "id": "role",
+      "objective": "2.2",
+      "prompt": "In rapid STP, what is the difference between alternate and discarding?",
+      "answer": "Alternate is a port role identifying another path to the root. Discarding is a state that prevents ordinary data forwarding and learning."
+    },
+    {
+      "id": "bundle",
+      "objective": "2.2",
+      "prompt": "Expand LACP. Why might one file transfer use only one of two bundled links?",
+      "answer": "Link Aggregation Control Protocol. A flow hash commonly keeps that flow on a single member to preserve order."
+    },
+    {
+      "id": "native",
+      "objective": "5.3",
+      "prompt": "Only untagged traffic enters the wrong network across a trunk. Which paired settings should you compare?",
+      "answer": "The native VLAN IDs and native tagging policy at both ends."
+    },
+    {
+      "id": "missing",
+      "objective": "5.3",
+      "prompt": "A VLAN works on both switches locally but fails between them. Which three uplink facts matter first?",
+      "answer": "Both ends must trunk, carry that VLAN in their allowed set and have an active forwarding path for it."
+    },
+    {
+      "id": "loop",
+      "objective": "5.3",
+      "prompt": "Which pair of observations suggests a loop rather than one host simply moving?",
+      "answer": "Repeated MAC moves between uplinks plus rapidly increasing broadcast traffic across the same VLAN."
+    },
+    {
+      "id": "mtu",
+      "objective": "5.3",
+      "prompt": "Why might a small ping pass while a storage transfer using jumbo frames repeatedly fails?",
+      "answer": "A port or path may enforce a smaller MTU. Test different sizes and compare discard or giant-frame counters at each boundary."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "learn",
+      "objective": "2.2",
+      "prompt": "To learn the ingress port for a station, a switch reads the frame's ____ MAC address (source or destination).",
+      "answers": [
+        "source"
+      ],
+      "explanation": "The source identifies the station whose traffic just arrived. The destination drives the forwarding lookup."
+    },
+    {
+      "id": "tag",
+      "objective": "2.2",
+      "prompt": "Supply the IEEE designation for VLAN tagging on an Ethernet trunk: ____.",
+      "answers": [
+        "802.1Q",
+        "IEEE 802.1Q"
+      ],
+      "explanation": "A tag carries a VLAN ID so several logical networks can share one physical link."
+    },
+    {
+      "id": "vlan",
+      "objective": "2.2",
+      "prompt": "On a trunk configured for untagged native traffic, an arriving untagged frame is assigned to the ____ VLAN.",
+      "answers": [
+        "native"
+      ],
+      "explanation": "The port supplies the classification because the frame has no VLAN tag. The peer must use the intended mapping."
+    },
+    {
+      "id": "svi",
+      "objective": "2.2",
+      "prompt": "A multilayer switch routes for VLAN 18 using a logical interface named VLAN 18. Give the interface acronym: ____.",
+      "answers": [
+        "SVI"
+      ],
+      "explanation": "A switch virtual interface supplies a Layer 3 address to the VLAN without a dedicated routed physical port."
+    },
+    {
+      "id": "lacp",
+      "objective": "2.2",
+      "prompt": "Which protocol negotiates compatible Ethernet links into one logical bundle? Give the acronym: ____.",
+      "answers": [
+        "LACP"
+      ],
+      "explanation": "Link Aggregation Control Protocol coordinates membership. STP treats the operating bundle as a logical link."
+    },
+    {
+      "id": "stp",
+      "objective": "5.3",
+      "prompt": "Both switches have different bridge priorities in the same STP instance. With all else equal, the switch with the ____ numerical priority wins (lower or higher).",
+      "answers": [
+        "lower"
+      ],
+      "explanation": "Priority is the leading component of the bridge ID. A lower bridge ID is preferred."
+    },
+    {
+      "id": "allow",
+      "objective": "5.3",
+      "prompt": "Both trunk ends allow VLANs 10 and 20 except the east end, which permits only VLAN 10. Which VLAN ID must be added there to restore both? ____",
+      "answers": [
+        "20",
+        "VLAN 20"
+      ],
+      "explanation": "VLAN 20 needs to be admitted at both ends. Link-up status only establishes physical connectivity."
+    },
+    {
+      "id": "duplex",
+      "objective": "5.3",
+      "prompt": "One end is forced full duplex and the peer operates half duplex. The configuration fault is a ____ mismatch.",
+      "answers": [
+        "duplex"
+      ],
+      "explanation": "A half-duplex peer can detect collisions while the full-duplex side can report receive errors. Compare both operational settings."
+    },
+    {
+      "id": "size",
+      "objective": "5.3",
+      "prompt": "A path drops IP packets larger than 1500 bytes when fragmentation is unavailable. Which three-letter interface setting specifies its maximum IP packet size? ____",
+      "answers": [
+        "MTU"
+      ],
+      "explanation": "The maximum transmission unit bounds the packet carried over that link. A jumbo-capable endpoint alone cannot raise the path limit."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "mac",
+      "objective": "2.2",
+      "type": "Factual",
+      "prompt": "VLAN 12 has forwarding access ports 1, 2 and 3, plus trunk 8. Its MAC table maps station A to 1 and B to 2. On port 1, A sends first to B, then to unknown station C. List the egress ports for each frame and the entry the switch refreshes.",
+      "source": "Look up the destination within VLAN 12 before deciding to flood.",
+      "key": "Known B uses port 2 only. Unknown C uses ports 2, 3 and 8. The switch refreshes A on port 1 in VLAN 12 for both frames."
+    },
+    {
+      "id": "segment",
+      "objective": "2.2",
+      "type": "Factual",
+      "prompt": "Add a Sales PC and an HR PC to the Lab 2 diagram on free ports F0/5 and F0/6 respectively. Assign access VLANs, then trace an HR broadcast. Which of those new ports can receive a broadcast from PC3?",
+      "source": "Lab 2 topology and VLAN assignments",
+      "key": "Assign F0/5 to VLAN 10 and F0/6 to VLAN 20. PC3's broadcast stays in VLAN 20, so F0/6 receives it. The router-facing trunk can carry the VLAN 20 broadcast tagged."
+    },
+    {
+      "id": "phone",
+      "objective": "2.2",
+      "type": "Factual",
+      "prompt": "A phone and PC share access port 4. Data VLAN 12 is untagged, voice VLAN 32 is tagged. The uplink carries both VLANs tagged. Describe one PC frame and one voice frame on the desk link and on the uplink.",
+      "source": "Compare the purpose of the desk port with the uplink.",
+      "key": "The PC frame arrives untagged and joins VLAN 12. The phone voice frame arrives tagged 32. Across the uplink their VLAN tags are 12 and 32 respectively."
+    },
+    {
+      "id": "route",
+      "objective": "2.2",
+      "type": "Example",
+      "prompt": "Hosts 10.24.12.17/24 and 10.24.32.19/24 occupy VLANs 12 and 32. Sketch the first frame's destination and identify two ways to route between them.",
+      "source": "Start at the sending host and compare the /24 prefixes.",
+      "key": "The sender uses the MAC of its gateway in VLAN 12. A multilayer switch can route between SVIs, or a router can route between VLAN-tagged subinterfaces on a trunk. The destination-side frame addresses the receiving host."
+    },
+    {
+      "id": "trunk",
+      "objective": "5.3",
+      "type": "Example",
+      "prompt": "A west switch allows VLANs 12 and 32 on its trunk. The east end allows only 12. Both switches have both VLANs active. Local calls within VLAN 32 work but cross-switch phones cannot exchange frames. Identify the smallest change and a verification test.",
+      "source": "Separate local membership from the inter-switch path.",
+      "key": "Permit 32 on the east end while retaining 12. Confirm that VLAN 32 forwards on the trunk and that a phone or test endpoint in 32 can reach its peer across the link. Recheck VLAN 12."
+    },
+    {
+      "id": "cycle",
+      "objective": "5.3",
+      "type": "Example",
+      "prompt": "Three switches form a triangle. In one VLAN, STP is disabled and all three links forward. Immediately after the third link comes up, broadcasts surge. Explain the cause and the healthy RSTP role and state you expect on the redundant path after correction.",
+      "source": "Trace a broadcast around the triangle before choosing a correction.",
+      "key": "Broadcast copies can circulate and multiply around the cycle. Restore loop prevention for that VLAN and verify the intended root. In this simple triangle one redundant port should settle as alternate/discarding, with a forwarding path still available to each switch."
+    },
+    {
+      "id": "evidence",
+      "objective": "5.3",
+      "type": "Example",
+      "prompt": "A client can reach its VLAN gateway. A routed application times out, and the gateway ACL log shows denies for that exact client, destination and service. Other permitted services work. Which evidence should guide the next action?",
+      "source": "Compare the failed flow with the intended access policy.",
+      "key": "The gateway is reachable and the matching deny identifies the policy decision. Confirm intended access and rule order, then correct the specific rule if authorized. Repeat the permitted test and verify the policy still blocks traffic it should deny."
+    },
+    {
+      "id": "jumbo",
+      "objective": "5.3",
+      "type": "Example",
+      "prompt": "Two storage hosts and one switchport support 9000-byte IP packets. The other switchport limits frames to standard Ethernet size. Small transfers succeed and oversized-frame discards rise there. Propose two ways to restore consistent service.",
+      "source": "Compare the end-to-end size limit with host settings.",
+      "key": "Use a standard MTU at both hosts, or provision compatible jumbo support across the entire path, allowing for link-layer overhead. Verify with a large nonfragmenting probe and a transfer while watching discard counters."
+    },
+    {
+      "id": "root-path",
+      "objective": "5.3",
+      "type": "Factual",
+      "prompt": "In one RSTP instance, A has bridge priority 4096, B has 8192 and C has 32768. C connects directly to A at cost 20 and to B at cost 4. B reaches A on a cost-4 link. With all links healthy, identify the root bridge and C’s root port. Does the fewest-hop path win?",
+      "source": "Add the path costs to the elected root.",
+      "key": "A is root because its priority is lowest. C reaches A through B at total cost 8, versus 20 directly. C’s port toward B becomes its root port. The two-hop path has the lower cost."
+    }
+  ]
+}

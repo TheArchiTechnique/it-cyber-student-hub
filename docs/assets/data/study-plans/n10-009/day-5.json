@@ -1,0 +1,305 @@
+{
+  "minutes": {
+    "reading": 25,
+    "cards": 15,
+    "quiz": 15,
+    "worksheet": 35,
+    "application": 30
+  },
+  "review": [
+    {
+      "objective": "2.1",
+      "title": "From the client's mask to the router's next hop",
+      "text": "A host at 10.12.5.70/26 shares 10.12.5.64 through .127 with its neighbors. To send to a different subnet, it resolves its local gateway's MAC. The IP destination stays the remote endpoint during ordinary forwarding. The router looks up the destination prefix, chooses the outgoing interface or reachable next hop and rebuilds the link header. An operational addressed interface supplies a connected route. Static routes specify paths configured by an administrator. Dynamic routes come from exchanged reachability information. An IPv4 default route, 0.0.0.0/0, can carry traffic without a more specific match."
+    },
+    {
+      "objective": "2.1",
+      "title": "Build the table, then use it",
+      "text": "For the same prefix, a routing protocol evaluates its own candidate paths. For example, OSPF prefers lower cost among otherwise comparable paths of the same type. If different sources offer that identical prefix, the router uses local source preference. Cisco calls this administrative distance and prefers the lower number. Metric scales differ between protocols. Once entries are installed, the router forwards using the longest matching prefix. An installed OSPF /27 can take precedence for a packet even when a covering static /24 has a lower distance."
+    },
+    {
+      "objective": "2.1",
+      "title": "Choose a routing method for the organization",
+      "text": "A branch with one exit may need just a static default and an explicit upstream return route. Within an autonomous system, Open Shortest Path First (OSPF) distributes link-state information and calculates paths using cost. Enhanced Interior Gateway Routing Protocol (EIGRP) is an advanced distance-vector interior protocol whose default composite metric uses bandwidth and delay. Border Gateway Protocol (BGP) uses path attributes and policy when exchanging prefixes between autonomous systems. It also operates internally to distribute BGP reachability. Static entries are predictable but need maintenance. Dynamic protocols can converge on another path when topology changes."
+    },
+    {
+      "objective": "2.1",
+      "title": "Read a translation in both directions",
+      "text": "NAT rewrites address information at a network boundary. Static NAT can map one inside address to a fixed outside address. Dynamic address-only NAT draws an address from a pool. PAT lets simultaneous sessions share an outside address by tracking transport ports. Two clients may both use source port 51000 to reach the same TCP service. The gateway must keep their translated connections distinct, even if it preserves one original source port. Trace the reply using protocol, addresses and ports. A translation alone supplies neither a route, encryption nor authorization through a firewall."
+    },
+    {
+      "objective": "2.1",
+      "title": "Identify the gateway that survives a failure",
+      "text": "A First Hop Redundancy Protocol (FHRP) such as VRRP lets routers share a virtual IP address (VIP) on a LAN. Configure hosts to use that VIP as their gateway so the forwarding role can move between routers. Verify upstream reachability separately. A router subinterface solves a different problem: it binds a logical routed interface to a VLAN on a physical trunk. In Cisco Packet Tracer, the encapsulation VLAN ID determines which tagged traffic a subinterface accepts."
+    },
+    {
+      "objective": "5.3",
+      "title": "Test a path in both directions",
+      "text": "If a single client cannot reach remote networks, compare its mask, gateway and VLAN with a working peer. A mask that is too broad can make the client ARP for a remote host. Duplicate addresses can produce alternating MAC mappings and intermittent replies. If requests reach the far LAN, inspect the return lookup for the actual source IP. Follow unexpected next hops for incorrect static routes or a loop. Repeating router hops ending in TTL expiration support a loop diagnosis. For translated traffic, confirm the expected mapping, return path through the translator and applicable filtering before changing a route."
+    },
+    {
+      "objective": "5.3",
+      "title": "Assigned practical: prove the return path",
+      "text": "Use Lab 3's transit addressing table and verification section. For a packet leaving a Sales host, predict Router1's return route before reading its output. With a completed topology, verify the transit peer and both VLANs. If working from the diagram, write the same next hops and identify the missing route that would break one VLAN. Lab 3 continues the completed Lab 2 file. The subnetting lab, IP Configuration Troubleshooting PBQ and routing Kahoot are optional retries."
+    }
+  ],
+  "sources": [
+    [
+      "Lab 3 transit addressing table",
+      "../../../../../labs/networking/static-routing/#why-use-a-30-here"
+    ],
+    [
+      "Route selection and forwarding table",
+      "../../objective-breakdown/#prefix-length-administrative-distance-and-metric"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "gateway",
+      "objective": "2.1",
+      "prompt": "When does an IPv4 host use the MAC of its local gateway for a remote server?",
+      "answer": "When the destination is off-link and the chosen route leads through that gateway. The server's IP remains the packet destination."
+    },
+    {
+      "id": "connected",
+      "objective": "2.1",
+      "prompt": "Where does a router get a connected subnet route?",
+      "answer": "From an operational routed interface configured in that subnet. No routing-protocol advertisement from a neighbor is required."
+    },
+    {
+      "id": "default",
+      "objective": "2.1",
+      "prompt": "What does 0.0.0.0/0 match, and when is it used?",
+      "answer": "It matches every IPv4 destination. A more specific installed match wins."
+    },
+    {
+      "id": "lookup",
+      "objective": "2.1",
+      "prompt": "An installed /28 and /24 both match the destination. Which determines the next hop?",
+      "answer": "The /28 because it matches more leading bits. Administrative distance does not override that forwarding lookup."
+    },
+    {
+      "id": "distance",
+      "objective": "2.1",
+      "prompt": "Two routing sources offer the same prefix. What does administrative distance compare on Cisco routers?",
+      "answer": "The local preference for each route source. The lower distance is preferred for otherwise eligible routes to that prefix."
+    },
+    {
+      "id": "metric",
+      "objective": "2.1",
+      "prompt": "Why is an OSPF cost of 20 not directly comparable with an EIGRP metric of 20000?",
+      "answer": "Each protocol computes a different metric. Compare candidates using that protocol's own rules."
+    },
+    {
+      "id": "ospf",
+      "objective": "2.1",
+      "prompt": "Which interior protocol builds a link-state database and computes a shortest-path tree?",
+      "answer": "OSPF. Its path cost can reflect configured interface costs."
+    },
+    {
+      "id": "eigrp",
+      "objective": "2.1",
+      "prompt": "Which two properties ordinarily contribute to EIGRP's default composite metric?",
+      "answer": "The minimum bandwidth along the path and accumulated delay."
+    },
+    {
+      "id": "bgp",
+      "objective": "2.1",
+      "prompt": "Two providers exchange prefixes and prefer a contracted transit provider. Which protocol supports this policy?",
+      "answer": "BGP. Path attributes and routing policy can outweigh a shorter AS path."
+    },
+    {
+      "id": "nat",
+      "objective": "2.1",
+      "prompt": "What remains fixed in static one-to-one NAT, and what can change with dynamic address-only NAT?",
+      "answer": "Static NAT has a fixed address mapping. Dynamic NAT obtains an available outside address from a pool."
+    },
+    {
+      "id": "pat",
+      "objective": "2.1",
+      "prompt": "Two private hosts contact the same server and both choose source TCP port 51000. How does PAT keep replies separate?",
+      "answer": "It maintains distinct translated endpoints, typically the same outside address with different outside source ports."
+    },
+    {
+      "id": "vip",
+      "objective": "2.1",
+      "prompt": "A laptop should keep its gateway setting after one of two routers fails. Which IP should the laptop use?",
+      "answer": "The shared FHRP virtual IP, reachable on the laptop's subnet."
+    },
+    {
+      "id": "return",
+      "objective": "5.3",
+      "prompt": "A server capture sees a request and emits a reply, but the reply never reaches the source LAN. Which routing lookup matters next?",
+      "answer": "Look up the original client's address from the server-side gateway and verify each return next hop."
+    },
+    {
+      "id": "mask",
+      "objective": "5.3",
+      "prompt": "A host ARPs directly for a destination assigned to another subnet. What client setting could cause that behavior?",
+      "answer": "A subnet mask that is too broad can incorrectly classify that destination as local."
+    },
+    {
+      "id": "duplicate",
+      "objective": "5.3",
+      "prompt": "Two devices claim the same configured IPv4 address. What local evidence would support that diagnosis?",
+      "answer": "Neighbor or ARP entries changing between their MAC addresses, plus configuration or lease records confirming both claims."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "next",
+      "objective": "2.1",
+      "prompt": "Installed entries are 10.28.0.0/16 via 192.0.2.1 and 10.28.3.128/25 via 192.0.2.2. For 10.28.3.167, give the next-hop IP: ____.",
+      "answers": [
+        "192.0.2.2"
+      ],
+      "explanation": "The /25 spans .128 through .255 in 10.28.3.0/24. Both entries match, and /25 is more specific."
+    },
+    {
+      "id": "wild",
+      "objective": "2.1",
+      "prompt": "In CIDR notation, the IPv4 default route is ____.",
+      "answers": [
+        "0.0.0.0/0"
+      ],
+      "explanation": "A prefix length of zero requires no matching destination bits. It is the least specific route."
+    },
+    {
+      "id": "ad",
+      "objective": "2.1",
+      "prompt": "In Cisco route output [110/35], the administrative distance is ____ (enter the number).",
+      "answers": [
+        "110"
+      ],
+      "explanation": "The first field is local source preference. The second is the routing protocol's metric."
+    },
+    {
+      "id": "igp",
+      "objective": "2.1",
+      "prompt": "Which interior routing protocol uses a link-state database and cost? Give its acronym: ____.",
+      "answers": [
+        "OSPF"
+      ],
+      "explanation": "Open Shortest Path First computes paths from a topology view. EIGRP uses a distance-vector approach."
+    },
+    {
+      "id": "external",
+      "objective": "2.1",
+      "prompt": "Two independent autonomous systems exchange route advertisements using path attributes. Name the protocol (acronym): ____.",
+      "answers": [
+        "BGP"
+      ],
+      "explanation": "Border Gateway Protocol supplies interdomain reachability and supports policy-based choices."
+    },
+    {
+      "id": "pat",
+      "objective": "2.1",
+      "prompt": "A gateway maps many IPv4 clients to one shared address by tracking translated TCP ports. Give the three-letter term: ____.",
+      "answers": [
+        "PAT"
+      ],
+      "explanation": "Port address translation distinguishes concurrent flows by translated transport endpoints."
+    },
+    {
+      "id": "vip",
+      "objective": "2.1",
+      "prompt": "Routers use .2 and .3 individually and share 10.42.8.1 as a virtual IP. What default gateway should their local clients configure? ____",
+      "answers": [
+        "10.42.8.1"
+      ],
+      "explanation": "Using the shared VIP lets the active gateway change without reconfiguring clients."
+    },
+    {
+      "id": "loop",
+      "objective": "5.3",
+      "prompt": "A trace repeatedly alternates between the same two routers until TTL expires. This pattern most strongly suggests a routing ____.",
+      "answers": [
+        "loop"
+      ],
+      "explanation": "Each hop sends the packet back toward the other router. Inspect their selected next hops for that destination."
+    },
+    {
+      "id": "back",
+      "objective": "5.3",
+      "prompt": "A router must return traffic to host 172.20.8.93/27. Give the LAN's network prefix in CIDR notation: ____.",
+      "answers": [
+        "172.20.8.64/27"
+      ],
+      "explanation": "A /27 increments by 32. The .64 through .95 block contains .93, so the return route must cover that source."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "table",
+      "objective": "2.1",
+      "type": "Factual",
+      "prompt": "A router has three installed entries: default via 192.0.2.1, 10.44.0.0/16 via 192.0.2.2 and 10.44.12.64/27 via 192.0.2.3. Its transit interface is 192.0.2.10/24. Give next hops for 10.44.12.94, 10.44.12.96 and 10.45.12.94. Show why .96 changes the decision.",
+      "source": "Route selection and forwarding table",
+      "key": "Use .3, .2 and .1 respectively on 192.0.2.0/24. The /27 spans 10.44.12.64–95. At .96 the /16 still matches. The 10.45 destination falls outside both specific entries."
+    },
+    {
+      "id": "install",
+      "objective": "2.1",
+      "type": "Factual",
+      "prompt": "For 10.50.0.0/24 a Cisco router has a static candidate with distance 5 and two intra-area OSPF candidates with distance 110 and costs 12 and 40. All next hops are reachable. Which source wins now, and which path would OSPF prefer if the static route were withdrawn?",
+      "source": "Compare candidates for the identical prefix and separate the two decisions.",
+      "key": "Static wins with distance 5. With only the otherwise comparable OSPF candidates, cost 12 wins over 40. The OSPF cost is not compared numerically against the static distance."
+    },
+    {
+      "id": "method",
+      "objective": "2.1",
+      "type": "Example",
+      "prompt": "Choose a routing method for each: a single-exit kiosk, a redundant multivendor campus requiring an interior link-state protocol, and an ISP exchanging prefixes with another autonomous system. Explain a tradeoff for the kiosk.",
+      "source": "Use the failure and administration requirements.",
+      "key": "A static default fits the kiosk, OSPF the campus, and BGP the ISP boundary. The kiosk setup is simple but requires a return route upstream and a deliberate failover plan if a second exit is added."
+    },
+    {
+      "id": "translation",
+      "objective": "2.1",
+      "type": "Factual",
+      "prompt": "A PAT table shows TCP 10.18.1.7:51000 → 198.51.100.9:40001 and TCP 10.18.1.8:51000 → 198.51.100.9:40002. Both sessions use server 203.0.113.70:443. Rewrite the destination of the reply arriving at public port 40002. What happens to the server's source port?",
+      "source": "Match the translated endpoint using the transport and ports.",
+      "key": "The destination becomes 10.18.1.8:51000. The reply source stays 203.0.113.70:443 in this source-PAT example. Port 40001 belongs to the other client's connection."
+    },
+    {
+      "id": "transit",
+      "objective": "5.3",
+      "type": "Factual",
+      "prompt": "Two routers share 10.9.4.8/30. West takes the lower usable address and east the higher. West's LAN is 10.70.2.64/26. Give both transit IPs and the return route east needs if it has no covering route.",
+      "source": "List the network and broadcast before allocating hosts.",
+      "key": "The /30 spans .8–.11, so west is 10.9.4.9, east is 10.9.4.10, and .11 is broadcast. East needs 10.70.2.64/26 via 10.9.4.9. Confirm west also knows the destination LAN for the outbound direction."
+    },
+    {
+      "id": "mask",
+      "objective": "5.3",
+      "type": "Factual",
+      "prompt": "The intended LAN is 10.70.2.64/26. A client at .88/24 has the correct gateway .65 but ARPs for a remote server at .170. Write the intended mask and explain which MAC the corrected client should resolve.",
+      "source": "Determine which interval contains .88 and whether .170 is in it.",
+      "key": "Use 255.255.255.192. The local interval is .64–.127. With /26, the client resolves its gateway 10.70.2.65 and sends the frame there for .170. With /24, .170 looked on-link."
+    },
+    {
+      "id": "gateway",
+      "objective": "5.3",
+      "type": "Example",
+      "prompt": "A lab host has 172.19.8.18/28 and gateway 172.19.8.1. It reaches a neighbor at .20 but cannot leave the LAN. The approved gateway interface is .17/28. Explain the fault and give one test before and after the repair.",
+      "source": "Confirm the local network and broadcast, then compare both gateway addresses.",
+      "key": "The host is in .16–.31. Gateway .1 is off-link, while .17 is usable on the LAN. Verify local reachability to .17, correct the gateway to 172.19.8.17 and test a known remote service."
+    },
+    {
+      "id": "mapping",
+      "objective": "5.3",
+      "type": "Example",
+      "prompt": "Inside clients reach an edge router. A capture shows their internet-bound packets leaving its WAN interface with unchanged RFC 1918 source addresses. The design requires PAT and the translation table stays empty. Which configuration and return-path evidence should you check?",
+      "source": "Follow one test connection across the boundary.",
+      "key": "Check that the inside subnet matches the translation policy and that the correct interfaces participate. Retest and observe the translated WAN source and new table entry. Verify replies target that mapping and return through the translator."
+    },
+    {
+      "id": "wrong-static",
+      "objective": "5.3",
+      "type": "Example",
+      "prompt": "R1 and R2 are transit neighbors. R2 has a connected 10.84.7.0/24 LAN and a default route to R1. R1 has a default elsewhere but no route for that LAN. A trace from R1 follows its default. Specify the destination prefix and next-hop device for the repair. How would you check the reverse direction?",
+      "source": "Read the destination prefix at each hop.",
+      "key": "Install or learn 10.84.7.0/24 on R1 via R2’s reachable transit IP. Verify the selected /24 on R1. On R2, look up the original source network and confirm its default via R1 is the intended usable return path. Test from an actual source host so that the reply exercises that lookup."
+    }
+  ]
+}
