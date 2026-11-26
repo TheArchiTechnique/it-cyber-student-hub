@@ -1,0 +1,322 @@
+{
+  "minutes": {
+    "reading": 20,
+    "cards": 15,
+    "quiz": 15,
+    "worksheet": 30,
+    "application": 20
+  },
+  "review": [
+    {
+      "objective": "3.1",
+      "title": "Pick the record that answers the question",
+      "text": "To replace a switch, a physical Layer 1 diagram shows device links, a rack elevation shows chassis positions, and a cable map connects the switchport to its patch-panel position and wall jack. For a broadcast problem, use the logical Layer 2 diagram showing VLANs and trunks. For a remote subnet, use the Layer 3 topology showing prefixes, gateways and routes. IP address management (IPAM) records subnet allocations, assignments and reservations. A wireless survey or heat map records RF observations by location. Document the survey conditions so a later administrator can reproduce the comparison."
+    },
+    {
+      "objective": "3.1",
+      "title": "Know what you own and what was promised",
+      "text": "Keep model, serial number, location, owner, software and firmware releases, licensing entitlements and warranty/support dates in the asset inventory. A service-level agreement (SLA) defines measurable service commitments, responsibilities and measurement conditions. A warranty entitlement answers a hardware repair question. An SLA answers a service delivery question. Compare inventory against vendor milestones to find the devices affected by a support notice."
+    },
+    {
+      "objective": "3.1",
+      "title": "Manage the whole lifecycle",
+      "text": "End of life (EOL) signals a product's retirement lifecycle. End of support (EOS here) identifies the end of specified vendor support. Vendors publish separate dates for sales, patches and contract support. Read the notice before deciding whether a device still receives fixes. Check OS, firmware, dependencies, license compatibility and available storage before patching. On retirement, migrate dependencies, preserve required records, revoke credentials, sanitize stored configuration, and update IPAM, inventory, diagrams and monitoring."
+    },
+    {
+      "objective": "3.1",
+      "title": "Make a change reversible",
+      "text": "Record the service or change request, affected systems, owner, expected impact and acceptance criteria. Identify dependencies such as VLAN gateways and DNS. Test the proposed configuration, document implementation steps, set a rollback trigger and choose a tested recovery method. Obtain the approvals required by the organization and schedule the agreed maintenance window. After implementation, test user-facing service, watch for side effects, and record the result, actual configuration and revised documentation. If a rollback trigger is met, execute the approved rollback and verify the restored service."
+    },
+    {
+      "objective": "3.1",
+      "title": "Compare three configurations",
+      "text": "A baseline or golden configuration describes the approved intended state. Production is what is actually running. A backup is a saved copy from a particular time and may include drift. Before restoring, confirm device, version, age, compatibility and known-good status. A backup made after an incorrect edit may preserve the error. Compare production to the deployed IaC version and authorized exceptions, document the difference, and restore or reconcile only after identifying the intended state."
+    },
+    {
+      "objective": "3.3",
+      "title": "Test the two recovery promises separately",
+      "text": "Recovery time objective (RTO) is the maximum acceptable interruption. Measure from the outage to restoration of the service users require. Recovery point objective (RPO) is the maximum acceptable age of recovered data measured back from disruption. At a 10:00 outage, recovery to 09:52 loses eight minutes of changes, even if the restore takes an hour. Mean time between failures (MTBF) estimates average operating time per failure for a repairable system. Mean time to repair (MTTR) averages repair durations. Say which intervals you measured before comparing results."
+    },
+    {
+      "objective": "3.3",
+      "title": "Choose the recovery site and failover design",
+      "text": "A hot site has systems ready for rapid takeover at higher ongoing cost. A warm site has some working infrastructure but still needs steps such as loading current data or adding capacity. A cold site provides facilities and requires substantial provisioning. Check measured recovery time and data freshness for the actual design. In active-active operation multiple nodes serve traffic. Active-passive keeps a standby ready for failover. Verify spare capacity, independent failure domains and state synchronization. A redundant pair can replicate a destructive application change to both nodes. Recoverable backups and a site-loss plan serve other failure cases."
+    },
+    {
+      "objective": "3.3",
+      "title": "Assigned practical: run a recovery decision",
+      "text": "Draw a timeline for a 14:00 outage. The RTO is 45 minutes and the RPO is 10 minutes. A warm site can restore service at 14:35 from a 13:44 recovery point. Record which target is missed and one design change to validate. Check your result: 35 minutes of downtime meets the RTO, but 16 minutes of data loss misses the RPO. Test a more frequent recoverable copy and measure again. A tabletop exercise discusses who acts and when. A validation test actually restores a copy, checks routes, DNS and transactions, and times recovery. Assign an owner to each gap and retest after correction. Lab 3's topology and addressing plan are optional examples of records used in recovery."
+    }
+  ],
+  "sources": [
+    [
+      "Lifecycle, change and configuration management",
+      "../../objective-breakdown/#life-cycle-change-and-configuration-management"
+    ],
+    [
+      "Lab 3 topology and addressing plan",
+      "../../../../../labs/networking/static-routing/#addressing-plan"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "physical",
+      "objective": "3.1",
+      "prompt": "Which records locate switch S2 vertically and trace its port 18 to a particular desk?",
+      "answer": "Use the rack elevation for the chassis position and the cable map for the port, patch panel and wall jack."
+    },
+    {
+      "id": "layers",
+      "objective": "3.1",
+      "prompt": "Which logical diagram helps trace a broadcast, and which helps trace a packet across subnets?",
+      "answer": "The Layer 2 diagram shows VLANs and trunks. The Layer 3 diagram shows routed prefixes and next hops."
+    },
+    {
+      "id": "inventory",
+      "objective": "3.1",
+      "prompt": "Which asset fields distinguish two identical switches with different support entitlements?",
+      "answer": "Serial or asset ID tied to location, support contract, warranty dates and licensing records."
+    },
+    {
+      "id": "ipam",
+      "objective": "3.1",
+      "prompt": "Where would you check whether a proposed static address falls within an existing reservation?",
+      "answer": "The IPAM system and its associated DHCP reservation records."
+    },
+    {
+      "id": "sla",
+      "objective": "3.1",
+      "prompt": "Which document sets the agreed availability target and how downtime is measured?",
+      "answer": "The service-level agreement. Check the scope, reporting period and maintenance exclusions."
+    },
+    {
+      "id": "lifecycle",
+      "objective": "3.1",
+      "prompt": "Sales stop in June and security fixes end the next January. Which date matters when planning continued patch coverage?",
+      "answer": "The published end date for security fixes. Product retirement and support milestones can differ."
+    },
+    {
+      "id": "golden",
+      "objective": "3.1",
+      "prompt": "What makes a golden configuration different from the newest backup?",
+      "answer": "The golden configuration is the approved baseline. A backup is a snapshot of what was saved and can contain an unapproved change."
+    },
+    {
+      "id": "rollback",
+      "objective": "3.1",
+      "prompt": "Which two decisions should a rollback plan settle before a maintenance window?",
+      "answer": "What evidence triggers rollback and which tested steps restore a known-good service."
+    },
+    {
+      "id": "rto",
+      "objective": "3.3",
+      "prompt": "A clinic can operate manually for at most 40 minutes. Which recovery objective describes that limit?",
+      "answer": "Recovery time objective. It limits how long service can be unavailable."
+    },
+    {
+      "id": "rpo",
+      "objective": "3.3",
+      "prompt": "A business can reconstruct at most ten minutes of transactions. Which target guides copy frequency?",
+      "answer": "Recovery point objective. The latest usable recovery point must be recent enough."
+    },
+    {
+      "id": "means",
+      "objective": "3.3",
+      "prompt": "Which average concerns uptime before failures and which concerns repair duration?",
+      "answer": "MTBF averages operating time per failure. MTTR averages time to repair across repairs."
+    },
+    {
+      "id": "sites",
+      "objective": "3.3",
+      "prompt": "A recovery room has power, cooling and connectivity but no servers staged. Which site category fits?",
+      "answer": "Cold site. Hardware, software and data still have to be provisioned."
+    },
+    {
+      "id": "failover",
+      "objective": "3.3",
+      "prompt": "What distinguishes active-active from active-passive before a node fails?",
+      "answer": "In active-active both serve normal traffic. In active-passive a standby waits to assume the active role."
+    },
+    {
+      "id": "copies",
+      "objective": "3.3",
+      "prompt": "Why keep versioned, recoverable backups if an application already fails over to a second node?",
+      "answer": "Failover can preserve availability after hardware failure. Both nodes can still share corrupted or deleted data."
+    },
+    {
+      "id": "test",
+      "objective": "3.3",
+      "prompt": "A team walks through the call tree but never boots the standby service. Which type of exercise was performed?",
+      "answer": "A tabletop exercise. Follow it with a validation test to measure real recovery."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "rack",
+      "objective": "3.1",
+      "prompt": "To identify a chassis's exact rack-unit position, consult the rack ____ (diagram type).",
+      "answers": [
+        "elevation",
+        "elevation diagram",
+        "diagram"
+      ],
+      "explanation": "A rack elevation shows vertical equipment positions. A cable map answers where a run terminates."
+    },
+    {
+      "id": "address",
+      "objective": "3.1",
+      "prompt": "Which system tracks subnet allocations and address assignments? Give its acronym: ____.",
+      "answers": [
+        "IPAM"
+      ],
+      "explanation": "IP address management links address space to ownership and assignments, helping prevent overlaps."
+    },
+    {
+      "id": "contract",
+      "objective": "3.1",
+      "prompt": "A provider and customer agree on availability, reporting periods and response times in a service-level ____.",
+      "answers": [
+        "agreement",
+        "agreement (SLA)"
+      ],
+      "explanation": "The SLA records measurable commitments and responsibilities."
+    },
+    {
+      "id": "drift",
+      "objective": "3.1",
+      "prompt": "An unauthorized local edit makes production differ from the approved template. This is configuration ____.",
+      "answers": [
+        "drift"
+      ],
+      "explanation": "Compare the actual state with the baseline and change records to identify the cause and intended repair."
+    },
+    {
+      "id": "loss",
+      "objective": "3.3",
+      "prompt": "An outage starts at 16:20. The latest usable copy reflects 16:08. How many minutes of changes are at risk? ____",
+      "answers": [
+        "12",
+        "12 minutes",
+        "12 min"
+      ],
+      "explanation": "Subtract the recovery point from the disruption time. This 12-minute loss interval is compared with the RPO."
+    },
+    {
+      "id": "time",
+      "objective": "3.3",
+      "prompt": "A service fails at 08:50 and passes its end-to-end recovery test at 09:25. Give the interruption in minutes: ____.",
+      "answers": [
+        "35",
+        "35 minutes",
+        "35 min"
+      ],
+      "explanation": "Ten minutes to 09:00 plus another 25 gives 35 minutes. Compare that interval with the RTO."
+    },
+    {
+      "id": "repair",
+      "objective": "3.3",
+      "prompt": "Three repairs took 12, 24 and 18 minutes. What is MTTR in minutes? ____",
+      "answers": [
+        "18",
+        "18 minutes",
+        "18 min"
+      ],
+      "explanation": "The repairs consumed 54 minutes in total. Divide by three completed repairs."
+    },
+    {
+      "id": "site",
+      "objective": "3.3",
+      "prompt": "A secondary site has installed servers but still needs the application data restored and services started. Choose hot, warm or cold: ____.",
+      "answers": [
+        "warm",
+        "warm site"
+      ],
+      "explanation": "The installed equipment shortens preparation, but significant recovery work remains."
+    },
+    {
+      "id": "exercise",
+      "objective": "3.3",
+      "prompt": "A facilitated discussion tests decision-making without switching traffic or restoring systems. This is a ____ exercise.",
+      "answers": [
+        "tabletop",
+        "table-top",
+        "table top"
+      ],
+      "explanation": "A tabletop rehearses roles and identifies gaps. A technical validation test can measure actual recovery."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "maps",
+      "objective": "3.1",
+      "type": "Factual",
+      "prompt": "A technician must locate a switch, trace desk 12 to its port, find the staff broadcast boundary and identify the gateway for a remote site. Choose a record for each decision. What would a wireless survey add if desk 12 also uses Wi-Fi?",
+      "source": "Think about placement, physical path, Layer 2 and Layer 3 separately.",
+      "key": "Use a rack elevation, cable map, VLAN/trunk diagram and routed topology or addressing plan respectively. A survey adds signal and interference evidence at the desk under the measured conditions."
+    },
+    {
+      "id": "inventory",
+      "objective": "3.1",
+      "type": "Example",
+      "prompt": "The asset sheet lists S1 and S2 with the same model and firmware but different serial numbers. The vendor bulletin says sales end June 30 and fixes end December 31. Only S2's contract includes next-day replacement. What can you infer and what inventory data would you still need for migration?",
+      "source": "Distinguish the model lifecycle from the individual entitlement.",
+      "key": "Both share the model's stated milestones. June 30 does not end fixes under this bulletin. Only S2 has the stated replacement entitlement. Confirm versions affected, location, owner, license transfer rights, warranty expiry and dependencies for each asset."
+    },
+    {
+      "id": "change",
+      "objective": "3.1",
+      "type": "Example",
+      "prompt": "A change request says only “replace the gateway tonight.” It has no approval, test results or rollback procedure. The policy requires approval after a staging test. Sequence the missing work through closure and give one user-facing verification.",
+      "source": "Define the expected result and rollback trigger before scheduling the work.",
+      "key": "Document impact, owner and dependencies. Test the proposed configuration, capture a known-good backup and specify rollback steps and a trigger. Obtain approval, communicate the window and implement. Verify a client lease, DNS lookup and access to a remote service. Record results and update the diagrams and IPAM."
+    },
+    {
+      "id": "versions",
+      "objective": "3.1",
+      "type": "Example",
+      "prompt": "The golden template and last approved change specify guest VLAN 40. Production and a backup taken this morning say 44. The last verified pre-change backup says 40. Which copies establish intent, and how would you choose a restoration method?",
+      "source": "Consider when each copy was created and which was authorized.",
+      "key": "The golden template and approved record establish 40. Today's backup captures the drift. Compare all changes and restore the affected settings or a compatible known-good backup under change control. Verify guest isolation, DHCP and access, then capture the corrected state."
+    },
+    {
+      "id": "objectives",
+      "objective": "3.3",
+      "type": "Factual",
+      "prompt": "Orders stop at 11:40. At 12:18 the service accepts verified transactions from a copy current to 11:32. Requirements are RTO 30 minutes and RPO 10 minutes. Evaluate both independently and select the first improvement.",
+      "source": "Measure downtime after disruption and data age before it.",
+      "key": "Downtime is 38 minutes, missing RTO by 8. The recovered data is 8 minutes old, meeting RPO by 2. Improve failover or restoration speed, then time another end-to-end test."
+    },
+    {
+      "id": "reliability",
+      "objective": "3.3",
+      "type": "Factual",
+      "prompt": "A repairable switch accumulated 960 operating hours and four failures. Repairs took 1, 2, 3 and 2 hours. Estimate MTBF and MTTR, then explain why neither sets the business recovery target.",
+      "source": "Exclude downtime from the stated operating hours and average completed repairs.",
+      "key": "MTBF is 960 ÷ 4 = 240 operating hours per failure. MTTR is 8 ÷ 4 = 2 hours per repair. These are observed averages. Business impact determines acceptable downtime and data loss."
+    },
+    {
+      "id": "sites",
+      "objective": "3.3",
+      "type": "Example",
+      "prompt": "A service must resume within 30 minutes with at most ten minutes of data loss. Measured options are cold (16 hours and nightly copies), warm (90 minutes and 5-minute copies), or hot (12 minutes and 2-minute replication lag). Which meets both measures? What separate failure should you still test?",
+      "source": "Compare both values with both requirements.",
+      "key": "The hot option meets the measured time and data targets. The warm option meets only the data target. Test restoration from a clean, recoverable copy because replicated corruption could affect both sites."
+    },
+    {
+      "id": "ha",
+      "objective": "3.3",
+      "type": "Factual",
+      "prompt": "Two nodes each support 70 sessions. In active-active service they carry 50 sessions each. If one fails and overall demand stays at 100, calculate the shortfall. Contrast this with a standby sized for the full load.",
+      "source": "Recalculate capacity using only surviving nodes.",
+      "key": "The remaining node supports 70, leaving a 30-session shortfall. Active-active describes normal traffic handling, not guaranteed post-failure capacity. An active-passive design with a healthy 100-session standby could carry the load after successful failover."
+    },
+    {
+      "id": "validate",
+      "objective": "3.3",
+      "type": "Example",
+      "prompt": "A tabletop found an obsolete escalation contact. A later controlled restore starts the application, but clients cannot resolve its hostname. What should the team change, retest and record before claiming recovery?",
+      "source": "Test service from the client's perspective.",
+      "key": "Correct the call tree and verify contact ownership. Check the recovered DNS dependency, address and network reachability. Repeat a name-based client transaction, measure time and recovered data, record the gap and owner, and update the recovery procedure."
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-.exam-page { max-width: 1120px; }
+.exam-page { max-width: 1120px; overflow-wrap: anywhere; }
 #view { display: grid; gap: 1rem; }
 #view article, #view section, #view details { min-width: 0; }
 .plan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); gap: 1rem; }

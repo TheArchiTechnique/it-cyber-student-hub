@@ -1,0 +1,374 @@
+{
+  "minutes": {
+    "reading": 25,
+    "cards": 15,
+    "quiz": 15,
+    "worksheet": 30,
+    "application": 15
+  },
+  "review": [
+    {
+      "objective": "1.3",
+      "title": "Choose who operates each layer",
+      "text": "A private cloud serves one organization. A public cloud offers provider resources to customers, often using multitenancy with isolation. A hybrid deployment connects distinct cloud environments, such as a private cloud to a public cloud. The service model answers a separate question. With infrastructure as a service (IaaS), the customer manages the guest OS. With platform as a service (PaaS), the provider runs the platform and the customer deploys code. With software as a service (SaaS), the customer uses the application. Scalability is the ability to handle growth. Elasticity adds and releases capacity as demand changes."
+    },
+    {
+      "objective": "1.3",
+      "title": "Draw the cloud route in both directions",
+      "text": "A virtual private cloud (VPC) provides a logically isolated network with subnets, routes and policy controls. Network functions virtualization (NFV) implements functions such as routing or firewalling in software. An internet gateway provides an internet routing attachment. Direct public IPv4 reachability also needs appropriate addressing, routes and policy. A public NAT gateway can translate a private workload's outbound IPv4 connection and track replies. For a branch link, a VPN can encrypt traffic across an existing internet service, while a dedicated private connection can offer more predictable capacity. Verify encryption separately on a private circuit."
+    },
+    {
+      "objective": "1.3",
+      "title": "Read the provider's rule scope",
+      "text": "Trace both the route and the filter that applies to the workload. AWS security groups are stateful and associate with resources through network interfaces. AWS subnet network ACLs are stateless. Oracle Cloud security lists apply at the subnet level and network security groups select participating interfaces. Oracle rules can be stateful or stateless. With stateful filtering, permitted return traffic is tracked. With stateless rules, examine both directions. Labels alone do not determine rule scope or behavior across providers."
+    },
+    {
+      "objective": "1.8",
+      "title": "Separate the path from its policy",
+      "text": "With software-defined networking (SDN), the control plane decides forwarding behavior and can be logically centralized, while the data plane forwards traffic. SD-WAN applies policy across WAN paths, can identify applications and can steer voice away from a lossy link. Broadband, carrier circuits and cellular can serve as different underlay transports. Zero-touch provisioning lets a new edge device obtain approved configuration from a controller. An overlay is the logical path carried over the underlay. VXLAN encapsulates Layer 2 frames in UDP over an IP network. Data center interconnect (DCI) links facilities. A working VXLAN overlay still needs reachable tunnel endpoints in the underlay."
+    },
+    {
+      "objective": "1.8",
+      "title": "Select the access architecture",
+      "text": "Zero Trust Architecture (ZTA) evaluates identity, device and policy for access to a specific resource with least privilege. A user's office location alone cannot establish trust. Security Service Edge (SSE) delivers security functions such as secure web gateway and zero trust network access as a service. Secure Access Service Edge (SASE) combines these security capabilities with WAN connectivity such as SD-WAN. Choose SSE when the organization wants the security services while retaining its WAN, and SASE when it needs both."
+    },
+    {
+      "objective": "1.8",
+      "title": "Trace a configuration change from code to device",
+      "text": "Infrastructure as Code (IaC) expresses intended infrastructure in version-controlled files. A template can render each branch's settings. A playbook orders reusable tasks, such as checking compatibility, upgrading software and verifying service. Dynamic inventory discovers current targets. A central repository records versions and reviews. Branches isolate proposed changes. Resolve conflicting edits by checking intended behavior, then validate even if the merge is clean. Compare deployed state with the approved configuration to detect drift. Evaluate compliance with the stated policy before reconciling a difference."
+    },
+    {
+      "objective": "1.8",
+      "title": "Read an IPv6 address before shortening it",
+      "text": "IPv6 has 128 bits, written as eight 16-bit hexadecimal groups. Omit leading zeros within groups. Use :: once to compress the longest run of two or more zero groups in canonical text. For equal runs use the first. For example, 2001:0db8:0012:0000:0000:0000:0000:004a becomes 2001:db8:12::4a. A /64 fixes the first four groups. The larger address space eases IPv4 exhaustion. Current global unicast allocations generally come from 2000::/3. The 2001:db8::/32 examples here are reserved for documentation. Link-local fe80::/10 is confined to one link. Unique-local fc00::/7 includes locally assigned fd prefixes. Multicast ff00::/8 targets a group. ::1 is loopback and :: is unspecified."
+    },
+    {
+      "objective": "3.4",
+      "title": "Read three separate pieces of IPv6 evidence",
+      "text": "IPv6 Neighbor Discovery uses ICMPv6. Neighbor Solicitation and Advertisement help resolve link-layer neighbors, and hosts can check address uniqueness using duplicate address detection. Router Advertisements (RAs) with a positive router lifetime identify potential default routers. With SLAAC, a host can form an address from an autonomous advertised prefix. Stateful DHCPv6 leases addresses. Stateless DHCPv6 can deliver other settings such as recursive DNS servers while SLAAC supplies the address. An RA can also advertise DNS information. Inspect addresses, default routes and DNS separately. An AAAA record maps a name to an IPv6 address and provides no default route."
+    },
+    {
+      "objective": "1.8",
+      "title": "Choose a coexistence method for a specific gap",
+      "text": "Dual stack runs both protocols on endpoints and paths. Tunneling carries one protocol across a segment that supports the other, preserving the inner packet. Stateful NAT64 lets an IPv6-only client reach an IPv4 service through translation. DNS64 can synthesize an AAAA answer from the service's A record. This design depends on the translator, routing and compatible applications. An application using an IPv4 literal may need additional support because no DNS query occurs."
+    },
+    {
+      "objective": "3.4",
+      "title": "Assigned practical: explain a missing route",
+      "text": "A host has 2001:db8:17:6::25/64, DNS from stateless DHCPv6 and an AAAA answer for a remote server. Its only router announces an autonomous prefix but a router lifetime of zero. Draw the local prefix, the resolver and the missing next hop. Predict which on-link test can succeed and why an off-link connection fails. Check your result against the IPv6 services reading: the host can reach an on-link neighbor, but this RA supplies no default router. As optional reinforcement, use Lab 3's addressing plan to compare the IPv4 return-path decision with your IPv6 sketch."
+    }
+  ],
+  "sources": [
+    [
+      "IPv6 addresses and coexistence",
+      "../../objective-breakdown/#ipv6-addressing-and-ipv4-compatibility"
+    ],
+    [
+      "SLAAC and IPv6 configuration",
+      "../../objective-breakdown/#slaac-and-ipv6-configuration"
+    ],
+    [
+      "Virtual networks and security controls",
+      "../../objective-breakdown/#virtual-networks-and-security-controls"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "models",
+      "objective": "1.3",
+      "prompt": "A provider hosts a managed runtime exclusively for one organization. Which two independent questions classify the offering?",
+      "answer": "Who can use the cloud determines the deployment model. Who manages the runtime determines the service model. Exclusive use suggests private cloud, and deploying code to a managed runtime suggests PaaS."
+    },
+    {
+      "id": "elastic",
+      "objective": "1.3",
+      "prompt": "Capacity increases for a sale and drops afterward. Which cloud property is on display?",
+      "answer": "Elasticity adjusts capacity in both directions with demand. Scalability describes the ability to handle more work."
+    },
+    {
+      "id": "vpc",
+      "objective": "1.3",
+      "prompt": "What is a VPC and why divide it into subnets?",
+      "answer": "A virtual private cloud is an isolated virtual network. Subnets support distinct addressing, routing and policy for workload tiers."
+    },
+    {
+      "id": "egress",
+      "objective": "1.3",
+      "prompt": "A private IPv4 VM must download updates while keeping a private address. Which managed gateway can translate outbound sessions?",
+      "answer": "A public NAT gateway with a working upstream internet path and appropriate rules."
+    },
+    {
+      "id": "filter",
+      "objective": "1.3",
+      "prompt": "What must you add for a reply crossing a stateless filter that permits only the outbound request?",
+      "answer": "A matching return-direction allowance. Inspect the reply's addresses and ports as they appear at that filter."
+    },
+    {
+      "id": "nfv",
+      "objective": "1.3",
+      "prompt": "A physical firewall is replaced by a virtual appliance with the same role. Which technology describes the change?",
+      "answer": "Network functions virtualization, or NFV."
+    },
+    {
+      "id": "sdwan",
+      "objective": "1.8",
+      "prompt": "An edge policy selects fiber or cellular for each application according to measured loss. Which technology fits?",
+      "answer": "SD-WAN. Its overlay can apply centralized policy over different WAN underlays."
+    },
+    {
+      "id": "vxlan",
+      "objective": "1.8",
+      "prompt": "What is inside a VXLAN tunnel and what must its endpoints already have?",
+      "answer": "An Ethernet frame is carried in UDP/IP. The tunnel endpoints need an IP underlay path."
+    },
+    {
+      "id": "sse",
+      "objective": "1.8",
+      "prompt": "A firm already has suitable WAN transport but needs cloud-delivered web filtering and identity-aware access. Which service family fits?",
+      "answer": "SSE supplies the security functions. SASE combines them with WAN networking."
+    },
+    {
+      "id": "drift",
+      "objective": "1.8",
+      "prompt": "The live branch router uses a different DNS server than its reviewed template. What is the difference called and what is the first check?",
+      "answer": "Configuration drift. Compare the live value, approved version and change history to determine which value is intended."
+    },
+    {
+      "id": "address",
+      "objective": "1.8",
+      "prompt": "What stays fixed for addresses sharing 2001:db8:42:8::/64?",
+      "answer": "The first 64 bits, represented by the four groups 2001:db8:42:8."
+    },
+    {
+      "id": "scope",
+      "objective": "1.8",
+      "prompt": "Distinguish fe80::1, ff02::1 and ::1 by scope or purpose.",
+      "answer": "fe80::1 is link-local unicast. ff02::1 is the link-local all-nodes multicast group. ::1 is loopback within the host."
+    },
+    {
+      "id": "transition",
+      "objective": "1.8",
+      "prompt": "How does an IPv6 tunnel across IPv4 differ from NAT64?",
+      "answer": "A tunnel preserves and transports the inner IPv6 packet between endpoints. NAT64 translates between IPv6 and IPv4 for communication with an IPv4 peer."
+    },
+    {
+      "id": "ra",
+      "objective": "3.4",
+      "prompt": "Which message can install a default router on an IPv6 host, and which field matters?",
+      "answer": "An ICMPv6 Router Advertisement with a nonzero router lifetime."
+    },
+    {
+      "id": "dhcp",
+      "objective": "3.4",
+      "prompt": "If DHCPv6 supplies DNS settings while the client generates its address from an advertised prefix, which DHCPv6 mode is in use?",
+      "answer": "Stateless DHCPv6. SLAAC supplies the address. Stateful DHCPv6 would maintain an address lease."
+    },
+    {
+      "id": "neighbors",
+      "objective": "3.4",
+      "prompt": "Which ICMPv6 exchange helps a host find the local link-layer address for a known IPv6 neighbor?",
+      "answer": "Neighbor Solicitation followed by Neighbor Advertisement. IPv6 uses Neighbor Discovery for this role."
+    },
+    {
+      "id": "dns",
+      "objective": "3.4",
+      "prompt": "What does an AAAA answer prove, and what should be checked next if the service is off-link?",
+      "answer": "The resolver returned an IPv6 address. Check the route and connectivity to that address, then the service and its access policy."
+    },
+    {
+      "id": "filters",
+      "objective": "1.3",
+      "prompt": "An Oracle Cloud security list and an AWS security group both contain ingress rules. What should you verify before predicting the reply path?",
+      "answer": "Check rule scope and tracking. The Oracle list applies to its subnet and can have stateless rules requiring explicit return permission. The AWS group applies to associated interfaces and tracks permitted connections. Verify routing as well."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "platform",
+      "objective": "1.3",
+      "prompt": "A team deploys its code while the provider manages the OS and runtime. Name the service model (acronym): ____.",
+      "answers": [
+        "PaaS"
+      ],
+      "explanation": "Platform as a Service leaves application code with the team while the platform is managed."
+    },
+    {
+      "id": "tenants",
+      "objective": "1.3",
+      "prompt": "Several customers use logically isolated workloads on shared provider infrastructure. This property is called ____.",
+      "answers": [
+        "multitenancy",
+        "multi-tenancy",
+        "multi tenancy"
+      ],
+      "explanation": "The provider shares underlying resources while isolating tenants' workloads and access."
+    },
+    {
+      "id": "planes",
+      "objective": "1.8",
+      "prompt": "An SDN controller calculates a forwarding policy. The plane that applies it to packets is the ____ plane.",
+      "answers": [
+        "data",
+        "forwarding"
+      ],
+      "explanation": "The control plane determines behavior. The data plane performs forwarding."
+    },
+    {
+      "id": "overlay",
+      "objective": "1.8",
+      "prompt": "Which overlay encapsulates Ethernet frames in UDP across an IP fabric? Give its acronym: ____.",
+      "answers": [
+        "VXLAN"
+      ],
+      "explanation": "Virtual Extensible LAN can extend a logical Layer 2 segment across a routed underlay."
+    },
+    {
+      "id": "shorten",
+      "objective": "1.8",
+      "prompt": "Compress 2001:0db8:0040:0000:0000:0000:0000:0005 using canonical IPv6 notation. Enter the address: ____.",
+      "answers": [
+        "2001:db8:40::5"
+      ],
+      "explanation": "Drop leading zeros and compress the four consecutive all-zero groups once. The result still represents eight groups when expanded."
+    },
+    {
+      "id": "local",
+      "objective": "1.8",
+      "prompt": "Which address represents IPv6 loopback? Give the canonical compressed address: ____.",
+      "answers": [
+        "::1"
+      ],
+      "explanation": "Loopback points back to this host. The all-zero address :: represents the unspecified address."
+    },
+    {
+      "id": "gateway",
+      "objective": "3.4",
+      "prompt": "Which ICMPv6 message carries the router lifetime used for default-router discovery? ____",
+      "answers": [
+        "Router Advertisement",
+        "RA",
+        "router advertisement message"
+      ],
+      "explanation": "A positive lifetime makes the sender eligible for the default-router list. A DHCPv6 address lease is separate."
+    },
+    {
+      "id": "record",
+      "objective": "3.4",
+      "prompt": "Which DNS record type supplies a hostname's IPv6 address? ____",
+      "answers": [
+        "AAAA",
+        "AAAA record"
+      ],
+      "explanation": "An AAAA record holds a 128-bit IPv6 address. An A record holds an IPv4 address."
+    },
+    {
+      "id": "translator",
+      "objective": "1.8",
+      "prompt": "An IPv6-only client needs a translator to open a session to an IPv4-only server. Name the IPv6-to-IPv4 translation technology: ____.",
+      "answers": [
+        "NAT64"
+      ],
+      "explanation": "NAT64 translates the packets. DNS64 can supply a synthesized IPv6 destination for a name that has only an A record."
+    },
+    {
+      "id": "state",
+      "objective": "3.4",
+      "prompt": "A DHCPv6 server assigns and tracks client IPv6 address leases. This address-assignment mode is ____.",
+      "answers": [
+        "stateful",
+        "stateful DHCPv6"
+      ],
+      "explanation": "The server maintains lease state. Stateless DHCPv6 supplies other configuration without leasing the address."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "hosting",
+      "objective": "1.3",
+      "type": "Factual",
+      "prompt": "A company retains its private cloud and integrates a public cloud for peak orders. It needs one legacy VM whose OS it controls, a managed runtime for its new code and a hosted email application. Classify the deployment and the three service models.",
+      "source": "Classify location and responsibility independently.",
+      "key": "This is a hybrid deployment. The legacy VM fits IaaS, the managed runtime PaaS, and hosted email SaaS. Elastic capacity can absorb peaks and release resources after demand falls."
+    },
+    {
+      "id": "cloud-route",
+      "objective": "1.3",
+      "type": "Example",
+      "prompt": "A cloud design has a private workload subnet and a public NAT gateway in an edge subnet. The edge subnet has a route to the internet gateway. An update server is on the public internet. Trace the workload's default route, translated source and reply. What additional evidence would you need before permitting inbound access to the workload?",
+      "source": "Separate routing, translation and authorized direction.",
+      "key": "The workload routes outbound internet traffic to the NAT gateway. Its public translation uses the internet gateway path. Matching replies return through the translation to the private host. An inbound service needs a deliberately published entry point and approved inbound policy. An outbound mapping alone does not publish it."
+    },
+    {
+      "id": "circuits",
+      "objective": "1.3",
+      "type": "Example",
+      "prompt": "A new branch has broadband today and needs encrypted cloud access tomorrow. Later, large transfers require contracted, predictable capacity. Choose a connection for each stage and one property to verify in the second stage.",
+      "source": "Compare transport provisioning with confidentiality.",
+      "key": "Use a site-to-site VPN across broadband for the initial encrypted path. Consider a dedicated private circuit with the required capacity and provisioning lead time. Verify encryption and resiliency explicitly."
+    },
+    {
+      "id": "planes",
+      "objective": "1.8",
+      "type": "Factual",
+      "prompt": "Match four changes to their technology: replace a hardware router with a software appliance, program campus forwarding from a controller, steer branch voice between two carriers, and carry Ethernet segments across a routed fabric. Identify the underlay in the fourth case.",
+      "source": "Identify the function being virtualized, controlled, steered or encapsulated.",
+      "key": "The changes use NFV, SDN, SD-WAN and VXLAN respectively. The underlay is the IP network carrying traffic between tunnel endpoints."
+    },
+    {
+      "id": "policy",
+      "objective": "1.8",
+      "type": "Factual",
+      "prompt": "A company wants least-privilege decisions for each application, cloud-delivered security for its existing WAN, and later a unified security and WAN service. Name the principle, the initial service family and the later architecture.",
+      "source": "Compare a trust model with a service bundle.",
+      "key": "Apply Zero Trust Architecture for per-resource access. Choose SSE to add the security services. SASE combines those services with WAN networking."
+    },
+    {
+      "id": "code",
+      "objective": "1.8",
+      "type": "Example",
+      "prompt": "A template requires DNS server .53. Production now uses .54. Two proposed branches also edit the same template line. Describe how to investigate the live difference, resolve the conflicting intent and verify a safe rollout.",
+      "source": "Use configuration history, the approved change and a representative target.",
+      "key": "Diff production against the deployed version and inspect authorized changes. Reconcile the two edits against the intended DNS design, review the merged template, test on a representative target and verify live resolution and compliance before expanding."
+    },
+    {
+      "id": "hex",
+      "objective": "1.8",
+      "type": "Factual",
+      "prompt": "Compress 2001:0db8:0000:0000:001a:0000:0000:0009 canonically. Then fully expand fd31:7::c:20 into eight four-digit groups. Identify the scope of the second address.",
+      "source": "Count groups on each side of :: and look for equal-length runs.",
+      "key": "2001:db8::1a:0:0:9 uses the first of the two equal-length zero runs. The expansion is fd31:0007:0000:0000:0000:0000:000c:0020. Its fd prefix falls in unique-local space."
+    },
+    {
+      "id": "leases",
+      "objective": "3.4",
+      "type": "Factual",
+      "prompt": "Host A forms its address from an autonomous /64 and obtains DNS from DHCPv6. Host B receives both its address and DNS from DHCPv6. Both have fe80::1 as their default router. Identify the address source and DHCPv6 mode for each, and how both learned the gateway.",
+      "source": "Read address assignment separately from route installation.",
+      "key": "A uses SLAAC and stateless DHCPv6. B uses stateful DHCPv6. Each can learn fe80::1 from a Router Advertisement with positive router lifetime. The next hop can be link-local because it is on the host's link."
+    },
+    {
+      "id": "records",
+      "objective": "3.4",
+      "type": "Example",
+      "prompt": "A host reaches an IPv6-only service by its IPv6 address and validates its TLS name when the client explicitly maps that name to the address. Normal DNS lookup returns no AAAA record. Identify the repair and two checks after it.",
+      "source": "The direct test already exercised the routed IPv6 path.",
+      "key": "Publish or correct the AAAA record in the appropriate DNS view. Query the intended resolver after cache expiry or refresh, then connect by name and verify the expected service and certificate."
+    },
+    {
+      "id": "coexist",
+      "objective": "1.8",
+      "type": "Factual",
+      "prompt": "Choose a mechanism for each case: both ends and their path support both address families, IPv6 islands cross an IPv4-only core, and an IPv6-only client must reach an IPv4-only website by name. State why the last case needs more than encapsulation.",
+      "source": "Look at the protocol each endpoint can actually speak.",
+      "key": "Use dual stack, an IPv6-over-IPv4 tunnel, and NAT64 with DNS64 respectively. The IPv4 server needs translated IPv4 packets. Simply removing a tunnel header would leave it with IPv6 traffic it cannot process."
+    },
+    {
+      "id": "scope",
+      "objective": "3.4",
+      "type": "Factual",
+      "prompt": "An interface shows fe80::8 and fd22:16:5:9::8/64. Identify each address type and write the unique-local subnet prefix. Which address could a router forward between internal subnets? What does a source of :: mean in a duplicate address detection probe?",
+      "source": "Count the first four groups for /64 and check the special prefixes.",
+      "key": "fe80::8 is link-local and stays on its link. fd22:16:5:9::8 is unique-local in fd22:16:5:9::/64 and can be routed internally. The unspecified source :: is used while checking a tentative address before it is assigned."
+    }
+  ]
+}

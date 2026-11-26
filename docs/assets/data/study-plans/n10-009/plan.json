@@ -352,6 +352,10 @@
     "ports": [
       "Ports & Protocols reference",
       "reference/ports-and-protocols/"
+    ],
+    "soho": [
+      "SOHO Router Configuration",
+      "practice/pbqs/a-plus-core-1/soho-router-configuration/"
     ]
   },
   "days": [
@@ -481,11 +485,13 @@
         "5.4"
       ],
       "goal": "Choose radio settings and distinguish congestion, interference, roaming and coverage faults.",
-      "recall": "Compare shared radio airtime with a switched Ethernet link.",
+      "recall": "Trace a wireless client to its gateway. Which MAC address identifies the radio connection, which VLAN should supply DHCP, and how would you test DNS only after connectivity works?",
       "resources": [
         "wifi",
+        "soho",
         "reading"
-      ]
+      ],
+      "session": "day-7.json"
     },
     {
       "number": 8,
@@ -497,10 +503,12 @@
         "3.4"
       ],
       "goal": "Map virtual networks, overlays and access policies. Explain address configuration and IPv6 transition choices.",
-      "recall": "Explain which addressing and routing decisions remain when a router runs as software.",
+      "recall": "Sketch the route from a private IPv4 subnet through a PAT gateway. Which forwarding, name-resolution and access decisions would still be necessary in a virtual network?",
       "resources": [
-        "reading"
-      ]
+        "reading",
+        "route"
+      ],
+      "session": "day-8.json"
     },
     {
       "number": 9,
@@ -511,10 +519,12 @@
         "3.3"
       ],
       "goal": "Use documentation, change records and recovery targets to plan service restoration.",
-      "recall": "Sketch a physical path and list the records needed to rebuild it.",
+      "recall": "Recall the switchport, VLAN, route, DHCP and DNS settings one client depends on. Which records would let someone rebuild and verify that path after a failure?",
       "resources": [
-        "reading"
-      ]
+        "reading",
+        "route"
+      ],
+      "session": "day-9.json"
     },
     {
       "number": 10,

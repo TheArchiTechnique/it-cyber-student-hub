@@ -32,7 +32,7 @@ export async function networkPlanChecks(browser, root) {
     await page.locator('.hub-page').getByRole('link', { name: '14-Day Certification Study Plan' }).press('Enter');
     await page.locator('.plan-grid').waitFor();
     const available = plan.days.filter(day => day.session);
-    assert.deepEqual(available.map(day => day.number), [1, 2, 3, 4, 5, 6]);
+    assert.deepEqual(available.map(day => day.number), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
     const scheduled = plan.days.filter(day => !day.session);
     assert.equal(await page.locator('.plan-grid article').count(), 14);
     assert.equal(await page.locator('.plan-grid .open').count(), 14 - scheduled.length);
@@ -116,10 +116,10 @@ export async function networkPlanChecks(browser, root) {
       }
     }
     await open(app, 'calendar');
-    await page.getByText('6 of 14 days completed · 6 interactive sessions available').waitFor();
+    await page.getByText('9 of 14 days completed · 9 interactive sessions available').waitFor();
     const reopened = await context.newPage();
     await reopened.goto(app.href);
-    await reopened.getByText('6 of 14 days completed · 6 interactive sessions available').waitFor();
+    await reopened.getByText('9 of 14 days completed · 9 interactive sessions available').waitFor();
     await reopened.close();
     await open(app, 'day-1/review');
     page.once('dialog', dialog => dialog.accept());
@@ -131,7 +131,7 @@ export async function networkPlanChecks(browser, root) {
     await page.getByText('Completed · 4 of 4 activities completed').waitFor();
     await page.setViewportSize({ width: 320, height: 720 });
     await page.locator('#theme').click();
-    for (const view of ['calendar', 'day-1/review', 'day-2/cards', 'day-3/quiz', 'day-3/worksheet', 'day-4/worksheet', 'day-5/quiz', 'day-6/review']) {
+    for (const view of ['calendar', 'day-1/review', 'day-2/cards', 'day-3/quiz', 'day-3/worksheet', 'day-4/worksheet', 'day-5/quiz', 'day-6/review', 'day-7/cards', 'day-8/review', 'day-8/quiz', 'day-8/worksheet', 'day-9/quiz']) {
       await open(app, view);
       await page.locator('#view .panel').first().waitFor();
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), view);

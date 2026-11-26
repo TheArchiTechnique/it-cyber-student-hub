@@ -1,0 +1,295 @@
+{
+  "minutes": {
+    "reading": 25,
+    "cards": 15,
+    "quiz": 15,
+    "worksheet": 30,
+    "application": 20
+  },
+  "review": [
+    {
+      "objective": "1.5",
+      "title": "Match the radio to the client",
+      "text": "An old 802.11b/g sensor needs 2.4 GHz. Legacy 802.11a operates at 5 GHz. Wi-Fi 4 (802.11n) supports 2.4 or 5 GHz, Wi-Fi 5 (802.11ac) uses 5 GHz, and Wi-Fi 6 (802.11ax) supports 2.4 and 5 GHz. Wi-Fi 6E extends ax into 6 GHz. Wi-Fi 7 (802.11be) can use 2.4, 5 and 6 GHz where permitted. Check both radios, local rules and security support before selecting a band. A displayed PHY rate includes airtime used for protocol overhead. Shared access, retries and signal conditions reduce useful application throughput."
+    },
+    {
+      "objective": "1.5",
+      "title": "Choose a medium for the last mile",
+      "text": "A cellular modem provides carrier connectivity where signal and service are available. Survey the carrier at the actual location, including busy hours. Satellite can reach an isolated site with a suitable sky view. Geostationary paths add substantial propagation delay, while lower-orbit systems can reduce that delay. Compare availability, obstructions, capacity and latency against the application's needs."
+    },
+    {
+      "objective": "2.3",
+      "title": "Plan for airtime as well as signal",
+      "text": "At comparable power, 2.4 GHz often reaches farther through obstructions but offers fewer independent channels. Use the regulatory domain for the installation. A common 20 MHz plan where available is channels 1, 6 and 11. Nearby cells on the same channel contend for airtime. Partially overlapping channels can interfere. Wider channels bond spectrum and can raise a single link's PHY rate but leave fewer independent cells in a dense office. On applicable 5 GHz channels, 802.11h mechanisms include Dynamic Frequency Selection (DFS) for radar avoidance and Transmit Power Control (TPC) for power adjustment. Band steering encourages capable clients onto another band. The client still makes the association decision."
+    },
+    {
+      "objective": "2.3",
+      "title": "Read the identifiers during a walk test",
+      "text": "The service set identifier (SSID) is the advertised network name. A basic service set identifier (BSSID) identifies a particular cell, typically using a MAC address associated with the AP radio. One physical AP can have several BSSIDs. Multiple interconnected infrastructure cells can form an extended service set (ESS) using a common network name, often called the ESSID. A client can retain the SSID while roaming to another BSSID. Check both coverage overlap and consistent authentication, VLAN and IP service. Autonomous APs are configured independently. Controller-managed or lightweight APs receive coordinated settings."
+    },
+    {
+      "objective": "2.3",
+      "title": "Select topology and antenna together",
+      "text": "Infrastructure clients associate with an AP. Ad hoc peers communicate directly. A wireless mesh can use intermediate nodes to relay traffic, potentially sharing airtime between clients and backhaul. A point-to-point bridge joins two fixed endpoints. Directional antennas focus coverage toward a target such as another building. An omnidirectional antenna distributes energy around its axis and is common in a central service area. Place antennas for the client uplink as well as the AP downlink, measure around obstructions and verify the placement with a site survey."
+    },
+    {
+      "objective": "2.3",
+      "title": "Follow a guest from association to internet access",
+      "text": "WPA2-Personal uses a pre-shared key (PSK). WPA3-Personal uses Simultaneous Authentication of Equals (SAE) for password-based authentication. Modern WPA2 with AES-CCMP and WPA3 protect wireless traffic. Enterprise authentication uses 802.1X/EAP, usually with a RADIUS server, to authenticate individual users or devices. A captive portal can collect acceptance or credentials after association. Give guests an appropriate VLAN, DHCP scope and firewall policy permitting required services while isolating internal systems. An SSID name or portal alone supplies no routed isolation."
+    },
+    {
+      "objective": "5.4",
+      "title": "Decide what to measure next",
+      "text": "Read RSSI in dBm: −52 is stronger than −78. Survey the same client at known positions and times, recording channel utilization, retries, packet loss and the BSSID. Weak edge signal points toward placement or obstructions. Strong signal with high utilization and many active clients suggests airtime contention. Interference can raise retries even with few Wi-Fi clients. Delay is latency, variation in delay is jitter, and a missing packet is loss. Compare wireless tests with a wired peer reaching the same service. UDP voice may expose gaps directly, while TCP retransmissions can reduce throughput."
+    },
+    {
+      "objective": "5.4",
+      "title": "Assigned practical: test one placement decision",
+      "text": "In Wireless Coverage, inspect the floor plan and predict which area an interior wall or the breakroom will affect. Record the first placement, change one equipment position and compare the coverage estimates. Then name one measurement a real survey would need to establish capacity during a busy shift. Use the SOHO Router Configuration PBQ as optional practice with channels, guest access and security."
+    }
+  ],
+  "sources": [
+    [
+      "Wireless standards comparison",
+      "../../objective-breakdown/#wireless-transmission-choices"
+    ],
+    [
+      "Wireless performance evidence",
+      "../../objective-breakdown/#wireless-symptoms"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "standards",
+      "objective": "1.5",
+      "prompt": "Which generations correspond to 802.11n, ac and ax, and which extends ax into 6 GHz?",
+      "answer": "Wi-Fi 4, 5 and 6 respectively. Wi-Fi 6E adds 6 GHz capability."
+    },
+    {
+      "id": "phy",
+      "objective": "1.5",
+      "prompt": "Why is a laptop's negotiated 866 Mb/s rate higher than its measured file-transfer rate?",
+      "answer": "The PHY rate is a signaling rate. Contention, management traffic, headers, acknowledgments and retransmissions consume airtime."
+    },
+    {
+      "id": "wan",
+      "objective": "1.5",
+      "prompt": "Which two observations matter before choosing cellular or satellite for a remote clinic?",
+      "answer": "Measure local carrier coverage and busy-hour service. For satellite, check sky visibility and whether the orbit's latency fits the application."
+    },
+    {
+      "id": "ssid",
+      "objective": "2.3",
+      "prompt": "Which identifier can stay constant while a handset roams, and which normally changes?",
+      "answer": "The SSID can stay the same across the ESS. The BSSID changes as the handset associates with another cell."
+    },
+    {
+      "id": "width",
+      "objective": "2.3",
+      "prompt": "Why might 20 MHz channels outperform an 80 MHz plan across a crowded floor?",
+      "answer": "Narrower channels allow more independent cells to reuse spectrum, reducing contention. Compare aggregate throughput during busy hours."
+    },
+    {
+      "id": "dfs",
+      "objective": "2.3",
+      "prompt": "What is the difference between DFS and TPC?",
+      "answer": "Dynamic Frequency Selection avoids protected radar channels when required. Transmit Power Control adjusts transmit power."
+    },
+    {
+      "id": "steer",
+      "objective": "2.3",
+      "prompt": "Can band steering move a 2.4 GHz-only sensor to 5 GHz?",
+      "answer": "No. Steering can influence only clients that support the target band."
+    },
+    {
+      "id": "design",
+      "objective": "2.3",
+      "prompt": "Which design suits a fixed link between two buildings, and which can relay through intermediate APs?",
+      "answer": "A point-to-point bridge suits the fixed link. A mesh can forward over multiple wireless hops."
+    },
+    {
+      "id": "antenna",
+      "objective": "2.3",
+      "prompt": "Why use aligned directional antennas on a fixed bridge?",
+      "answer": "They focus energy along the path between endpoints. Verify alignment and clearance at both ends."
+    },
+    {
+      "id": "auth",
+      "objective": "2.3",
+      "prompt": "Which WLAN design supports revoking one employee's access while others keep their credentials?",
+      "answer": "WPA2-Enterprise or WPA3-Enterprise with individual 802.1X/EAP identities and an authentication service."
+    },
+    {
+      "id": "portal",
+      "objective": "2.3",
+      "prompt": "Which control prevents a guest who accepted a portal from reaching an internal file share?",
+      "answer": "Enforce a policy at the guest network boundary, commonly a guest VLAN and firewall rules. Portal acceptance is a different function."
+    },
+    {
+      "id": "capacity",
+      "objective": "5.4",
+      "prompt": "Signal stays strong but airtime saturates only when the room fills. What problem should you test first?",
+      "answer": "Capacity or co-channel contention. Compare utilization and per-client throughput at quiet and busy times."
+    },
+    {
+      "id": "roam",
+      "objective": "5.4",
+      "prompt": "A handheld still shows the same SSID after walking. What evidence confirms it actually roamed?",
+      "answer": "A BSSID change in the client or controller association history, with timestamps."
+    },
+    {
+      "id": "jitter",
+      "objective": "5.4",
+      "prompt": "Voice packets arrive with steady average delay but widely varying intervals. What metric captures the variation?",
+      "answer": "Jitter. Loss and end-to-end latency measure separate properties."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "six",
+      "objective": "1.5",
+      "prompt": "A laptop specifically needs the 6 GHz extension of Wi-Fi 6. Its adapter must support Wi-Fi ____.",
+      "answers": [
+        "6E",
+        "Wi-Fi 6E"
+      ],
+      "explanation": "An original Wi-Fi 6 adapter can support 802.11ax only in 2.4 and 5 GHz. The 6E designation identifies 6 GHz support."
+    },
+    {
+      "id": "legacy",
+      "objective": "1.5",
+      "prompt": "Which band does 802.11ac use? Give the frequency in GHz: ____.",
+      "answers": [
+        "5",
+        "5 GHz",
+        "5GHz"
+      ],
+      "explanation": "Wi-Fi 5 operates at 5 GHz. A dual-band AP can offer another standard on 2.4 GHz."
+    },
+    {
+      "id": "bssid",
+      "objective": "2.3",
+      "prompt": "A scanner lists one SSID with three distinct per-cell MAC identifiers. Give the acronym for one such identifier: ____.",
+      "answers": [
+        "BSSID"
+      ],
+      "explanation": "A basic service set identifier distinguishes a particular cell even when all three advertise the same name."
+    },
+    {
+      "id": "radar",
+      "objective": "2.3",
+      "prompt": "An AP logs radar detection before vacating a regulated 5 GHz channel. Which 802.11h mechanism acted? ____",
+      "answers": [
+        "DFS",
+        "dynamic frequency selection"
+      ],
+      "explanation": "DFS protects radar users on applicable channels. TPC controls transmit power."
+    },
+    {
+      "id": "sae",
+      "objective": "2.3",
+      "prompt": "WPA3-Personal uses which password-authenticated exchange (three letters)? ____",
+      "answers": [
+        "SAE"
+      ],
+      "explanation": "Simultaneous Authentication of Equals authenticates the peers. Enterprise WLANs commonly use 802.1X/EAP instead."
+    },
+    {
+      "id": "radius",
+      "objective": "2.3",
+      "prompt": "In a typical enterprise WLAN, the AP forwards authentication requests to an AAA server using which protocol? ____",
+      "answers": [
+        "RADIUS"
+      ],
+      "explanation": "The AP acts as the authenticator. RADIUS carries the exchange to the authentication service."
+    },
+    {
+      "id": "strong",
+      "objective": "5.4",
+      "prompt": "The same client records −54 and −78 dBm. Give the magnitude of the difference in dB: ____.",
+      "answers": [
+        "24",
+        "24 dB",
+        "24dB"
+      ],
+      "explanation": "Subtract the levels. −54 dBm is 24 dB stronger. Signal level alone does not measure free airtime."
+    },
+    {
+      "id": "jitter",
+      "objective": "5.4",
+      "prompt": "A trace shows one-way delay varying from 8 to 48 ms. Variation in packet delay is called ____.",
+      "answers": [
+        "jitter",
+        "packet delay variation",
+        "delay variation"
+      ],
+      "explanation": "Jitter affects playout timing even if every packet arrives."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "mix",
+      "objective": "1.5",
+      "type": "Example",
+      "prompt": "A shop has 2.4 GHz-only 802.11n scanners and 6E laptops. The site permits 6 GHz and both types need service. Which radios do you enable, and what should you check before moving laptops?",
+      "source": "Use the wireless standards comparison.",
+      "key": "Keep a compatible 2.4 GHz WLAN for scanners. Provide 6 GHz on a 6E-capable AP for laptops. Verify client security support, local rules and coverage at the workstations."
+    },
+    {
+      "id": "channels",
+      "objective": "2.3",
+      "type": "Factual",
+      "prompt": "Three overlapping AP cells use 20 MHz channels in 2.4 GHz. For this exercise only channels 1–11 are available. The plan uses 1, 3 and 11. Identify the overlapping pair and propose a better reuse plan.",
+      "source": "Check frequency separation rather than counting different channel numbers.",
+      "key": "1 and 3 partly overlap. Use 1, 6 and 11 on the adjacent cells. Confirm utilization after deployment and account for neighboring WLANs."
+    },
+    {
+      "id": "profiles",
+      "objective": "2.3",
+      "type": "Example",
+      "prompt": "A clinic wants individual staff credentials, internet-only guest access and a guest terms page. Assign authentication, VLAN and policy responsibilities. Explain what happens when one staff member leaves.",
+      "source": "Separate association, identity and routed access.",
+      "key": "Use an enterprise staff WLAN with individual identities and a RADIUS-backed EAP configuration. Use a separate guest VLAN and restrict its routed access while allowing required infrastructure and internet services. Add a guest portal for terms. Revoke the departing person's identity or certificate."
+    },
+    {
+      "id": "bridge",
+      "objective": "2.3",
+      "type": "Example",
+      "prompt": "Two fixed warehouse roofs have a clear path. Inside each building, handhelds move around a central aisle. Choose an antenna pattern and network design for each use, with one placement check.",
+      "source": "Trace where energy and client coverage are needed.",
+      "key": "Use aligned directional antennas on a point-to-point roof link. Use infrastructure APs with appropriate omnidirectional coverage in the aisles. Survey from the handhelds' height around shelving."
+    },
+    {
+      "id": "survey",
+      "objective": "5.4",
+      "type": "Example",
+      "prompt": "At quiet and busy times a survey shows: office −54 dBm and low utilization, storeroom −80 dBm behind a metal partition and low utilization, meeting room −53 dBm with utilization rising from 19% to 91% when occupied. Wired tests remain normal. Give a different first action and verification for each problem room.",
+      "source": "Compare the change with location against the change with load.",
+      "key": "Survey AP placement or add coverage around the partition and retest storeroom signal and retries. In the meeting room, examine client distribution and channel reuse, then verify throughput and utilization at the same busy load. Raising AP power alone does not create airtime."
+    },
+    {
+      "id": "roam",
+      "objective": "5.4",
+      "type": "Example",
+      "prompt": "A moving voice handset retains BSSID A at −79 dBm while B is visible at −56 dBm on the same staff WLAN. A stationary handset works on B. What would you inspect before declaring the WAN at fault?",
+      "source": "Correlate location, association and voice timestamps.",
+      "key": "Inspect the handset's roaming decisions, overlap and B's authentication/VLAN configuration. Walk the same path while tracking the BSSID, reassociation time, jitter and loss. The stationary result helps localize the problem."
+    },
+    {
+      "id": "auth",
+      "objective": "5.4",
+      "type": "Example",
+      "prompt": "After a staff authentication certificate renewal, managed clients see strong signal but fail server-certificate validation before obtaining a lease. Guest clients on the same AP work. Give the first checks and a successful verification.",
+      "source": "Identify the last successful step before DHCP.",
+      "key": "Check the authentication server's presented chain, name, validity dates, client time and trusted profile. Correct the mismatch and verify enterprise association, a staff lease and service access in order."
+    },
+    {
+      "id": "airtime",
+      "objective": "5.4",
+      "type": "Example",
+      "prompt": "At a quiet site, retries spike whenever a nearby appliance runs. Signal from the AP is steady and only a few clients are associated. How would you distinguish external interference from client saturation?",
+      "source": "Change one condition and measure at the same location.",
+      "key": "Compare spectrum activity, retries and throughput with the appliance on and off. Try a permitted cleaner channel or band and repeat. Client saturation would track airtime demand from active stations."
+    }
+  ]
+}
