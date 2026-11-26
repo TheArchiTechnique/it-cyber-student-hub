@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { networkCapstoneChecks } from './network-plus-capstone-browser.mjs';
-import { matches } from '../docs/assets/javascripts/study-plans/progress.mjs';
+import { responsiveChecks } from './study-plans-integration-browser.mjs';
+import { storageKey, matches } from '../docs/assets/javascripts/study-plans/progress.mjs';
 
 export async function networkPlanChecks(browser, root) {
   const context = await browser.newContext();
@@ -35,6 +36,11 @@ export async function networkPlanChecks(browser, root) {
     const available = plan.days.filter(day => day.session);
     assert.deepEqual(available.map(day => day.number), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
     assert.equal(await page.locator('.plan-grid article').count(), 14);
+    for (const [i, day] of plan.days.entries()) {
+      const tile = page.locator('.plan-grid article').nth(i);
+      assert.equal(await tile.locator('h2').innerText(), day.title);
+      assert.ok((await tile.innerText()).includes(day.minutes + ' min'));
+    }
     assert.equal(await page.locator('.plan-grid .open').count(), 14);
     assert.equal(await page.locator('#edition').innerText(), 'CompTIA Network+ · N10-009 · V9');
     // An edition with a scheduled capstone still returns direct links to the calendar.
@@ -133,7 +139,11 @@ export async function networkPlanChecks(browser, root) {
     await reopened.goto(app.href);
     await reopened.getByText('12 of 14 days completed · 14 interactive sessions available').waitFor();
     await reopened.close();
+    await responsiveChecks(page, app);
     await networkCapstoneChecks(page, plan, root, app, coreApp);
+    await open(app, 'calendar');
+    await page.getByText('14 of 14 days completed · 14 interactive sessions available').waitFor();
+    assert.ok(await page.locator('.plan-grid article').filter({ hasText: 'Needs review' }).count() >= 3);
     await open(app, 'day-1/review');
     page.once('dialog', dialog => dialog.accept());
     await button('Reset this day').click();
@@ -149,8 +159,67 @@ export async function networkPlanChecks(browser, root) {
       await page.locator('#view .panel').first().waitFor();
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), view);
     }
+    await persistenceChecks(browser, app, coreApp, plan);
     assert.deepEqual(errors, []);
   } finally {
     await context.close();
+  }
+}
+
+
+async function persistenceChecks(browser, app, coreApp, plan) {
+  const context = await browser.newContext({ hasTouch: true });
+  let snapshot;
+  const open = (page, url, hash) => page.goto(url.href + '#' + hash);
+  try {
+    const page = await context.newPage();
+    await open(page, app, 'day-1/cards');
+    await page.getByRole('button', { name: 'Reveal answer' }).tap();
+    await page.getByRole('button', { name: 'Needs review' }).tap();
+    await open(page, app, 'day-3/worksheet');
+    const response = page.locator('textarea').first();
+    await response.fill('My subnet calculation');
+    await response.evaluate(el => el.setSelectionRange(3, 9));
+    const peer = await context.newPage();
+    await open(peer, app, 'day-3/worksheet');
+    await peer.locator('textarea').nth(1).fill('A second calculation');
+    await page.waitForFunction(() => document.querySelectorAll('textarea')[1].value === 'A second calculation');
+    assert.deepEqual(await response.evaluate(el => [el === document.activeElement, el.selectionStart, el.selectionEnd]), [true, 3, 9]);
+    await open(page, app, 'day-13/review');
+    await page.locator('[name=priority1]').fill('Check subnet boundaries');
+    await open(peer, coreApp, 'day-13/review');
+    assert.equal(await peer.locator('[name=priority1]').inputValue(), '');
+    await open(peer, coreApp, 'day-3/worksheet');
+    assert.equal(await peer.locator('textarea').first().inputValue(), '');
+    peer.once('dialog', dialog => dialog.accept());
+    await peer.getByRole('button', { name: 'Reset this day' }).click();
+    snapshot = await context.storageState();
+  } finally {
+    await context.close();
+  }
+  const restored = await browser.newContext({ storageState: snapshot });
+  try {
+    const page = await restored.newPage();
+    await open(page, app, 'day-13/review');
+    assert.equal(await page.locator('[name=priority1]').inputValue(), 'Check subnet boundaries');
+    await open(page, app, 'day-3/worksheet');
+    assert.equal(await page.locator('textarea').first().inputValue(), 'My subnet calculation');
+    await page.evaluate(keys => {
+      localStorage.setItem(keys[0], '{');
+      localStorage.setItem(keys[1], JSON.stringify({ cards: null }));
+      localStorage.setItem(keys[2], JSON.stringify({ records: [null] }));
+    }, [2, 4, 14].map(n => storageKey(plan, n)));
+    await page.reload();
+    await open(page, app, 'invalid/route');
+    await page.getByRole('heading', { name: 'Study calendar' }).waitFor();
+    assert.match(await page.locator('#storage-note').textContent(), /could not be read/);
+    await open(page, app, 'day-4/review');
+    await page.getByRole('button', { name: 'Mark review complete' }).press('Enter');
+    await page.reload();
+    await page.getByRole('button', { name: 'Mark review unread' }).waitFor();
+    await open(page, app, 'day-14/review');
+    await page.locator('[name=recall]').waitFor();
+  } finally {
+    await restored.close();
   }
 }

@@ -64,7 +64,8 @@ export async function networkCapstoneChecks(page, plan, root, app, coreApp) {
     await input('next').fill('Repeat the subnetting lab Friday on an unfamiliar prefix and verify by recalculating the host range.');
     await page.reload();
     assert.equal(await input('independence').inputValue(), independence);
-    await btn('Save readiness review').click();
+    await btn('Save readiness review').press('Enter');
+    assert.equal(await page.locator(':focus').getAttribute('id'), 'saved-review');
     await page.getByText(outcome, { exact: true }).waitFor();
     return (await state(14)).records.at(-1);
   }
@@ -182,7 +183,16 @@ export async function networkCapstoneChecks(page, plan, root, app, coreApp) {
     await target.locator('summary').click();
     const link = target.getByRole('link', { name: label, exact: true }).and(target.locator('a[href^="' + path + '"]'));
     await link.click();
-    assert.ok(new URL(page.url()).hash.startsWith(path));
+    const hash = new URL(page.url()).hash;
+    assert.ok(hash.startsWith(path));
+    const focusId = label === 'Flashcards' ? 'card-prompt' : 'answer-' + hash.split('/').at(-1);
+    await page.locator('#' + focusId + ':focus').waitFor();
+    await page.reload();
+    await page.locator('#' + focusId + ':focus').waitFor();
+    await page.goBack();
+    await page.getByRole('heading', { name: /Day 14/ }).waitFor();
+    await page.goForward();
+    await page.locator('#' + focusId + ':focus').waitFor();
     await open(14);
   }
   await page.goto(coreApp.href + '#day-13/review');

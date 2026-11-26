@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [feature/network-plus-subnetting-lab, content/network-plus-physical-cabling-pbq, content/network-plus-osi-pdu-tracing-lab, content/network-plus-packet-tracer-labs, feature/certification-practice-tests, content/a-plus-core2-helpdesk-ticket-triage, content/a-plus-core2-malware-investigation-remediation, improve/a-plus-core2-phishing-pbq-workflow, content/a-plus-core2-phishing-email-pbq, feature/a-plus-core2-linux-terminal-simulator, feature/learning-resource-navigation-ux, build/initial-student-hub, feature/centralized-pbq-library, feature/pbq-catalog-certification-integration, feature/global-pbq-library, feature/automatic-content-visibility, content/virtualbox-linux-mint-shared-lab, content/a-plus-core2-network-configuration-concepts, content/a-plus-core2-windows-command-practice, content/a-plus-core2-windows-troubleshooting-pbq, content/a-plus-core2-startup-bsod-pbqs, content/a-plus-core2-linux-mint-command-lab]
+    branches: [feature/certification-study-plans-network-plus, feature/network-plus-subnetting-lab, content/network-plus-physical-cabling-pbq, content/network-plus-osi-pdu-tracing-lab, content/network-plus-packet-tracer-labs, feature/certification-practice-tests, content/a-plus-core2-helpdesk-ticket-triage, content/a-plus-core2-malware-investigation-remediation, improve/a-plus-core2-phishing-pbq-workflow, content/a-plus-core2-phishing-email-pbq, feature/a-plus-core2-linux-terminal-simulator, feature/learning-resource-navigation-ux, build/initial-student-hub, feature/centralized-pbq-library, feature/pbq-catalog-certification-integration, feature/global-pbq-library, feature/automatic-content-visibility, content/virtualbox-linux-mint-shared-lab, content/a-plus-core2-network-configuration-concepts, content/a-plus-core2-windows-command-practice, content/a-plus-core2-windows-troubleshooting-pbq, content/a-plus-core2-startup-bsod-pbqs, content/a-plus-core2-linux-mint-command-lab]
   workflow_dispatch:
 permissions:
   contents: read
@@ -50,6 +50,16 @@ jobs:
       - run: npm run test:malware-investigation-remediation
       - run: npm run test:helpdesk-ticket-triage
       - run: npm run test:practice-tests
+      - name: Validate both certification study plans on the built site
+        run: |
+          mount_dir=$(mktemp -d)
+          ln -s "$PWD/site" "$mount_dir/it-cyber-student-hub"
+          python -m http.server 8765 --bind 127.0.0.1 --directory "$mount_dir" > "$RUNNER_TEMP/study-plan-server.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          site_url=http://127.0.0.1:8765/it-cyber-student-hub/
+          curl --fail --silent --retry 10 --retry-connrefused "$site_url" --output /dev/null
+          npm run test:study-plans -- "$site_url"
       - uses: actions/upload-artifact@v4
         with:
           name: student-hub-preview

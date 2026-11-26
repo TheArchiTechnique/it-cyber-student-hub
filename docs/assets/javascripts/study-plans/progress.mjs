@@ -26,6 +26,7 @@ export function summary(session, state) {
   if (session.type) {
     const last = state.records?.at(-1);
     return {
+      complete: Boolean(last),
       status: last ? 'Completed' : state.capstoneDraft ? 'In progress' : 'Not started',
       flags: last?.objectives || []
     };
@@ -48,7 +49,7 @@ export function summary(session, state) {
   let status = started ? 'In progress' : 'Not started';
   if (count === 4) status = 'Completed';
   if (flags.size) status = 'Needs review';
-  return { activities, count, status, flags: [...flags], score: correct.length };
+  return { activities, count, complete: count === 4, status, flags: [...flags], score: correct.length };
 }
 
 // Each objective keeps the evidence used to recommend it. Domain weight breaks ties.

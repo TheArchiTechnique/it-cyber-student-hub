@@ -245,7 +245,10 @@ export function renderCapstone(day, session, context) {
   section.append(node('p', day.minutes + ' minutes · ' + day.goal));
   const recent = records.at(-1);
   if (recent) {
-    section.append(node('h3', isExam ? 'Saved exam reviews' : 'Saved readiness reviews'));
+    const savedHeading = node('h3', isExam ? 'Saved exam reviews' : 'Saved readiness reviews');
+    savedHeading.tabIndex = -1;
+    savedHeading.id = 'saved-review';
+    section.append(savedHeading);
     if (!isExam) {
       section.append(node('p', recent.outcome, 'status'),
         node('p', 'This advisory reflects the evidence you recorded for this attempt. Use it to plan your next study session or exam arrangements.'),
@@ -336,7 +339,7 @@ export function renderCapstone(day, session, context) {
         s.records = [...(s.records || []), record];
         delete s.capstoneDraft;
       });
-      render('heading');
+      render('saved-review');
     });
     section.append(form);
   }

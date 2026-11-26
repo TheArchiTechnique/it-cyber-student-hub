@@ -9,7 +9,10 @@ export async function integrationChecks(browser, root, app, plan, session) {
   const button = title => page.getByRole('button', { name: title, exact: true });
   try {
     const index = await (await page.request.get(new URL('search/search_index.json', root).href)).json();
-    assert.ok(index.docs.some(doc => doc.location.includes('a-plus-core-2/') && doc.text.includes('14-Day Certification Study Plan')));
+    for (const cert of ['a-plus-core-2', 'network-plus']) {
+      assert.ok(index.docs.some(doc => doc.location.startsWith('certifications/comptia/' + cert + '/') && doc.text.includes('14-Day Certification Study Plan')));
+    }
+    assert.ok(!index.docs.some(doc => /study-plan\/app\/|assets\/data\/study-plans/.test(doc.location)));
     await open(page, 'day-1/quiz');
     for (const [i, question] of session.quiz.entries()) {
       await page.locator('#answer-' + question.id).fill(i ? question.answers[0] : 'missed');
@@ -25,29 +28,7 @@ export async function integrationChecks(browser, root, app, plan, session) {
       await page.locator('.capstone summary').filter({ hasText: objective + ' ' }).filter({ hasText: reason }).waitFor();
     }
 
-    const screens = [
-      ['calendar', '.plan-grid'], ['day-1/review', '.topic-list'], ['day-1/cards', '.card-face'],
-      ['day-1/quiz', '#quiz-score'], ['day-1/worksheet', 'textarea'],
-      ['day-13/review', '[name=percentage]'], ['day-14/review', '[name=recall]']
-    ];
-    for (const [hash, selector] of screens) {
-      await open(page, hash);
-      await page.locator(selector).first().waitFor();
-      for (const width of [1440, 1280, 768, 390, 320]) {
-        await page.setViewportSize({ width, height: 850 });
-        for (const dark of [true, false]) {
-          await page.locator('#theme').click();
-          assert.equal(await page.locator('#theme').getAttribute('aria-pressed'), String(dark));
-          assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), hash + ' at ' + width);
-          const collisions = await page.evaluate(() => {
-            const boxes = [...document.querySelectorAll('.plan-grid article, .study-nav a, .inline-controls button')]
-              .filter(el => el.getClientRects().length).map(el => el.getBoundingClientRect());
-            return boxes.some((a, i) => boxes.slice(i + 1).some(b => a.left < b.right - 1 && b.left < a.right - 1 && a.top < b.bottom - 1 && b.top < a.bottom - 1));
-          });
-          assert.equal(collisions, false, hash + ' at ' + width);
-        }
-      }
-    }
+    await responsiveChecks(page, app);
     await open(page, 'day-1/worksheet');
     await page.locator('textarea').first().fill('Saved before closing the tab.');
     await page.close();
@@ -106,5 +87,32 @@ export async function integrationChecks(browser, root, app, plan, session) {
     assert.match(await tab.locator('#storage-note').textContent(), /until you reload/);
   } finally {
     await blocked.close();
+  }
+}
+
+export async function responsiveChecks(page, app) {
+  const screens = [
+    ['calendar', '.plan-grid'], ['day-1/review', '.topic-list'], ['day-1/cards', '.card-face'],
+    ['day-1/quiz', '#quiz-score'], ['day-1/worksheet', 'textarea'],
+    ['day-13/review', '[name=percentage]'], ['day-14/review', '[name=recall]']
+  ];
+  for (const [hash, selector] of screens) {
+    await page.goto(app.href + '#' + hash);
+    await page.locator(selector).first().waitFor();
+    for (const width of [1440, 1280, 768, 390, 320]) {
+      await page.setViewportSize({ width, height: 850 });
+      const wasDark = await page.locator('#theme').getAttribute('aria-pressed') === 'true';
+      for (const dark of [!wasDark, wasDark]) {
+        await page.locator('#theme').click();
+        assert.equal(await page.locator('#theme').getAttribute('aria-pressed'), String(dark));
+        assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), hash + ' at ' + width);
+        const collisions = await page.evaluate(() => {
+          const boxes = [...document.querySelectorAll('.plan-grid article, .study-nav a, .inline-controls button')]
+            .filter(el => el.getClientRects().length).map(el => el.getBoundingClientRect());
+          return boxes.some((a, i) => boxes.slice(i + 1).some(b => a.left < b.right - 1 && b.left < a.right - 1 && a.top < b.bottom - 1 && b.top < a.bottom - 1));
+        });
+        assert.equal(collisions, false, hash + ' at ' + width);
+      }
+    }
   }
 }

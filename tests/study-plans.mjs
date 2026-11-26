@@ -111,6 +111,8 @@ assert.equal(readinessOutcome(readiness.checks, answers, null), 'Additional targ
 assert.equal(readinessOutcome(readiness.checks, answers, { percentage: '86' }), 'Ready to schedule or attempt the exam');
 assert.equal(readinessOutcome(readiness.checks, { ...answers, gaps: 'Needs work' }, {}), 'Significant objective gaps remain');
 assert.equal(readinessOutcome(readiness.checks, { ...answers, independence: 'With guidance' }, { percentage: '86' }), 'Additional targeted review recommended');
+assert.equal(readinessOutcome(readiness.checks, answers, { percentage: '50' }), 'Ready to schedule or attempt the exam');
+assert.equal(readinessOutcome(readiness.checks, { ...answers, timed: 'Needs practice' }, { percentage: '50' }), 'Additional targeted review recommended');
 assert.equal(readinessOutcome(readiness.checks, answers, { percentage: '42' }), 'Additional targeted review recommended');
 
 for (const percentage of [undefined, '', 'unknown', '101', '80.5', -1, 49]) {

@@ -20,12 +20,35 @@ function route(day, activity = 'review', id = '') {
 function warning() {
   document.querySelector('#storage-note').textContent = 'Browser storage is unavailable. Progress is available in this tab until you reload or leave.';
 }
+function unpackDay(raw, day) {
+  if (!raw) return freshDay();
+  const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+  const stringList = value => Array.isArray(value) && value.every(item => typeof item === 'string');
+  const validRecord = record => object(record) && ['domains', 'objectives', 'causes'].every(
+    key => !(key in record) || stringList(record[key]));
+  try {
+    const saved = JSON.parse(raw);
+    if (!object(saved)) throw Error();
+    const state = { ...freshDay(), ...saved };
+    if (['read', 'reviewed', 'retry'].some(key => typeof state[key] !== 'boolean')) throw Error();
+    for (const key of ['cards', 'drafts', 'responses', 'flags', 'lastQuiz']) {
+      if (key === 'lastQuiz' && state[key] === null) continue;
+      const type = key === 'flags' ? 'boolean' : 'string';
+      if (!object(state[key]) || Object.values(state[key]).some(value => typeof value !== type)) throw Error();
+    }
+    if (state.records !== undefined && !(Array.isArray(state.records) && state.records.every(validRecord))) throw Error();
+    if (state.capstoneDraft !== undefined && !validRecord(state.capstoneDraft)) throw Error();
+    return state;
+  } catch {
+    document.querySelector('#storage-note').textContent = 'Saved progress for Day ' + day + ' could not be read. You can restart that day.';
+    return freshDay();
+  }
+}
 function read(day) {
   if (memory.has(day)) return memory.get(day);
   let data = freshDay();
   try {
-    const saved = JSON.parse(localStorage.getItem(storageKey(plan, day)));
-    if (saved) data = { ...data, ...saved };
+    data = unpackDay(localStorage.getItem(storageKey(plan, day)), day);
   } catch { warning(); }
   memory.set(day, data);
   return data;
@@ -37,7 +60,7 @@ function change(day, edit) {
   let stored;
   try {
     stored = localStorage.getItem(key);
-    if (!unsavedDays.has(day)) state = { ...freshDay(), ...JSON.parse(stored) };
+    if (!unsavedDays.has(day)) state = unpackDay(stored, day);
   } catch { warning(); }
   edit(state);
   memory.set(day, state);
@@ -99,7 +122,7 @@ function coverage() {
 function calendar() {
   heading.textContent = '14-Day Study Plan';
   const intro = panel('Study calendar');
-  const completed = [...sessions].filter(([day, session]) => summary(session, read(day)).status === 'Completed').length;
+  const completed = [...sessions].filter(([day, session]) => summary(session, read(day)).complete).length;
   const flagged = new Set([...sessions].flatMap(([day, session]) => summary(session, read(day)).flags));
   intro.append(node('p', 'Use this two-week review after coursework. Start with the objectives, recall each topic without notes, then apply it to a support decision.'),
     node('p', completed + ' of ' + plan.days.length + ' days completed · ' + sessions.size + ' interactive sessions available', 'status'),
@@ -155,6 +178,7 @@ function flashcards(day, session, target) {
     body.replaceChildren();
     const prompt = node('h3', card.prompt);
     prompt.tabIndex = -1;
+    prompt.id = 'card-prompt';
     const face = node('div', undefined, 'card-face');
     const state = { known: 'Known', review: 'Needs review' }[marks[card.id]] || 'Unrated';
     face.append(node('p', 'Card ' + (index + 1) + ' of ' + queue.length + ' · Objective ' + card.objective + ' · ' + state, 'muted'), prompt);
@@ -378,7 +402,10 @@ function render(focusId) {
     daily.id = 'day-progress';
     view.append(daily, link('Return to study calendar', '#calendar'));
     progress(day, session);
-    if (target && (!focusId || focusId === 'heading') && ['quiz', 'worksheet'].includes(kind)) focusId = 'answer-' + target;
+    if (target && (!focusId || focusId === 'heading')) {
+      if (kind === 'cards') focusId = 'card-prompt';
+      if (kind === 'quiz' || kind === 'worksheet') focusId = 'answer-' + target;
+    }
   }
   if (focusId) (document.getElementById(focusId) || heading).focus();
 }
@@ -403,7 +430,18 @@ async function start() {
     else for (const number of memory.keys()) if (!unsavedDays.has(number)) memory.delete(number);
 
     const active = Number(location.hash.match(/^#day-(\d+)/)?.[1]);
-    if (!day || !active || active === day.number || sessions.get(active)?.type === 'readiness') render();
+    if (day && active && active !== day.number && sessions.get(active)?.type !== 'readiness') return;
+    const editor = document.activeElement;
+    const editing = editor.matches('textarea, input[type="number"], input:not([type])');
+    const selection = editing && [editor.selectionStart, editor.selectionEnd, editor.selectionDirection];
+    render();
+    if (editing) {
+      const field = editor.id ? document.getElementById(editor.id) : view.querySelector('[name="' + CSS.escape(editor.name) + '"]');
+      if (field && !field.readOnly) {
+        field.focus({ preventScroll: true });
+        if (selection[0] !== null) field.setSelectionRange(...selection);
+      }
+    }
   });
   window.addEventListener('beforeprint', () => {
     const day = plan.days.find(d => location.hash.split('/')[0] === '#day-' + d.number);
