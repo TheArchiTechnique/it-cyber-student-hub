@@ -190,6 +190,12 @@
       "objective": "4.3",
       "prompt": "Which control blocks a prohibited file type regardless of its allowed web address, when the body is visible?",
       "answer": "A content filter that inspects the file. A URL-only rule evaluates the requested address."
+    },
+    {
+      "id": "keys",
+      "objective": "4.3",
+      "prompt": "A management server’s private key was exposed. Which actions restore a trustworthy TLS identity for future connections?",
+      "answer": "Retire the exposed key, revoke the affected certificate, generate a new key pair, and deploy a newly issued certificate. Check that clients validate the replacement and that private-key access is restricted. Renewing a certificate with the same exposed key leaves the risk in place."
     }
   ],
   "quiz": [
@@ -247,7 +253,7 @@
     {
       "id": "offer",
       "objective": "4.2",
-      "prompt": "Two DHCP offers reach a client. The second server is confirmed unauthorized. It is a ____ DHCP server.",
+      "prompt": "Two clients get leases on the same VLAN. One lease lists a server identifier absent from the approved inventory. Its switchport leads to a personal router with DHCP enabled. How would you classify this DHCP service? ____",
       "answers": [
         "rogue",
         "unauthorized"

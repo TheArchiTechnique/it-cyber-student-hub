@@ -30,7 +30,7 @@
     {
       "objective": "3.4",
       "title": "Read what the DHCP server actually offered",
-      "text": "A static host keeps locally configured settings. A dynamic host can receive an address and options for a lease interval. For a new DHCPv4 lease, Discover finds servers, Offer proposes settings, Request selects an offer, and Acknowledge confirms the lease. On the client-facing link DHCP uses UDP 68 at the client and 67 at the server. A scope serves a particular subnet. Exclusions keep addresses out of automatic assignment. A reservation ties an address to a client identifier. Options commonly supply the router (3) and DNS servers (6). A relay on the client VLAN forwards requests to a server across a router and identifies the originating subnet for pool selection."
+      "text": "A static host keeps locally configured settings. A dynamic host can receive an address and options for a lease interval. For a new DHCPv4 lease, Discover finds servers, Offer proposes settings, Request selects an offer, and Acknowledge confirms the lease. On the client-facing link DHCP uses UDP 68 at the client and 67 at the server. A scope serves a particular subnet. Exclusions keep addresses out of automatic assignment. A reservation ties an address to a client identifier. Options commonly supply the router (3) and DNS servers (6). A relay on the client VLAN forwards requests to a server across a router and identifies the originating subnet for pool selection. An existing lease follows a different path. At T1 the client normally unicasts a DHCPREQUEST to its leasing server. If renewal fails, at T2 it broadcasts to rebind. After expiry it must stop using the leased address unless it acquires a valid lease."
     },
     {
       "objective": "3.4",
@@ -75,6 +75,10 @@
     [
       "Mail submission (RFC 6409)",
       "https://www.rfc-editor.org/rfc/rfc6409"
+    ],
+    [
+      "DHCPv4 renewal and rebinding (RFC 2131 §4.4.5)",
+      "https://www.rfc-editor.org/rfc/rfc2131#section-4.4.5"
     ]
   ],
   "cards": [
@@ -197,6 +201,12 @@
       "objective": "5.3",
       "prompt": "A cached resolver returns an old A record while the correct authoritative answer is already published. What value bounds ordinary cache retention?",
       "answer": "The record's remaining time to live (TTL). Check the actual resolver and remaining TTL before editing the zone again."
+    },
+    {
+      "id": "rebind",
+      "objective": "3.4",
+      "prompt": "A DHCPv4 client has an eight-hour lease and uses default timers. When does it first try renewal and when can another server respond to rebinding?",
+      "answer": "At T1, four hours after the lease begins, it normally unicasts to the leasing server. At T2, seven hours after the start, it broadcasts if renewal failed. The original lease expires at eight hours."
     }
   ],
   "quiz": [

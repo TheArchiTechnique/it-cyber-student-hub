@@ -93,7 +93,7 @@
     {
       "id": "ospf",
       "objective": "2.1",
-      "prompt": "Which interior protocol builds a link-state database and computes a shortest-path tree?",
+      "prompt": "Which link-state interior protocol organizes routers into areas connected through a backbone area numbered 0?",
       "answer": "OSPF. Its path cost can reflect configured interface costs."
     },
     {
@@ -176,7 +176,7 @@
     {
       "id": "igp",
       "objective": "2.1",
-      "prompt": "Which interior routing protocol uses a link-state database and cost? Give its acronym: ____.",
+      "prompt": "A campus routing database groups routers into areas, with area 0 as the backbone. Which interior link-state protocol uses this design? Give its acronym. ____",
       "answers": [
         "OSPF"
       ],

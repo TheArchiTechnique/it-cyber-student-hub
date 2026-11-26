@@ -25,7 +25,7 @@
     {
       "objective": "5.2",
       "title": "Test fiber and power separately",
-      "text": "Match single-mode or multimode fiber, supported transceiver standard, wavelength and reach at both ends. Check polarity so each transmitter reaches the far receiver. Contaminated end faces, bends and long runs reduce optical power. Compare measured receive power with the module's range and inspect/clean connectors using approved equipment. A visual fault locator helps trace continuity, an optical power meter with a known source measures loss, and an OTDR estimates distance to reflective or loss events. For PoE, compare device standard and requested power with per-port capability and remaining switch budget."
+      "text": "Match single-mode or multimode fiber, supported transceiver standard, wavelength and reach at both ends. Check polarity so each transmitter reaches the far receiver. Contaminated end faces, bends and long runs reduce optical power. Compare measured receive power with the module's range and inspect/clean connectors using approved equipment. A visual fault locator (VFL) helps trace continuity, an optical power meter with a known source measures loss, and an OTDR estimates distance to reflective or loss events. For PoE, compare device standard and requested power with per-port capability and remaining switch budget."
     },
     {
       "objective": "5.2",
@@ -218,7 +218,7 @@
     {
       "id": "state",
       "objective": "5.2",
-      "prompt": "A Cisco switch log records a port-security violation and its port status reads err-disabled. Which state is this? ____",
+      "prompt": "On a Cisco switch configured to shut down a port on a port-security violation, a new device triggers the limit. The log records protective shutdown while the interface configuration still permits operation. Which port state should you expect? ____",
       "answers": [
         "error-disabled",
         "error disabled",
@@ -293,11 +293,12 @@
     {
       "id": "mapping",
       "objective": "5.5",
-      "prompt": "On Cisco IOS, fill in the command that lists learned MAC addresses by VLAN and port. ____",
+      "prompt": "On Cisco IOS, enter the full show command for the complete switch MAC address table, using the three-word syntax. ____",
       "answers": [
         "show mac address-table"
       ],
-      "explanation": "The MAC table tracks Layer 2 learning. show ip arp instead relates IPv4 addresses to local neighbor MACs."
+      "explanation": "The MAC table tracks Layer 2 learning. show ip arp instead relates IPv4 addresses to local neighbor MACs.",
+      "answerFormat": "command"
     },
     {
       "id": "wiremap",
@@ -334,7 +335,7 @@
       "id": "link",
       "objective": "5.2",
       "type": "Example",
-      "prompt": "Simulated observations: a desk drops frames when a cable is moved. The port is up at 1 Gb/s full duplex at both ends. Input CRC rises from 4 to 94 in one minute. A certifier reports a split pair on the installed run. Choose a repair, test and verification metric.",
+      "prompt": "Simulated observations: a new desk run drops frames during sustained transfers. The port is up at 1 Gb/s full duplex at both ends. Input CRC rises from 4 to 94 in one minute. A certifier reports a split pair on the installed run. Choose a repair, test and verification metric.",
       "source": "Compare counter deltas and distinguish a pair fault from a duplex mismatch.",
       "key": "Correct the affected pair termination or replace the defective run, then recertify for the required category. Repeat the transfer and confirm CRCs stop increasing under comparable load. The counter alone could reflect several faults, but the certifier identifies wiring and both ends agree on duplex."
     },
@@ -401,6 +402,14 @@
       "prompt": "An inbound first-match guest ACL permits UDP to 192.0.2.53 port 53, then denies all other traffic to the services subnet. Small DNS replies work. A truncated reply triggers a TCP 53 retry and the deny counter rises. Which two evidence sources identify the restriction, what change preserves policy, and how would you test it?",
       "source": "Follow transport, destination and rule order. Test a forbidden service too.",
       "key": "Use a protocol analyzer for the truncated response and TCP retry, and the ACL counters/configuration for the matching deny. Add a narrow TCP 53 permit from the guest subnet to that resolver ahead of the deny. Verify both DNS transports and that another service remains blocked. Allowing the entire subnet would exceed policy."
+    },
+    {
+      "id": "socket-path",
+      "objective": "5.5",
+      "type": "Example",
+      "prompt": "Illustrative Windows netstat -ano output on the IPv4 web server includes “TCP 127.0.0.1:8080 0.0.0.0:0 LISTENING 4312”. This is its only TCP listener on port 8080. A browser on the server reaches http://127.0.0.1:8080. A peer can ping the server’s LAN address but cannot open that port. What does the row establish, what should be checked next and how would you verify a repair?",
+      "source": "Read the local address and port separately from the foreign endpoint and PID.",
+      "key": "PID 4312 is listening only on IPv4 loopback. Check whether policy intends LAN access and whether the application is configured to bind to the approved LAN address. After an authorized correction, verify the new listening endpoint and test the service from the intended peer. Ping confirms ICMP reachability. It cannot confirm that an application accepts that TCP connection."
     }
   ]
 }

@@ -33,7 +33,7 @@
       "text": "If one desk receives a lease for the wrong subnet, trace its wall jack and check its access VLAN. If the same VLAN works locally but fails only across an uplink, compare trunk mode, allowed VLANs and the VLAN database at both ends. If only routed traffic fails, check the client's mask and gateway, SVI or subinterface, and any ACL in the path. A native VLAN mismatch can misclassify untagged frames even when tagged VLANs work. If broadcasts surge and a stationary MAC repeatedly moves between uplinks, map the physical cycle and inspect STP roles before changing forwarding."
     },
     {
-      "objective": "5.3",
+      "objective": "2.2",
       "title": "Read the port settings alongside the symptom",
       "text": "Check operational speed and duplex on both ends. A link can stay up while a duplex mismatch causes poor throughput and error counters. Ethernet links commonly support an IP MTU of 1500 bytes. A jumbo configuration such as 9000 requires compatible limits across the path. A switch with a smaller frame limit can drop an oversized frame. At a router a too-large IPv4 packet with Don't Fragment set cannot be fragmented. Compare small and large probes and interface counters before attributing a size-dependent failure to a VLAN."
     },
@@ -130,7 +130,7 @@
     },
     {
       "id": "mtu",
-      "objective": "5.3",
+      "objective": "2.2",
       "prompt": "Why might a small ping pass while a storage transfer using jumbo frames repeatedly fails?",
       "answer": "A port or path may enforce a smaller MTU. Test different sizes and compare discard or giant-frame counters at each boundary."
     }
@@ -158,8 +158,9 @@
     {
       "id": "vlan",
       "objective": "2.2",
-      "prompt": "On a trunk configured for untagged native traffic, an arriving untagged frame is assigned to the ____ VLAN.",
+      "prompt": "Two Cisco switches exchange tagged frames for several VLANs. An untagged data frame arrives on the trunk. Which configured VLAN role classifies this frame? Give the role name. ____",
       "answers": [
+        "native VLAN",
         "native"
       ],
       "explanation": "The port supplies the classification because the frame has no VLAN tag. The peer must use the intended mapping."
@@ -194,7 +195,7 @@
     {
       "id": "allow",
       "objective": "5.3",
-      "prompt": "Both trunk ends allow VLANs 10 and 20 except the east end, which permits only VLAN 10. Which VLAN ID must be added there to restore both? ____",
+      "prompt": "A trunk must carry VLANs 10, 20 and 30. Its west allowed list is 10,20,30 and its east list is 10,30. Which VLAN ID can work locally but cannot cross this trunk? ____",
       "answers": [
         "20",
         "VLAN 20"
@@ -203,8 +204,8 @@
     },
     {
       "id": "duplex",
-      "objective": "5.3",
-      "prompt": "One end is forced full duplex and the peer operates half duplex. The configuration fault is a ____ mismatch.",
+      "objective": "2.2",
+      "prompt": "Both ends report 100 Mb/s. The switch can send and receive simultaneously, but its peer can do only one at a time. Which link setting is mismatched? ____",
       "answers": [
         "duplex"
       ],
@@ -212,7 +213,7 @@
     },
     {
       "id": "size",
-      "objective": "5.3",
+      "objective": "2.2",
       "prompt": "A path drops IP packets larger than 1500 bytes when fragmentation is unavailable. Which three-letter interface setting specifies its maximum IP packet size? ____",
       "answers": [
         "MTU"
@@ -279,7 +280,7 @@
     },
     {
       "id": "jumbo",
-      "objective": "5.3",
+      "objective": "2.2",
       "type": "Example",
       "prompt": "Two storage hosts and one switchport support 9000-byte IP packets. The other switchport limits frames to standard Ethernet size. Small transfers succeed and oversized-frame discards rise there. Propose two ways to restore consistent service.",
       "source": "Compare the end-to-end size limit with host settings.",

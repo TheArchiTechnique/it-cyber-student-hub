@@ -10,7 +10,7 @@
     {
       "objective": "1.5",
       "title": "Match the radio to the client",
-      "text": "An old 802.11b/g sensor needs 2.4 GHz. Legacy 802.11a operates at 5 GHz. Wi-Fi 4 (802.11n) supports 2.4 or 5 GHz, Wi-Fi 5 (802.11ac) uses 5 GHz, and Wi-Fi 6 (802.11ax) supports 2.4 and 5 GHz. Wi-Fi 6E extends ax into 6 GHz. Wi-Fi 7 (802.11be) can use 2.4, 5 and 6 GHz where permitted. Check both radios, local rules and security support before selecting a band. A displayed PHY rate includes airtime used for protocol overhead. Shared access, retries and signal conditions reduce useful application throughput."
+      "text": "An old 802.11b/g sensor needs 2.4 GHz. Legacy 802.11a operates at 5 GHz. Wi-Fi 4 (802.11n) supports 2.4 or 5 GHz, Wi-Fi 5 (802.11ac) uses 5 GHz, and Wi-Fi 6 (802.11ax) supports 2.4 and 5 GHz. Wi-Fi 6E extends ax into 6 GHz. Wi-Fi 7 (802.11be) can use 2.4, 5 and 6 GHz where permitted. Check both radios, local rules and security support before selecting a band. The displayed PHY rate is the physical-layer transmission rate during transmission. Headers, acknowledgments and waits between transmissions consume time. Shared access, retries and signal conditions reduce useful application throughput."
     },
     {
       "objective": "1.5",
@@ -277,11 +277,11 @@
     },
     {
       "id": "auth",
-      "objective": "5.4",
+      "objective": "2.3",
       "type": "Example",
       "prompt": "After a staff authentication certificate renewal, managed clients see strong signal but fail server-certificate validation before obtaining a lease. Guest clients on the same AP work. Give the first checks and a successful verification.",
       "source": "Identify the last successful step before DHCP.",
-      "key": "Check the authentication server's presented chain, name, validity dates, client time and trusted profile. Correct the mismatch and verify enterprise association, a staff lease and service access in order."
+      "key": "Check the authentication server's presented chain, name, validity dates, client time and trusted profile. Correct the mismatch and verify successful 802.1X authentication, a staff lease and service access in order."
     },
     {
       "id": "airtime",

@@ -40,7 +40,7 @@
     {
       "objective": "1.7",
       "title": "Apply the calculations to a working host",
-      "text": "Use the IPv4 Subnetting Learning Lab in independent mode and record your arithmetic before checking each answer. In Lab 1, compare a host's configured address, mask and gateway against the intended LAN. In the IP Configuration Troubleshooting PBQ, predict which destinations should be local before testing. Use one unexpected result to decide which setting to check next."
+      "text": "In the IPv4 Subnetting Learning Lab, use Independent mode to solve one conventional LAN subnet. Write the mask, network, broadcast and usable range before checking the result. For extra practice, choose Lab 1 to check a host configuration or the IP Configuration Troubleshooting PBQ to diagnose an incorrect setting."
     }
   ],
   "sources": [
@@ -80,7 +80,7 @@
       "id": "hosts",
       "objective": "1.7",
       "prompt": "Why does a conventional /28 LAN have 14 assignable addresses?",
-      "answer": "It has four host bits, giving 16 addresses. All host bits zero identify the network and all ones identify the broadcast."
+      "answer": "It has four host bits, giving 16 addresses. All host bits zero identify the network and all ones identify the broadcast. A /31 on a point-to-point link can use both addresses. A /32 identifies a single address."
     },
     {
       "id": "parent",
@@ -241,80 +241,80 @@
     {
       "id": "binary",
       "objective": "1.7",
-      "type": "Convert 203 to an eight-bit binary octet, then convert 01011010 to decimal. Show the weights you used.",
-      "prompt": "Factual",
+      "type": "Factual",
+      "prompt": "Convert 203 to an eight-bit binary octet, then convert 01011010 to decimal. Show the weights you used.",
       "source": "Write 128, 64, 32, 16, 8, 4, 2, 1 across the page.",
       "key": "203 = 128 + 64 + 8 + 2 + 1, so its bits are 11001011. For 01011010, sum 64 + 16 + 8 + 2 = 90."
     },
     {
       "id": "prefix",
       "objective": "1.7",
-      "type": "Write the mask for /21 and the prefix for 255.255.255.192. Identify the partial octet in each.",
-      "prompt": "Factual",
+      "type": "Factual",
+      "prompt": "Write the mask for /21 and the prefix for 255.255.255.192. Identify the partial octet in each.",
       "source": "Count leading ones before converting to dotted decimal.",
       "key": "/21 uses 8 + 8 + 5 ones. Third octet 11111000 is 248, giving 255.255.248.0. In the second mask, 192 is 11000000 in the fourth octet, so 24 + 2 = /26."
     },
     {
       "id": "portion",
       "objective": "1.7",
-      "type": "For 192.168.15.106/27, write the last octet in binary and mark the network/host boundary. What host number lies within the block?",
-      "prompt": "Factual",
+      "type": "Factual",
+      "prompt": "For 192.168.15.106/27, write the last octet in binary and mark the network/host boundary. What host number lies within the block?",
       "source": "Keep leading zeros in the host field.",
       "key": "106 is 01101010. Split 011 / 01010. The last five bits represent host number 10. Clearing them leaves 01100000, or .96."
     },
     {
       "id": "range",
       "objective": "1.7",
-      "type": "For 172.19.77.201/21, calculate the network, broadcast, first host and last host. Explain what happens in the third octet.",
-      "prompt": "Factual",
+      "type": "Factual",
+      "prompt": "For 172.19.77.201/21, calculate the network, broadcast, first host and last host. Explain what happens in the third octet.",
       "source": "Find the third-octet block containing 77.",
       "key": "The mask is 255.255.248.0, so the increment is 8. Third octets 72–79 form the block. Network 172.19.72.0, broadcast 172.19.79.255, first host 172.19.72.1 and last host 172.19.79.254."
     },
     {
       "id": "capacity",
       "objective": "1.7",
-      "type": "Split 10.8.12.0/23 into equal /27 LANs. Calculate both the number of LANs and usable hosts per LAN. Explain which bits you counted each time.",
-      "prompt": "Factual",
+      "type": "Factual",
+      "prompt": "Split 10.8.12.0/23 into equal /27 LANs. Calculate both the number of LANs and usable hosts per LAN. Explain which bits you counted each time.",
       "source": "Use the parent prefix for one calculation and the IPv4 address width for the other.",
       "key": "Borrow 27 − 23 = 4 bits for 2⁴ = 16 LANs. Each has 32 − 27 = 5 host bits, giving 2⁵ − 2 = 30 usable addresses."
     },
     {
       "id": "select",
       "objective": "1.7",
-      "type": "Choose the smallest subnet for 62 workstations plus one gateway. Explain why the next smaller block fails.",
-      "prompt": "Factual",
+      "type": "Factual",
+      "prompt": "Choose the smallest subnet for 62 workstations plus one gateway. Explain why the next smaller block fails.",
       "source": "Include every assigned interface in the demand.",
       "key": "63 assigned interfaces are needed. A /26 gives 64 total but only 62 usable. Choose /25 with 128 total and 126 usable."
     },
     {
       "id": "vlsm",
       "objective": "1.7",
-      "type": "Inside 192.168.60.0/24, allocate LANs for 100, 45 and 12 assigned interfaces, including gateways. Use the lowest aligned space, largest first. Give each prefix, usable range and broadcast.",
-      "prompt": "Factual",
+      "type": "Factual",
+      "prompt": "Inside 192.168.60.0/24, allocate LANs for 100, 45 and 12 assigned interfaces, including gateways. Use the lowest aligned space, largest first. Give each prefix, usable range and broadcast.",
       "source": "Find the smallest power of two that covers demand plus two.",
       "key": "100 needs 128 addresses: 192.168.60.0/25, hosts .1–.126, broadcast .127. Next use .128/26 for 45: hosts .129–.190, broadcast .191. Use .192/28 for 12: hosts .193–.206, broadcast .207. The next free address is .208."
     },
     {
       "id": "overlap",
       "objective": "1.7",
-      "type": "Two routed LANs are proposed as 10.3.0.64/26 and 10.3.0.96/27. Show the overlap. Move only the smaller LAN to the first free aligned block above the larger one.",
-      "prompt": "Factual",
+      "type": "Factual",
+      "prompt": "Two routed LANs are proposed as 10.3.0.64/26 and 10.3.0.96/27. Show the overlap. Move only the smaller LAN to the first free aligned block above the larger one.",
       "source": "Write out both closed intervals.",
       "key": "The /26 covers .64–.127. The /27 covers .96–.127, entirely inside it. The next /27 boundary above .127 is .128, so use 10.3.0.128/27, covering .128–.159."
     },
     {
       "id": "fault",
       "objective": "1.7",
-      "type": "The plan assigns 192.168.7.64/26 to a LAN with gateway .65. A host at .100 is configured /24 and fails to reach a server at .140 on a different routed LAN. Explain its forwarding choice and correct the setting.",
-      "prompt": "Example",
+      "type": "Example",
+      "prompt": "The plan assigns 192.168.7.64/26 to a LAN with gateway .65. A host at .100 is configured /24 and fails to reach a server at .140 on a different routed LAN. Explain its forwarding choice and correct the setting.",
       "source": "Predict whose MAC address the host tries to resolve.",
       "key": "With /24 the host treats .140 as local and sends an ARP request for .140. Under /26 its own block ends at .127. Set the planned 255.255.255.192 mask, retain gateway .65, then verify that off-link traffic uses the gateway and reaches the server."
     },
     {
       "id": "classify",
       "objective": "1.7",
-      "type": "Classify 172.31.5.4, 169.254.7.8, 127.0.0.1 and 8.8.8.8 by intended use. Which address on a DHCP client would prompt you to investigate address assignment?",
-      "prompt": "Factual",
+      "type": "Factual",
+      "prompt": "Classify 172.31.5.4, 169.254.7.8, 127.0.0.1 and 8.8.8.8 by intended use. Which address on a DHCP client would prompt you to investigate address assignment?",
       "source": "Compare the complete prefixes, including the second octet.",
       "key": "172.31.5.4 is private RFC 1918 space. 169.254.7.8 is link-local and can indicate APIPA after failure to obtain a lease. 127.0.0.1 is loopback. 8.8.8.8 is public unicast. Check the DHCP path on the link-local client."
     }

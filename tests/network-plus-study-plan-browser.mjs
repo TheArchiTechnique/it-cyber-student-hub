@@ -105,10 +105,9 @@ export async function networkPlanChecks(browser, root) {
       for (const q of session.quiz) assert.ok((await page.locator('#feedback-' + q.id).innerText()).includes(q.explanation));
       await active('Worksheet').click();
       for (const [index, task] of session.worksheet.entries()) {
-        if (day.number >= 4) {
-          assert.ok(['Factual', 'Example'].includes(task.type), task.id);
-          assert.ok(task.prompt.trim() && task.prompt !== task.type && task.source.trim() && task.key.trim(), task.id);
-        }
+        assert.ok(['Factual', 'Example'].includes(task.type), task.id);
+        assert.ok(task.prompt.trim() && !['Factual', 'Example'].includes(task.prompt)
+          && task.source.trim() && task.key.trim(), task.id);
         await page.getByRole('textbox', { name: (index + 1) + '. ' + task.prompt, exact: true }).waitFor();
       }
       for (const task of session.worksheet) await page.locator('#answer-' + task.id).fill('My reasoning for ' + task.id);

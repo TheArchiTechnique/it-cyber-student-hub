@@ -260,12 +260,13 @@
         "arp -a",
         "arp -g"
       ],
-      "explanation": "The ARP cache describes local neighbors, including the next-hop gateway for remote destinations."
+      "explanation": "The ARP cache describes local neighbors, including the next-hop gateway for remote destinations.",
+      "answerFormat": "command"
     },
     {
       "id": "delay",
       "objective": "5.5",
-      "prompt": "UDP packets arrive with widely varying delays and no sequence gaps. The delay variation is called ____.",
+      "prompt": "An iperf3 UDP receiver reports 0% lost datagrams and a large variation in transit delay. Which reported metric measures that variation? ____",
       "answers": [
         "jitter",
         "packet delay variation"
@@ -321,7 +322,7 @@
       "id": "access",
       "objective": "3.5",
       "type": "Example",
-      "prompt": "Choose access for three jobs. A contractor needs one web app, an administrator needs a CLI through a protected management network, and a branch must reach headquarters after its production route fails. The branch has an independently reachable console server. Explain the path for each.",
+      "prompt": "Choose access for three jobs. A contractor needs one web app, an administrator needs a CLI through a protected management network, and an engineer at headquarters must reach a branch router after its production route fails. The branch has an independently reachable console server. Explain the path for each.",
       "source": "Separate access to an application from access to a device.",
       "key": "Use a clientless portal for the app and SSH via the authorized jump host for the CLI. Use the independent console path to repair the branch route. An ordinary site-to-site VPN over the failed path cannot provide that recovery access."
     },
@@ -355,7 +356,7 @@
       "type": "Example",
       "prompt": "A Windows client reaches a server by IP. Only its name fails. Choose a command to check the configured resolver and a second command to query it. What result would distinguish a missing name from a silent resolver?",
       "source": "Start with the active adapter. Query the absolute name and selected server.",
-      "key": "Use ipconfig /all and nslookup portal.example. 192.0.2.53 for a lab resolver at that address. NXDOMAIN is a response reporting a nonexistent name. A timeout means no timely response, so investigate reachability or filtering as well as the DNS service."
+      "key": "Use ipconfig /all and nslookup portal.example. 192.0.2.53 to query the lab resolver at 192.0.2.53. NXDOMAIN is a response reporting a nonexistent name. A timeout means no timely response, so investigate reachability or filtering as well as the DNS service."
     }
   ]
 }

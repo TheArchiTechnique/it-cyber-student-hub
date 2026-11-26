@@ -154,11 +154,14 @@
     {
       "id": "rack",
       "objective": "3.1",
-      "prompt": "To identify a chassis's exact rack-unit position, consult the rack ____ (diagram type).",
+      "prompt": "Which diagram shows the vertical rack-unit position of each chassis? ____",
       "answers": [
+        "rack elevation",
+        "rack elevation diagram",
+        "rack diagram",
+        "rack layout diagram",
         "elevation",
-        "elevation diagram",
-        "diagram"
+        "elevation diagram"
       ],
       "explanation": "A rack elevation shows vertical equipment positions. A cable map answers where a run terminates."
     },
@@ -284,7 +287,7 @@
       "type": "Factual",
       "prompt": "Orders stop at 11:40. At 12:18 the service accepts verified transactions from a copy current to 11:32. Requirements are RTO 30 minutes and RPO 10 minutes. Evaluate both independently and select the first improvement.",
       "source": "Measure downtime after disruption and data age before it.",
-      "key": "Downtime is 38 minutes, missing RTO by 8. The recovered data is 8 minutes old, meeting RPO by 2. Improve failover or restoration speed, then time another end-to-end test."
+      "key": "Downtime is 38 minutes, missing RTO by 8. The copy precedes the outage by 8 minutes, meeting RPO by 2. At restoration the copy is 46 minutes old; the RPO comparison uses the outage time. Improve failover or restoration speed, then time another end-to-end test."
     },
     {
       "id": "reliability",

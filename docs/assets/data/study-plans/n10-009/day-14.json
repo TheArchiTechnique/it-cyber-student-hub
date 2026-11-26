@@ -21,7 +21,8 @@
     "cabling": [
       "1.5",
       "2.4",
-      "5.2"
+      "5.2",
+      "5.5"
     ],
     "subnet": [
       "1.7"
@@ -91,7 +92,7 @@
       "4.2"
     ]
   },
-  "practicalInstructions": "Choose one exercise or a portion you can verify in 30 minutes. For example, trace one DNS request and reply in Wireshark, predict one routing decision and test it, or diagnose one client in IP Configuration Troubleshooting. Start from the task and evidence with the walkthrough closed. Record any guidance you needed. For a worksheet, select one case for your weak objective, record a fresh decision and verification here, then check your reasoning against the objective reading beside that case.",
+  "practicalInstructions": "Choose one exercise or a portion you can verify in 30 minutes. For example, trace one DNS request and reply in Wireshark, predict one routing decision and test it, or diagnose one client in IP Configuration Troubleshooting. Start from the task and evidence with the walkthrough closed. Record any guidance you needed. For a worksheet, select one case for your weak objective, record a fresh decision and verification here, then check your reasoning against the objective reading beside that case. If you choose a worksheet, use a separately completed independent PBQ or lab as evidence for the PBQ checklist item.",
   "checks": {
     "Technical readiness": {
       "concepts": "Explain a missed networking concept from memory and distinguish it from a similar technology.",

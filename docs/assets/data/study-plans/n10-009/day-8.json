@@ -15,7 +15,7 @@
     {
       "objective": "1.3",
       "title": "Draw the cloud route in both directions",
-      "text": "A virtual private cloud (VPC) provides a logically isolated network with subnets, routes and policy controls. Network functions virtualization (NFV) implements functions such as routing or firewalling in software. An internet gateway provides an internet routing attachment. Direct public IPv4 reachability also needs appropriate addressing, routes and policy. A public NAT gateway can translate a private workload's outbound IPv4 connection and track replies. For a branch link, a VPN can encrypt traffic across an existing internet service, while a dedicated private connection can offer more predictable capacity. Verify encryption separately on a private circuit."
+      "text": "A virtual private cloud (VPC) provides a logically isolated network with subnets, routes and policy controls. Network functions virtualization (NFV) implements functions such as routing or firewalling in software. An internet gateway provides an internet routing attachment. Direct public IPv4 reachability also needs appropriate addressing, routes and policy. A public NAT gateway can translate a private workload's outbound IPv4 connection and track replies. For a branch link, a VPN can encrypt traffic across an existing internet service, while a dedicated private connection, such as AWS Direct Connect, can offer more predictable capacity. Verify encryption separately on a private circuit."
     },
     {
       "objective": "1.3",
@@ -25,7 +25,7 @@
     {
       "objective": "1.8",
       "title": "Separate the path from its policy",
-      "text": "With software-defined networking (SDN), the control plane decides forwarding behavior and can be logically centralized, while the data plane forwards traffic. SD-WAN applies policy across WAN paths, can identify applications and can steer voice away from a lossy link. Broadband, carrier circuits and cellular can serve as different underlay transports. Zero-touch provisioning lets a new edge device obtain approved configuration from a controller. An overlay is the logical path carried over the underlay. VXLAN encapsulates Layer 2 frames in UDP over an IP network. Data center interconnect (DCI) links facilities. A working VXLAN overlay still needs reachable tunnel endpoints in the underlay."
+      "text": "With software-defined networking (SDN), the control plane decides forwarding behavior and can be logically centralized, while the data plane forwards traffic. A software-defined wide area network (SD-WAN) applies policy across WAN paths, can identify applications and can steer voice away from a lossy link. Broadband, carrier circuits and cellular can serve as different underlay transports. Zero-touch provisioning lets a new edge device obtain approved configuration from a controller. An overlay is the logical path carried over the underlay. VXLAN encapsulates Layer 2 frames in UDP over an IP network. Data center interconnect (DCI) links facilities. A working VXLAN overlay still needs reachable tunnel endpoints in the underlay."
     },
     {
       "objective": "1.8",
@@ -45,7 +45,7 @@
     {
       "objective": "3.4",
       "title": "Read three separate pieces of IPv6 evidence",
-      "text": "IPv6 Neighbor Discovery uses ICMPv6. Neighbor Solicitation and Advertisement help resolve link-layer neighbors, and hosts can check address uniqueness using duplicate address detection. Router Advertisements (RAs) with a positive router lifetime identify potential default routers. With SLAAC, a host can form an address from an autonomous advertised prefix. Stateful DHCPv6 leases addresses. Stateless DHCPv6 can deliver other settings such as recursive DNS servers while SLAAC supplies the address. An RA can also advertise DNS information. Inspect addresses, default routes and DNS separately. An AAAA record maps a name to an IPv6 address and provides no default route."
+      "text": "IPv6 Neighbor Discovery uses ICMPv6. Neighbor Solicitation and Advertisement help resolve link-layer neighbors, and hosts can check address uniqueness using duplicate address detection. Router Advertisements (RAs) with a positive router lifetime identify potential default routers. With SLAAC, a host can form an address from an autonomous advertised prefix. Stateful DHCPv6 leases addresses. Stateless DHCPv6 can deliver other settings such as recursive DNS servers while SLAAC supplies the address. An RA can also advertise DNS information. Inspect addresses, default routes and DNS separately. An AAAA record maps a name to an IPv6 address and provides no default route. In a prefix information option, the A flag permits autonomous address formation. The L flag marks the prefix as on-link. The router lifetime is a separate field."
     },
     {
       "objective": "1.8",
@@ -55,7 +55,7 @@
     {
       "objective": "3.4",
       "title": "Assigned practical: explain a missing route",
-      "text": "A host has 2001:db8:17:6::25/64, DNS from stateless DHCPv6 and an AAAA answer for a remote server. Its only router announces an autonomous prefix but a router lifetime of zero. Draw the local prefix, the resolver and the missing next hop. Predict which on-link test can succeed and why an off-link connection fails. Check your result against the IPv6 services reading: the host can reach an on-link neighbor, but this RA supplies no default router. As optional reinforcement, use Lab 3's addressing plan to compare the IPv4 return-path decision with your IPv6 sketch."
+      "text": "A host has 2001:db8:17:6::25/64, DNS from stateless DHCPv6 and an AAAA answer for a remote server. Its only router advertises 2001:db8:17:6::/64 with A=1, L=1 and router lifetime zero. The host has no static or previously learned route to the remote server. Draw the local prefix, the resolver and the missing next hop. Predict which on-link test can succeed and why an off-link connection fails. Check your result against the IPv6 services reading: the prefix supports SLAAC and direct delivery to an on-link neighbor. This RA supplies no default router, so the remote address lacks a route. As optional reinforcement, use Lab 3's addressing plan to compare the IPv4 return-path decision with your IPv6 sketch."
     }
   ],
   "sources": [
@@ -342,7 +342,7 @@
       "id": "leases",
       "objective": "3.4",
       "type": "Factual",
-      "prompt": "Host A forms its address from an autonomous /64 and obtains DNS from DHCPv6. Host B receives both its address and DNS from DHCPv6. Both have fe80::1 as their default router. Identify the address source and DHCPv6 mode for each, and how both learned the gateway.",
+      "prompt": "Host A forms its address from an autonomous /64 and obtains DNS from DHCPv6. Host B receives both its address and DNS from DHCPv6. Both receive an RA from fe80::1 with a nonzero router lifetime and show it as their default router. Identify the address source and DHCPv6 mode for each, and how both learned the gateway.",
       "source": "Read address assignment separately from route installation.",
       "key": "A uses SLAAC and stateless DHCPv6. B uses stateful DHCPv6. Each can learn fe80::1 from a Router Advertisement with positive router lifetime. The next hop can be link-local because it is on the host's link."
     },

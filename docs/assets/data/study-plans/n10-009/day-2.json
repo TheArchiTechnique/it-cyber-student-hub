@@ -40,7 +40,7 @@
     {
       "objective": "5.2",
       "title": "Read the interface before replacing hardware",
-      "text": "Compare counter changes over the same time interval. Increasing CRC errors indicate damaged frames and justify inspecting the medium and interface settings. Runts are undersized frames, giants exceed the accepted size, and drops can result from full queues. Administratively down indicates a configured shutdown. Error-disabled calls for checking the recorded protection event. A suspended member of a link bundle calls for checking aggregation settings. In the cabling PBQ, record one symptom, the tool you selected, and a post-repair observation that would verify service."
+      "text": "Compare counter changes over the same time interval. Increasing CRC errors indicate damaged frames and justify inspecting the medium and interface settings. Runts are undersized frames, giants exceed the accepted size, and drops can result from full queues. Administratively down indicates a configured shutdown. Error-disabled calls for checking the recorded protection event. A suspended member of a link bundle calls for checking aggregation settings. Complete one physical fault in the cabling PBQ. Record one symptom, the tool you selected, and a post-repair observation that would verify service."
     }
   ],
   "sources": [
@@ -238,64 +238,64 @@
     {
       "id": "media",
       "objective": "1.5",
-      "type": "Select media for two 10 Gb/s links: a 92 m installed office copper channel and a 2 km interbuilding uplink. State the physical-layer standard and one check for each.",
-      "prompt": "Example",
+      "type": "Example",
+      "prompt": "Select media for two 10 Gb/s links: a 92 m installed office copper channel and a 2 km interbuilding uplink. State the physical-layer standard and one check for each.",
       "source": "Use the wired-media and transceiver sections of objective 1.5.",
       "key": "Use Cat 6A and 10GBASE-T on compatible copper ports. Confirm the 92 m includes patch leads. Use single-mode fiber with compatible 10GBASE-LR optics for the uplink and check the optical loss budget."
     },
     {
       "id": "patch",
       "objective": "1.5",
-      "type": "An installer has a latched LC duplex fiber jumper, a threaded coax lead and an eight-position modular patch cord. Match them to a compatible optical transceiver, cable modem input and 1000BASE-T port. What else must match on the optical link?",
-      "prompt": "Factual",
+      "type": "Factual",
+      "prompt": "An installer has a latched LC duplex fiber jumper, a threaded coax lead and an eight-position modular patch cord. Match them to a compatible optical transceiver, cable modem input and 1000BASE-T port. What else must match on the optical link?",
       "source": "Identify the media before matching connector shapes.",
       "key": "LC goes to the optical transceiver, threaded F-type to the modem, and RJ45 to 1000BASE-T. Check fiber type, optic specification, supported reach and duplex polarity."
     },
     {
       "id": "rack",
       "objective": "2.4",
-      "type": "Trace a desk connection from outlet to access switch and onward to the MDF. Identify a passive termination and an active forwarding device.",
-      "prompt": "Example",
+      "type": "Example",
+      "prompt": "Trace a desk connection from outlet to access switch and onward to the MDF. Identify a passive termination and an active forwarding device.",
       "source": "Use the installation view of the cabling PBQ.",
       "key": "The horizontal run reaches the IDF patch panel. A patch cord connects it to an access switch, which forwards traffic onto the backbone. The panel is passive. The switch is active."
     },
     {
       "id": "install",
       "objective": "2.4",
-      "type": "A new switch fits the rack width. What else would you verify before installation in a locked, warm closet?",
-      "prompt": "Example",
+      "type": "Example",
+      "prompt": "A new switch fits the rack width. What else would you verify before installation in a locked, warm closet?",
       "source": "Group your checks by space, airflow, power and environment.",
       "key": "Verify rack units, depth, service clearance and intake/exhaust direction. Verify circuit voltage, PDU and UPS capacity under load. Check cooling, humidity sensing, suitable fire suppression and authorized access."
     },
     {
       "id": "wiremap",
       "objective": "5.2",
-      "type": "The remote tester reports pins 1 through 7 connected to matching pins and pin 8 open. The link negotiates below 1 Gb/s. Identify a likely fault, choose the next test and verify the repair.",
-      "prompt": "Example",
+      "type": "Example",
+      "prompt": "The remote tester reports pins 1 through 7 connected to matching pins and pin 8 open. The link negotiates below 1 Gb/s. Identify a likely fault, choose the next test and verify the repair.",
       "source": "Use the termination and testing activity in the cabling PBQ.",
       "key": "1000BASE-T needs all four pairs. Isolate removable patch cords, inspect pin 8 at each termination and retest the run. Verify all pairs pass and the link negotiates 1 Gb/s without increasing errors."
     },
     {
       "id": "noise",
       "objective": "5.2",
-      "type": "An 80 m copper link passes its wire map. CRC errors rise only when a nearby motor runs. Another link has steadily low optical receive power. Give a distinct next test for each.",
-      "prompt": "Example",
+      "type": "Example",
+      "prompt": "An 80 m copper link passes its wire map. CRC errors rise only when a nearby motor runs. Another link has steadily low optical receive power. Give a distinct next test for each.",
       "source": "Compare interference with attenuation in objective 5.2.",
       "key": "Try a known-good temporary copper path away from the motor and compare CRC increments under the same load. For fiber, measure received power against the optic limits, then inspect connectors, bends and loss along the run."
     },
     {
       "id": "poe",
       "objective": "5.2",
-      "type": "A switch has a 180 W PoE allocation limit and already reserves 156 W. A new AP requests 30 W. Explain the startup failure and how you would verify a repair.",
-      "prompt": "Factual",
+      "type": "Factual",
+      "prompt": "A switch has a 180 W PoE allocation limit and already reserves 156 W. A new AP requests 30 W. Explain the startup failure and how you would verify a repair.",
       "source": "Check the per-port standard as well as the total.",
       "key": "Only 24 W remains, leaving a 6 W shortfall. Free capacity or supply another compatible power source. Verify the port supports the AP's standard, the requested allocation is granted and the AP starts at full capability."
     },
     {
       "id": "state",
       "objective": "5.2",
-      "type": "Port A is administratively down. Port B is error-disabled after a protection event. Port C is suspended from an aggregated uplink. Write the first evidence to collect for each.",
-      "prompt": "Example",
+      "type": "Example",
+      "prompt": "Port A is administratively down. Port B is error-disabled after a protection event. Port C is suspended from an aggregated uplink. Write the first evidence to collect for each.",
       "source": "Use interface status together with configuration and logs.",
       "key": "For A, confirm intended configuration and change history. For B, read the event log and correct the triggering cause before restoring service. For C, compare bundle settings and negotiation with its peer."
     }

@@ -20,7 +20,7 @@
     {
       "objective": "1.2",
       "title": "Place an appliance where it can do its job",
-      "text": "A router connects IP networks. A switch bridges frames within a LAN. An access point (AP) bridges wireless clients into a LAN, while a wireless controller manages multiple APs. A firewall applies traffic policy. An IDS monitors and alerts, while an inline IPS can also block matching traffic. A proxy accepts requests on a client's behalf. A load balancer distributes requests among healthy backends. These roles can run on dedicated hardware or as virtual appliances. Identify which traffic must reach the device for it to perform its job."
+      "text": "A router connects IP networks. A switch bridges frames within a LAN. An access point (AP) bridges wireless clients into a LAN, while a wireless controller manages multiple APs. A firewall applies traffic policy. An intrusion detection system (IDS) monitors and alerts, while an inline intrusion prevention system (IPS) can also block matching traffic. A proxy accepts requests on a client's behalf. A load balancer distributes requests among healthy backends. These roles can run on dedicated hardware or as virtual appliances. Identify which traffic must reach the device for it to perform its job."
     },
     {
       "objective": "1.2",
@@ -40,7 +40,7 @@
     {
       "objective": "1.1",
       "title": "Trace one request before running the simulation",
-      "text": "Open the PDU tracing lab diagram. Predict the first-hop destination MAC, final destination IP and outgoing frame at Router-A. Follow the HTTP event in the lab or use the TCP/IP Packet Walk to check your prediction. Record one field that changed and one that survived the routed hop."
+      "text": "Open the PDU tracing lab diagram. Predict the first-hop destination MAC, final destination IP and outgoing frame at Router-A. Use the published HTTP event walkthrough or the TCP/IP Packet Walk to check your prediction. If you already have the topology, you can trace the event in Packet Tracer. Record one field that changed and one that survived the routed hop."
     }
   ],
   "sources": [
@@ -171,7 +171,7 @@
     {
       "id": "pdu",
       "objective": "1.1",
-      "prompt": "On an Ethernet link, the unit with source and destination MAC addresses and a frame check sequence is a ____.",
+      "prompt": "On an Ethernet link, the unit with source and destination MAC addresses and a trailer used to detect transmission errors is a ____.",
       "answers": [
         "frame",
         "Ethernet frame",
@@ -232,64 +232,64 @@
     {
       "id": "trace",
       "objective": "1.1",
-      "type": "Use the PDU lab topology diagram. List the devices from PC-A to Server-A and identify the device that replaces the Ethernet header between subnets.",
-      "prompt": "Factual",
+      "type": "Factual",
+      "prompt": "Use the PDU lab topology diagram. List the devices from PC-A to Server-A and identify the device that replaces the Ethernet header between subnets.",
       "source": "Open the PDU tracing lab under Readings and optional practice.",
       "key": "PC-A, Switch-A, Router-A, Switch-B, Server-A. Router-A removes the incoming link header and builds the outgoing one. Each switch forwards within its local Ethernet segment."
     },
     {
       "id": "headers",
       "objective": "1.1",
-      "type": "PC-A sends an HTTP request to Server-A on another subnet with no NAT. Label the destination MAC and IP on the first and last links. Assume neighbor caches are populated.",
-      "prompt": "Factual",
+      "type": "Factual",
+      "prompt": "PC-A sends an HTTP request to Server-A on another subnet with no NAT. Label the destination MAC and IP on the first and last links. Assume neighbor caches are populated.",
       "source": "Trace the HTTP event in the PDU lab.",
       "key": "First link: Router-A's PC-facing MAC and Server-A's IP. Last link: Server-A's MAC and Server-A's IP. Ethernet addresses identify delivery on each link."
     },
     {
       "id": "stack",
       "objective": "1.1",
-      "type": "Work from the receiving server's perspective. List the units it processes from physical reception until HTTP can interpret the request.",
-      "prompt": "Factual",
+      "type": "Factual",
+      "prompt": "Work from the receiving server's perspective. List the units it processes from physical reception until HTTP can interpret the request.",
       "source": "Recall the model from objective 1.1 before tracing the event.",
       "key": "Bits yield an Ethernet frame. Its payload is an IP packet containing a TCP segment. TCP checks and reassembles stream data for HTTP. The port identifies the listening service."
     },
     {
       "id": "edge",
       "objective": "1.2",
-      "type": "A branch needs Wi-Fi access, individual traffic rules between subnets and central AP configuration. Assign each responsibility to a logical device.",
-      "prompt": "Example",
+      "type": "Example",
+      "prompt": "A branch needs Wi-Fi access, individual traffic rules between subnets and central AP configuration. Assign each responsibility to a logical device.",
       "source": "Read objective 1.2 and distinguish data forwarding from management.",
       "key": "An AP bridges the client onto the LAN. A firewall on the inter-subnet path applies the traffic rules. A controller manages configurations across APs. One physical appliance may combine roles."
     },
     {
       "id": "virtual",
       "objective": "1.2",
-      "type": "Two VMs on the same host exchange traffic through a virtual switch. An IDS attached only to an external physical link misses it. Explain why and identify a suitable observation point.",
-      "prompt": "Example",
+      "type": "Example",
+      "prompt": "Two VMs on the same host exchange traffic through a virtual switch. An IDS attached only to an external physical link misses it. Explain why and identify a suitable observation point.",
       "source": "Trace the path of a frame between the VMs.",
       "key": "Local traffic can stay inside the host's virtual switch. Mirroring the relevant virtual ports to an IDS lets it inspect the flow where the frames actually pass."
     },
     {
       "id": "logical",
       "objective": "1.6",
-      "type": "Six PCs cable into one switch. Three are in the staff VLAN and three in the guest VLAN. Describe both the physical arrangement and the logical broadcast boundaries.",
-      "prompt": "Factual",
+      "type": "Factual",
+      "prompt": "Six PCs cable into one switch. Three are in the staff VLAN and three in the guest VLAN. Describe both the physical arrangement and the logical broadcast boundaries.",
       "source": "Sketch the cables first, then group the ports by VLAN.",
       "key": "The cabling forms a star. There are two Layer 2 broadcast domains. Communication between them requires Layer 3 forwarding and any required policy permission."
     },
     {
       "id": "campus",
       "objective": "1.6",
-      "type": "A campus has endpoint switches and one redundant pair that aggregates them, routes between VLANs and interconnects buildings. Name the architecture and map its roles.",
-      "prompt": "Example",
+      "type": "Example",
+      "prompt": "A campus has endpoint switches and one redundant pair that aggregates them, routes between VLANs and interconnects buildings. Name the architecture and map its roles.",
       "source": "Compare the three-tier and collapsed-core designs in objective 1.6.",
       "key": "This is a collapsed core. Endpoint switches form the access tier. The redundant pair combines distribution and core functions."
     },
     {
       "id": "failure",
       "objective": "1.6",
-      "type": "Three branch spokes reach headquarters over separate links with no backup. Compare the effects of losing one spoke link and losing the headquarters hub.",
-      "prompt": "Example",
+      "type": "Example",
+      "prompt": "Three branch spokes reach headquarters over separate links with no backup. Compare the effects of losing one spoke link and losing the headquarters hub.",
       "source": "Draw each link before crossing out the failed element.",
       "key": "One failed spoke link isolates that branch. Failure of the central hub removes every spoke's path through headquarters. A second independent hub and path can reduce this dependency."
     }
