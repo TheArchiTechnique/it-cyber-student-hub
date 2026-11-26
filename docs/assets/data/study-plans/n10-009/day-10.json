@@ -1,0 +1,361 @@
+{
+  "minutes": {
+    "reading": 30,
+    "cards": 15,
+    "quiz": 15,
+    "worksheet": 40,
+    "application": 20
+  },
+  "review": [
+    {
+      "objective": "3.2",
+      "title": "Read the counter before interpreting the graph",
+      "text": "A Simple Network Management Protocol (SNMP) manager polls an agent, typically on UDP 161. A management information base (MIB) defines the managed objects. An object identifier (OID) identifies an object, and an instance identifies, for example, the inbound octet count on a particular interface. Compare two samples from the same interface and counter. Multiply the octet difference by eight and divide by elapsed seconds for average bits per second. Check for restarts or counter resets before using the difference."
+    },
+    {
+      "objective": "3.2",
+      "title": "Choose polling, traps or informs",
+      "text": "Periodic polling can reveal trends in availability, CPU, memory, temperature, fan status, interface errors and utilization. A trap reports an event such as linkDown without waiting for the next poll. Notification receivers commonly listen on UDP 162. A trap has no protocol acknowledgment, while an inform requests one. SNMPv1 and v2c use community strings without confidentiality. Use restricted read access for monitoring. SNMPv3 with authPriv authenticates messages and encrypts their contents. The authNoPriv level authenticates without encryption."
+    },
+    {
+      "objective": "3.2",
+      "title": "Separate who used the link from what happened in a conversation",
+      "text": "NetFlow and IPFIX export flow records with endpoints, ports, timing and traffic volumes. Sampling may miss brief exchanges. To inspect DNS flags or TCP sequencing, feed a protocol analyzer packets from the relevant segment. Port mirroring copies selected traffic to an analyzer port. A busy mirror can drop copies. Encryption can hide application content. A flow record will not reconstruct a DNS answer, and a capture at one switch cannot establish what every switch received."
+    },
+    {
+      "objective": "3.2",
+      "title": "Read a timeline from different devices",
+      "text": "A syslog collector stores device messages. Severity runs from 0 emergency, 1 alert, 2 critical, 3 error and 4 warning through 5 notice, 6 informational and 7 debug. A threshold configured for 0 through 4 includes errors and warnings. A security information and event management (SIEM) platform can correlate a change record, login and link event. Compare source timestamps in a common time zone and check clock offsets and collection delays. NTP synchronizes clocks, NTS authenticates supported NTP exchanges, and PTP serves precision timing needs."
+    },
+    {
+      "objective": "3.2",
+      "title": "Decide what deserves an alert",
+      "text": "A monitoring platform can poll devices, ingest controller API metrics, discover responsive devices on demand or on a schedule, and compare configurations with an approved baseline. API permissions and collection intervals limit visibility. Compare this Tuesday at noon with similar workdays. Track availability with a service transaction, throughput with delivered data per second, latency with delay, jitter with delay variation, and loss with missing packets. Examine queue drops separately from frame errors. Check client count, airtime, device CPU, temperature and scheduled transfers before attributing a deviation to one cause."
+    },
+    {
+      "objective": "3.5",
+      "title": "Trace a remote user's traffic",
+      "text": "A site-to-site VPN joins networks through gateways. A client-to-site VPN connects an individual endpoint. A clientless portal provides selected applications through a browser. On a split tunnel, corporate routes use the VPN while other destinations may use the local gateway. A full tunnel sends ordinary internet traffic through the VPN as well. Check both address families and the selected routes. Reaching an internal subnet grants no automatic right to administer its routers."
+    },
+    {
+      "objective": "3.5",
+      "title": "Recover access when the production network fails",
+      "text": "SSH provides an encrypted CLI, HTTPS can provide a graphical management interface, and APIs expose structured operations to authorized clients. A jump host centralizes administrative access. Its independence depends on how it reaches the device. A management VLAN riding the failed production uplink is in-band. A console server reached through an independent management network can provide out-of-band access even when the device has lost its IP route."
+    },
+    {
+      "objective": "5.5",
+      "title": "Choose a host observation",
+      "text": "On Windows, ipconfig /all identifies the adapter, lease, gateway and DNS settings. arp -a shows cached local IPv4 neighbors. netstat -ano shows numeric endpoints, TCP states and owning PIDs. ping tests ICMP reachability and tracert -d follows responding hops. A silent intermediate hop can still forward. On Linux, ip address and ip route show local addressing and routes. Older installations may provide ifconfig. traceroute -n suppresses name lookups. nslookup can query a selected resolver on Windows or Linux, while Linux dig reports status, record type and answers."
+    },
+    {
+      "objective": "5.5",
+      "title": "Distinguish passive observation from an active test",
+      "text": "Wireshark decodes a saved capture. On Linux, tcpdump -nn -r office-network.pcap reads the same file with numeric addresses and ports. Nmap inventory results from an approved lab can report a listening or filtered port from one vantage point. This alone cannot confirm a successful application transaction. An iperf3 TCP receiver summary measures delivered throughput between two test endpoints. UDP receiver reports can also show loss and jitter. Compare direction, duration, workload and endpoint limits before inferring link capacity."
+    },
+    {
+      "objective": "5.5",
+      "title": "Assigned practical · 20 minutes",
+      "text": "Open the Wireshark Packet Analysis Lab. Use its supplied file or annotated figures for Activities D and E. Pair frames 45 and 46 by transaction ID and question, then identify the initiator and three flags in frames 49–51. Record one field proving a DNS answer and one later frame proving the application replied. Find HTTP_STOP, HTTP_START and HTTP_OK in the lab's supplied UTC log. Compare their order with the document-service trace in the lab answers. Distinguish a listening service from a completed request. Use the PDU lab, command reference, ports reference and service Kahoots only for targeted review."
+    }
+  ],
+  "sources": [
+    [
+      "Baselines, alerts, and monitoring goals",
+      "../../objective-breakdown/#baselines-alerts-and-monitoring-goals"
+    ],
+    [
+      "Management connections and paths",
+      "../../objective-breakdown/#management-connections-and-paths"
+    ],
+    [
+      "Captures, discovery, and measurement",
+      "../../objective-breakdown/#captures-discovery-and-measurement"
+    ],
+    [
+      "Wireshark lab · UTC event log",
+      "../../../../../labs/networking/wireshark/assets/office-network.log"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "agent",
+      "objective": "3.2",
+      "prompt": "Which SNMP component on a switch answers the monitoring platform's polls?",
+      "answer": "The agent reads the supported management objects. The platform acts as manager."
+    },
+    {
+      "id": "oid",
+      "objective": "3.2",
+      "prompt": "How do a MIB and an OID work together?",
+      "answer": "The MIB defines a managed object and its meaning. Its OID and instance identify the value to retrieve."
+    },
+    {
+      "id": "inform",
+      "objective": "3.2",
+      "prompt": "Which device-originated SNMP notification requests acknowledgment?",
+      "answer": "An inform. A trap can be sent without learning whether the receiver got it."
+    },
+    {
+      "id": "privacy",
+      "objective": "3.2",
+      "prompt": "Which SNMPv3 security level protects message integrity and confidentiality?",
+      "answer": "authPriv. Verify the configured level because SNMPv3 also supports operation without privacy."
+    },
+    {
+      "id": "flows",
+      "objective": "3.2",
+      "prompt": "What would identify the largest conversations during a slow backup?",
+      "answer": "Flow records sorted by bytes over the affected interval. Packet contents require a different source."
+    },
+    {
+      "id": "baseline",
+      "objective": "3.2",
+      "prompt": "Why compare a Monday morning with earlier Monday mornings?",
+      "answer": "A workload-matched baseline separates expected demand from an unusual change."
+    },
+    {
+      "id": "mirror",
+      "objective": "3.2",
+      "prompt": "Why might a mirrored trace omit packets that reached the destination?",
+      "answer": "The copied directions, mirror bandwidth, capture filters or analyzer capacity may limit what is recorded."
+    },
+    {
+      "id": "priority",
+      "objective": "3.2",
+      "prompt": "Which severity has higher urgency, syslog 3 or 5?",
+      "answer": "Level 3, error, is more urgent than level 5, notice. Lower numbers indicate greater urgency."
+    },
+    {
+      "id": "discovery",
+      "objective": "3.2",
+      "prompt": "When would scheduled discovery help more than an ad hoc inventory?",
+      "answer": "Repeated samples reveal changes in responding devices. Verify apparent additions or removals against records."
+    },
+    {
+      "id": "portal",
+      "objective": "3.5",
+      "prompt": "Which remote access method can publish a single internal web app to a browser?",
+      "answer": "A clientless VPN portal can proxy approved applications without installing a full VPN client."
+    },
+    {
+      "id": "tunnel",
+      "objective": "3.5",
+      "prompt": "How can an internet-bound flow distinguish split from full tunneling?",
+      "answer": "Check its selected route. Local internet egress is typical of split tunneling, while full tunneling normally takes it through the VPN."
+    },
+    {
+      "id": "jump",
+      "objective": "3.5",
+      "prompt": "What distinguishes a jump host from an independent console path?",
+      "answer": "A jump host is an administrative intermediary. Out-of-band access depends on independent connectivity to the managed device."
+    },
+    {
+      "id": "socket",
+      "objective": "5.5",
+      "prompt": "What does a LISTENING row in Windows netstat -ano establish?",
+      "answer": "A process has a local TCP listener. The address, port and PID identify it. Remote reachability requires a separate test."
+    },
+    {
+      "id": "dns",
+      "objective": "5.5",
+      "prompt": "How do you test what a specific resolver returns?",
+      "answer": "Query it with nslookup or dig. Inspect status and records as well as the responding server."
+    },
+    {
+      "id": "rate",
+      "objective": "5.5",
+      "prompt": "How does iperf3 receiver bitrate differ from physical link speed?",
+      "answer": "It measures test data delivered over the chosen path and interval. Protocol overhead, competing traffic and endpoints can limit it."
+    },
+    {
+      "id": "hops",
+      "objective": "5.5",
+      "prompt": "A traceroute hop shows stars, but the destination replies. What can you infer?",
+      "answer": "The missing hop response did not arrive in time. The trace reached the destination."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "counter",
+      "objective": "3.2",
+      "prompt": "A receiver adds 75,000,000 octets in 60 seconds with no reset. Its average incoming rate is ____ Mb/s (decimal).",
+      "answers": [
+        "10",
+        "10 Mbps",
+        "10 Mb/s"
+      ],
+      "explanation": "Multiply by eight and divide by 60. The result is 10,000,000 bits per second."
+    },
+    {
+      "id": "severity",
+      "objective": "3.2",
+      "prompt": "A syslog event labeled warning has numeric severity ____.",
+      "answers": [
+        "4",
+        "four"
+      ],
+      "explanation": "Warning is 4. Error is 3 and notice is 5."
+    },
+    {
+      "id": "collection",
+      "objective": "3.2",
+      "prompt": "To rank conversations by bytes without storing their packet contents, collect ____ records.",
+      "answers": [
+        "flow",
+        "flow data",
+        "NetFlow",
+        "IPFIX",
+        "network flow"
+      ],
+      "explanation": "A flow aggregates conversation metadata. Interface counters alone cannot attribute traffic to endpoint pairs."
+    },
+    {
+      "id": "security",
+      "objective": "3.2",
+      "prompt": "To encrypt and authenticate conventional SNMPv3 USM messages, select security level ____.",
+      "answers": [
+        "authPriv"
+      ],
+      "explanation": "authNoPriv authenticates messages but leaves the management data readable."
+    },
+    {
+      "id": "gateway",
+      "objective": "3.5",
+      "prompt": "Two branch gateways tunnel whole office subnets to each other. This VPN is ____.",
+      "answers": [
+        "site-to-site",
+        "site to site VPN",
+        "gateway-to-gateway"
+      ],
+      "explanation": "The gateways represent networks. A remote employee's individual tunnel is client-to-site."
+    },
+    {
+      "id": "recovery",
+      "objective": "3.5",
+      "prompt": "The production router loses all IP routes. A console server on an independent cellular circuit supplies ____ management.",
+      "answers": [
+        "out-of-band",
+        "out of band management",
+        "OOB",
+        "OOB management"
+      ],
+      "explanation": "The separate path reaches the console without depending on the router's production routes."
+    },
+    {
+      "id": "split",
+      "objective": "3.5",
+      "prompt": "Only 10.20.0.0/16 uses a remote user's VPN. Public IPv4 traffic uses home broadband. The IPv4 policy uses ____ tunneling.",
+      "answers": [
+        "split",
+        "split tunnel",
+        "split tunneling"
+      ],
+      "explanation": "The routes select corporate destinations while the ordinary internet path remains local."
+    },
+    {
+      "id": "neighbor",
+      "objective": "5.5",
+      "prompt": "Which Windows command displays cached IPv4 address-to-MAC mappings? ____",
+      "answers": [
+        "arp -a",
+        "arp -g"
+      ],
+      "explanation": "The ARP cache describes local neighbors, including the next-hop gateway for remote destinations."
+    },
+    {
+      "id": "delay",
+      "objective": "5.5",
+      "prompt": "UDP packets arrive with widely varying delays and no sequence gaps. The delay variation is called ____.",
+      "answers": [
+        "jitter",
+        "packet delay variation"
+      ],
+      "explanation": "Loss counts missing packets. Jitter measures variation in delay and can disrupt voice despite complete delivery."
+    },
+    {
+      "id": "tcp",
+      "objective": "5.5",
+      "prompt": "The trace shows SYN and SYN/ACK. Which flag marks the client's third handshake segment? ____",
+      "answers": [
+        "ACK",
+        "acknowledgment",
+        "acknowledgement"
+      ],
+      "explanation": "The client acknowledges the server's sequence number. The handshake establishes transport connectivity before an application response."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "evidence",
+      "objective": "3.2",
+      "type": "Example",
+      "prompt": "Choose one primary source for each request. Operations wants uplink error counts, top talkers, the DNS return code, and the switch's recorded reason for a port shutdown. Explain each choice.",
+      "source": "Think about counters, conversations, individual packets and events.",
+      "key": "Poll interface counters with SNMP. Use flow data to rank senders, a capture to inspect the DNS response and syslog to read the reported shutdown reason. Confirm the event against port state and configuration."
+    },
+    {
+      "id": "sample",
+      "objective": "3.2",
+      "type": "Factual",
+      "prompt": "Simulated SNMP polls on a 100 Mb/s port show ifHCInOctets rising from 500,000,000 to 650,000,000 in 60 s with no reset. Find inbound Mb/s and utilization. The usual noon value is 8%. Is a sustained 80% alarm justified by this sample?",
+      "source": "Use the byte difference, elapsed time and nominal one-way capacity.",
+      "key": "150,000,000 × 8 ÷ 60 = 20 Mb/s, or 20%. It exceeds the noon baseline but does not meet 80%. One interval cannot establish duration or rule out shorter spikes."
+    },
+    {
+      "id": "timeline",
+      "objective": "3.2",
+      "type": "Example",
+      "prompt": "Simulated synchronized UTC records show 14:03:10 switch severity 3 uplink down, 14:03:12 service probe timeout, 14:03:19 severity 5 uplink restored. Order the events, apply a severity 0–4 filter and propose the next check.",
+      "source": "Distinguish source event time from receipt time.",
+      "key": "The link-down event preceded the failed probe and then the restoration. Only the level 3 switch event passes that switch log filter. Compare both ends' counters and change records, then check the next successful service transaction. Timing alone cannot identify why the link dropped."
+    },
+    {
+      "id": "metrics",
+      "objective": "3.2",
+      "type": "Example",
+      "prompt": "Four test windows report steady 180 ms round trips, delays swinging from 5 to 90 ms, 8 missing replies in 100, and a file transferring at 12 Mb/s against a 40 Mb/s target. Name each observed issue and one follow-up for the last window.",
+      "source": "Treat these as four independent observations.",
+      "key": "High latency, jitter, 8% probe loss and insufficient measured throughput. Repeat a controlled transfer between the same endpoints and check both CPU and path utilization under load before attributing it to the WAN."
+    },
+    {
+      "id": "access",
+      "objective": "3.5",
+      "type": "Example",
+      "prompt": "Choose access for three jobs. A contractor needs one web app, an administrator needs a CLI through a protected management network, and a branch must reach headquarters after its production route fails. The branch has an independently reachable console server. Explain the path for each.",
+      "source": "Separate access to an application from access to a device.",
+      "key": "Use a clientless portal for the app and SSH via the authorized jump host for the CLI. Use the independent console path to repair the branch route. An ordinary site-to-site VPN over the failed path cannot provide that recovery access."
+    },
+    {
+      "id": "policy",
+      "objective": "3.5",
+      "type": "Example",
+      "prompt": "A remote user's IPv4 table selects the VPN for 10.40.0.0/16 and the home router for 0.0.0.0/0. Where do 10.40.8.7 and 203.0.113.10 go? What change in policy would route ordinary internet traffic through corporate inspection?",
+      "source": "Look for the longest matching prefix and distinguish the two egress points.",
+      "key": "The internal address uses the VPN and the public address uses the home router. A full-tunnel policy should make ordinary internet destinations select the VPN gateway too. Verify actual effective routes, including IPv6 when enabled."
+    },
+    {
+      "id": "trace",
+      "objective": "5.5",
+      "type": "Example",
+      "prompt": "A simulated trace shows 192.0.2.18:51000 → 192.0.2.53:53 UDP, DNS ID 0x3421, A portal.example. Its matching reply contains 192.0.2.80. A connection to .80:443 shows SYN, SYN/ACK, ACK. Which two functions succeeded and which application result remains unknown?",
+      "source": "Pair the DNS transaction and then read the transport flags.",
+      "key": "The resolver returned an IPv4 answer and TCP connected to port 443. The flags do not establish certificate validation or an HTTP success response. Inspect subsequent TLS or application evidence."
+    },
+    {
+      "id": "speed",
+      "objective": "5.5",
+      "type": "Example",
+      "prompt": "A simulated iperf3 TCP summary reads “0.00–10.00 sec 95.4 MBytes 80.0 Mbits/sec receiver”. The NIC negotiated 1 Gb/s. Explain both numbers and choose a follow-up that helps locate the limit.",
+      "source": "Compare the same direction and interval under similar load.",
+      "key": "80 Mb/s is the delivered test rate over ten seconds. 1 Gb/s is the local link rate. Test a nearer endpoint from the same client and compare uplink utilization and endpoint CPU. The summary alone cannot locate a bottleneck."
+    },
+    {
+      "id": "command",
+      "objective": "5.5",
+      "type": "Example",
+      "prompt": "A Windows client reaches a server by IP. Only its name fails. Choose a command to check the configured resolver and a second command to query it. What result would distinguish a missing name from a silent resolver?",
+      "source": "Start with the active adapter. Query the absolute name and selected server.",
+      "key": "Use ipconfig /all and nslookup portal.example. 192.0.2.53 for a lab resolver at that address. NXDOMAIN is a response reporting a nonexistent name. A timeout means no timely response, so investigate reachability or filtering as well as the DNS service."
+    }
+  ]
+}

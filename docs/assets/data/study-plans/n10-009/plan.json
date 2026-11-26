@@ -356,6 +356,14 @@
     "soho": [
       "SOHO Router Configuration",
       "practice/pbqs/a-plus-core-1/soho-router-configuration/"
+    ],
+    "cmd": [
+      "Windows Command-Line Reference",
+      "reference/windows-command-line/"
+    ],
+    "voip": [
+      "Two-Site VoIP Troubleshooting",
+      "practice/pbqs/a-plus-core-1/two-site-voip-cli/"
     ]
   },
   "days": [
@@ -536,11 +544,17 @@
         "5.5"
       ],
       "goal": "Choose a management channel, correlate logs and capture evidence, and explain deviations from a baseline.",
-      "recall": "Recall the ports and timestamps you would expect in a normal DNS exchange.",
+      "recall": "A wireless client can reach its VLAN gateway but cannot open a site by name. Recall which DHCP option supplies the resolver, which transports DNS uses, and which route carries an off-subnet query. How would synchronized clocks, a weekday baseline and the last approved configuration change help compare evidence?",
       "resources": [
         "capture",
-        "reading"
-      ]
+        "reading",
+        "pdu",
+        "cmd",
+        "ports",
+        "time-quiz",
+        "dhcp-quiz"
+      ],
+      "session": "day-10.json"
     },
     {
       "number": 11,
@@ -552,11 +566,17 @@
         "4.3"
       ],
       "goal": "Recognize threats from symptoms and choose controls for identity, device access and segmentation.",
-      "recall": "Recall how VLANs, routed boundaries and management paths affect exposure.",
+      "recall": "Trace a guest's HTTPS request from Wi-Fi through its VLAN, routed firewall and NAT/PAT. Where are credentials checked, where is a destination allowed, and which log records the decision? Recall how DHCP, DNS and a cloud security group could each affect this path.",
       "resources": [
         "acl",
-        "reading"
-      ]
+        "reading",
+        "vlan",
+        "soho",
+        "wifi",
+        "capture",
+        "route-quiz"
+      ],
+      "session": "day-11.json"
     },
     {
       "number": 12,
@@ -570,13 +590,22 @@
         "5.5"
       ],
       "goal": "Work through physical, service and performance cases. Select a test, verify a repair and document the evidence.",
-      "recall": "Name one observation that separates a cable fault from an addressing fault.",
+      "recall": "Walk a voice packet from a wireless client through its AP, access VLAN, gateway and WAN. Name the physical medium, subnet decision, DNS dependency and policy boundary. Which counter or trace would separate an addressing failure from a call that connects but sounds choppy?",
       "resources": [
-        "cabling",
-        "capture",
         "ip-fault",
-        "reading"
-      ]
+        "reading",
+        "cabling",
+        "subnet",
+        "capture",
+        "wifi",
+        "voip",
+        "vlan",
+        "route",
+        "dns",
+        "acl",
+        "ports"
+      ],
+      "session": "day-12.json"
     },
     {
       "number": 13,

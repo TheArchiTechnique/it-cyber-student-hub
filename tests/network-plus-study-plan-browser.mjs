@@ -32,7 +32,7 @@ export async function networkPlanChecks(browser, root) {
     await page.locator('.hub-page').getByRole('link', { name: '14-Day Certification Study Plan' }).press('Enter');
     await page.locator('.plan-grid').waitFor();
     const available = plan.days.filter(day => day.session);
-    assert.deepEqual(available.map(day => day.number), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    assert.deepEqual(available.map(day => day.number), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
     const scheduled = plan.days.filter(day => !day.session);
     assert.equal(await page.locator('.plan-grid article').count(), 14);
     assert.equal(await page.locator('.plan-grid .open').count(), 14 - scheduled.length);
@@ -55,6 +55,12 @@ export async function networkPlanChecks(browser, root) {
     for (const day of available) {
       const session = await (await get(new URL(day.session, data))).json();
       assert.equal(Object.values(session.minutes).reduce((sum, minutes) => sum + minutes, 0), day.minutes);
+      for (const [, href] of session.sources) {
+        const url = new URL(href, app);
+        if (url.origin !== root.origin) continue;
+        const html = await (await get(url)).text();
+        if (url.hash) assert.ok(html.includes('id="' + url.hash.slice(1) + '"'), href);
+      }
       for (const items of [session.review, session.cards, session.quiz, session.worksheet]) {
         assert.deepEqual(new Set(items.map(item => item.objective)), new Set(day.objectives));
       }
@@ -110,16 +116,16 @@ export async function networkPlanChecks(browser, root) {
         assert.equal(await page.locator('.print-item').count(), session.worksheet.length);
         const printed = await page.locator('#print-sheet').innerText();
         assert.equal(printed.includes('My reasoning'), filled);
-        for (const task of session.worksheet) assert.ok(printed.includes(task.prompt));
+        for (const task of session.worksheet) assert.ok(printed.includes(task.prompt), 'Day ' + day.number + ' print: ' + task.id);
         await page.emulateMedia({ media: 'screen' });
         await page.evaluate(() => dispatchEvent(new Event('afterprint')));
       }
     }
     await open(app, 'calendar');
-    await page.getByText('9 of 14 days completed · 9 interactive sessions available').waitFor();
+    await page.getByText('12 of 14 days completed · 12 interactive sessions available').waitFor();
     const reopened = await context.newPage();
     await reopened.goto(app.href);
-    await reopened.getByText('9 of 14 days completed · 9 interactive sessions available').waitFor();
+    await reopened.getByText('12 of 14 days completed · 12 interactive sessions available').waitFor();
     await reopened.close();
     await open(app, 'day-1/review');
     page.once('dialog', dialog => dialog.accept());
@@ -131,7 +137,7 @@ export async function networkPlanChecks(browser, root) {
     await page.getByText('Completed · 4 of 4 activities completed').waitFor();
     await page.setViewportSize({ width: 320, height: 720 });
     await page.locator('#theme').click();
-    for (const view of ['calendar', 'day-1/review', 'day-2/cards', 'day-3/quiz', 'day-3/worksheet', 'day-4/worksheet', 'day-5/quiz', 'day-6/review', 'day-7/cards', 'day-8/review', 'day-8/quiz', 'day-8/worksheet', 'day-9/quiz']) {
+    for (const view of ['calendar', 'day-1/review', 'day-2/cards', 'day-3/quiz', 'day-3/worksheet', 'day-4/worksheet', 'day-5/quiz', 'day-6/review', 'day-7/cards', 'day-8/review', 'day-8/quiz', 'day-8/worksheet', 'day-9/quiz', 'day-10/review', 'day-11/quiz', 'day-12/worksheet']) {
       await open(app, view);
       await page.locator('#view .panel').first().waitFor();
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), view);

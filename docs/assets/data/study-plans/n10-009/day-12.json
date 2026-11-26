@@ -1,0 +1,406 @@
+{
+  "minutes": {
+    "reading": 30,
+    "cards": 15,
+    "quiz": 15,
+    "worksheet": 40,
+    "application": 20
+  },
+  "review": [
+    {
+      "objective": "5.1",
+      "title": "Work an incident in sequence",
+      "text": "Identify the problem by questioning users, gathering symptoms, checking recent changes and reproducing the issue when practical. Separate independent problems. Establish a theory of probable cause, starting with simple explanations. Test the theory to determine the cause. If it fails, revise the theory or escalate. If confirmed, plan the correction, its possible effects and rollback. Implement the solution or escalate within authority. Verify full functionality and apply preventive measures where appropriate. Document findings, actions, outcomes and lessons learned throughout, then close the record."
+    },
+    {
+      "objective": "5.1",
+      "title": "Choose the next test before making a change",
+      "text": "Start bottom-up with power and link when a desk loses carrier after a move. Work top-down from an application error when one service fails but other applications work. Divide and conquer by testing the gateway or another intermediate point, then narrow the investigation above or below it. A successful ping cannot validate HTTPS. Choose a test whose outcomes would distinguish your current theory from a plausible alternative."
+    },
+    {
+      "objective": "5.2",
+      "title": "Read the link at both ends",
+      "text": "Match rated copper category to speed and distance, including patch leads. Category 5, 6, 7 and 8 labels describe different cabling specifications. Check the actual Ethernet application and installed channel. Check shielded versus unshielded twisted pair and installation requirements near electrical equipment. Crosstalk is coupling between pairs, external electromagnetic interference can come from nearby machinery, and attenuation increases with distance and loss. Bad terminations can pass simple continuity while failing pair performance. Compare a wire map with certification results for the required category."
+    },
+    {
+      "objective": "5.2",
+      "title": "Test fiber and power separately",
+      "text": "Match single-mode or multimode fiber, supported transceiver standard, wavelength and reach at both ends. Check polarity so each transmitter reaches the far receiver. Contaminated end faces, bends and long runs reduce optical power. Compare measured receive power with the module's range and inspect/clean connectors using approved equipment. A visual fault locator helps trace continuity, an optical power meter with a known source measures loss, and an OTDR estimates distance to reflective or loss events. For PoE, compare device standard and requested power with per-port capability and remaining switch budget."
+    },
+    {
+      "objective": "5.2",
+      "title": "Interpret state and counter changes",
+      "text": "Administratively down indicates a configured shutdown. Error-disabled indicates a protective action such as port-security enforcement. A suspended aggregation member may have inconsistent bundling settings. Read the logged reason before restoring a port. Compare speed and duplex at both ends. A growing CRC count shows damaged frames. Runts are undersized and giants exceed the accepted frame size. Output drops during heavy load may indicate queue pressure. Compare deltas over the same period and check duplex, media, MTU and queues before attributing a cause."
+    },
+    {
+      "objective": "5.3",
+      "title": "Separate access, switching and routing failures",
+      "text": "Follow the client port to its access VLAN, confirm that VLAN is active and allowed across each trunk, then reach its gateway. Check STP root bridge selection, root/designated roles and forwarding or discarding states. A redundant port can legitimately discard. Unexpected root movement, MAC moves and rising broadcasts together warrant a loop investigation. For remote traffic, look for the longest matching installed prefix, its next hop and a return route. Default routes cover only destinations without a more-specific match. Confirm the relevant ACL in the direction the packet actually traverses."
+    },
+    {
+      "objective": "5.3",
+      "title": "Read configuration one address family at a time",
+      "text": "Check client address, prefix, gateway and duplicate-address evidence against the design. An overly broad mask can make a remote destination look local. An IPv4 link-local address after DHCP failure can result from exhaustion, relay failure or a broken VLAN. Examine both client and server evidence. A valid lease with an incorrect DNS server or missing DNS record can break names while IP traffic works. For IPv6, compare link-local and global reachability, duplicate-address detection, advertised prefix and default router. A valid IPv4 route says nothing about the IPv6 table. If two hosts claim the same IPv4 address, compare DHCP leases, reservations and static settings with the observed MAC addresses. A two-address ARP history warrants investigation because legitimate failover can also change a mapping."
+    },
+    {
+      "objective": "5.4",
+      "title": "Distinguish a busy path from a weak signal",
+      "text": "Bandwidth is capacity and throughput is the delivered rate. Look for the bottleneck in the tested direction. If latency, jitter and loss increase with utilization and output drops while CRC stays flat, test queue contention. Check endpoint CPU and interface limits too. On Wi-Fi, compare signal and channel utilization at the same location. Overlapping channels or other RF interference can drive retries. A distant room can have inadequate coverage with little competing traffic. A failure only while moving calls for checking BSSID transitions, security settings and disassociation or authentication logs."
+    },
+    {
+      "objective": "5.5",
+      "title": "Choose an observation point and a tool",
+      "text": "Trace copper with a compatible toner and probe. Use a wire-map tester for pair faults, a certifier for installed-channel performance and a supported loopback adapter for a local port test. A network tap copies a specific link to a protocol analyzer. A Wi-Fi analyzer measures the RF conditions it can observe. LLDP and Cisco Discovery Protocol (CDP) identify advertising directly connected neighbors. A missing advertisement is inconclusive if discovery is disabled. An authorized inventory tool such as Nmap and a speed tester such as iperf answer different questions about services and performance."
+    },
+    {
+      "objective": "5.5",
+      "title": "Read a host and its first hop",
+      "text": "On Windows, use ipconfig /all for lease information, arp -a for IPv4 neighbors, netstat -ano for connections and listeners, ping for ICMP and tracert -d for responding hops. On Linux, ip address, ip neigh and ip route show address, neighbor and route state. ifconfig is an older interface tool. traceroute -n shows hops, dig queries DNS, and tcpdump can read saved packets. nslookup is available on both platforms when installed. Pair each result with a test of the affected service."
+    },
+    {
+      "objective": "5.5",
+      "title": "Select the device command for the missing evidence",
+      "text": "On supported Cisco IOS devices, show interfaces reports status, speed and counters. show running-config shows active settings. show ip route and show ip arp reveal IPv4 routes and neighbors. show mac address-table locates learned MACs by VLAN and port. show vlan brief lists access membership, while show interfaces trunk identifies transported VLANs. Use show lldp neighbors or show cdp neighbors to compare the local adjacency with the diagram. On a PoE-capable model, show power inline reports allocations. Command spelling and fields vary across vendors and models."
+    },
+    {
+      "objective": "5.1",
+      "title": "Assigned practical · 20 minutes",
+      "text": "Open IP Configuration Troubleshooting and investigate one affected client. Record the symptom and design expectation, one theory, the observation that tests it, a scoped correction and two verification results. Check the affected user's service and one unaffected service. Use the remaining time to explain what evidence would disprove your diagnosis. If you need more practice later, choose the linked resource matching your gap, such as cabling, subnetting, Wireshark, wireless, two-site VoIP or one Packet Tracer lab."
+    }
+  ],
+  "sources": [
+    [
+      "Interface counters and port states",
+      "../../objective-breakdown/#interface-counters-and-port-states"
+    ],
+    [
+      "Switching loops and spanning-tree interpretation",
+      "../../objective-breakdown/#switching-loops-and-spanning-tree-interpretation"
+    ],
+    [
+      "Wireless symptoms",
+      "../../objective-breakdown/#wireless-symptoms"
+    ],
+    [
+      "Basic network-device command families",
+      "../../objective-breakdown/#basic-network-device-command-families"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "next",
+      "objective": "5.1",
+      "prompt": "The symptom is reproducible and you suspect a trunk omission. What precedes a change?",
+      "answer": "Test the theory by inspecting trunk VLANs and comparing the failed path with a working path."
+    },
+    {
+      "id": "method",
+      "objective": "5.1",
+      "prompt": "What is divide-and-conquer troubleshooting in a routed network?",
+      "answer": "Test an intermediate point or layer to narrow the search, then investigate the side the evidence implicates."
+    },
+    {
+      "id": "verify",
+      "objective": "5.1",
+      "prompt": "What closes the gap between a port coming up and resolving a ticket?",
+      "answer": "Verify the affected user's full service and related functionality. Record evidence and apply appropriate prevention."
+    },
+    {
+      "id": "pairs",
+      "objective": "5.2",
+      "prompt": "All eight pins have continuity. Why might the link still fail at its required rate?",
+      "answer": "Split pairs, excessive loss or crosstalk can fail performance requirements. Use a category certifier on the installed channel."
+    },
+    {
+      "id": "frames",
+      "objective": "5.2",
+      "prompt": "Which counters distinguish undersize, oversize and corrupt frames?",
+      "answer": "Runts, giants and CRC errors respectively. Read their rate of change and platform thresholds."
+    },
+    {
+      "id": "poe",
+      "objective": "5.2",
+      "prompt": "A switch has 12 W unallocated and a new AP requires a 25 W allocation. What else should you check besides the shortfall?",
+      "answer": "Check per-port support, required PoE standard and device negotiation. A compatible port still needs sufficient total budget."
+    },
+    {
+      "id": "polarity",
+      "objective": "5.2",
+      "prompt": "Both fiber transmitters are active, but neither receiver sees light after repatching. What should you verify?",
+      "answer": "Verify end-to-end TX-to-RX polarity, then media, optics, received power and connector condition."
+    },
+    {
+      "id": "prefix",
+      "objective": "5.3",
+      "prompt": "Which route wins for 10.7.4.22 when installed prefixes include 10.7.0.0/16 and 10.7.4.0/24?",
+      "answer": "The /24 is the more specific match. Check next-hop reachability and the destination's return path."
+    },
+    {
+      "id": "apipa",
+      "objective": "5.3",
+      "prompt": "What does a Windows address in 169.254.0.0/16 suggest when DHCP was expected?",
+      "answer": "IPv4 link-local fallback. Check offers, scope availability, VLAN and relay before selecting a cause."
+    },
+    {
+      "id": "stp",
+      "objective": "5.3",
+      "prompt": "Does one discarding STP alternate port on a redundant link establish a fault?",
+      "answer": "No. The alternate path can be intentionally blocked. Compare root, roles, topology changes and actual service impact."
+    },
+    {
+      "id": "v6",
+      "objective": "5.3",
+      "prompt": "A host reaches an IPv6 link-local neighbor but has no IPv6 default route. What message should you investigate?",
+      "answer": "Router advertisements and their router lifetimes. Local-link reachability can work without an off-link default route."
+    },
+    {
+      "id": "queue",
+      "objective": "5.4",
+      "prompt": "Which observation favors queue congestion over a damaged cable?",
+      "answer": "Output drops increase as utilization rises to capacity, while physical error counts stay flat. Confirm with a controlled load comparison."
+    },
+    {
+      "id": "radio",
+      "objective": "5.4",
+      "prompt": "What distinguishes wireless capacity trouble from inadequate coverage?",
+      "answer": "Capacity trouble can occur with a strong signal when clients contend for airtime. Compare signal, retries, utilization and density."
+    },
+    {
+      "id": "roam",
+      "objective": "5.4",
+      "prompt": "Which evidence helps explain a voice gap only while the client crosses rooms?",
+      "answer": "Correlate the gap with BSSID transitions, disassociation reasons, reauthentication and VLAN consistency along the route."
+    },
+    {
+      "id": "neighbor",
+      "objective": "5.5",
+      "prompt": "Which protocols can identify the switch at the far end of a direct link?",
+      "answer": "Link Layer Discovery Protocol (LLDP) and Cisco Discovery Protocol (CDP), when supported and enabled."
+    },
+    {
+      "id": "power",
+      "objective": "5.5",
+      "prompt": "Which Cisco IOS command inspects switch PoE allocations on supported hardware?",
+      "answer": "show power inline. Compare available and used power with device requirements."
+    },
+    {
+      "id": "optics",
+      "objective": "5.5",
+      "prompt": "Which optical tool can estimate the distance to a loss event along a fiber run?",
+      "answer": "An optical time-domain reflectometer (OTDR). A power meter measures optical power at the measurement point."
+    },
+    {
+      "id": "tap",
+      "objective": "5.5",
+      "prompt": "When should you choose a network tap instead of a cable tester?",
+      "answer": "Choose the tap to copy live link traffic for packet analysis. Use a cable tester to inspect the physical wiring."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "theory",
+      "objective": "5.1",
+      "prompt": "The problem is identified and a cause is proposed. Before planning a repair, ____ the theory (one verb).",
+      "answers": [
+        "test"
+      ],
+      "explanation": "A targeted test separates a plausible cause from a confirmed one. A failed test calls for another theory or escalation."
+    },
+    {
+      "id": "effects",
+      "objective": "5.1",
+      "prompt": "The cause is confirmed. Before implementation, establish a plan of ____ and identify potential effects.",
+      "answers": [
+        "action"
+      ],
+      "explanation": "The plan defines the correction, dependencies, potential impact and recovery path."
+    },
+    {
+      "id": "state",
+      "objective": "5.2",
+      "prompt": "A Cisco switch log records a port-security violation and its port status reads err-disabled. Which state is this? ____",
+      "answers": [
+        "error-disabled",
+        "error disabled",
+        "err-disabled"
+      ],
+      "explanation": "The switch acted protectively. Resolve the reason before restoring service. An administrative shutdown is a different state."
+    },
+    {
+      "id": "optic",
+      "objective": "5.2",
+      "prompt": "A duplex fiber patch connects Tx to Tx and Rx to Rx. Which physical property needs correction? ____",
+      "answers": [
+        "polarity",
+        "fiber polarity",
+        "TX/RX polarity"
+      ],
+      "explanation": "Each transmitter must reach the opposite receiver. A routing change cannot restore missing optical signal."
+    },
+    {
+      "id": "mask",
+      "objective": "5.3",
+      "prompt": "For host 192.0.2.78/27, the IPv4 network address is ____.",
+      "answers": [
+        "192.0.2.64",
+        "192.0.2.64/27"
+      ],
+      "explanation": "A /27 block spans 32 addresses. This one runs from .64 through .95."
+    },
+    {
+      "id": "route",
+      "objective": "5.3",
+      "prompt": "Installed routes include 10.8.0.0/16 via R2 and 10.8.16.0/20 via R3. Which next hop serves 10.8.23.9? ____",
+      "answers": [
+        "R3",
+        "router 3"
+      ],
+      "explanation": "The /20 covers third octets 16 through 31 and is the longer matching prefix."
+    },
+    {
+      "id": "relay",
+      "objective": "5.3",
+      "prompt": "A new routed VLAN receives no DHCP offers. Its Discover stays local, the server has free leases, and the VLAN gateway lacks the design's forwarding setting. Restore the DHCP ____.",
+      "answers": [
+        "relay",
+        "IP helper",
+        "relay agent",
+        "DHCP relay"
+      ],
+      "explanation": "A relay carries the client's request to an off-subnet server. Expanding the scope will not get the request there."
+    },
+    {
+      "id": "rssi",
+      "objective": "5.4",
+      "prompt": "One corner has weak signal, low utilization and repeated disconnects. In one word, the first RF design issue to investigate is ____.",
+      "answers": [
+        "coverage"
+      ],
+      "explanation": "Survey the affected area at client height and compare with nearby working locations. Low utilization weakens the case for capacity exhaustion."
+    },
+    {
+      "id": "loss",
+      "objective": "5.4",
+      "prompt": "A controlled UDP receiver reports 25 missing datagrams out of 2,500 sent. Enter packet loss as a percentage. ____",
+      "answers": [
+        "1%",
+        "1",
+        "1 percent",
+        "1.0%"
+      ],
+      "explanation": "25 divided by 2,500 is 0.01, which is 1%. The count does not reveal where the datagrams were lost."
+    },
+    {
+      "id": "mapping",
+      "objective": "5.5",
+      "prompt": "On Cisco IOS, fill in the command that lists learned MAC addresses by VLAN and port. ____",
+      "answers": [
+        "show mac address-table"
+      ],
+      "explanation": "The MAC table tracks Layer 2 learning. show ip arp instead relates IPv4 addresses to local neighbor MACs."
+    },
+    {
+      "id": "wiremap",
+      "objective": "5.5",
+      "prompt": "To find which unlabeled copper run reaches a wall jack, pair a probe with a ____.",
+      "answers": [
+        "toner",
+        "tone generator",
+        "cable toner",
+        "toner generator"
+      ],
+      "explanation": "A compatible toner identifies the run. To locate a split pair or qualify performance, select a tester or certifier with that capability."
+    },
+    {
+      "id": "dns",
+      "objective": "5.5",
+      "prompt": "Which DNS-specific utility accepts the Linux query “____ @192.0.2.53 portal.example A” and prints status and answer sections?",
+      "answers": [
+        "dig"
+      ],
+      "explanation": "The @ argument identifies the resolver. The A query asks for an IPv4 record and does not test a web connection."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "triage",
+      "objective": "5.1",
+      "type": "Example",
+      "prompt": "A help desk plans to replace a switch because one browser reports a certificate-name error. The same client can reach two other HTTPS services. Specify the next test, the action if your theory fails, and evidence needed to close the ticket.",
+      "source": "Start with the layer giving a specific error and preserve working services.",
+      "key": "Inspect the requested hostname and presented certificate names, and compare DNS answers with the intended endpoint. If they match, revise the theory or escalate with results. Correct only a confirmed fault under a plan. Verify trusted access from the affected client and one unaffected service. Record before/after findings."
+    },
+    {
+      "id": "link",
+      "objective": "5.2",
+      "type": "Example",
+      "prompt": "Simulated observations: a desk drops frames when a cable is moved. The port is up at 1 Gb/s full duplex at both ends. Input CRC rises from 4 to 94 in one minute. A certifier reports a split pair on the installed run. Choose a repair, test and verification metric.",
+      "source": "Compare counter deltas and distinguish a pair fault from a duplex mismatch.",
+      "key": "Correct the affected pair termination or replace the defective run, then recertify for the required category. Repeat the transfer and confirm CRCs stop increasing under comparable load. The counter alone could reflect several faults, but the certifier identifies wiring and both ends agree on duplex."
+    },
+    {
+      "id": "poe",
+      "objective": "5.2",
+      "type": "Example",
+      "prompt": "A replacement AP requests 25 W. The switch has 18 W unallocated and its port supports 30 W. The PoE log says power denied, budget exceeded. An adjacent low-power phone works. What should you change and verify?",
+      "source": "Compare both power limits before treating a working phone as proof of AP support.",
+      "key": "The total free allocation is 7 W short even though the port supports the request. Allocate adequate approved power or move to a compatible switch with capacity. Verify negotiated allocation, AP boot and client service. Changing VLANs cannot resolve a power denial."
+    },
+    {
+      "id": "client",
+      "objective": "5.3",
+      "type": "Factual",
+      "prompt": "A static workstation should use 192.0.2.78/27 and gateway 192.0.2.65. Its configured mask is 255.255.255.0. Find the intended network, broadcast and usable range. Explain how it would try to reach 192.0.2.110 before and after correction.",
+      "source": "Compare the client's on-link decision under /24 and /27.",
+      "key": "Network .64, broadcast .95, usable .65–.94, mask 255.255.255.224. With /24 it ARPs locally for .110. With /27 it sends the frame to .65 for routing. Verify local gateway access and a permitted remote service after correction."
+    },
+    {
+      "id": "trunk",
+      "objective": "5.3",
+      "type": "Example",
+      "prompt": "PC A on S1 and PC B on S2 share VLAN 30 and a /24. Each reaches a local VLAN 30 peer. Both access ports show VLAN 30. The only trunk is forwarding, with VLANs 10,20 active and allowed on S1, and 10,20,30 on S2. What constrains the path and how do you verify a narrow repair?",
+      "source": "Follow a same-subnet frame across both trunk endpoints.",
+      "key": "S1 omits VLAN 30. Verify VLAN 30 exists and add it to the intended allowed list without replacing 10 and 20. Check both trunk endpoints and STP state, then test A to B and verify VLAN 10 or 20 still works. Changing the default gateway would not fix a same-VLAN exchange."
+    },
+    {
+      "id": "return",
+      "objective": "5.3",
+      "type": "Example",
+      "prompt": "Client 10.1.1.25/24 uses R1. For 10.9.2.40, R1 has 10.9.0.0/16 via 192.0.2.2 and 10.9.2.0/24 via 192.0.2.6 (R2). The client trace shows R1 then stars. R2 sees the request forwarded to its server LAN and a reply arriving there. R2 has no route for 10.1.1.25 and no default. Which lookup fails and how should you verify recovery?",
+      "source": "Treat the trace as partial evidence. Use the R2 LAN capture and both routing tables.",
+      "key": "The forward lookup uses the /24 via R2. R2 lacks a return route to 10.1.1.0/24. Restore the design-approved return path toward R1, confirm it is installed and test the original client-to-server transaction. A silent trace hop alone would not prove where the failure occurred."
+    },
+    {
+      "id": "name",
+      "objective": "5.3",
+      "type": "Example",
+      "prompt": "A Windows user has a current lease with the intended address, gateway and resolver. The intended web server accepts TCP 443 by IP. A query to the approved resolver returns NXDOMAIN for portal.example. The authoritative zone is missing this required name. What should be corrected and how would you confirm it?",
+      "source": "Separate lease assignment, transport reachability and the DNS answer.",
+      "key": "Restore the approved DNS record at the authoritative source. Check the authoritative response, then the client resolver after negative cache expiry or appropriate cache refresh. Verify HTTPS by the intended name and certificate. Renewing the valid lease cannot create the missing record."
+    },
+    {
+      "id": "wireless",
+      "objective": "5.4",
+      "type": "Example",
+      "prompt": "During a class, 46 stations share one 20 MHz channel. At three affected desks signal is −54 to −60 dBm, channel utilization is 92%, retries rise, and wired clients are normal. After class the same desks work. What would discriminate airtime demand from inadequate coverage or external interference?",
+      "source": "Compare the same locations under different loads and identify who occupies airtime.",
+      "key": "Capacity contention is plausible given strong signal and load dependence. Compare AP airtime/client and retry data across class periods, check overlapping channels and investigate unexplained energy. If client demand dominates, rebalance clients or channel capacity. Repeat a class-load test. Raising AP power alone need not free airtime."
+    },
+    {
+      "id": "voice",
+      "objective": "5.4",
+      "type": "Example",
+      "prompt": "A 100 Mb/s branch uplink carries 98 Mb/s during backup. Voice delay rises from 20 to 110 ms, jitter from 2 to 31 ms and loss from 0 to 2%. Output drops rise by 800, CRC stays flat, and LAN-only calls remain clear. Name the leading theory and a reversible test.",
+      "source": "Compare a load change with the affected direction and unaffected local path.",
+      "key": "Suspect the uplink queue during backup. With approval, briefly limit the backup and compare output drops, utilization and call metrics at the same call load. Recovery supports contention. Assess scheduling, QoS or capacity, then verify voice quality and backup completion. The evidence is weaker for a LAN cable fault."
+    },
+    {
+      "id": "filter",
+      "objective": "5.5",
+      "type": "Example",
+      "prompt": "An inbound first-match guest ACL permits UDP to 192.0.2.53 port 53, then denies all other traffic to the services subnet. Small DNS replies work. A truncated reply triggers a TCP 53 retry and the deny counter rises. Which two evidence sources identify the restriction, what change preserves policy, and how would you test it?",
+      "source": "Follow transport, destination and rule order. Test a forbidden service too.",
+      "key": "Use a protocol analyzer for the truncated response and TCP retry, and the ACL counters/configuration for the matching deny. Add a narrow TCP 53 permit from the guest subnet to that resolver ahead of the deny. Verify both DNS transports and that another service remains blocked. Allowing the entire subnet would exceed policy."
+    }
+  ]
+}

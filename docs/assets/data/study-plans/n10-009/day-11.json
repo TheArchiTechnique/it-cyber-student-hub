@@ -1,0 +1,384 @@
+{
+  "minutes": {
+    "reading": 30,
+    "cards": 15,
+    "quiz": 15,
+    "worksheet": 40,
+    "application": 20
+  },
+  "review": [
+    {
+      "objective": "4.1",
+      "title": "Decide what harm the control prevents",
+      "text": "A threat is a potential source of harm. A vulnerability is a weakness, and an exploit takes advantage of a weakness. Evaluate risk using likelihood and impact. For a switch backup, restrict disclosure for confidentiality, detect unauthorized changes for integrity and test restoration for availability. Encrypt backups at rest and use validated TLS in transit. A certificate binds a name or identity to a public key. Public key infrastructure (PKI) manages issuance, trust and revocation. A self-signed certificate requires an independently established trust decision."
+    },
+    {
+      "objective": "4.1",
+      "title": "Trace a user from sign-in to a specific permission",
+      "text": "Identity and access management covers enrollment, role changes and account retirement. Authentication establishes identity. Authorization grants specific actions. Accounting records activity. Role-based access control (RBAC) can enforce least privilege by separating operators from administrators. Multifactor authentication requires distinct factor categories. A password with a time-based one-time code from a registered authenticator combines knowledge and possession. Time-based validation depends on clock agreement. Geofencing adds location context, and zero trust evaluates identity, device and requested access even on internal networks."
+    },
+    {
+      "objective": "4.1",
+      "title": "Choose the identity exchange",
+      "text": "An 802.1X supplicant presents user or machine credentials through a switch or AP acting as authenticator. Extensible Authentication Protocol (EAP) carries the authentication exchange. The authenticator commonly uses Remote Authentication Dial-In User Service (RADIUS) to consult an authentication server. Classic RADIUS uses UDP 1812 for access and UDP 1813 for accounting. Returned attributes can assign a VLAN or role. An authenticated endpoint may still lack permission to use payroll. Network access control (NAC) can also check device posture and place an endpoint in remediation."
+    },
+    {
+      "objective": "4.1",
+      "title": "Give operators only the commands their role needs",
+      "text": "TACACS+ uses TCP 49 and supports separate authentication, authorization and accounting exchanges. On a supported switch it can allow a signed-in operator to inspect interfaces, deny a configuration command and record command activity. This is a device-administration decision. Typical RADIUS-based Wi-Fi access decides network admission. Lightweight Directory Access Protocol (LDAP) queries directory entries, conventionally TCP 389 or LDAP over TLS on TCP 636. Security Assertion Markup Language (SAML) supports browser-based single sign-on by passing an identity provider's signed assertion to a service provider, which validates it and applies its own permissions."
+    },
+    {
+      "objective": "4.1",
+      "title": "Choose boundaries and collect audit evidence",
+      "text": "Give visitors internet-only access and put personal BYOD endpoints under posture-based policy. Restrict IoT cameras to their recorder and management service. Industrial IoT sensors, operational technology (OT) and industrial control systems (ICS) affect physical processes. Allow a supervisory control and data acquisition (SCADA) station only the approved paths to controllers. VLANs separate broadcasts. Routed controls enforce inter-zone policy. Locks limit physical entry and cameras record events. A honeypot is one decoy, a honeynet is a group of decoys. Isolate and monitor them."
+    },
+    {
+      "objective": "4.1",
+      "title": "Trace the data before an audit",
+      "text": "Inventory where logs, backups and replicas are stored or processed to check data locality. PCI DSS concerns payment account data security. GDPR concerns personal data within its scope. For a payment segment, show the intended boundary, actual permitted flows and access records. For personal-data logs, identify storage regions, access and retention. An audit compares evidence with the applicable requirements."
+    },
+    {
+      "objective": "4.2",
+      "title": "Use evidence from the right layer",
+      "text": "An unexpected gateway MAC in an IPv4 ARP cache suggests a false address-to-MAC claim. Verify against router failover and approved changes. DNS spoofing supplies a false answer. Poisoning leaves false data in a cache. An unauthorized DHCP server can issue valid-looking leases with unintended gateway or DNS options. Compare server identifiers with the approved list. An on-path intermediary may observe or alter traffic. Properly validated end-to-end encryption limits what it can read or change."
+    },
+    {
+      "objective": "4.2",
+      "title": "Recognize disruption and impersonation",
+      "text": "A surge exhausting service capacity suggests denial of service (DoS). Corroborated traffic from many independent sources can indicate distributed DoS. Compare with expected demand. Rapid growth of distinct source MACs at one access port plus increased unknown-unicast traffic suggests MAC flooding. Unexpected traffic across a VLAN boundary calls for checking access/trunk policy and routed permissions before concluding VLAN hopping. An unauthorized AP is rogue. Evidence that it imitates a trusted WLAN to attract clients supports an evil twin diagnosis. Verify against approved BSSIDs and controller inventory."
+    },
+    {
+      "objective": "4.2",
+      "title": "Connect alerts to a specific threat",
+      "text": "Repeated unexpected outbound sessions can justify a malware investigation. Corroborate with endpoint evidence. A deceptive help-desk login message is phishing. Recovering discarded records is dumpster diving, observing a password being typed is shoulder surfing, and following an authorized person through a secured door is tailgating. Independently verify unexpected requests, securely dispose of records, shield entry and enforce individual admission."
+    },
+    {
+      "objective": "4.3",
+      "title": "Match each defense to the point of failure",
+      "text": "Replace default credentials, disable unused ports and services, restrict administration to secure protocols and maintain approved software and firmware. Inventory keys, restrict private-key access, rotate keys and revoke or replace compromised credentials. On edge ports, 802.1X verifies credentials. Port security limits learned MACs. A MAC allowlist alone can be impersonated. Configure edge ports as access ports and restrict trunks to intended VLANs. DHCP snooping can block server replies on untrusted ports. Dynamic ARP Inspection validates ARP claims using trusted bindings, with appropriate handling for static hosts."
+    },
+    {
+      "objective": "4.3",
+      "title": "Follow the first matching rule",
+      "text": "Place public web servers in a screened subnet between untrusted and internal zones. Permit only required services between zones. For a stateless first-match inbound ACL, compare protocol, source address and port, destination address and port, then apply the first matching action. Cisco IOS IP ACLs have an implicit deny at the end. Evaluate the return direction separately. A stateful firewall can permit return packets belonging to an allowed session. URL filtering applies destination URL policy. Content filtering examines available content or category information, subject to visibility and encryption."
+    },
+    {
+      "objective": "4.3",
+      "title": "Assigned practical · 20 minutes",
+      "text": "Open Packet Tracer Lab 6, ACL Traffic Control. Use its policy table and published rules to predict the results of Sales-to-HR, Sales-to-Server0 DNS, and HR-to-Sales traffic. Record the receiving router subinterface, the matching rule and the expected result for each. Compare with the lab checkpoints. You can trace these decisions on paper. For extra practice, use the VLAN lab for placement, SOHO for guest isolation or Wireshark for protocol evidence. Use Wireless Coverage for RF placement and the routing/firewalls Kahoot for optional recall."
+    }
+  ],
+  "sources": [
+    [
+      "Identity, authentication, and authorization",
+      "../../objective-breakdown/#identity-authentication-and-authorization"
+    ],
+    [
+      "Social engineering and physical access",
+      "../../objective-breakdown/#social-engineering-and-physical-access"
+    ],
+    [
+      "ACL reasoning and security zones",
+      "../../objective-breakdown/#acl-reasoning-and-security-zones"
+    ]
+  ],
+  "cards": [
+    {
+      "id": "cia",
+      "objective": "4.1",
+      "prompt": "Which CIA property is affected when a backup is silently altered?",
+      "answer": "Integrity. Encryption and availability alone do not establish that a backup is authentic and unchanged."
+    },
+    {
+      "id": "factors",
+      "objective": "4.1",
+      "prompt": "Why do a password and a second PIN fail to supply two factor categories?",
+      "answer": "Both are knowledge factors. A registered hardware authenticator can supply a possession factor."
+    },
+    {
+      "id": "account",
+      "objective": "4.1",
+      "prompt": "Which AAA function records an administrator's change?",
+      "answer": "Accounting. Authorization determines whether the change may proceed."
+    },
+    {
+      "id": "radius",
+      "objective": "4.1",
+      "prompt": "Which conventional UDP ports support RADIUS access and accounting?",
+      "answer": "1812 for access requests and 1813 for accounting."
+    },
+    {
+      "id": "tacacs",
+      "objective": "4.1",
+      "prompt": "What can a device request from TACACS+ after login?",
+      "answer": "Authorization for a particular command. It can separately send command accounting records over TCP 49."
+    },
+    {
+      "id": "directory",
+      "objective": "4.1",
+      "prompt": "Which identity technology looks up group membership, and which conveys a web SSO assertion?",
+      "answer": "LDAP reads directory entries. SAML conveys assertions between an identity provider and service provider."
+    },
+    {
+      "id": "cert",
+      "objective": "4.1",
+      "prompt": "What should a client verify before trusting a management site's certificate?",
+      "answer": "Check the expected hostname, validity and trust path according to policy. Protect the corresponding private key on the server."
+    },
+    {
+      "id": "industrial",
+      "objective": "4.1",
+      "prompt": "Why restrict an office workstation's path to an industrial controller?",
+      "answer": "ICS equipment can change a physical process. Limit access to required supervisory and authorized maintenance systems."
+    },
+    {
+      "id": "arp",
+      "objective": "4.2",
+      "prompt": "A DNS reply is unchanged, but the gateway now maps to an unexpected MAC. Which cache matters?",
+      "answer": "The local IPv4 ARP cache. Compare the mapping against legitimate gateway and failover records."
+    },
+    {
+      "id": "ap",
+      "objective": "4.2",
+      "prompt": "What additional evidence distinguishes an evil twin from a generic rogue AP?",
+      "answer": "It impersonates a trusted wireless service to attract its users. Verify the AP identity against the approved inventory."
+    },
+    {
+      "id": "ddos",
+      "objective": "4.2",
+      "prompt": "What distinguishes distributed denial of service from other availability failures?",
+      "answer": "Multiple participating sources contribute to disruption. An outage or high utilization by itself does not establish intent."
+    },
+    {
+      "id": "social",
+      "objective": "4.2",
+      "prompt": "What distinguishes tailgating from shoulder surfing?",
+      "answer": "Tailgating gains physical entry behind an authorized person. Shoulder surfing obtains information by watching."
+    },
+    {
+      "id": "cam",
+      "objective": "4.2",
+      "prompt": "What evidence could support investigating MAC flooding?",
+      "answer": "Abnormal numbers of learned source MACs on one edge port together with increased unknown-unicast flooding."
+    },
+    {
+      "id": "binding",
+      "objective": "4.3",
+      "prompt": "Which two switching defenses use DHCP trust information in different ways?",
+      "answer": "DHCP snooping filters untrusted server messages and builds bindings. Dynamic ARP Inspection can use bindings to validate ARP."
+    },
+    {
+      "id": "admit",
+      "objective": "4.3",
+      "prompt": "How does 802.1X differ from a MAC allowlist?",
+      "answer": "802.1X supports credential-based admission through EAP. A listed hardware address alone is weak identity evidence."
+    },
+    {
+      "id": "state",
+      "objective": "4.3",
+      "prompt": "How can a stateful firewall recognize a reply to an allowed outbound connection?",
+      "answer": "It maintains session state and matches the returning traffic against that state."
+    },
+    {
+      "id": "screen",
+      "objective": "4.3",
+      "prompt": "Where should an internet-facing proxy sit if internal systems must remain private?",
+      "answer": "In a screened subnet with explicit policies for public ingress and narrowly scoped internal dependencies."
+    },
+    {
+      "id": "filter",
+      "objective": "4.3",
+      "prompt": "Which control blocks a prohibited file type regardless of its allowed web address, when the body is visible?",
+      "answer": "A content filter that inspects the file. A URL-only rule evaluates the requested address."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "cmd",
+      "objective": "4.1",
+      "prompt": "An operator may run show commands but each change command needs a separate AAA decision. Which device administration protocol commonly provides this? ____",
+      "answers": [
+        "TACACS+",
+        "TACACS plus"
+      ],
+      "explanation": "TACACS+ separates AAA functions and supports per-command authorization. Network admission alone cannot implement this requirement."
+    },
+    {
+      "id": "admission",
+      "objective": "4.1",
+      "prompt": "An enterprise AP sends classic access requests on UDP 1812. Name the AAA protocol. ____",
+      "answers": [
+        "RADIUS",
+        "Remote Authentication Dial-In User Service"
+      ],
+      "explanation": "The AP relays the authentication exchange to RADIUS. Accounting conventionally uses UDP 1813."
+    },
+    {
+      "id": "federation",
+      "objective": "4.1",
+      "prompt": "A service provider validates a signed XML assertion for browser single sign-on. Which standard is in use? ____",
+      "answers": [
+        "SAML",
+        "Security Assertion Markup Language"
+      ],
+      "explanation": "SAML carries identity assertions. LDAP instead provides access to a directory."
+    },
+    {
+      "id": "decoys",
+      "objective": "4.1",
+      "prompt": "An isolated network of monitored decoy systems is a ____.",
+      "answers": [
+        "honeynet",
+        "honey net"
+      ],
+      "explanation": "A honeypot is an individual decoy. Multiple connected decoys form a honeynet."
+    },
+    {
+      "id": "layer",
+      "objective": "4.2",
+      "prompt": "The resolver's cache holds an unauthorized address for a name even after the false response is gone. This condition is ____.",
+      "answers": [
+        "DNS poisoning",
+        "DNS cache poisoning",
+        "cache poisoning"
+      ],
+      "explanation": "The altered state is in DNS. ARP poisoning changes a local IPv4 neighbor mapping."
+    },
+    {
+      "id": "offer",
+      "objective": "4.2",
+      "prompt": "Two DHCP offers reach a client. The second server is confirmed unauthorized. It is a ____ DHCP server.",
+      "answers": [
+        "rogue",
+        "unauthorized"
+      ],
+      "explanation": "The unauthorized responder can supply unintended options even when its lease is otherwise valid."
+    },
+    {
+      "id": "copy",
+      "objective": "4.2",
+      "prompt": "An unauthorized AP deliberately impersonates the company's WLAN. This is an ____ attack.",
+      "answers": [
+        "evil twin",
+        "evil-twin"
+      ],
+      "explanation": "An evil twin imitates a trusted network. A rogue AP can use an entirely different network name."
+    },
+    {
+      "id": "door",
+      "objective": "4.2",
+      "prompt": "Video shows an unbadged visitor following a badge holder through a locked entrance. The behavior is ____.",
+      "answers": [
+        "tailgating",
+        "tailgating attack"
+      ],
+      "explanation": "The visitor bypassed individual physical admission. Shoulder surfing would involve observing sensitive information."
+    },
+    {
+      "id": "dynamic",
+      "objective": "4.3",
+      "prompt": "A switch must reject ARP claims inconsistent with its trusted bindings. Enable ____.",
+      "answers": [
+        "Dynamic ARP Inspection",
+        "DAI"
+      ],
+      "explanation": "DAI checks ARP messages against bindings or an approved static policy. Port security only limits or restricts learned MACs."
+    },
+    {
+      "id": "policy",
+      "objective": "4.3",
+      "prompt": "An inbound first-match IPv4 ACL denies all TCP from guests to a server before a later rule permits HTTPS to it. A new guest HTTPS connection receives which ACL action? ____",
+      "answers": [
+        "deny",
+        "denied",
+        "drop",
+        "blocked"
+      ],
+      "explanation": "The earlier deny matches the protocol and endpoints, so evaluation stops before the later permit."
+    },
+    {
+      "id": "entry",
+      "objective": "4.3",
+      "prompt": "A switch requires machine credentials before ordinary LAN traffic. Which IEEE port-based access standard fits? ____",
+      "answers": [
+        "802.1X",
+        "IEEE 802.1X"
+      ],
+      "explanation": "The switch acts as authenticator. The supplicant can authenticate a device independently of the user's later application login."
+    }
+  ],
+  "worksheet": [
+    {
+      "id": "aaa",
+      "objective": "4.1",
+      "type": "Example",
+      "prompt": "A managed laptop joins Wi-Fi using a machine certificate. An employee then signs into a portal, can read tickets, and leaves an audit trail. Identify machine and user authentication, resource authorization and accounting. Where does RADIUS typically fit?",
+      "source": "Separate the identity at each step from the permission and record.",
+      "key": "802.1X/EAP can authenticate the laptop through the AP and a RADIUS server. Portal sign-in authenticates the employee. The assigned role permits ticket reads. The access record supports accounting. Network admission alone grants no ticket permissions."
+    },
+    {
+      "id": "admin",
+      "objective": "4.1",
+      "type": "Example",
+      "prompt": "Campus Wi-Fi needs centralized admission and accounting. Switch administrators need independent per-command decisions and command logs. Choose a conventional protocol and transport/port for each, and explain why login success alone is insufficient.",
+      "source": "Ask what decision remains after the credentials have been accepted.",
+      "key": "Classic RADIUS normally uses UDP 1812 for admission and 1813 for accounting. TACACS+ on TCP 49 supports device login, separate command authorization and accounting. A signed-in operator can be allowed to read status while configuration changes are denied."
+    },
+    {
+      "id": "zones",
+      "objective": "4.1",
+      "type": "Example",
+      "prompt": "Assign guest phones, personal staff tablets, public web servers, camera recorders and a SCADA workstation to zones. Describe one allowed path and one blocked path for industrial controls.",
+      "source": "Separate ownership, exposure and process impact.",
+      "key": "Use guest internet-only access, a BYOD segment with posture-based permissions, a screened subnet for public web servers, a restricted camera/security segment and an OT control zone. Allow approved SCADA-to-controller traffic. Deny ordinary guest or office access to controllers. Enforce rules at routed boundaries."
+    },
+    {
+      "id": "caches",
+      "objective": "4.2",
+      "type": "Example",
+      "prompt": "Case A has the expected DNS answer but a gateway ARP entry inconsistent with the verified gateway MAC. In Case B the gateway MAC is correct but a resolver's cached answer differs from the authoritative record after an unauthorized change. Which mapping would you investigate in each, and how could users be affected?",
+      "source": "Read the resolver cache separately from the host's neighbor cache.",
+      "key": "Investigate ARP poisoning in A and DNS cache poisoning in B. A can redirect local frames or disrupt forwarding. B can direct users to an unintended IP. Compare against failover records and legitimate DNS changes before assigning intent."
+    },
+    {
+      "id": "dhcp",
+      "objective": "4.2",
+      "type": "Example",
+      "prompt": "Two clients on one access VLAN receive leases from 10.8.0.5 and 10.8.0.99. Only .5 is approved. Clients taking .99 get a different gateway. Choose the likely source of the problem, a control and a verification test.",
+      "source": "Inspect the DHCP server identifier and ingress port.",
+      "key": "Trace the unauthorized DHCP server at .99 and isolate its access path. Use DHCP snooping with only approved server-facing paths trusted. Renew a test lease and verify its server, gateway and DNS. Clearing a resolver cache would leave the bad lease options intact."
+    },
+    {
+      "id": "wireless",
+      "objective": "4.2",
+      "type": "Example",
+      "prompt": "A contractor plugs in an unapproved AP labeled Workshop. A second unapproved AP imitates StaffSecure and presents a fake sign-in page. Classify each and identify evidence that distinguishes them.",
+      "source": "Check controller inventory, BSSID and the authentication experience.",
+      "key": "Both are rogue APs. The second is also an evil twin because it impersonates the approved service. Correlate BSSIDs and location with inventory, validate expected enterprise authentication, and isolate the unauthorized devices. Signal strength alone cannot identify ownership."
+    },
+    {
+      "id": "rule",
+      "objective": "4.3",
+      "type": "Example",
+      "prompt": "A stateless first-match ACL is inbound on the guest VLAN. Rule 10 permits TCP from 10.8.0.0/24, any source port, to 192.0.2.20 destination port 443. Rule 20 denies all remaining guest traffic to 192.0.2.0/24. Unmatched traffic is implicitly denied. Predict three packets from 10.8.0.8 to 192.0.2.20: TCP 51001 → 443, TCP 443 → 80 and UDP 51001 → 443 (source → destination port). Does this ACL alone establish that the reply succeeds?",
+      "source": "Match protocol and destination port before looking at the client source port.",
+      "key": "Permit the first packet by 10. Deny the second and third by 20. A source port of 443 does not make the second packet match, and UDP cannot match the TCP rule. The reverse packet takes a different direction. Inspect return routing and filters, or the state table on a stateful firewall."
+    },
+    {
+      "id": "harden",
+      "objective": "4.3",
+      "type": "Example",
+      "prompt": "An edge closet has active unused jacks, a default admin password, Telnet, obsolete firmware and an access port learning hundreds of unrelated MACs. Choose targeted controls and a test for each class of exposure.",
+      "source": "Consider physical admission, management, software and address learning separately.",
+      "key": "Disable unused ports and lock the closet. Replace defaults, restrict management to authorized sources and SSH or validated HTTPS, and test operator access. Stage a supported firmware update with rollback and verify the version. Investigate the MAC churn, then apply an appropriate per-port MAC limit or credential-based admission and verify a legitimate device still works."
+    },
+    {
+      "id": "policytest",
+      "objective": "4.3",
+      "type": "Example",
+      "prompt": "A guest can reach a file server despite being assigned the correct guest VLAN. Which two configuration areas would you review before declaring VLAN hopping? How would you verify a policy repair?",
+      "source": "Separate legitimate routed forwarding from a Layer 2 boundary failure.",
+      "key": "Inspect the guest gateway's inter-zone rules and then the edge/trunk assignments and allowed VLANs. A permissive routed rule can explain the access. After correcting the confirmed fault, test that guest-to-file access is blocked, approved guest internet still works and staff still reach the file server."
+    }
+  ]
+}
